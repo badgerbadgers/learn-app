@@ -16,9 +16,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 Branching strategy: 
 
-main branch will be production.
-development will be our development branch and will be PR'd to main when features are done. 
-{feature-branches} will be the primary branches we do work in and are named after the features we work on. ie - 'signin' branch if you are working on signin or 'editPortfolio' if you are working on edit functionality.  
+- `main` branch will be production.
+- `development` will be our development branch and will be PR'd to main when features are done. 
+- `{feature-branches}` will be the primary branches we do work in and are named after the features we work on. ie - `signin` branch if you are working on signin or `editPortfolio` if you are working on edit functionality.  
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
