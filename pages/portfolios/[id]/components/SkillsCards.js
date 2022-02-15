@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
-import { Button, Card } from '@mui/material';
-import { CardContent } from '@mui/material';
-import { CardActions } from '@mui/material';
-import { Typography } from '@mui/material';
+import React, { useState } from "react";
+import { styled } from "@mui/material/styles";
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+import TagFacesIcon from "@mui/icons-material/TagFaces";
+import { Button, Card } from "@mui/material";
+import { CardContent } from "@mui/material";
+import { CardActions } from "@mui/material";
+import { Typography } from "@mui/material";
 
-const ListItem = styled('li')(({ theme }) => ({
+const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
 export default function SkillsCards() {
   const [skillsData, setSkillsData] = useState([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'JavaScript' },
-    { key: 2, label: 'Next.js' },
-    { key: 3, label: 'React' },
+    { key: 0, label: "Angular" },
+    { key: 1, label: "JavaScript" },
+    { key: 2, label: "Next.js" },
+    { key: 3, label: "React" },
   ]);
 
   const handleDelete = (skillsToDelete) => () => {
-    setSkillsData((skills) => skills.filter((skill) => skill.key !== skillsToDelete.key));
+    setSkillsData((skills) =>
+      skills.filter((skill) => skill.key !== skillsToDelete.key)
+    );
   };
 
   return (
@@ -32,10 +34,10 @@ export default function SkillsCards() {
         </Typography>
         <Paper
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            listStyle: 'none',
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            listStyle: "none",
             p: 0.5,
             m: 0,
           }}
@@ -44,7 +46,7 @@ export default function SkillsCards() {
           {skillsData.map((data) => {
             let icon;
 
-            if (data.label === 'React') {
+            if (data.label === "React") {
               icon = <TagFacesIcon />;
             }
 
@@ -53,7 +55,9 @@ export default function SkillsCards() {
                 <Chip
                   icon={icon}
                   label={data.label}
-                  onDelete={data.label === 'React' ? undefined : handleDelete(data)}
+                  onDelete={
+                    data.label === "React" ? undefined : handleDelete(data)
+                  }
                 />
               </ListItem>
             );
