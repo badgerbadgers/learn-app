@@ -7,12 +7,21 @@ import Typography from "@mui/material/Typography";
 import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import { Grid } from "@mui/material";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    background: 'linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)',
+          
+  }
+}))
 
 function ContactCards() {
+  const { container } = useStyles()
   return (
-    <Grid container direction="column" align="center">
+    <Grid container direction="column" align="center" >
       <Grid item>
-        <Card variant="outlined">
+        <Card variant="outlined" className={container}>
           <CardContent>
             <Typography variant="h5" component="div">
               Firstname Lastname
