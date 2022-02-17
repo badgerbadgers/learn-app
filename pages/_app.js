@@ -1,31 +1,32 @@
-import {
-  Switch,
-  Paper,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
+import ThemeContextWrapper from "./api/theme/ThemeContextWrapper";
+import { ThemeContext, themes } from "./api/theme/thmeContext";
+import { Switch, Typography } from "@mui/material";
 import "../styles/globals.css";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from "@mui/material";
 
 function MyApp({ Component, pageProps }) {
-  const [dark, setDark] = useState(false);
-
-  const theme = createTheme({
-    palette: {
-      type: dark ? "dark" : "light",
-    },
-  });
-
+  const [darkMode, setDarkMode] = useState(true);
+  
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Paper style={{ height: '100vh' }}>
-        <Switch checked={dark} onChange={() => setDark(!dark)} />
-        <Typography variant="8">{dark ? "Dark Mode" : "Light Mode"}</Typography>
-        <Component {...pageProps} />
-      </Paper>
-    </ThemeProvider>
+    <ThemeContextWrapper>
+      <ThemeContext.Consumer>
+        {({ changeTheme }) => (
+          <>
+            <Switch
+              checked={darkMode}
+              onClick={() => {
+                setDarkMode(!darkMode);
+                changeTheme(darkMode ? themes.light : themes.dark);
+              }}
+            />
+            <Typography variant="8">
+              {darkMode ? "Dark Mode" : "Light Mode"}
+            </Typography>
+          </>
+        )}
+      </ThemeContext.Consumer>
+      <Component {...pageProps} />
+    </ThemeContextWrapper>
   );
 }
 
