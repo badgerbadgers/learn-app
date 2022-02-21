@@ -8,21 +8,24 @@ import { CardContent } from "@mui/material";
 import { CardActions } from "@mui/material";
 import { Typography } from "@mui/material";
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)',
-          
-  }
-}))
+    background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
+  },
+}));
+
+const card = {
+  height: "100%"
+}
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
 export default function SkillsCards() {
-  const { container } = useStyles()
+  const { container } = useStyles();
   const [skillsData, setSkillsData] = useState([
     { key: 0, label: "Angular" },
     { key: 1, label: "JavaScript" },
@@ -37,7 +40,7 @@ export default function SkillsCards() {
   };
 
   return (
-    <Card className={container}>
+    <Card sx={card}>
       <CardContent>
         <Typography variant="h5" component="div">
           Skills
@@ -75,9 +78,6 @@ export default function SkillsCards() {
           })}
         </Paper>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
     </Card>
   );
 }

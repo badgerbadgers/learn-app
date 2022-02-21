@@ -6,24 +6,36 @@ import PreviousIndustryCards from "./components/PreviousIndustryCards";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
+
+// // Fixed number of columns
+const gridContainer = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gridTemplateRows: "auto"
+};
+
+const gridItem = {
+  margin: "8px",
+  border: "1px solid red",
+  width: "100%"
+};
+
 function Cards() {
   return (
-    <Box p={2}>
-      <Grid container spacing={2} >
-        <Grid item xs={12} sm={6} lg={3}>
+      <Grid container p={2} sx={gridContainer} >
+        <Grid item xs={12} sx={gridItem}>
           <ContactCards />
         </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
-          <MediaCards />
+        <Grid item xs={12} sx={gridItem} > 
+          <MediaCards  />
         </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
-          <SkillsCards />
+        <Grid item xs={12} sx={gridItem}>
+          <SkillsCards/>
         </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
+        <Grid item xs={12} sx={gridItem}>
           <PreviousIndustryCards />
         </Grid>
       </Grid>
-    </Box>
   );
 }
 

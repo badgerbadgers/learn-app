@@ -4,19 +4,22 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)',
-          
-  }
-}))
+    background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
+  },
+}));
+
+const card = {
+  height: "100%"
+}
 
 export default function InterestCards() {
-  const { container } = useStyles()
+  const { container } = useStyles();
   return (
-    <Card item xs={12} sm={6} lg={3} className={container}>
+    <Card className={container} sx={card}>
       <CardContent>
         <Typography variant="h5" component="div">
           Interest

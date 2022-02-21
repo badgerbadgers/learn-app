@@ -8,20 +8,24 @@ import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)',   
-  }
-}))
+    background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
+  },
+}));
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+const card = {
+  height: "100%"
+}
+
 const PreviousIndustryCards = () => {
-  const { container } = useStyles()
+  const { container } = useStyles();
   const [experienceData, setExperienceData] = useState([
     { key: 0, label: "Manufacture" },
     { key: 1, label: "Customer Services" },
@@ -37,7 +41,7 @@ const PreviousIndustryCards = () => {
   };
 
   return (
-    <Card item xs={12} sm={6} lg={3} className={container}>
+    <Card className={container} sx={card}>
       <CardContent>
         <Typography variant="h5" component="div">
           Previous Industry
@@ -74,9 +78,6 @@ const PreviousIndustryCards = () => {
           })}
         </Paper>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
     </Card>
   );
 };

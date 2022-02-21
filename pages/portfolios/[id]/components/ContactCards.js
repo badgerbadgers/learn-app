@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import { Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from '@mui/styles';
 import Avatar from "@mui/material/Avatar";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,12 +20,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const card = {
+  height: "100%"
+}
+
 function ContactCards() {
   const { container } = useStyles();
   return (
-    <Grid container direction="column" align="center">
-      <Grid item>
-        <Card variant="outlined" className={container}>
+    // <Grid container direction="column" align="center">
+    //   <Grid item>
+        <Card variant="outlined" className={container} sx={card}>
           <Grid item display="flex">
             <Avatar
               alt="Kodayi Temple"
@@ -81,8 +85,8 @@ function ContactCards() {
             </Button>
           </Grid>
         </Card>
-      </Grid>
-    </Grid>
+      // </Grid>
+    // </Grid>
   );
 }
 
