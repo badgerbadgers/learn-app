@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ThemeContextWrapper from "./api/theme/ThemeContextWrapper";
-import { ThemeContext, themes } from "./api/theme/thmeContext";
+import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
+import { ThemeContext, themes } from "../components/theme/thmeContext";
 import { Switch, Typography } from "@mui/material";
 import "../styles/globals.css";
 
