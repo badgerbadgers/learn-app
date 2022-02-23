@@ -145,13 +145,13 @@ function UsersForm() {
           />
           <TextField
             variant="outlined"
-            label="Twitter"
-            name="twitter"
+            label="GitHub"
+            name="github"
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="@example.test"
-            value={formData.twitter}
+            placeholder="example.test@github"
+            value={formData.github}
             onChange={handleInputChange}
           />
           <TextField
@@ -178,19 +178,6 @@ function UsersForm() {
           />
           <br />
           <div mx={1}>
-            {/* <label htmlFor="contained-button-file">
-              <Input
-                accept="image/*"
-                id="contained-button-file"
-                multiple
-                type="file"
-              />
-              <Controls.Button
-                variant="outlined"
-                component="span"
-                text="Upload Video"
-              />
-            </label> */}
             <Controls.Button text="Submit" type="submit" />
             <Controls.Button
               variant="outlined"
