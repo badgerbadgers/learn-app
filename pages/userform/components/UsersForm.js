@@ -28,6 +28,7 @@ const initialFormValues = {
   linkedin: "",
   skills: "",
   previousIndustry: "",
+  video: "",
 };
 
 function UsersForm() {
@@ -164,9 +165,20 @@ function UsersForm() {
             value={formData.linkedin}
             onChange={handleInputChange}
           />
+          <TextField
+            variant="outlined"
+            label="Video"
+            name="video"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Url video link"
+            value={formData.video}
+            onChange={handleInputChange}
+          />
           <br />
           <div mx={1}>
-            <label htmlFor="contained-button-file">
+            {/* <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"
                 id="contained-button-file"
@@ -178,7 +190,7 @@ function UsersForm() {
                 component="span"
                 text="Upload Video"
               />
-            </label>
+            </label> */}
             <Controls.Button text="Submit" type="submit" />
             <Controls.Button
               variant="outlined"
