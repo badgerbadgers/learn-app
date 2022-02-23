@@ -1,10 +1,10 @@
 import React from 'react'
-import Users from '../components/Users';
+import Layout from '../components/Layout';
 
 function InputForm() {
   return (
     <div>
-      <Users />
+      <Layout />
     </div>
   )
 }

@@ -8,11 +8,11 @@ import { useTheme } from "@mui/material/styles";
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: useTheme().spacing(6),
-    padding: useTheme().spacing(2),
+    padding: useTheme().spacing(1),
   },
 }));
 
-function Users() {
+function Layout() {
   const classes = useStyles();
   return (
     <>
@@ -27,4 +27,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default Layout;

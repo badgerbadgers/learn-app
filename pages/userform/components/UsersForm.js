@@ -1,23 +1,31 @@
 import React, { useState } from "react";
-import { Paper, Box, Grid, Typography, TextField, Button } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
+import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
+
+const Input = styled("input")({
+  display: "none",
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormControl-root": {
       width: "90%",
-      margin: useTheme().spacing(2),
+      margin: useTheme().spacing(1),
     },
   },
 }));
 
 const initialFormValues = {
-  id: "",
   fullname: "",
+  email: "",
   pronouns: "",
   techStack: "",
-  socialMedia: "",
+  github: "",
+  facebook: "",
+  twitter: "",
+  linkedin: "",
   skills: "",
   previousIndustry: "",
 };
@@ -34,12 +42,24 @@ function UsersForm() {
     });
   };
 
+  const resetForm = () => {
+    setFormData(initialFormValues);
+  };
+
+  const handleSumitForm = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    const storage = localStorage.getItem("savedUsersData");
+    if (!storage) {
+      localStorage.setItem("savedUsersData", JSON.stringify(formData));
+    }
+  }
+
   return (
-    <form className={classes.root}>
+    <form className={classes.root} onSubmit={handleSumitForm}>
       <Grid container>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="fullname"
             required
             variant="outlined"
             label="Full Name"
@@ -74,20 +94,6 @@ function UsersForm() {
             value={formData.techStack}
             onChange={handleInputChange}
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            variant="outlined"
-            label="Social Media"
-            name="socialMedia"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="GitHub, LinkedIn, ..."
-            value={formData.socialMedia}
-            onChange={handleInputChange}
-          />
           <TextField
             required
             variant="outlined"
@@ -111,11 +117,75 @@ function UsersForm() {
             value={formData.previousIndustry}
             onChange={handleInputChange}
           />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            variant="outlined"
+            label="Email"
+            name="email"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="example@google.test.com"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
+            label="Facebook"
+            name="Facebook"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="@example.test"
+            value={formData.twitter}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
+            label="Twitter"
+            name="twitter"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="@example.test"
+            value={formData.twitter}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
+            label="LinkedIn"
+            name="linkedin"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="example.test@linkedin"
+            value={formData.linkedin}
+            onChange={handleInputChange}
+          />
           <br />
-          <Button variant="outlined">Submit</Button>
-          <Button type="button" variant="outlined">
-            Reset
-          </Button>
+          <div mx={1}>
+            <label htmlFor="contained-button-file">
+              <Input
+                accept="image/*"
+                id="contained-button-file"
+                multiple
+                type="file"
+              />
+              <Controls.Button
+                variant="outlined"
+                component="span"
+                text="Upload Video"
+              />
+            </label>
+            <Controls.Button text="Submit" type="submit" />
+            <Controls.Button
+              variant="outlined"
+              text="Reset"
+              onClick={resetForm}
+            />
+          </div>
         </Grid>
       </Grid>
     </form>
