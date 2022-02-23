@@ -4,9 +4,9 @@ import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
 import { useTheme, styled } from "@mui/material/styles";
 
-const Input = styled("input")({
-  display: "none",
-});
+// const Input = styled("input")({
+//   display: "none",
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,6 @@ const initialFormValues = {
   techStack: "",
   github: "",
   facebook: "",
-  twitter: "",
   linkedin: "",
   skills: "",
   previousIndustry: "",
@@ -177,7 +176,7 @@ function UsersForm() {
             onChange={handleInputChange}
           />
           <br />
-          <div mx={1}>
+          <div>
             <Controls.Button text="Submit" type="submit" />
             <Controls.Button
               variant="outlined"
