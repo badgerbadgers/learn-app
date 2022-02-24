@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { Grid, TextField } from "@mui/material";
 import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
-import { useTheme, styled } from "@mui/material/styles";
-
-// const Input = styled("input")({
-//   display: "none",
-// });
+import { useTheme } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +50,7 @@ function UsersForm() {
     if (!storage) {
       localStorage.setItem("savedUsersData", JSON.stringify(formData));
     }
-  }
+  };
 
   return (
     <form className={classes.root} onSubmit={handleSumitForm}>
@@ -134,12 +131,12 @@ function UsersForm() {
           <TextField
             variant="outlined"
             label="Facebook"
-            name="Facebook"
+            name="facebook"
             InputLabelProps={{
               shrink: true,
             }}
             placeholder="@example.test"
-            value={formData.twitter}
+            value={formData.facebook}
             onChange={handleInputChange}
           />
           <TextField
@@ -149,7 +146,7 @@ function UsersForm() {
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="example.test@github"
+            placeholder="example.test@github.com"
             value={formData.github}
             onChange={handleInputChange}
           />
@@ -175,15 +172,15 @@ function UsersForm() {
             value={formData.video}
             onChange={handleInputChange}
           />
-          <br />
-          <div>
+          <br/>
+          <Stack direction="row" ml={8} spacing={2}>
             <Controls.Button text="Submit" type="submit" />
             <Controls.Button
               variant="outlined"
               text="Reset"
               onClick={resetForm}
             />
-          </div>
+          </Stack>
         </Grid>
       </Grid>
     </form>

@@ -5,7 +5,6 @@ import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: useTheme().spacing(0.7),
     label: {
       textTransform: "none",
     },
