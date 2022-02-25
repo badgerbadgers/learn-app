@@ -7,12 +7,11 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
+    // background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
   },
 }));
 
@@ -21,15 +20,16 @@ const ListItem = styled("li")(({ theme }) => ({
 }));
 
 const card = {
-  height: "100%"
-}
+  height: "100%",
+};
 
 const PreviousIndustryCards = () => {
   const { container } = useStyles();
   const [experienceData, setExperienceData] = useState([
     { key: 0, label: "Manufacture" },
     { key: 1, label: "Customer Services" },
-    { key: 2, label: "Frontend" },
+    { key: 2, label: "Health Care" },
+    { Key: 3, label: "Oil and Gas" },
   ]);
 
   const handleDelete = (experienceToDelete) => () => {
@@ -59,15 +59,9 @@ const PreviousIndustryCards = () => {
           component="ul"
         >
           {experienceData.map((data) => {
-            let icon;
-
-            if (data.label === "Frontend") {
-              icon = <TagFacesIcon />;
-            }
             return (
               <ListItem key={data.key}>
                 <Chip
-                  icon={icon}
                   label={data.label}
                   onDelete={
                     data.label === "Frontend" ? undefined : handleDelete(data)

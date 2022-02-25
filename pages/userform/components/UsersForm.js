@@ -4,6 +4,8 @@ import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
+import ThemeContextWrapper from "../../../components/theme/ThemeContextWrapper";
+import { ThemeContext, themes } from "../../../components/theme/ThemeContextWrapper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,7 +89,7 @@ function UsersForm() {
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="Fullstack, Frontend, Backend, ..."
+            placeholder="Node.js, AngularJS, React, Bootstrap, jQuery,"
             value={formData.techStack}
             onChange={handleInputChange}
           />
@@ -99,7 +101,7 @@ function UsersForm() {
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="Skills"
+            placeholder="HTML, CSS, JavaScript, Teamwork, Problem-solving"
             value={formData.skills}
             onChange={handleInputChange}
           />
@@ -157,7 +159,7 @@ function UsersForm() {
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="example.test@linkedin"
+            placeholder="example.test@linkedin.com"
             value={formData.linkedin}
             onChange={handleInputChange}
           />

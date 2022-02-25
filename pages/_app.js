@@ -6,7 +6,7 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   const [darkMode, setDarkMode] = useState(true);
-  
+
   return (
     <ThemeContextWrapper>
       <ThemeContext.Consumer>
