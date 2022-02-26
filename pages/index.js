@@ -1,7 +1,16 @@
+import { GetServerSideProps } from "next";
+import {
+  getSession,
+  RedirectableProvider,
+  signIn,
+  signOut,
+  useSession,
+} from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import clientPromise from "../lib/mongodb";
+import LogIn from './LogIn';
 
 export default function Home({ isConnected }) {
   return (
@@ -24,6 +33,8 @@ export default function Home({ isConnected }) {
             for instructions.
           </h2>
         )}
+
+        <LogIn></LogIn>
 
         <p className={styles.description}>
           Get started by editing{" "}
@@ -94,4 +105,5 @@ export async function getServerSideProps(context) {
       props: { isConnected: false },
     }
   }
+
 }
