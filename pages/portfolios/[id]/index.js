@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MediaCards from "./components/MediaCards";
 import ContactCards from "./components/ContactCards";
 import SkillsCards from "./components/SkillsCards";
@@ -13,19 +13,30 @@ const gridContainer = {
 };
 
 function Cards() {
+  const [user, setUser] = useState()
+  const getData = async () => {
+    let res = await fetch('/api/users');
+    let data = await res.json();
+    return data
+    console.log(data)
+  }
+  useEffect(() => {
+    const User = getData;
+    setUser(User);
+  }, [])
   return (
-    <Grid container p={2} sx={gridContainer} spacing={2}>
-      <Grid item xs={12} md={8}>
-        <ContactCards />
+    <Grid container p={2} sx={gridContainer} spacing={4}>
+      <Grid item xs={12} md={12}>
+        <ContactCards user={user}/>
       </Grid>
-      <Grid item xs={12} md={8}>
-        <MediaCards />
+      <Grid item xs={12} md={12}>
+        <MediaCards user={user} />
       </Grid>
-      <Grid item xs={12} md={8}>
-        <SkillsCards />
+      <Grid item xs={12} md={12}>
+        <SkillsCards user={user} />
       </Grid>
-      <Grid item xs={12} md={8}>
-        <PreviousIndustryCards />
+      <Grid item xs={12} md={12}>
+        <PreviousIndustryCards user={user}/>
       </Grid>
     </Grid>
   );

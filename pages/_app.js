@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import { ThemeContext, themes } from "../components/theme/thmeContext";
-import { Switch, Typography } from "@mui/material";
+import { Grid, Switch, Typography, Avatar } from "@mui/material";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
     <ThemeContextWrapper>
       <ThemeContext.Consumer>
         {({ changeTheme }) => (
-          <>
+          <Grid item display="flex" m={4}>
             <Switch
               checked={darkMode}
               onClick={() => {
@@ -19,10 +19,11 @@ function MyApp({ Component, pageProps }) {
                 changeTheme(darkMode ? themes.light : themes.dark);
               }}
             />
-            <Typography variant="8">
+            <Typography variant="8" mr={95}>
               {darkMode ? "Dark Mode" : "Light Mode"}
             </Typography>
-          </>
+            <Avatar alt="Code the Deam" src="/static/images/avatar/3.jpg">CD</Avatar>
+          </Grid>
         )}
       </ThemeContext.Consumer>
       <Component {...pageProps} />

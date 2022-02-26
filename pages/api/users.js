@@ -1,3 +1,5 @@
+import { user } from "./testObject";
 export default function handler(req, res) {
-  return res.status(200).json('testObject.json')
+  console.log(user, "user")
+  return res.status(200).json(user);
 }
