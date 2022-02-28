@@ -10,6 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 }
 
 .footer {
@@ -108,23 +109,6 @@
   margin-left: 0.5rem;
 }
 
-
-::-webkit-input-placeholder {
-  color: #757575 !important;
-  opacity: 1 !important;
-}
-::-moz-placeholder {
-  color: #757575 !important;
-  opacity: 1 !important;
-}
-:-ms-input-placeholder {
-  color: #757575 !important;
-  opacity: 1 !important;
-}
-:-moz-placeholder {
-  color: #757575 !important;
-  opacity: 1 !important;
-}
 
 @media (max-width: 600px) {
   .grid {

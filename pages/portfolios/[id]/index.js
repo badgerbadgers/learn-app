@@ -14,20 +14,25 @@ const gridContainer = {
 
 function Cards() {
   const [user, setUser] = useState(null)
+  
   const getData = async () => {
     let res = await fetch('/api/users');
+    console.log('RESPONSE', res)
     let data = await res.json();
-    console.log(data)
+    console.log('DATA', data)
     return data
   }
   useEffect(() => {
-    const User = getData();
-    setUser(User);
+    ( async () => {
+      const userFromFetch = await getData();
+      console.log('Data', userFromFetch)
+      setUser(userFromFetch);
+    })()
   }, [])
   return (
     <Grid container p={2} sx={gridContainer} spacing={4}>
       <Grid item xs={12} md={12}>
-        {user ? <ContactCards user={user} /> : null}
+       <ContactCards user={user} />
       </Grid>
       <Grid item xs={12} md={12}>
         <MediaCards user={user} />
