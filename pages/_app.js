@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }) {
       <ThemeContext.Consumer>
         {({ changeTheme }) => (
           <Grid item display="flex" m={4}>
+            <Avatar alt="Code the Deam" src="../img/Kodayi-temple.jpg">CD</Avatar>
             <Switch
               checked={darkMode}
               onClick={() => {
@@ -19,10 +20,9 @@ function MyApp({ Component, pageProps }) {
                 changeTheme(darkMode ? themes.light : themes.dark);
               }}
             />
-            <Typography variant="8" mr={95}>
+            <Typography variant="8">
               {darkMode ? "Dark Mode" : "Light Mode"}
             </Typography>
-            <Avatar alt="Code the Deam" src="/static/images/avatar/3.jpg">CD</Avatar>
           </Grid>
         )}
       </ThemeContext.Consumer>

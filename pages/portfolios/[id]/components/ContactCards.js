@@ -20,7 +20,8 @@ const card = {
   height: "100%",
 };
 
-function ContactCards() {
+function ContactCards({ user }) {
+  console.log(user, "ContactCards - user")
   const { container } = useStyles();
   return (
     <Card variant="outlined" className={container} sx={card}>

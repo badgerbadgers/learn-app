@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
-import ThemeContextWrapper from "../../../components/theme/ThemeContextWrapper";
-import { ThemeContext, themes } from "../../../components/theme/ThemeContextWrapper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,13 +15,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialFormValues = {
-  fullname: "",
+  firstname: "",
+  lastname: "",
   email: "",
   pronouns: "",
   techStack: "",
   github: "",
   facebook: "",
   linkedin: "",
+  twitter: "",
   skills: "",
   previousIndustry: "",
   video: "",
@@ -56,18 +56,31 @@ function UsersForm() {
 
   return (
     <form className={classes.root} onSubmit={handleSumitForm}>
-      <Grid container>
-        <Grid item xs={12} sm={6}>
+      <Typography variant="body2" align="left" m={2}>Presonal Info:</Typography>
+      <Grid container item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}> */}
           <TextField
             required
             variant="outlined"
-            label="Full Name"
-            name="fullname"
+            label="Fistname"
+            name="firstname"
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="First and Last name"
-            value={formData.fullname}
+            placeholder="Firstname"
+            value={formData.firstname}
+            onChange={handleInputChange}
+          />
+          <TextField
+            required
+            variant="outlined"
+            label="Lastname"
+            name="lastname"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Lastname"
+            value={formData.lastname}
             onChange={handleInputChange}
           />
           <TextField
@@ -89,7 +102,7 @@ function UsersForm() {
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="Node.js, AngularJS, React, Bootstrap, jQuery,"
+            placeholder="Node.js, AngularJS, React, Bootstrap, jQuery"
             value={formData.techStack}
             onChange={handleInputChange}
           />
@@ -117,16 +130,19 @@ function UsersForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Typography variant="body2" align="left" m={2}>Presonal Contact:</Typography>
+        <Grid container item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}> */}
           <TextField
             required
             variant="outlined"
             label="Email"
+            type="email"
             name="email"
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="example@google.test.com"
+            placeholder="example@test.com"
             value={formData.email}
             onChange={handleInputChange}
           />
@@ -165,6 +181,17 @@ function UsersForm() {
           />
           <TextField
             variant="outlined"
+            label="Twitter"
+            name="twitter"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="example.test@twitter.com"
+            value={formData.twitter}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
             label="Video"
             name="video"
             InputLabelProps={{
@@ -173,7 +200,8 @@ function UsersForm() {
             placeholder="Url video link"
             value={formData.video}
             onChange={handleInputChange}
-          />
+            />
+            
           <br/>
           <Stack direction="row" ml={8} spacing={2}>
             <Controls.Button text="Submit" type="submit" />
@@ -182,8 +210,9 @@ function UsersForm() {
               text="Reset"
               onClick={resetForm}
             />
-          </Stack>
-        </Grid>
+            </Stack>
+            {/* </Grid> */}
+        {/* </Grid> */}
       </Grid>
     </form>
   );

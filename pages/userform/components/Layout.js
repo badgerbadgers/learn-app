@@ -16,7 +16,7 @@ function Layout() {
   const classes = useStyles();
   return (
     <>
-      <Paper className={classes.pageContent} align="center" margin="dense">
+      <Paper className={classes.pageContent} align="center" elevation={15}>
         {<DriveFileRenameOutlineIcon fontSize="large" />}
         <Typography p={2} variant="h5" >
           Input Form
