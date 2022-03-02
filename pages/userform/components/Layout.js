@@ -18,7 +18,7 @@ function Layout() {
     <>
       <Paper className={classes.pageContent} align="center" elevation={15}>
         {<DriveFileRenameOutlineIcon fontSize="large" />}
-        <Typography p={2} variant="h5" >
+        <Typography p={2} variant="h5">
           Input Form
         </Typography>
         <UsersForm />

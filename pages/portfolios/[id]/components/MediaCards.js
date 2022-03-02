@@ -12,22 +12,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const card = {
-  height: "100%"
-}
+  height: "100%",
+};
 
-function MediaCards() {
-  const { container } = useStyles();
+function MediaCards({ user }) {
+  const classes = useStyles();
   return (
-    <Card className={container} sx={card}>
+    <Card className={classes.container} sx={card}>
       <CardContent>
         <CardMedia
-          component="iframe"
-          image="https://www.youtube.com/embed/muuK4SpRR5M"
-          height="auto"
           controls
+          component="iframe"
+          height="auto"
+          // src={user.videoUrl}
+          image= "https://www.youtube.com/embed/muuK4SpRR5M"
         />
         <Typography sx={{ fontSize: 12 }} color="text.secondary">
-          Source:
+          Source: Youtube
         </Typography>
       </CardContent>
     </Card>

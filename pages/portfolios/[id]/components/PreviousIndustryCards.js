@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
@@ -23,31 +21,20 @@ const card = {
   height: "100%",
 };
 
-const PreviousIndustryCards = () => {
-  const { container } = useStyles();
-  const [experienceData, setExperienceData] = useState([
-    { key: 0, label: "Manufacture" },
-    { key: 1, label: "Customer Services" },
-    { key: 2, label: "Health Care" },
-    { Key: 3, label: "Oil and Gas" },
-  ]);
+const PreviousIndustryCards = ({previousIndustry}) => {
+  const classes = useStyles();
 
-  const handleDelete = (experienceToDelete) => () => {
-    setExperienceData((experiences) =>
-      experiences.filter(
-        (experience) => experience.key !== experienceToDelete.key
-      )
-    );
-  };
-
+  if (!previousIndustry) {
+    return <div>Loading...</div>;
+  }
   return (
-    <Card className={container} sx={card}>
+    <Card className={classes.container} sx={card}>
       <CardContent>
         <Typography variant="h5" component="div">
           Previous Industry
         </Typography>
         <Paper
-          className={container}
+          className={classes.container}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -58,14 +45,11 @@ const PreviousIndustryCards = () => {
           }}
           component="ul"
         >
-          {experienceData.map((data) => {
+          {previousIndustry.map((data) => {
             return (
-              <ListItem key={data.key}>
+              <ListItem key={data}>
                 <Chip
-                  label={data.label}
-                  onDelete={
-                    data.label === "Frontend" ? undefined : handleDelete(data)
-                  }
+                  label={data}
                 />
               </ListItem>
             );

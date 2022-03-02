@@ -1,15 +1,43 @@
-export const user =
-{
-  firstname: "Eli",
-  lastname: "James",
-  pronouns: "he-Him",
-  techStack: ["node.js", "react.js"],
-  skills: ["HTML", "CSS", "JavaScript", "Good communication", "problem-solving"],
+export const user = {
+  id: 0,
+  firstName: "Eli",
+  lastName: "James",
+  pronouns: "He-Him",
+  techStack: ["Node.js", "React.js"],
+  skills: [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Good communication",
+    "problem-solving",
+  ],
   previousIndustry: ["Manufacture", "Customer Service"],
   email: "mg.elijames@gmail.com",
   facebook: null,
   github: "muginga72",
   twitter: null,
   linkedin: "https://www.linkedin.com/in/eli-james-47626921b/",
-  video: "https://www.youtube.com/embed/muuK4SpRR5M"
-  }
+  videoUrl: "https://www.youtube.com/embed/muuK4SpRR5M",
+  userAvatar: "../img/Kodayi-temple.jpg",
+};
+
+// {
+//   id: 1,
+//   firstName: "Sarah",
+//   lastName: "James",
+//   pronouns: "She-Her",
+//   techStack: ["LAMP, ASP.NET, and Vue"],
+//   skills: [
+//     "JavaScript",
+//     "SQL",
+//     "Good communication",
+//     "problem-solving",
+//   ],
+//   previousIndustry: ["Customer Service", "Health Care"],
+//   email: "test.Sahjames@gmail.com",
+//   facebook: null,
+//   github: null,
+//   twitter: null,
+//   linkedin: null,
+//   videoUrl: "https://www.youtube.com/embed/muuK4SpRR5M",
+// },

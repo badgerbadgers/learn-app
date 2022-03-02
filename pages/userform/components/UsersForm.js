@@ -4,6 +4,7 @@ import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
+import { inputFormElements } from "./FormElements";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialFormValues = {
-  firstname: "",
-  lastname: "",
+  firstName: "",
+  lastName: "",
   email: "",
   pronouns: "",
   techStack: "",
@@ -26,7 +27,8 @@ const initialFormValues = {
   twitter: "",
   skills: "",
   previousIndustry: "",
-  video: "",
+  videoUrl: "",
+  userAvatar: "",
 };
 
 function UsersForm() {
@@ -35,6 +37,7 @@ function UsersForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log("vlaue", e)
     setFormData({
       ...formData,
       [name]: value,
@@ -54,165 +57,46 @@ function UsersForm() {
     }
   };
 
+  console.log(formData);
+
   return (
     <form className={classes.root} onSubmit={handleSumitForm}>
-      <Typography variant="body2" align="left" m={2}>Presonal Info:</Typography>
-      <Grid container item xs={12} sm={6}>
-        {/* <Grid item xs={12} sm={6}> */}
-          <TextField
-            required
-            variant="outlined"
-            label="Fistname"
-            name="firstname"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Firstname"
-            value={formData.firstname}
-            onChange={handleInputChange}
-          />
-          <TextField
-            required
-            variant="outlined"
-            label="Lastname"
-            name="lastname"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Lastname"
-            value={formData.lastname}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="Pronouns"
-            name="pronouns"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="He-Him, She-Her"
-            value={formData.pronouns}
-            onChange={handleInputChange}
-          />
-          <TextField
-            required
-            variant="outlined"
-            label="Tech Stack"
-            name="techStack"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Node.js, AngularJS, React, Bootstrap, jQuery"
-            value={formData.techStack}
-            onChange={handleInputChange}
-          />
-          <TextField
-            required
-            variant="outlined"
-            label="Skills"
-            name="skills"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="HTML, CSS, JavaScript, Teamwork, Problem-solving"
-            value={formData.skills}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="Previous Industry"
-            name="previousIndustry"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Manufacture, Customer Service, Health Care, ..."
-            value={formData.previousIndustry}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Typography variant="body2" align="left" m={2}>Presonal Contact:</Typography>
-        <Grid container item xs={12} sm={6}>
-        {/* <Grid item xs={12} sm={6}> */}
-          <TextField
-            required
-            variant="outlined"
-            label="Email"
-            type="email"
-            name="email"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="example@test.com"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="Facebook"
-            name="facebook"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="@example.test"
-            value={formData.facebook}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="GitHub"
-            name="github"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="example.test@github.com"
-            value={formData.github}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="LinkedIn"
-            name="linkedin"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="example.test@linkedin.com"
-            value={formData.linkedin}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="Twitter"
-            name="twitter"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="example.test@twitter.com"
-            value={formData.twitter}
-            onChange={handleInputChange}
-          />
-          <TextField
-            variant="outlined"
-            label="Video"
-            name="video"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Url video link"
-            value={formData.video}
-            onChange={handleInputChange}
-            />
-            
-          <br/>
-          <Stack direction="row" ml={8} spacing={2}>
+      <Typography variant="body2" align="left" ml={3} gutterBottom>
+        Personal Info:
+      </Typography>
+      <Grid container spacing={1}>
+        {inputFormElements.slice(0, 6).map((input) => {
+          input.key = input.name;
+          return (
+            <Grid item sx={input.sx} sm={input.sm} key={input.key}>
+              <TextField {...input} onChange={(e) => handleInputChange(e)}/>
+            </Grid>
+          );
+        })}
+      </Grid>
+      <br />
+      <Typography variant="body2" align="left" ml={3} gutterBottom>
+        Personal Contact:
+      </Typography>
+      <Grid container spacing={1}>
+        {inputFormElements.slice(6, inputFormElements.length).map((input) => {
+          input.key = input.name;
+          return (
+            <Grid item sx={input.sx} sm={input.sm} key={input.key}>
+              <TextField {...input} onChange={(e) => handleInputChange(e)} />
+            </Grid>
+          );
+        })}
+        <Grid container m={2}>
+          <Stack direction="row" ml={2} spacing={1}>
             <Controls.Button text="Submit" type="submit" />
             <Controls.Button
               variant="outlined"
               text="Reset"
               onClick={resetForm}
             />
-            </Stack>
-            {/* </Grid> */}
-        {/* </Grid> */}
+          </Stack>
+        </Grid>
       </Grid>
     </form>
   );

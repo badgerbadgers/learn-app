@@ -29,19 +29,20 @@ function Cards() {
       setUser(userFromFetch);
     })()
   }, [])
+  
   return (
     <Grid container p={2} sx={gridContainer} spacing={4}>
       <Grid item xs={12} md={12}>
-       <ContactCards user={user} />
+        {user && <ContactCards user={user} techStack={user.techStack} />}
       </Grid>
       <Grid item xs={12} md={12}>
         <MediaCards user={user} />
       </Grid>
       <Grid item xs={12} md={12}>
-        <SkillsCards user={user} />
+        {user && <SkillsCards skills={user.skills} />}
       </Grid>
       <Grid item xs={12} md={12}>
-        <PreviousIndustryCards user={user}/>
+        {user && <PreviousIndustryCards previousIndustry={user.previousIndustry} />}
       </Grid>
     </Grid>
   );
