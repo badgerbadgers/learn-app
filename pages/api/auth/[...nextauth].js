@@ -50,7 +50,6 @@ export default NextAuth({
   //   //   return profile
   //   // }
   // },
-
   // events: {
   //   async signIn(message) { /* on successful sign in */ },
   //   async signOut(message) { /* on signout */ },
@@ -86,7 +85,6 @@ export default NextAuth({
               if (!profile.email) profile.email = emails[0].email;
             }
           }
-          // console.debug(profile, "userinfo profile");
           return profile;
         },
       },
@@ -97,7 +95,7 @@ export default NextAuth({
             email: profile.email,
             image: profile.avatar_url,
             gh: profile.login,
-            url: profile.url
+            url: profile.html_url
           }
           }
     }),
