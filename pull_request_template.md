@@ -37,5 +37,5 @@
 
 ## Testing Steps / QA Criteria
 
-<!-- Provide steps the other cohort members and mentors need to follow to properly test your additions. -->
+<!-- Provide steps the other team members and mentors need to follow to properly test your additions. -->
 
