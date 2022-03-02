@@ -10,7 +10,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import clientPromise from "../lib/mongodb";
-import LogIn from './LogIn';
+import LogIn from './api/login';
 
 export default function Home({ isConnected }) {
   return (
