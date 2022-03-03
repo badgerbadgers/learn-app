@@ -32,8 +32,7 @@
 
 ### After
 
-<!-- If UI feature, take provide screenshots -->
-
+<!-- If UI feature, take provide screenshots -->å
 
 ## Testing Steps / QA Criteria
 
