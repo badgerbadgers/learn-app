@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MediaCards from "./components/MediaCards";
+import MediaCard from "./components/MediaCard";
 import ContactCards from "./components/ContactCards";
 import SkillsCards from "./components/SkillsCards";
 import PreviousIndustryCards from "./components/PreviousIndustryCards";
@@ -36,7 +36,7 @@ function Cards() {
         {user && <ContactCards user={user} techStack={user.techStack} />}
       </Grid>
       <Grid item xs={12} md={12}>
-        <MediaCards user={user} />
+        {user && <MediaCard videoUrl={user.videoUrl} />}
       </Grid>
       <Grid item xs={12} md={12}>
         {user && <SkillsCards skills={user.skills} />}

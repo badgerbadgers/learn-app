@@ -25,7 +25,7 @@ const card = {
   height: "100%",
 };
 
-function ContactCards({ user, techStack }) {
+function ContactCards({ user }) {
   console.log(user, "ContactCards - user");
   const classes = useStyles();
   if (!user) {

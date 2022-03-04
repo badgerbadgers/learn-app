@@ -15,7 +15,7 @@ const card = {
   height: "100%",
 };
 
-function MediaCards({ user }) {
+function MediaCard({videoUrl}) {
   const classes = useStyles();
   return (
     <Card className={classes.container} sx={card}>
@@ -24,8 +24,7 @@ function MediaCards({ user }) {
           controls
           component="iframe"
           height="auto"
-          // src={user.videoUrl}
-          image= "https://www.youtube.com/embed/muuK4SpRR5M"
+          src={videoUrl}
         />
         <Typography sx={{ fontSize: 12 }} color="text.secondary">
           Source: Youtube
@@ -35,4 +34,4 @@ function MediaCards({ user }) {
   );
 }
 
-export default MediaCards;
+export default MediaCard;

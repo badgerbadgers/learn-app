@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { nanoid } from 'nanoid'
 import { Grid, TextField, Typography } from "@mui/material";
 import Controls from "../components/controls/Controls";
 import { makeStyles } from "@mui/styles";
@@ -31,45 +32,75 @@ const initialFormValues = {
   userAvatar: "",
 };
 
-function UsersForm() {
-  const [formData, setFormData] = useState(initialFormValues);
+function UsersForm({ addUser }) {
   const classes = useStyles();
+  const [userInfoData, setUserInfoData] = useState(initialFormValues);
+  const [newUser, setNewUser] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("vlaue", e)
-    setFormData({
-      ...formData,
+    console.log("vlaue", e);
+    setUserInfoData({
+      ...userInfoData,
       [name]: value,
     });
   };
 
   const resetForm = () => {
-    setFormData(initialFormValues);
+    setUserInfoData(initialFormValues);
   };
 
   const handleSumitForm = (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(userInfoData);
     const storage = localStorage.getItem("savedUsersData");
     if (!storage) {
-      localStorage.setItem("savedUsersData", JSON.stringify(formData));
+      localStorage.setItem("savedUsersData", JSON.stringify(userInfoData));
     }
   };
 
-  console.log(formData);
+  const handleAddUser = (e) => {
+    e.preventDefault();
+    //addUser(newUser);
+    addUser({ id: nanoid(), name: userInfoData});
+    setNewUser('');
+  }
+
+  // fetch('/api/users', {
+  //   method: "POST",
+  //   body: JSON.stringify({userInfoData}),
+  // })
+  //   .then((res) => res.json())
+  //   .then((result) => {
+  //     setUserInfoData(result);
+  //     console.log(result);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   }
+  // )
 
   return (
-    <form className={classes.root} onSubmit={handleSumitForm}>
+    <form className={classes.root}
+      onSubmit={handleAddUser}
+    >
       <Typography variant="body2" align="left" ml={3} gutterBottom>
         Personal Info:
       </Typography>
+
       <Grid container spacing={1}>
         {inputFormElements.slice(0, 6).map((input) => {
           input.key = input.name;
           return (
             <Grid item sx={input.sx} sm={input.sm} key={input.key}>
-              <TextField {...input} onChange={(e) => handleInputChange(e)}/>
+              <TextField
+                {...input}
+                id={input.id}
+                value={input.userInfoData}
+                // onChange={(e) => setNewUser(e.target.value)}
+                onChange={(e) => handleInputChange(e)}
+                handleSumitForm={handleSumitForm}
+              />
             </Grid>
           );
         })}
@@ -83,7 +114,13 @@ function UsersForm() {
           input.key = input.name;
           return (
             <Grid item sx={input.sx} sm={input.sm} key={input.key}>
-              <TextField {...input} onChange={(e) => handleInputChange(e)} />
+              <TextField
+                {...input}
+                id={input.id}
+                value={input.userInfoData}
+                // onChange={(e) => setNewUser(e.target.value)}
+                onChange={(e) => handleInputChange(e)}
+              />
             </Grid>
           );
         })}

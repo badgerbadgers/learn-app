@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
       <ThemeContext.Consumer>
         {({ changeTheme }) => (
           <Grid item display="flex" m={4}>
-            <Avatar alt="Code the Deam" src="../img/Kodayi-temple.jpg">CD</Avatar>
+            <Avatar alt="Code the Deam" src="../img/ctd-logo.png">CD</Avatar>
             <Switch
               checked={darkMode}
               onClick={() => {

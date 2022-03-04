@@ -1,5 +1,4 @@
 export const user = {
-  id: 0,
   firstName: "Eli",
   lastName: "James",
   pronouns: "He-Him",
@@ -9,7 +8,7 @@ export const user = {
     "CSS",
     "JavaScript",
     "Good communication",
-    "problem-solving",
+    "Problem-solving",
   ],
   previousIndustry: ["Manufacture", "Customer Service"],
   email: "mg.elijames@gmail.com",

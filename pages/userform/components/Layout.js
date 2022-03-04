@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UsersForm from "./UsersForm";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Paper, Typography } from "@mui/material";
@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Layout() {
   const classes = useStyles();
+  const [newUser, setNewUser] = useState('');
+
   return (
     <>
       <Paper className={classes.pageContent} align="center" elevation={15}>
@@ -21,7 +23,7 @@ function Layout() {
         <Typography p={2} variant="h5">
           Input Form
         </Typography>
-        <UsersForm />
+        <UsersForm addUser={setNewUser} newUser={newUser}/>
       </Paper>
     </>
   );
