@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -21,7 +21,7 @@ const card = {
   height: "100%",
 };
 
-const PreviousIndustryCards = ({previousIndustry}) => {
+const PreviousIndustryCard = ({previousIndustry}) => {
   const classes = useStyles();
 
   if (!previousIndustry) {
@@ -60,4 +60,4 @@ const PreviousIndustryCards = ({previousIndustry}) => {
   );
 };
 
-export default PreviousIndustryCards;
+export default PreviousIndustryCard;

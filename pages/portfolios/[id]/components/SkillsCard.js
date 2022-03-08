@@ -2,7 +2,6 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
-//import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { Card, CardContent, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -20,7 +19,7 @@ const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-export default function SkillsCards({skills}) {
+export default function SkillsCard({skills}) {
   const { container } = useStyles();
 
   if (!skills) {
