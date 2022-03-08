@@ -99,7 +99,6 @@ function UsersForm({ addUser }) {
                 value={input.userInfoData}
                 // onChange={(e) => setNewUser(e.target.value)}
                 onChange={(e) => handleInputChange(e)}
-                handleSumitForm={handleSumitForm}
               />
             </Grid>
           );
