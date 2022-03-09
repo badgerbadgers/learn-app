@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import { inputFormElements } from "./FormElements";
+import { useEffect } from "react/cjs/react.production.min";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,13 +22,13 @@ const initialFormValues = {
   lastName: "",
   email: "",
   pronouns: "",
-  techStack: "",
+  techStack: [],
   github: "",
   facebook: "",
   linkedin: "",
   twitter: "",
-  skills: "",
-  previousIndustry: "",
+  skills: [],
+  previousIndustry: [],
   videoUrl: "",
   userAvatar: "",
   resume: "",
@@ -45,14 +46,14 @@ function UsersForm() {
     });
   };
 
-  const handleSumitForm = (e) => {
+  const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(userInfoData);
 
     // POST data to API route using fetch API
-    // Using a PUT request to updateUser information
+    const url = "/api/users";
     const data = { userInfoData };
-    fetch("/api/users", {
+    fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -67,7 +68,7 @@ function UsersForm() {
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSumitForm}>
+    <form className={classes.root}>
       <Typography variant="body2" align="left" ml={3} gutterBottom>
         Personal Info:
       </Typography>
@@ -106,7 +107,7 @@ function UsersForm() {
         })}
         <Grid container m={2}>
           <Stack direction="row" ml={2} spacing={1}>
-            <Button variant="contained" onClick={handleSumitForm}>
+            <Button variant="contained" onClick={handleSubmitForm}>
               Submit
             </Button>
           </Stack>
