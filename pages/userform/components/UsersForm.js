@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { nanoid } from 'nanoid'
-import { Grid, TextField, Typography } from "@mui/material";
-import Controls from "../components/controls/Controls";
+//import { nanoid } from "nanoid";
+import { Grid, TextField, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import { inputFormElements } from "./FormElements";
+import { useEffect } from "react/cjs/react.production.min";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,77 +17,61 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialFormValues = {
+  id: 1,
   firstName: "",
   lastName: "",
   email: "",
   pronouns: "",
-  techStack: "",
+  techStack: [],
   github: "",
   facebook: "",
   linkedin: "",
   twitter: "",
-  skills: "",
-  previousIndustry: "",
+  skills: [],
+  previousIndustry: [],
   videoUrl: "",
   userAvatar: "",
+  resume: "",
 };
 
-function UsersForm({ addUser }) {
+function UsersForm() {
   const classes = useStyles();
   const [userInfoData, setUserInfoData] = useState(initialFormValues);
-  const [newUser, setNewUser] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("vlaue", e);
     setUserInfoData({
       ...userInfoData,
       [name]: value,
     });
   };
 
-  const resetForm = () => {
-    setUserInfoData(initialFormValues);
-  };
-
-  const handleSumitForm = (e) => {
+  const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(userInfoData);
-    const storage = localStorage.getItem("savedUsersData");
-    if (!storage) {
-      localStorage.setItem("savedUsersData", JSON.stringify(userInfoData));
-    }
+
+    // POST data to API route using fetch API
+    const url = "/api/users";
+    const data = { userInfoData };
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   };
 
-  const handleAddUser = (e) => {
-    e.preventDefault();
-    //addUser(newUser);
-    addUser({ id: nanoid(), name: userInfoData});
-    setNewUser('');
-  }
-
-  // fetch('/api/users', {
-  //   method: "POST",
-  //   body: JSON.stringify({userInfoData}),
-  // })
-  //   .then((res) => res.json())
-  //   .then((result) => {
-  //     setUserInfoData(result);
-  //     console.log(result);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   }
-  // )
-
   return (
-    <form className={classes.root}
-      onSubmit={handleAddUser}
-    >
+    <form className={classes.root}>
       <Typography variant="body2" align="left" ml={3} gutterBottom>
         Personal Info:
       </Typography>
-
       <Grid container spacing={1}>
         {inputFormElements.slice(0, 6).map((input) => {
           input.key = input.name;
@@ -97,7 +81,6 @@ function UsersForm({ addUser }) {
                 {...input}
                 id={input.id}
                 value={input.userInfoData}
-                // onChange={(e) => setNewUser(e.target.value)}
                 onChange={(e) => handleInputChange(e)}
               />
             </Grid>
@@ -117,7 +100,6 @@ function UsersForm({ addUser }) {
                 {...input}
                 id={input.id}
                 value={input.userInfoData}
-                // onChange={(e) => setNewUser(e.target.value)}
                 onChange={(e) => handleInputChange(e)}
               />
             </Grid>
@@ -125,12 +107,9 @@ function UsersForm({ addUser }) {
         })}
         <Grid container m={2}>
           <Stack direction="row" ml={2} spacing={1}>
-            <Controls.Button text="Submit" type="submit" />
-            <Controls.Button
-              variant="outlined"
-              text="Reset"
-              onClick={resetForm}
-            />
+            <Button variant="contained" onClick={handleSubmitForm}>
+              Submit
+            </Button>
           </Stack>
         </Grid>
       </Grid>

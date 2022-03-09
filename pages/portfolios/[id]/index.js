@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MediaCard from "./components/MediaCard";
-import ContactCards from "./components/ContactCards";
-import SkillsCards from "./components/SkillsCards";
-import PreviousIndustryCards from "./components/PreviousIndustryCards";
+import ContactCard from "./components/ContactCard";
+import SkillsCard from "./components/SkillsCard";
+import PreviousIndustryCard from "./components/PreviousIndustryCard";
 import { Grid } from "@mui/material";
 
 // // Fixed number of columns
@@ -17,15 +17,13 @@ function Cards() {
   
   const getData = async () => {
     let res = await fetch('/api/users');
-    console.log('RESPONSE', res)
     let data = await res.json();
-    console.log('DATA', data)
+    console.log(data)
     return data
   }
   useEffect(() => {
     ( async () => {
       const userFromFetch = await getData();
-      console.log('Data', userFromFetch)
       setUser(userFromFetch);
     })()
   }, [])
@@ -33,16 +31,16 @@ function Cards() {
   return (
     <Grid container p={2} sx={gridContainer} spacing={4}>
       <Grid item xs={12} md={12}>
-        {user && <ContactCards user={user} techStack={user.techStack} />}
+        {user && <ContactCard user={user} />}
       </Grid>
       <Grid item xs={12} md={12}>
         {user && <MediaCard videoUrl={user.videoUrl} />}
       </Grid>
       <Grid item xs={12} md={12}>
-        {user && <SkillsCards skills={user.skills} />}
+        {user && <SkillsCard skills={user.skills} />}
       </Grid>
       <Grid item xs={12} md={12}>
-        {user && <PreviousIndustryCards previousIndustry={user.previousIndustry} />}
+        {user && <PreviousIndustryCard previousIndustry={user.previousIndustry} />}
       </Grid>
     </Grid>
   );
