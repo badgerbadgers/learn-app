@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, TextField, Typography, Button } from "@mui/material";
+import { Chip, Grid, TextField, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -10,16 +10,6 @@ const useStyles = makeStyles((theme) => ({
       width: "90%",
       margin: useTheme().spacing(1),
     },
-  },
-  listInput: {
-    display: "inline-block",
-    alignItems: "center",
-    margin: "5px 0",
-    marginRight: "5px",
-    marginTop: "5px",
-    padding: "5px",
-    borderRadius: "10px",
-    backgroundColor: "lightgray",
   },
 }));
 
@@ -52,7 +42,6 @@ function UsersForm() {
     const arrayTech = [...techStackArray];
     arrayTech.push(userInfoData.techStack);
     setTechStackArray(arrayTech);
-
     // clear the input form
     let data = userInfoData;
     data.techStack = "";
@@ -64,7 +53,6 @@ function UsersForm() {
     const arraySkill = [...skillsArray];
     arraySkill.push(userInfoData.skills);
     setSkillsArray(arraySkill);
-
     // clear the input form
     let data = userInfoData;
     data.skills = "";
@@ -103,9 +91,8 @@ function UsersForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Success:", data);
+      .then((res) => {
+        console.log(res.status, "res status");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -113,32 +100,26 @@ function UsersForm() {
   };
 
   // Handle delete functions to cancel input into array
-  const handleDeleteSkills = (index) => {
-    setSkillsArray((prevState) => prevState.filter((skill, i) => i !== index));
+  const handleDeleteSkills = (item) => {
+    setSkillsArray((prevState) => prevState.filter((skill, i) => i !== item));
   };
 
-  // const handleDeleteSkills = (index) => {
-  //   const newSkills = skills.filter((skill) => skill !== index)
-  // }
-
-  const handleDeleteTechStack = (index) => {
-    setTechStackArray((prevState) =>
-      prevState.filter((tech, i) => i !== index)
-    );
+  const handleDeleteTechStack = (item) => {
+    setTechStackArray((prevState) => prevState.filter((tech, i) => i !== item));
   };
-  const handleDeletePreviousIndustry = (index) => {
+  const handleDeletePreviousIndustry = (item) => {
     setPreviousIndustryArray((prevState) =>
-      prevState.filter((previousIndust, i) => i !== index)
+      prevState.filter((previousIndust, i) => i !== item)
     );
   };
 
   return (
     <form className={classes.root}>
-      <Typography variant="body2" align="left" ml={3} gutterBottom>
-        Personal Info:
+      <Typography variant="body2" align="left" ml={2} gutterBottom>
+        <strong>Personal Info: </strong>
       </Typography>
-      <Grid container spacing={1}>
-        {/* Input values to fisrt and last name fields */}
+      <Grid container spacing={1} align="left" ml={0}>
+        {/* Input values to fisrt, last name and pronouns fields */}
         <Grid item sx={12} sm={6}>
           <TextField
             name="firstName"
@@ -180,11 +161,10 @@ function UsersForm() {
             onChange={(e) => handleInputChange(e)}
           />
         </Grid>
-        {/* Will add item on array of tech stack field*/}
         <Grid item sx={12} sm={6}>
           <TextField
             name="techStack"
-            placeholder="Node.js, AngularJS, React, ..."
+            placeholder="Type your tech stacks"
             label="Tech Stack"
             variant="outlined"
             fullWidth
@@ -206,25 +186,24 @@ function UsersForm() {
               ),
             }}
           />
-          {/* It will styling the tech stack array */}
-          {techStackArray.map((tech, index) => (
-            <div key={tech} className={classes.listInput}>
-              {tech}
-              <button
-                size="small"
-                variant="contained"
-                onClick={() => handleDeleteTechStack(index)}
-              >
-                x
-              </button>
-            </div>
+          {/* It will map and style the tech stack array */}
+          {techStackArray.map((tech, item) => (
+            <Chip
+              key={tech}
+              style={{
+                backgroundColor: "#EF6040",
+                color: "#FFFFFF",
+                marginLeft: "10px",
+              }}
+              label={tech}
+              onDelete={() => handleDeleteTechStack(item)}
+            />
           ))}
         </Grid>
-        {/* Will add item on array of skills field*/}
         <Grid item sx={12} sm={6}>
           <TextField
             name="skills"
-            placeholder="HTML, JavaScript, Teamwork,..."
+            placeholder="Type your skills"
             label="Skills"
             variant="outlined"
             fullWidth
@@ -246,25 +225,24 @@ function UsersForm() {
               ),
             }}
           />
-          {/* It will styling the skills array */}
-          {skillsArray.map((skill, index) => (
-            <div key={skill} className={classes.listInput}>
-              {skill}
-              <button
-                size="small"
-                variant="contained"
-                onClick={() => handleDeleteSkills(index)}
-              >
-                x
-              </button>
-            </div>
+          {/* It will map and style the skills array */}
+          {skillsArray.map((skill, item) => (
+            <Chip
+              key={skill}
+              style={{
+                backgroundColor: "#EF6040",
+                color: "#FFFFFF",
+                marginLeft: "10px",
+              }}
+              label={skill}
+              onDelete={() => handleDeleteSkills(item)}
+            />
           ))}
         </Grid>
-        {/* Will add item on array of previous industry field*/}
         <Grid item sx={12} sm={6}>
           <TextField
             name="previousIndustry"
-            placeholder="Manufacture, Customer Service,..."
+            placeholder="Type your previous industry"
             label="Previous Industry"
             variant="outlined"
             fullWidth
@@ -286,27 +264,27 @@ function UsersForm() {
               ),
             }}
           />
-          {/* It will styling the tech stack array */}
-          {previousIndustryArray.map((previousIndust, index) => (
-            <div key={previousIndust} className={classes.listInput}>
-              {previousIndust}
-              <button
-                size="small"
-                variant="contained"
-                onClick={() => handleDeletePreviousIndustry(index)}
-              >
-                x
-              </button>
-            </div>
+          {/* It will map and style the previous industry array */}
+          {previousIndustryArray.map((previousIndust, item) => (
+            <Chip
+              key={previousIndust}
+              style={{
+                backgroundColor: "#EF6040",
+                color: "#FFFFFF",
+                marginLeft: "10px",
+              }}
+              label={previousIndust}
+              onDelete={() => handleDeletePreviousIndustry(item)}
+            />
           ))}
         </Grid>
       </Grid>
       <br />
-      <Typography variant="body2" align="left" ml={3} gutterBottom>
-        Personal Contact:
+      <Typography variant="body2" align="left" ml={2} gutterBottom>
+        <strong>Personal Contact: </strong>
       </Typography>
       {/* Input values to personal contact fields */}
-      <Grid container spacing={1}>
+      <Grid container spacing={1} align="left" ml={0}>
         <Grid item sx={12} sm={6}>
           <TextField
             name="email"

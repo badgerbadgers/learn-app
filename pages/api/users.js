@@ -24,10 +24,10 @@ export default async function handler(req, res) {
 }
 
 const getUser = (res) => {
-  return res.status(200).json(user);
+  return res.status(200).json(user); // sending data response in json format
 };
 
 const updateUser = (req, res) => {
   console.log("UPDATEUSER req", req.body)
-  return res.status(200).end();
+  return res.status(200).end(); // sending status response "200" 
 };
