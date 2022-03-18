@@ -14,7 +14,8 @@ const gridContainer = {
 
 function Cards() {
   const [user, setUser] = useState(null)
-  
+
+  // Consuming local JSON data using fetch API
   const getData = async () => {
     let res = await fetch('/api/users');
     let data = await res.json();
