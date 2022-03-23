@@ -5,9 +5,10 @@ import Typography from "@mui/material/Typography";
 import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, StylesContext } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
+import styles from "../../../../styles/Portfolio.module.css"
 import DownloadIcon from "@mui/icons-material/Download";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +36,7 @@ function ContactCard({ user }) {
     <Grid item display="row" style={{ textAlign: "center" }}>
       <Card variant="outlined" className={classes.root} sx={card}>
         {/* Grid for avatar and card content styling */}
-        <Grid item display="flex">
+        <div className={styles.innerCard}>
           <Avatar
             className={classes.avatarImage}
             style={{ alignItems: "center" }}
@@ -43,15 +44,8 @@ function ContactCard({ user }) {
             src={user.userAvatar}
           />
           {/* Grid for button group styling */}
-          <Grid>
-            <Grid
-              item
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Grid item margin="15px 50px 4px 20px">
+          <div className={styles.cardRight}>
+  
                 <Typography variant="h4" component="div">
                   {user.firstName} {user.lastName}
                 </Typography>
@@ -173,10 +167,9 @@ function ContactCard({ user }) {
                     Download Resume
                   </Button>
                 </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+
+          </div>
+        </div>
       </Card>
     </Grid>
   );

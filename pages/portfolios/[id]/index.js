@@ -5,7 +5,7 @@ import SkillsCard from "./components/SkillsCard";
 import PreviousIndustryCard from "./components/PreviousIndustryCard";
 import { Container, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-
+import styles from '../../../styles/Portfolio.module.css'
 const useStyles = makeStyles((theme) => ({
   root:{
     // ['@media screen and (min-width: 1500px)']:{
@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
     // ['@media screen and (min-width: 1200px) and (max-width: 1500px)']:{
     //     maxWidth: '580px'
     // },
-    ['@media screen and (min-width: 1000px) and (max-width: 1200px)']:{
-        maxWidth: '480px'
-    },
+    // ['@media screen and (min-width: 1000px) and (max-width: 1200px)']:{
+    //     maxWidth: '480px'
+    // },
   },
 }))
 
@@ -41,26 +41,24 @@ function Cards() {
   return (
     // The grids are necessary for responsiveness
     <Container className={classes.root}>
-      {/* Spacing defines the padding left & top */}
-      <Grid container spacing={2} mb={2}>
-        <Grid item xs={12} sm={6}>
+      <div className={styles.portfolioGrid}>
+        <div className={styles.portfolioItem}>
           {user && <ContactCard user={user} />}
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </div>
+        <div className={styles.portfolioItem}>
           {user && <MediaCard videoUrl={user.videoUrl} />}
-        </Grid>
-      </Grid>
-      {/* Spacing defines the padding left & top */}
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        </div>
+
+        <div className={styles.portfolioItem}>
           {user && <SkillsCard skills={user.skills} />}
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </div>
+        <div className={styles.portfolioItem}>
           {user && (
             <PreviousIndustryCard previousIndustry={user.previousIndustry} />
           )}
-        </Grid>
-      </Grid>
+        </div>
+      </div>
+
     </Container>
   );
 }
