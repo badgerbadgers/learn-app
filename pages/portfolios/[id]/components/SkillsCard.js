@@ -4,13 +4,6 @@ import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { Card, CardContent, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    // background: "linear-gradient(45deg, #2196F3 30%, #1FF4F1 90%)",
-  },
-}));
 
 const card = {
   height: "100%",
@@ -21,8 +14,6 @@ const ListItem = styled("li")(({ theme }) => ({
 }));
 
 export default function SkillsCard({ skills }) {
-  const { container } = useStyles();
-
   if (!skills) {
     return <div>Loading...</div>;
   }
@@ -33,7 +24,6 @@ export default function SkillsCard({ skills }) {
           Skills
         </Typography>
         <Paper
-          className={container}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -53,7 +43,6 @@ export default function SkillsCard({ skills }) {
               <ListItem key={data}>
                 <Chip
                   sx={{ backgroundColor: "#4285F4", color: "#FFFFFF" }}
-                  //sx={{ backgroundColor: "#EF6040", color: "#FFFFFF" }}
                   icon={icon}
                   label={data}
                 />
