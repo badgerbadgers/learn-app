@@ -47,11 +47,16 @@ export default function SkillsCard({ skills }) {
           {skills.map((data) => {
             let icon;
             if (data === "JavaScript" || data === "HTML" || data === "React") {
-              icon = <TagFacesIcon />;
+              //icon = <TagFacesIcon />;
             }
             return (
               <ListItem key={data}>
-                <Chip icon={icon} label={data} />
+                <Chip
+                  sx={{ backgroundColor: "#4285F4", color: "#FFFFFF" }}
+                  //sx={{ backgroundColor: "#EF6040", color: "#FFFFFF" }}
+                  icon={icon}
+                  label={data}
+                />
               </ListItem>
             );
           })}

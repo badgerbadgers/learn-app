@@ -3,47 +3,65 @@ import MediaCard from "./components/MediaCard";
 import ContactCard from "./components/ContactCard";
 import SkillsCard from "./components/SkillsCard";
 import PreviousIndustryCard from "./components/PreviousIndustryCard";
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-// // Fixed number of columns
-const gridContainer = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gridTemplateRows: "auto",
-};
+const useStyles = makeStyles((theme) => ({
+  root:{
+    // ['@media screen and (min-width: 1500px)']:{
+    //     maxWidth: '675px'
+    // },
+    // ['@media screen and (min-width: 1200px) and (max-width: 1500px)']:{
+    //     maxWidth: '580px'
+    // },
+    ['@media screen and (min-width: 1000px) and (max-width: 1200px)']:{
+        maxWidth: '480px'
+    },
+  },
+}))
 
 function Cards() {
-  const [user, setUser] = useState(null)
+  const classes = useStyles();
+  const [user, setUser] = useState(null);
 
   // Consuming local JSON data using fetch API
   const getData = async () => {
-    let res = await fetch('/api/users');
+    let res = await fetch("/api/users");
     let data = await res.json();
-    console.log(data)
-    return data
-  }
+    console.log(data);
+    return data;
+  };
   useEffect(() => {
-    ( async () => {
+    (async () => {
       const userFromFetch = await getData();
       setUser(userFromFetch);
-    })()
-  }, [])
-  
+    })();
+  }, []);
+
   return (
-    <Grid container p={2} sx={gridContainer} spacing={4}>
-      <Grid item xs={12} md={12}>
-        {user && <ContactCard user={user} />}
+    // The grids are necessary for responsiveness
+    <Container className={classes.root}>
+      {/* Spacing defines the padding left & top */}
+      <Grid container spacing={2} mb={2}>
+        <Grid item xs={12} sm={6}>
+          {user && <ContactCard user={user} />}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          {user && <MediaCard videoUrl={user.videoUrl} />}
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <MediaCard videoUrl={user.videoUrl} />}
+      {/* Spacing defines the padding left & top */}
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          {user && <SkillsCard skills={user.skills} />}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          {user && (
+            <PreviousIndustryCard previousIndustry={user.previousIndustry} />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <SkillsCard skills={user.skills} />}
-      </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <PreviousIndustryCard previousIndustry={user.previousIndustry} />}
-      </Grid>
-    </Grid>
+    </Container>
   );
 }
 

@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import { Grid, Button, ButtonGroup } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -33,127 +32,153 @@ function ContactCard({ user }) {
   }
 
   return (
-    <Card variant="outlined" className={classes.container} sx={card}>
-      {/* Grid for avatar and card content styling */}
-      <Grid
-        item
-        display="flex"
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <Avatar
-          className={classes.avatarImage}
-          alt="Kodayi Temple"
-          src={user.userAvatar}
-        />
-        <CardContent>
-          <Typography variant="h4" component="div">
-            {user.firstName} {user.lastName}
-          </Typography>
-          <Typography sx={{ mb: 1.0 }} color="text.secondary">
-            {user.pronouns}
-          </Typography>
-          <Typography variant="h6" component="div">
-            Tech Stack: <br />
-            {user.techStack.map((data) => {
-              return (
-                // Styling tech stack listing
-                <Typography
-                  sx={{
-                    display: "inline",
-                    justifyContent: "center",
-                    listStyle: "none",
-                    flexWrap: "wrap",
-                    p: 0.5,
-                  }}
-                  key={data}
-                >
-                  {data}
+    <Grid item display="row" style={{ textAlign: "center" }}>
+      <Card variant="outlined" className={classes.root} sx={card}>
+        {/* Grid for avatar and card content styling */}
+        <Grid item display="flex">
+          <Avatar
+            className={classes.avatarImage}
+            style={{ alignItems: "center" }}
+            alt="Kodayi Temple"
+            src={user.userAvatar}
+          />
+          {/* Grid for button group styling */}
+          <Grid>
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Grid item margin="15px 50px 4px 20px">
+                <Typography variant="h4" component="div">
+                  {user.firstName} {user.lastName}
                 </Typography>
-              );
-            })}
-          </Typography>
-        </CardContent>
-      </Grid>
-      {/* Grid for button group styling */}
-      <Grid
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <ButtonGroup>
-          <Stack direction="row">
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              startIcon={<Facebook />}
-              style={{ borderRadius: "10px" }}
-              href={user.facebook}
-              target="_blank"
-            />
-            <Button
-              size="small"
-              variant="contained"
-              color="secondary"
-              startIcon={<LinkedIn />}
-              style={{ borderRadius: "10px" }}
-              href={user.linkedin}
-              target="_blank"
-            />
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              startIcon={<EmailIcon />}
-              style={{ borderRadius: "10px" }}
-              href={user.email}
-              target="_blank"
-            />
-            <Button
-              size="small"
-              variant="contained"
-              color="secondary"
-              startIcon={<GitHubIcon />}
-              style={{ borderRadius: "10px" }}
-              href={user.github}
-              target="_blank"
-            />
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              startIcon={<Twitter />}
-              style={{ borderRadius: "10px" }}
-              href={user.twitter}
-              target="_blank"
-            />
-          </Stack>
-        </ButtonGroup>
-      </Grid>
-      {/* Grid for Download button styling */}
-      <Grid
-        item
-        m={2}
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="success"
-          startIcon={<DownloadIcon />}
-          href={user.resume}
-          type="download"
-          size="small"
-          target="_blank"
-        >
-          Download Resume
-        </Button>
-      </Grid>
-    </Card>
+                <Typography sx={{ mb: 1.0 }} color="text.secondary">
+                  {user.pronouns}
+                </Typography>
+                <Typography variant="h5" component="div">
+                  Tech Stack: <br />
+                  {user.techStack.map((data) => {
+                    return (
+                      // Styling tech stack listing
+                      <Typography
+                        sx={{
+                          display: "inline",
+                          justifyContent: "center",
+                          listStyle: "none",
+                          flexWrap: "wrap",
+                          p: 0.5,
+                        }}
+                        key={data}
+                      >
+                        <strong>{data}</strong>
+                      </Typography>
+                    );
+                  })}
+                </Typography>
+                <ButtonGroup>
+                  <Stack direction="row" spacing={0.5} m={1}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<Facebook />}
+                      style={{
+                        borderRadius: "5px",
+                        maxWidth: "26px",
+                        minWidth: "26px",
+                        paddingRight: 0,
+                      }}
+                      href={user.facebook}
+                      target="_blank"
+                    />
+                    <Stack direction="row" spacing={0.5}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<LinkedIn />}
+                        style={{
+                          borderRadius: "5px",
+                          maxWidth: "26px",
+                          minWidth: "26px",
+                          paddingRight: 0,
+                        }}
+                        href={user.linkedin}
+                        target="_blank"
+                      />
+                    </Stack>
+                    <Stack direction="row" spacing={0.5}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<EmailIcon />}
+                        style={{
+                          borderRadius: "5px",
+                          maxWidth: "26px",
+                          minWidth: "26px",
+                          paddingRight: 0,
+                        }}
+                        href={user.email}
+                        target="_blank"
+                      />
+                    </Stack>
+                    <Stack direction="row" spacing={0.5}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<GitHubIcon />}
+                        style={{
+                          borderRadius: "5px",
+                          maxWidth: "26px",
+                          minWidth: "26px",
+                          paddingRight: 0,
+                        }}
+                        href={user.github}
+                        target="_blank"
+                      />
+                    </Stack>
+                    <Stack direction="row" spacing={0.5}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<Twitter />}
+                        style={{
+                          borderRadius: "5px",
+                          maxWidth: "26px",
+                          minWidth: "26px",
+                          paddingRight: 0,
+                        }}
+                        href={user.twitter}
+                        target="_blank"
+                      />
+                    </Stack>
+                  </Stack>
+                </ButtonGroup>
+                <Grid item m={1}>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    startIcon={<DownloadIcon />}
+                    href={user.resume}
+                    type="download"
+                    size="small"
+                    target="_blank"
+                  >
+                    Download Resume
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Card>
+    </Grid>
   );
 }
 

@@ -21,7 +21,7 @@ const card = {
   height: "100%",
 };
 
-const PreviousIndustryCard = ({previousIndustry}) => {
+const PreviousIndustryCard = ({ previousIndustry }) => {
   const classes = useStyles();
 
   if (!previousIndustry) {
@@ -49,6 +49,7 @@ const PreviousIndustryCard = ({previousIndustry}) => {
             return (
               <ListItem key={data}>
                 <Chip
+                  sx={{ backgroundColor: "#4285F4", color: "#FFFFFF" }}
                   label={data}
                 />
               </ListItem>

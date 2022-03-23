@@ -191,7 +191,7 @@ function UsersForm() {
             <Chip
               key={tech}
               style={{
-                backgroundColor: "#EF6040",
+                backgroundColor: "#FF5C35",
                 color: "#FFFFFF",
                 marginLeft: "10px",
               }}
@@ -230,7 +230,7 @@ function UsersForm() {
             <Chip
               key={skill}
               style={{
-                backgroundColor: "#EF6040",
+                backgroundColor: "#FF5C35",
                 color: "#FFFFFF",
                 marginLeft: "10px",
               }}
@@ -269,7 +269,7 @@ function UsersForm() {
             <Chip
               key={previousIndust}
               style={{
-                backgroundColor: "#EF6040",
+                backgroundColor: "#FF5C35",
                 color: "#FFFFFF",
                 marginLeft: "10px",
               }}
