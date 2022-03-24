@@ -164,7 +164,7 @@ function UsersForm() {
         <Grid item sx={12} sm={6}>
           <TextField
             name="techStack"
-            placeholder="Type your tech stacks"
+            placeholder="Press Add for each tech stack"
             label="Tech Stack"
             variant="outlined"
             fullWidth
@@ -178,6 +178,7 @@ function UsersForm() {
                 <Button
                   size="small"
                   variant="contained"
+                  style={{ maxWidth: "36px", minWidth: "36px" }}
                   onClick={handleTeckStackArray}
                   disabled={userInfoData.techStack.length === 0}
                 >
@@ -203,7 +204,7 @@ function UsersForm() {
         <Grid item sx={12} sm={6}>
           <TextField
             name="skills"
-            placeholder="Type your skills"
+            placeholder="Press Add for each skills"
             label="Skills"
             variant="outlined"
             fullWidth
@@ -217,6 +218,7 @@ function UsersForm() {
                 <Button
                   size="small"
                   variant="contained"
+                  style={{ maxWidth: "36px", minWidth: "36px" }}
                   onClick={handleSkillsArray}
                   disabled={userInfoData.skills.length === 0}
                 >
@@ -242,7 +244,7 @@ function UsersForm() {
         <Grid item sx={12} sm={6}>
           <TextField
             name="previousIndustry"
-            placeholder="Type your previous industry"
+            placeholder="Press Add for each previous"
             label="Previous Industry"
             variant="outlined"
             fullWidth
@@ -256,6 +258,7 @@ function UsersForm() {
                 <Button
                   size="small"
                   variant="contained"
+                  style={{ maxWidth: "36px", minWidth: "36px" }}
                   onClick={handlePreviousIndustryArray}
                   disabled={userInfoData.previousIndustry.length === 0}
                 >
@@ -302,34 +305,8 @@ function UsersForm() {
         </Grid>
         <Grid item sx={12} sm={6}>
           <TextField
-            name="Facebook"
-            placeholder="@example.test"
-            label="Facebook"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.facebook}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="github"
-            placeholder="@example.test"
-            label="GitHub"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.github}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
             name="linkedin"
-            placeholder="@example.test"
+            placeholder="https://linkedin.com/in/username"
             label="LinkedIn"
             variant="outlined"
             fullWidth
@@ -342,7 +319,7 @@ function UsersForm() {
         <Grid item sx={12} sm={6}>
           <TextField
             name="twitter"
-            placeholder="@example.test"
+            placeholder="https://twitter.com/username"
             label="Twitter"
             variant="outlined"
             fullWidth
@@ -366,11 +343,9 @@ function UsersForm() {
           />
         </Grid>
         <Grid container m={2}>
-          <Stack direction="row" ml={2} spacing={1}>
-            <Button variant="contained" onClick={handleSubmitForm}>
-              Submit
-            </Button>
-          </Stack>
+          <Button variant="contained" onClick={handleSubmitForm}>
+            Submit
+          </Button>
         </Grid>
       </Grid>
     </form>

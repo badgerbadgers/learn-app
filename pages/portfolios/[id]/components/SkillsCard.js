@@ -2,7 +2,6 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { Card, CardContent, Typography } from "@mui/material";
 
 const card = {
@@ -35,15 +34,10 @@ export default function SkillsCard({ skills }) {
           component="ul"
         >
           {skills.map((data) => {
-            let icon;
-            if (data === "JavaScript" || data === "HTML" || data === "React") {
-              //icon = <TagFacesIcon />;
-            }
             return (
               <ListItem key={data}>
                 <Chip
                   sx={{ backgroundColor: "#4285F4", color: "#FFFFFF" }}
-                  icon={icon}
                   label={data}
                 />
               </ListItem>

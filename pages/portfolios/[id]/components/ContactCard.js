@@ -2,7 +2,8 @@ import React from "react";
 import Card from "@mui/material/Card";
 import { Grid, Button, ButtonGroup } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { LinkedIn, Twitter } from "@mui/icons-material";
+import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import { makeStyles } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   avatarImage: {
     height: "150px",
     width: "150px",
-    margin: "15px",
+    margin: "10px",
   },
 }));
 
@@ -35,10 +36,10 @@ function ContactCard({ user }) {
           <Avatar
             className={classes.avatarImage}
             style={{ alignItems: "center" }}
-            alt="Kodayi Temple"
+            alt="User Picture"
             src={user.userAvatar}
           />
-          <div className={styles.cardRight}>
+          <div>
             <Typography variant="h4" component="div" marginTop="15px">
               {user.firstName} {user.lastName}
             </Typography>
@@ -71,7 +72,7 @@ function ContactCard({ user }) {
                   <Button
                     size="small"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     startIcon={<LinkedIn />}
                     style={{
                       borderRadius: "5px",
@@ -83,6 +84,22 @@ function ContactCard({ user }) {
                     target="_blank"
                   />
                 </Stack>
+                <Stack direction="row" spacing={0.5}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<GitHubIcon />}
+                        style={{
+                          borderRadius: "5px",
+                          maxWidth: "26px",
+                          minWidth: "26px",
+                          paddingRight: 0,
+                        }}
+                        href={user.github}
+                        target="_blank"
+                      />
+                    </Stack>
                 <Stack direction="row" spacing={0.5}>
                   <Button
                     size="small"
@@ -115,6 +132,22 @@ function ContactCard({ user }) {
                     target="_blank"
                   />
                 </Stack>
+                <Stack direction="row" spacing={0.5} m={1}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<Facebook />}
+                      style={{
+                        borderRadius: "5px",
+                        maxWidth: "26px",
+                        minWidth: "26px",
+                        paddingRight: 0,
+                      }}
+                      href={user.facebook}
+                      target="_blank"
+                  />
+                  </Stack>
               </Stack>
             </ButtonGroup>
             <Grid item m={1}>
