@@ -30,7 +30,7 @@ function ContactCard({ user }) {
   }
 
   return (
-    <Grid item display="row" style={{ textAlign: "center" }}>
+    <Grid item sx={{ textAlign: "center" }}>
       <Card variant="outlined" sx={card}>
         <div className={styles.innerCard}>
           <Avatar
@@ -67,7 +67,7 @@ function ContactCard({ user }) {
               })}
             </Typography>
             <ButtonGroup>
-              <Stack direction="row" spacing={0.5} m={1}>
+              <Stack direction="row" spacing={0.5} m={2}>
                 <Stack direction="row" spacing={0.5}>
                   <Button
                     size="small"
@@ -75,6 +75,8 @@ function ContactCard({ user }) {
                     color="primary"
                     startIcon={<LinkedIn />}
                     style={{
+                      backgroundColor: "#12284C",
+                      color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
@@ -85,21 +87,23 @@ function ContactCard({ user }) {
                   />
                 </Stack>
                 <Stack direction="row" spacing={0.5}>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        startIcon={<GitHubIcon />}
-                        style={{
-                          borderRadius: "5px",
-                          maxWidth: "26px",
-                          minWidth: "26px",
-                          paddingRight: 0,
-                        }}
-                        href={user.github}
-                        target="_blank"
-                      />
-                    </Stack>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<GitHubIcon />}
+                    style={{
+                      backgroundColor: "#12284C",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
+                    href={user.github}
+                    target="_blank"
+                  />
+                </Stack>
                 <Stack direction="row" spacing={0.5}>
                   <Button
                     size="small"
@@ -107,6 +111,8 @@ function ContactCard({ user }) {
                     color="primary"
                     startIcon={<EmailIcon />}
                     style={{
+                      backgroundColor: "#12284C",
+                      color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
@@ -120,9 +126,10 @@ function ContactCard({ user }) {
                   <Button
                     size="small"
                     variant="contained"
-                    color="primary"
                     startIcon={<Twitter />}
                     style={{
+                      backgroundColor: "#12284C",
+                      color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
@@ -132,25 +139,9 @@ function ContactCard({ user }) {
                     target="_blank"
                   />
                 </Stack>
-                <Stack direction="row" spacing={0.5} m={1}>
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      startIcon={<Facebook />}
-                      style={{
-                        borderRadius: "5px",
-                        maxWidth: "26px",
-                        minWidth: "26px",
-                        paddingRight: 0,
-                      }}
-                      href={user.facebook}
-                      target="_blank"
-                  />
-                  </Stack>
               </Stack>
             </ButtonGroup>
-            <Grid item m={1}>
+            {/* <Grid item m={1}>
               <Button
                 variant="outlined"
                 color="success"
@@ -162,7 +153,7 @@ function ContactCard({ user }) {
               >
                 Download Resume
               </Button>
-            </Grid>
+            </Grid> */}
           </div>
         </div>
       </Card>

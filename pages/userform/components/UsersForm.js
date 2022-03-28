@@ -28,7 +28,7 @@ function UsersForm() {
   const [techStackArray, setTechStackArray] = useState([]);
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
 
-  const handleTeckStackArray = () => {
+  const handleTechStackArray = () => {
     const arrayTech = [...techStackArray];
     arrayTech.push(userInfoData.techStack);
     setTechStackArray(arrayTech);
@@ -170,7 +170,7 @@ function UsersForm() {
                     size="small"
                     variant="contained"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
-                    onClick={handleTeckStackArray}
+                    onClick={handleTechStackArray}
                     disabled={userInfoData.techStack.length === 0}
                   >
                     Add
