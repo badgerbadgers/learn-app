@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
                   changeTheme(darkMode ? themes.light : themes.dark);
                 }}
               />
-              <Typography variant="8">
+              <Typography variant="8" alignSelf="center">
                 {darkMode ? "Dark Mode" : "Light Mode"}
               </Typography>
             </Grid>

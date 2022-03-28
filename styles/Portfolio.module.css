@@ -13,11 +13,12 @@
   grid-template-columns: 170px 1fr;
 }
 
+.titleForm {
+  text-align: center;
+}
 
-@media (max-width: 950px) {
+@media (max-width: 600px) {
   .portfolioGrid {
     grid-template-columns: 1fr;
   }
 }
-
-
