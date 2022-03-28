@@ -1,8 +1,13 @@
 import Image from "next/image";
+import { CssBaseline, Grid, Typography } from "@mui/material";
+
+const quote =
+  "For an idea to go from your head into the computer it MUST go through someone else's hands.";
 
 const pairProgrammingInfo = [
   {
     label: "What is pair programming?",
+    header: "What is pair programming?",
     content: [
       "Agile software development technique",
       "Two programmers work together to solve the same coding problem",
@@ -12,16 +17,18 @@ const pairProgrammingInfo = [
   },
   {
     label: "Our goals with pair programming",
+    header: "Our goals with pair programming",
     content: [
       "Better code",
       "Fewer bugs and mistakes",
       "Team collaboration and understanding of what we are building/working on together",
       "Learn from each other",
     ],
-    /* img: "quote", */
+    quote: quote,
   },
   {
-    label: "Some tools you couls use",
+    label: "Some tools you could use",
+    header: "Some tools you could use",
     content: [
       "Zoom/Slack - regular screen-sharing",
       "Visual Studio Live Share - easiest with VS IDE, but you can also use VS Web",
@@ -33,6 +40,7 @@ const pairProgrammingInfo = [
   },
   {
     label: "The process each week",
+    header: "The process each week",
     content: [
       "01: Pairs among project teammates are selected using a random round robin generator.In the case of an uneven number of teammates, one person will not be pair programming each week",
       "02: Meet twice during the week, for at least 3 hours each session. You may choose to work either on one of your tickets for both sessions, or do one ticket per session",
@@ -41,7 +49,8 @@ const pairProgrammingInfo = [
     /*  img: '', */
   },
   /*  {
-    label: "A pair programming session...",
+    label: "A pair programming session",
+    header: "A pair programming session...",
     content: [
       {
         subLabel: "01 Plan & Prepare",
@@ -62,7 +71,8 @@ const pairProgrammingInfo = [
     img: "none",
   }, */
   {
-    label: `And most importantly.... Have a learning mindset`,
+    label: "Important to know",
+    header: `And most importantly.... Have a learning mindset`,
     content: [
       "If you are more experienced, encourage your partner to ask questions and come up with more solutions",
       "If you are less experienced don't hesitate to stop to ask lots of questions",
@@ -70,43 +80,60 @@ const pairProgrammingInfo = [
       "Never be discouraging or derisive to your partner",
       "Feel free to change it up more frequently and do 30 min driver/observer sessions",
     ],
-    img: "/img/pairProgrImages/3.png",
+    img: "/img/pairProgrImages/4.png",
   },
   {
     label: "Feedback",
+    header: "Feedback",
     content: [
       "This is going to be a constantly-evolving process. In order to make it the best it can be, we ask that you fill out a feedback form every week letting us know how your experience was.",
       "Link to the form",
     ],
-    img: "/img/pairProgrImages/4.png",
+    img: "/img/pairProgrImages/3.png",
   },
 ];
 
 const PairProgrammingPage = () => {
+  pairProgrammingInfo.map((item) => console.log(item.quote));
   return (
     <>
-      <h1>A guide to Pair Programming</h1>
-      <div>
-        {pairProgrammingInfo.map((item, index) => (
-          <>
-            <h2 key={item.label}>{item.label}</h2>
-            <ul key={index}>
-              {item.content.map((p, index) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-            {item.img ? 
-            <Image
-              alt=""
-              width={200}
-              height={100}
-              key={`${index}image`}
-              src={item.img}
-            />
-             : null}
-          </>
-        ))}
-      </div>
+      <CssBaseline />
+      <Typography variant="h2" align="center" gutterBottom>
+        A guide to Pair Programming
+      </Typography>
+      <Grid container>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={8}>
+          {pairProgrammingInfo.map((item, index) => (
+            <>
+              <h2 key={item.header}>{item.header}</h2>
+              <ul key={index}>
+                {item.content.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+              {item.img && (
+                <Image
+                  alt=""
+                  width={200}
+                  height={100}
+                  key={`${index}image`}
+                  src={item.img}
+                />
+              )}
+              {item.quote && (
+                <Typography
+                  sx={{ fontFamily: "cursive" }}
+                  variant="caption text"
+                  component="span"
+                >
+                  {item.quote}
+                </Typography>
+              )}
+            </>
+          ))}
+        </Grid>
+      </Grid>
     </>
   );
 };
