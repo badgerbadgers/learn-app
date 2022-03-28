@@ -3,47 +3,47 @@ import MediaCard from "./components/MediaCard";
 import ContactCard from "./components/ContactCard";
 import SkillsCard from "./components/SkillsCard";
 import PreviousIndustryCard from "./components/PreviousIndustryCard";
-import { Grid } from "@mui/material";
-
-// // Fixed number of columns
-const gridContainer = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gridTemplateRows: "auto",
-};
+import { Container } from "@mui/material";
+import styles from '../../../styles/Portfolio.module.css'
 
 function Cards() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   // Consuming local JSON data using fetch API
   const getData = async () => {
-    let res = await fetch('/api/users');
+    let res = await fetch("/api/users");
     let data = await res.json();
-    console.log(data)
-    return data
-  }
+    console.log(data);
+    return data;
+  };
   useEffect(() => {
-    ( async () => {
+    (async () => {
       const userFromFetch = await getData();
       setUser(userFromFetch);
-    })()
-  }, [])
-  
+    })();
+  }, []);
+
   return (
-    <Grid container p={2} sx={gridContainer} spacing={4}>
-      <Grid item xs={12} md={12}>
-        {user && <ContactCard user={user} />}
-      </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <MediaCard videoUrl={user.videoUrl} />}
-      </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <SkillsCard skills={user.skills} />}
-      </Grid>
-      <Grid item xs={12} md={12}>
-        {user && <PreviousIndustryCard previousIndustry={user.previousIndustry} />}
-      </Grid>
-    </Grid>
+    <Container>
+      <div className={styles.portfolioGrid}>
+        <div className={styles.portfolioItem}>
+          {user && <ContactCard user={user} />}
+        </div>
+        <div className={styles.portfolioItem}>
+          {user && <MediaCard videoUrl={user.videoUrl} />}
+        </div>
+
+        <div className={styles.portfolioItem}>
+          {user && <SkillsCard skills={user.skills} />}
+        </div>
+        <div className={styles.portfolioItem}>
+          {user && (
+            <PreviousIndustryCard previousIndustry={user.previousIndustry} />
+          )}
+        </div>
+      </div>
+
+    </Container>
   );
 }
 

@@ -1,17 +1,7 @@
 import React, { useState } from "react";
 import { Chip, Grid, TextField, Typography, Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { useTheme } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiFormControl-root": {
-      width: "90%",
-      margin: useTheme().spacing(1),
-    },
-  },
-}));
+// import { makeStyles } from "@mui/styles";
+// import { useTheme } from "@mui/material/styles";
 
 const initialFormValues = {
   id: 0,
@@ -32,13 +22,13 @@ const initialFormValues = {
 };
 
 function UsersForm() {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [userInfoData, setUserInfoData] = useState(initialFormValues);
   const [skillsArray, setSkillsArray] = useState([]);
   const [techStackArray, setTechStackArray] = useState([]);
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
 
-  const handleTeckStackArray = () => {
+  const handleTechStackArray = () => {
     const arrayTech = [...techStackArray];
     arrayTech.push(userInfoData.techStack);
     setTechStackArray(arrayTech);
@@ -114,263 +104,248 @@ function UsersForm() {
   };
 
   return (
-    <form className={classes.root}>
-      <Typography variant="body2" align="left" ml={2} gutterBottom>
-        <strong>Personal Info: </strong>
-      </Typography>
-      <Grid container spacing={1} align="left" ml={0}>
-        {/* Input values to fisrt, last name and pronouns fields */}
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="firstName"
-            placeholder="Type your first name"
-            label="First Name"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.firstName}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="lastName"
-            placeholder="Type your last name"
-            label="Last Name"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.lastName}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="pronouns"
-            placeholder="Type your pronouns"
-            label="Pronouns"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.pronouns}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="techStack"
-            placeholder="Type your tech stacks"
-            label="Tech Stack"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.techStack}
-            onChange={(e) => handleInputChange(e)}
-            InputProps={{
-              endAdornment: userInfoData && (
-                <Button
-                  size="small"
-                  variant="contained"
-                  onClick={handleTeckStackArray}
-                  disabled={userInfoData.techStack.length === 0}
-                >
-                  Add
-                </Button>
-              ),
-            }}
-          />
-          {/* It will map and style the tech stack array */}
-          {techStackArray.map((tech, item) => (
-            <Chip
-              key={tech}
-              style={{
-                backgroundColor: "#EF6040",
-                color: "#FFFFFF",
-                marginLeft: "10px",
-              }}
-              label={tech}
-              onDelete={() => handleDeleteTechStack(item)}
+    <form>
+      <Grid container p={3}>
+        <Typography variant="body2" gutterBottom>
+          <strong>Personal Info: </strong>
+        </Typography>
+        <Grid container spacing={2}>
+          {/* Input values to fisrt, last name and pronouns fields */}
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="firstName"
+              placeholder="Type your first name"
+              label="First Name"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.firstName}
+              onChange={(e) => handleInputChange(e)}
             />
-          ))}
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="skills"
-            placeholder="Type your skills"
-            label="Skills"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.skills}
-            onChange={(e) => handleInputChange(e)}
-            InputProps={{
-              endAdornment: userInfoData && (
-                <Button
-                  size="small"
-                  variant="contained"
-                  onClick={handleSkillsArray}
-                  disabled={userInfoData.skills.length === 0}
-                >
-                  Add
-                </Button>
-              ),
-            }}
-          />
-          {/* It will map and style the skills array */}
-          {skillsArray.map((skill, item) => (
-            <Chip
-              key={skill}
-              style={{
-                backgroundColor: "#EF6040",
-                color: "#FFFFFF",
-                marginLeft: "10px",
-              }}
-              label={skill}
-              onDelete={() => handleDeleteSkills(item)}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="lastName"
+              placeholder="Type your last name"
+              label="Last Name"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.lastName}
+              onChange={(e) => handleInputChange(e)}
             />
-          ))}
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="previousIndustry"
-            placeholder="Type your previous industry"
-            label="Previous Industry"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.previousIndustry}
-            onChange={(e) => handleInputChange(e)}
-            InputProps={{
-              endAdornment: userInfoData && (
-                <Button
-                  size="small"
-                  variant="contained"
-                  onClick={handlePreviousIndustryArray}
-                  disabled={userInfoData.previousIndustry.length === 0}
-                >
-                  Add
-                </Button>
-              ),
-            }}
-          />
-          {/* It will map and style the previous industry array */}
-          {previousIndustryArray.map((previousIndust, item) => (
-            <Chip
-              key={previousIndust}
-              style={{
-                backgroundColor: "#EF6040",
-                color: "#FFFFFF",
-                marginLeft: "10px",
-              }}
-              label={previousIndust}
-              onDelete={() => handleDeletePreviousIndustry(item)}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="pronouns"
+              placeholder="Type your pronouns"
+              label="Pronouns"
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.pronouns}
+              onChange={(e) => handleInputChange(e)}
             />
-          ))}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="techStack"
+              placeholder="Press Add for each tech stack"
+              label="Tech Stack"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.techStack}
+              onChange={(e) => handleInputChange(e)}
+              InputProps={{
+                endAdornment: userInfoData && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    style={{ maxWidth: "40px", minWidth: "40px" }}
+                    onClick={handleTechStackArray}
+                    disabled={userInfoData.techStack.length === 0}
+                  >
+                    Add
+                  </Button>
+                ),
+              }}
+            />
+            {/* It will map and style the tech stack array */}
+            {techStackArray.map((tech, item) => (
+              <Chip
+                key={tech}
+                style={{
+                  backgroundColor: "#FF5C35",
+                  color: "#FFFFFF",
+                  margin: "8px 4px 8px 0px",
+                }}
+                label={tech}
+                onDelete={() => handleDeleteTechStack(item)}
+              />
+            ))}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="skills"
+              placeholder="Press Add for each skills"
+              label="Skills"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.skills}
+              onChange={(e) => handleInputChange(e)}
+              InputProps={{
+                endAdornment: userInfoData && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    style={{ maxWidth: "40px", minWidth: "40px" }}
+                    onClick={handleSkillsArray}
+                    disabled={userInfoData.skills.length === 0}
+                  >
+                    Add
+                  </Button>
+                ),
+              }}
+            />
+            {/* It will map and style the skills array */}
+            {skillsArray.map((skill, item) => (
+              <Chip
+                key={skill}
+                style={{
+                  backgroundColor: "#FF5C35",
+                  color: "#FFFFFF",
+                  margin: "8px 4px 8px 0px",
+                }}
+                label={skill}
+                onDelete={() => handleDeleteSkills(item)}
+              />
+            ))}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="previousIndustry"
+              placeholder="Press Add for each previous"
+              label="Previous Industry"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.previousIndustry}
+              onChange={(e) => handleInputChange(e)}
+              InputProps={{
+                endAdornment: userInfoData && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    style={{ maxWidth: "40px", minWidth: "40px" }}
+                    onClick={handlePreviousIndustryArray}
+                    disabled={userInfoData.previousIndustry.length === 0}
+                  >
+                    Add
+                  </Button>
+                ),
+              }}
+            />
+            {/* It will map and style the previous industry array */}
+            {previousIndustryArray.map((previousIndust, item) => (
+              <Chip
+                key={previousIndust}
+                style={{
+                  backgroundColor: "#FF5C35",
+                  color: "#FFFFFF",
+                  margin: "8px 4px 8px 0px",
+                }}
+                label={previousIndust}
+                onDelete={() => handleDeletePreviousIndustry(item)}
+              />
+            ))}
+          </Grid>
         </Grid>
-      </Grid>
-      <br />
-      <Typography variant="body2" align="left" ml={2} gutterBottom>
-        <strong>Personal Contact: </strong>
-      </Typography>
-      {/* Input values to personal contact fields */}
-      <Grid container spacing={1} align="left" ml={0}>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="email"
-            type="email"
-            required
-            placeholder="example@test.com"
-            label="Email"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.email}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="Facebook"
-            placeholder="@example.test"
-            label="Facebook"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.facebook}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="github"
-            placeholder="@example.test"
-            label="GitHub"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.github}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="linkedin"
-            placeholder="@example.test"
-            label="LinkedIn"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.linkedin}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="twitter"
-            placeholder="@example.test"
-            label="Twitter"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.twitter}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid item sx={12} sm={6}>
-          <TextField
-            name="videoUrl"
-            placeholder="Past your video url"
-            label="Video Url"
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.videoUrl}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Grid>
-        <Grid container m={2}>
-          <Stack direction="row" ml={2} spacing={1}>
+        <br />
+        <Typography variant="body2" mt={2} gutterBottom>
+          <strong>Personal Contact: </strong>
+        </Typography>
+        {/* Input values to personal contact fields */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="email"
+              type="email"
+              required
+              placeholder="example@test.com"
+              label="Email"
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.email}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="linkedin"
+              placeholder="https://linkedin.com/in/username"
+              label="LinkedIn"
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.linkedin}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="twitter"
+              placeholder="https://twitter.com/username"
+              label="Twitter"
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.twitter}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="videoUrl"
+              placeholder="Past your video url"
+              label="Video Url"
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.videoUrl}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </Grid>
+          <Grid
+            container
+            mt={2}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
             <Button variant="contained" onClick={handleSubmitForm}>
               Submit
             </Button>
-          </Stack>
+          </Grid>
         </Grid>
       </Grid>
     </form>
