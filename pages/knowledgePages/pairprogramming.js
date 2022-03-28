@@ -1,9 +1,11 @@
+import React from "react";
 import Image from "next/image";
-import { CssBaseline, Grid, Typography } from "@mui/material";
+import { CssBaseline, Grid, Tabs, Typography, Tab, Box } from "@mui/material";
 
 const quote =
   "For an idea to go from your head into the computer it MUST go through someone else's hands.";
 
+//all content from pair programming page inside one object
 const pairProgrammingInfo = [
   {
     label: "What is pair programming?",
@@ -46,9 +48,8 @@ const pairProgrammingInfo = [
       "02: Meet twice during the week, for at least 3 hours each session. You may choose to work either on one of your tickets for both sessions, or do one ticket per session",
       "03: Additionally, if one person has been assigned a PR on Github, you should pair peer-review it on Friday",
     ],
-    /*  img: '', */
   },
-  /*  {
+  /* {
     label: "A pair programming session",
     header: "A pair programming session...",
     content: [
@@ -68,7 +69,6 @@ const pairProgrammingInfo = [
         ],
       },
     ],
-    img: "none",
   }, */
   {
     label: "Important to know",
@@ -93,8 +93,39 @@ const pairProgrammingInfo = [
   },
 ];
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Grid item xs={8}
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ px: 3 }} role="box">
+          {children}
+        </Box>
+      )}
+    </Grid>
+  );
+}
+//for accessibility porpose
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 const PairProgrammingPage = () => {
-  pairProgrammingInfo.map((item) => console.log(item.quote));
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <>
       <CssBaseline />
@@ -102,38 +133,55 @@ const PairProgrammingPage = () => {
         A guide to Pair Programming
       </Typography>
       <Grid container>
-        <Grid item xs={4}></Grid>
-        <Grid item xs={8}>
+        <Grid item xs={4}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="tabs to navigate through the page"
+            orientation="vertical"
+            sx={{ backgroundColor: "#ff5c35", height: "100%" }}
+          >
+            {pairProgrammingInfo.map((item) => (
+              <Tab label={item.label}></Tab>
+            ))}
+          </Tabs>
+        </Grid>
+
           {pairProgrammingInfo.map((item, index) => (
             <>
-              <h2 key={item.header}>{item.header}</h2>
-              <ul key={index}>
-                {item.content.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
-              {item.img && (
-                <Image
-                  alt=""
-                  width={200}
-                  height={100}
-                  key={`${index}image`}
-                  src={item.img}
-                />
-              )}
-              {item.quote && (
-                <Typography
-                  sx={{ fontFamily: "cursive" }}
-                  variant="caption text"
-                  component="span"
-                >
-                  {item.quote}
-                </Typography>
-              )}
+              <TabPanel value={value} index={index}>
+                <h2 key={item.header}>{item.header}</h2>
+                {/* we want to check if item has sublabels for a content inside content key */}
+                <ul key={index}>
+                  {item.content.map((p) => (
+                    <li key={p}>{p}</li>
+                  ))}
+                </ul>
+                {/* check if item has an key image and render an image */}
+                {item.img && (
+                  <Image
+                    alt=""
+                    width={200}
+                    height={100}
+                    key={`${index}image`}
+                    src={item.img}
+                  />
+                )}
+                {/* check if item has a quete key and render it */}
+                {item.quote && (
+                  <Typography
+                    sx={{ fontFamily: "cursive" }}
+                    variant="caption text"
+                    component="span"
+                  >
+                    {item.quote}
+                  </Typography>
+                )}
+              </TabPanel>
             </>
           ))}
         </Grid>
-      </Grid>
+
     </>
   );
 };
