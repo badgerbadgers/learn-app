@@ -96,7 +96,7 @@ const pairProgrammingInfo = [
 //container to render content of tab
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  /* console.log(children) */
   return (
     <Grid
       item
@@ -130,6 +130,21 @@ function a11yProps(index) {
   };
 }
 
+const renderingFunction = (item) => {
+  console.log("rendeting from function");
+  if (item.subLabel) {
+    console.log("sublabel detected");
+   return item.subcontent.map((content) => {
+      console.log("content", content);
+
+      return <li>{content}</li>;
+    });
+  } else {
+    return <li>{item}</li>;
+
+  }
+};
+
 const PairProgrammingPage = () => {
   const [value, setValue] = React.useState(0);
 
@@ -137,7 +152,7 @@ const PairProgrammingPage = () => {
     setValue(newValue);
   };
 
- /*  pairProgrammingInfo.map(item => (
+  /*  pairProgrammingInfo.map(item => (
       item.content.map(sub => {
 console.log('sub', sub)
           if(sub.subLabel) {
@@ -176,13 +191,26 @@ console.log('sub', sub)
             <TabPanel value={value} index={index} key={-index}>
               <h2 key={item.header}>{item.header}</h2>
               {/* we want to check if item has sublabels for a content inside content key */}
-             {/*  {item.content.map(subItem => (
+              {/*  {item.content.map(subItem => (
                 subItem.subLabel && <p>{subItem.subLabel}</p>
               ))} */}
               <ul>
-                {item.content.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
+                {item.content.map((p, index) => {
+                  {/* console.log("p", p);
+                  console.log("p.sublable", p.subLabel); */}
+
+                  {
+                    /* {p.subLabel ? (p.subcontent.map((item, index)=> {
+                    console.log("item", item)
+                      return <p key={index}>{item}</p>
+                    })) : <li key={p}>{p}</li>} */
+                  }
+                 
+                  return renderingFunction(p);
+                  {
+                    /* return <li key={p}>{p}</li> */
+                  }
+                })}
               </ul>
               {/* check if item has an key image and render an image */}
               {item.img && (
@@ -194,7 +222,7 @@ console.log('sub', sub)
                   src={item.img}
                 />
               )}
-              {/* check if item has a quete key and render it */}
+              {/* check if item has a quote key and render it */}
               {item.quote && (
                 <Typography
                   sx={{ fontFamily: "cursive" }}
