@@ -137,9 +137,9 @@ const PairProgrammingPage = () => {
     setValue(newValue);
   };
 
-  pairProgrammingInfo.map(item => (
+ /*  pairProgrammingInfo.map(item => (
       item.content.map(sub => {
-
+console.log('sub', sub)
           if(sub.subLabel) {
             console.log("it is sublabel")
             console.log(sub)
@@ -148,7 +148,7 @@ const PairProgrammingPage = () => {
             ))
           }
       })
-  ))
+  )) */
 
   return (
     <>
@@ -176,10 +176,13 @@ const PairProgrammingPage = () => {
             <TabPanel value={value} index={index} key={-index}>
               <h2 key={item.header}>{item.header}</h2>
               {/* we want to check if item has sublabels for a content inside content key */}
+             {/*  {item.content.map(subItem => (
+                subItem.subLabel && <p>{subItem.subLabel}</p>
+              ))} */}
               <ul>
-               {/*  {item.content.map((p) => (
+                {item.content.map((p) => (
                   <li key={p}>{p}</li>
-                ))} */}
+                ))}
               </ul>
               {/* check if item has an key image and render an image */}
               {item.img && (
