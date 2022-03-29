@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { CssBaseline, Grid, Tabs, Typography, Tab, Box } from "@mui/material";
+import PropTypes from "prop-types";
 
 const quote =
   "For an idea to go from your head into the computer it MUST go through someone else's hands.";
@@ -44,12 +45,12 @@ const pairProgrammingInfo = [
     label: "The process each week",
     header: "The process each week",
     content: [
-      "01: Pairs among project teammates are selected using a random round robin generator.In the case of an uneven number of teammates, one person will not be pair programming each week",
+      "01: Pairs among project teammates are selected using a random round robin generator. In the case of an uneven number of teammates, one person will not be pair programming each week",
       "02: Meet twice during the week, for at least 3 hours each session. You may choose to work either on one of your tickets for both sessions, or do one ticket per session",
       "03: Additionally, if one person has been assigned a PR on Github, you should pair peer-review it on Friday",
     ],
   },
-  /* {
+  {
     label: "A pair programming session",
     header: "A pair programming session...",
     content: [
@@ -69,7 +70,7 @@ const pairProgrammingInfo = [
         ],
       },
     ],
-  }, */
+  },
   {
     label: "Important to know",
     header: `And most importantly.... Have a learning mindset`,
@@ -92,12 +93,14 @@ const pairProgrammingInfo = [
     img: "/img/pairProgrImages/3.png",
   },
 ];
-
+//container to render content of tab
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Grid item xs={8}
+    <Grid
+      item
+      xs={8}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -112,6 +115,13 @@ function TabPanel(props) {
     </Grid>
   );
 }
+
+/* TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  }; */
+
 //for accessibility porpose
 function a11yProps(index) {
   return {
@@ -126,6 +136,20 @@ const PairProgrammingPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  pairProgrammingInfo.map(item => (
+      item.content.map(sub => {
+
+          if(sub.subLabel) {
+            console.log("it is sublabel")
+            console.log(sub)
+            sub.subcontent.map(item => (
+                console.log(<p>{item}</p>)
+            ))
+          }
+      })
+  ))
+
   return (
     <>
       <CssBaseline />
@@ -141,47 +165,46 @@ const PairProgrammingPage = () => {
             orientation="vertical"
             sx={{ backgroundColor: "#ff5c35", height: "100%" }}
           >
-            {pairProgrammingInfo.map((item) => (
-              <Tab label={item.label}></Tab>
+            {pairProgrammingInfo.map((item, index) => (
+              <Tab key={index} label={item.label} {...a11yProps(index)}></Tab>
             ))}
           </Tabs>
         </Grid>
 
-          {pairProgrammingInfo.map((item, index) => (
-            <>
-              <TabPanel value={value} index={index}>
-                <h2 key={item.header}>{item.header}</h2>
-                {/* we want to check if item has sublabels for a content inside content key */}
-                <ul key={index}>
-                  {item.content.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-                {/* check if item has an key image and render an image */}
-                {item.img && (
-                  <Image
-                    alt=""
-                    width={200}
-                    height={100}
-                    key={`${index}image`}
-                    src={item.img}
-                  />
-                )}
-                {/* check if item has a quete key and render it */}
-                {item.quote && (
-                  <Typography
-                    sx={{ fontFamily: "cursive" }}
-                    variant="caption text"
-                    component="span"
-                  >
-                    {item.quote}
-                  </Typography>
-                )}
-              </TabPanel>
-            </>
-          ))}
-        </Grid>
-
+        {pairProgrammingInfo.map((item, index) => (
+          <>
+            <TabPanel value={value} index={index} key={-index}>
+              <h2 key={item.header}>{item.header}</h2>
+              {/* we want to check if item has sublabels for a content inside content key */}
+              <ul>
+               {/*  {item.content.map((p) => (
+                  <li key={p}>{p}</li>
+                ))} */}
+              </ul>
+              {/* check if item has an key image and render an image */}
+              {item.img && (
+                <Image
+                  alt=""
+                  width={200}
+                  height={100}
+                  key={`${index}image`}
+                  src={item.img}
+                />
+              )}
+              {/* check if item has a quete key and render it */}
+              {item.quote && (
+                <Typography
+                  sx={{ fontFamily: "cursive" }}
+                  variant="caption text"
+                  component="span"
+                >
+                  {item.quote}
+                </Typography>
+              )}
+            </TabPanel>
+          </>
+        ))}
+      </Grid>
     </>
   );
 };
