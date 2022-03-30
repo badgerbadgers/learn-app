@@ -111,7 +111,7 @@ function TabPanel(props) {
   return (
     <Grid
       item
-      xs={12}
+      xs={8}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -167,12 +167,17 @@ const renderingFunction = (item, index) => {
   }
 };
 
-const PairPrgTitle = () => ("A guide to Pair Programming");
-;
+const PairPrgTitle = () => {
+  return (
+    <Typography variant="h2" align="center" gutterBottom>
+      A guide to Pair Programming
+    </Typography>
+  );
+};
 
 const PairPrgNav = ({ value, handleChange }) => {
   return (
-    <Grid item xs={12} p={0} sx={{}} role="container for tabs">
+    <Grid item xs={4} role="container for tabs">
       <Tabs
         role="tabs"
         value={value}
@@ -185,7 +190,7 @@ const PairPrgNav = ({ value, handleChange }) => {
           <Tab
             role="tab"
             key={index}
-            sx={{ backgroundColor: "#ff5c35", opacity: 0.9, my: 1, maxWidth: 900, color: "white" }}
+            sx={{ backgroundColor: "#ff5c35", opacity: 0.9, my: 1 }}
             label={item.label}
             {...a11yProps(index)}
           ></Tab>
