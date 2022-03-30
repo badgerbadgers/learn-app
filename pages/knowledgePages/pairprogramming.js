@@ -55,7 +55,7 @@ const pairProgrammingInfo = [
     header: "A pair programming session...",
     content: [
       {
-        subLabel: "01 Plan & Prepare",
+        subHeader: "01 Plan & Prepare",
         subcontent: [
           "Choose tickets to work on",
           "Write or comment out a brief plan of attack",
@@ -63,7 +63,7 @@ const pairProgrammingInfo = [
         ],
       },
       {
-        subLabel: "02 Program",
+        subHeader: "02 Program",
         subcontent: [
           "Driver codes and talks through what is being coded",
           "Observer looks out for mistakes, asks questions, and stops the group if further conversation or thought is needed ",
@@ -129,19 +129,18 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
+//function that takes an item/string and returns an html element,
+//if item is an object - it maps througth this object
 const renderingFunction = (item) => {
-  console.log("rendeting from function");
-  if (item.subLabel) {
-    console.log("sublabel detected");
-   return item.subcontent.map((content) => {
-      console.log("content", content);
-
-      return <li>{content}</li>;
+  if (item.subHeader) {
+    const subHeader = <h3>{item.subHeader}</h3>;
+    let ul = [subHeader];
+    item.subcontent.map((content) => {
+      ul.push(<li>{content}</li>);
     });
+    return <>{ul}</>;
   } else {
     return <li>{item}</li>;
-
   }
 };
 
@@ -196,20 +195,7 @@ console.log('sub', sub)
               ))} */}
               <ul>
                 {item.content.map((p, index) => {
-                  {/* console.log("p", p);
-                  console.log("p.sublable", p.subLabel); */}
-
-                  {
-                    /* {p.subLabel ? (p.subcontent.map((item, index)=> {
-                    console.log("item", item)
-                      return <p key={index}>{item}</p>
-                    })) : <li key={p}>{p}</li>} */
-                  }
-                 
                   return renderingFunction(p);
-                  {
-                    /* return <li key={p}>{p}</li> */
-                  }
                 })}
               </ul>
               {/* check if item has an key image and render an image */}
