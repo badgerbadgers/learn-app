@@ -44,7 +44,7 @@ const pairProgrammingInfo = [
     label: "Some tools you could use",
     header: "Some tools you could use",
     content: [
-      `<a href="#">Zoom/Slack</a> - regular screen-sharing`,
+      "Zoom/Slack - regular screen-sharing",
       "Visual Studio Live Share - easiest with VS IDE, but you can also use VS Web",
       "Codepen - copy-paste files to collaborate one",
       "Sublime Remote - both people must have Sublime IDE",
