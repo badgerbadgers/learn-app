@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 import {
   CssBaseline,
   Grid,
@@ -42,13 +44,13 @@ const pairProgrammingInfo = [
     label: "Some tools you could use",
     header: "Some tools you could use",
     content: [
-      "Zoom/Slack - regular screen-sharing",
+      `<a href="#">Zoom/Slack</a> - regular screen-sharing`,
       "Visual Studio Live Share - easiest with VS IDE, but you can also use VS Web",
       "Codepen - copy-paste files to collaborate one",
       "Sublime Remote - both people must have Sublime IDE",
       "Code Sandbox - import Github URL and work on files",
     ],
-    img: "/img/pairProgrImages/2.png",
+    img: "/img/pairProgrImages/2-1.png",
   },
   {
     label: "The process each week",
@@ -109,7 +111,6 @@ function TabPanel(props) {
   return (
     <Grid
       item
-      
       xs={8}
       role="tabpanel"
       hidden={value !== index}
@@ -117,7 +118,13 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      <Box p={1}>{value === index && <Grid container role="testing">{children}</Grid>}</Box>
+      <Box p={1}>
+        {value === index && (
+          <Grid container role="container to render TabPanel">
+            {children}
+          </Grid>
+        )}
+      </Box>
     </Grid>
   );
 }
@@ -133,10 +140,14 @@ function a11yProps(index) {
 //if item is an object - it maps througth this object
 const renderingFunction = (item, index) => {
   if (item.subHeader) {
-    const subHeader = <h3 key={item.subHeader}>{item.subHeader}</h3>;
+    const subHeader = <Typography variant="h6" key={item.subHeader}>{item.subHeader}</Typography>;
     let ul = [];
     item.subcontent.map((content) => {
-      ul.push(<ListItem key={content}><ListItemText primary={content} /></ListItem>);
+      ul.push(
+        <ListItem key={content}>
+          <ListItemText primary={content} />
+        </ListItem>
+      );
     });
     return (
       <>
@@ -144,7 +155,11 @@ const renderingFunction = (item, index) => {
       </>
     );
   } else {
-    return <ListItem key={item}><ListItemText primary={item} /></ListItem>;
+    return (
+      <ListItem key={item}>
+        <ListItemText primary={item} />
+      </ListItem>
+    );
   }
 };
 
@@ -185,42 +200,46 @@ const PairProgrammingPage = () => {
         </Grid>
 
         {pairProgrammingInfo.map((item, index) => (
+          <TabPanel value={value} index={index} key={-index}>
           
-            <TabPanel value={value} index={index} key={-index}>
-              <Grid role="container for text" item xs={9}>
-                <Typography variant="h4" key={item.header}>
-                  {item.header}
-                </Typography>
-                <List key={`${index}ul`}>
-                  {item.content.map((p, index) => {
-                    return renderingFunction(p, index);
-                  })}
-                </List>
-              </Grid>
-              {/* check if object item has an key 'image' and render an image */}
-              <Grid role="container for img" item xs={3}>
-                {item.img && (
-                  <Image
-                    alt=""
-                    width={200}
-                    height={100}
-                    key={`${index}image`}
-                    src={item.img}
-                  />
-                )}
-              </Grid>
-              {/* check if object item has a 'quote' key and render it */}
-              {item.quote && (
+            <Grid role="container for text" item xs={9}>
+              <Typography variant="h4" key={item.header}>
+                {item.header}
+              </Typography>
+              <List key={`${index}ul`}>
+                {item.content.map((p, index) => {
+                  return renderingFunction(p, index);
+                })}
+              </List>
+            </Grid>
+            
+            {/* check if object item has an key 'image' and render an image */}
+            <Grid role="container for img" item xs={3}>
+              {item.img && (
+                <Image
+                  alt=""
+                  width={150}
+                  height={150}
+                  key={`${index}image`}
+                  src={item.img}
+                />
+              )}
+            </Grid>
+            {/* check if object item has a 'quote' key and render it */}
+            {item.quote && (
+              <Grid role="container for quote" item sx={{mt: 3}} >
                 <Typography
-                  sx={{ fontFamily: "cursive" }}
+                  sx={{ fontFamily: "cursive", fontWeight: "bold" }}
+                  align="center"
                   variant="caption text"
                   component="span"
                 >
                   {item.quote}
                 </Typography>
-              )}
-            </TabPanel>
-          
+              </Grid>
+            )}
+          </TabPanel>
+         
         ))}
       </Grid>
     </>
