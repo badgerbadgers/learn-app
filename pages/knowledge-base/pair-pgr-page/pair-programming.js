@@ -1,6 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import { CssBaseline, Grid, Tabs, Typography, Tab, Box } from "@mui/material";
+import {
+  CssBaseline,
+  Grid,
+  Tabs,
+  Typography,
+  Tab,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 
 const quote =
   "For an idea to go from your head into the computer it MUST go through someone else's hands.";
@@ -99,6 +109,7 @@ function TabPanel(props) {
   return (
     <Grid
       item
+      
       xs={8}
       role="tabpanel"
       hidden={value !== index}
@@ -106,15 +117,10 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ px: 3 }} role="box">
-          {children}
-        </Box>
-      )}
+      <Box p={1}>{value === index && <Grid container role="testing">{children}</Grid>}</Box>
     </Grid>
   );
 }
-
 
 //for accessibility porpose add 'id' and 'aria-controls' to each tab
 function a11yProps(index) {
@@ -130,11 +136,15 @@ const renderingFunction = (item, index) => {
     const subHeader = <h3 key={item.subHeader}>{item.subHeader}</h3>;
     let ul = [];
     item.subcontent.map((content) => {
-      ul.push(<li key={content}>{content}</li>);
+      ul.push(<ListItem key={content}><ListItemText primary={content} /></ListItem>);
     });
-    return <>{subHeader} <ul key={subHeader}>{ul}</ul></>;
+    return (
+      <>
+        {subHeader} <List key={subHeader}>{ul}</List>
+      </>
+    );
   } else {
-    return <li key={item}>{item}</li>;
+    return <ListItem key={item}><ListItemText primary={item} /></ListItem>;
   }
 };
 
@@ -146,59 +156,59 @@ const PairProgrammingPage = () => {
     setValue(newValue);
   };
 
-  /*  pairProgrammingInfo.map(item => (
-      item.content.map(sub => {
-console.log('sub', sub)
-          if(sub.subLabel) {
-            console.log("it is sublabel")
-            console.log(sub)
-            sub.subcontent.map(item => (
-                console.log(<p>{item}</p>)
-            ))
-          }
-      })
-  )) */
-
   return (
     <>
       <CssBaseline />
       <Typography variant="h2" align="center" gutterBottom>
         A guide to Pair Programming
       </Typography>
-      <Grid container>
-        <Grid item xs={4}>
+      <Grid container role="container for all camponents" spacing={1}>
+        <Grid item xs={4} role="container for tabs">
           <Tabs
+            role="tabs"
             value={value}
             onChange={handleChange}
             aria-label="tabs to navigate through the page"
             orientation="vertical"
-            sx={{ backgroundColor: "#ff5c35", height: "100%" }}
+            sx={{ height: "100%" }} //do I need height here?
           >
             {pairProgrammingInfo.map((item, index) => (
-              <Tab key={index} label={item.label} {...a11yProps(index)}></Tab>
+              <Tab
+                role="tab"
+                key={index}
+                sx={{ backgroundColor: "#ff5c35", opacity: 0.9, my: 1 }}
+                label={item.label}
+                {...a11yProps(index)}
+              ></Tab>
             ))}
           </Tabs>
         </Grid>
 
         {pairProgrammingInfo.map((item, index) => (
-          <>
+          
             <TabPanel value={value} index={index} key={-index}>
-              <h2 key={item.header}>{item.header}</h2>
-              <ul key={`${index}ul`}>
-                {item.content.map((p, index) => {
-                  return renderingFunction(p, index);
-                })}
-              </ul>
+              <Grid role="container for text" item xs={9}>
+                <Typography variant="h4" key={item.header}>
+                  {item.header}
+                </Typography>
+                <List key={`${index}ul`}>
+                  {item.content.map((p, index) => {
+                    return renderingFunction(p, index);
+                  })}
+                </List>
+              </Grid>
               {/* check if object item has an key 'image' and render an image */}
-              {item.img && (
-                <Image
-                  alt=""
-                  width={200}
-                  height={100}
-                  key={`${index}image`}
-                  src={item.img}
-                />
-              )}
+              <Grid role="container for img" item xs={3}>
+                {item.img && (
+                  <Image
+                    alt=""
+                    width={200}
+                    height={100}
+                    key={`${index}image`}
+                    src={item.img}
+                  />
+                )}
+              </Grid>
               {/* check if object item has a 'quote' key and render it */}
               {item.quote && (
                 <Typography
@@ -210,7 +220,7 @@ console.log('sub', sub)
                 </Typography>
               )}
             </TabPanel>
-          </>
+          
         ))}
       </Grid>
     </>
