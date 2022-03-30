@@ -140,7 +140,11 @@ function a11yProps(index) {
 //if item is an object - it maps througth this object
 const renderingFunction = (item, index) => {
   if (item.subHeader) {
-    const subHeader = <Typography variant="h6" key={item.subHeader}>{item.subHeader}</Typography>;
+    const subHeader = (
+      <Typography variant="h6" key={item.subHeader}>
+        {item.subHeader}
+      </Typography>
+    );
     let ul = [];
     item.subcontent.map((content) => {
       ul.push(
@@ -163,10 +167,90 @@ const renderingFunction = (item, index) => {
   }
 };
 
+const PairPrgTitle = () => {
+  return (
+    <Typography variant="h2" align="center" gutterBottom>
+      A guide to Pair Programming
+    </Typography>
+  );
+};
+
+const PairPrgNav = ({ value, handleChange }) => {
+  return (
+    <Grid item xs={4} role="container for tabs">
+      <Tabs
+        role="tabs"
+        value={value}
+        onChange={handleChange}
+        aria-label="tabs to navigate through the page"
+        orientation="vertical"
+        sx={{ height: "100%" }} //do I need height here?
+      >
+        {pairProgrammingInfo.map((item, index) => (
+          <Tab
+            role="tab"
+            key={index}
+            sx={{ backgroundColor: "#ff5c35", opacity: 0.9, my: 1 }}
+            label={item.label}
+            {...a11yProps(index)}
+          ></Tab>
+        ))}
+      </Tabs>
+    </Grid>
+  );
+};
+
+const PairPrgBody = ({ pairProgrammingInfo, value }) => {
+  return (
+    <>
+      {pairProgrammingInfo.map((item, index) => (
+        <TabPanel value={value} index={index} key={-index}>
+          <Grid role="container for text" item xs={9}>
+            <Typography variant="h4" key={item.header}>
+              {item.header}
+            </Typography>
+            <List key={`${index}ul`}>
+              {item.content.map((p, index) => {
+                return renderingFunction(p, index);
+              })}
+            </List>
+          </Grid>
+
+          {/* check if object item has an key 'image' and render an image */}
+          <Grid role="container for img" item xs={3}>
+            {item.img && (
+              <Image
+                alt=""
+                width={150}
+                height={150}
+                key={`${index}image`}
+                src={item.img}
+              />
+            )}
+          </Grid>
+          {/* check if object item has a 'quote' key and render it */}
+          {item.quote && (
+            <Grid role="container for quote" item sx={{ mt: 3 }}>
+              <Typography
+                sx={{ fontFamily: "cursive", fontWeight: "bold" }}
+                align="center"
+                variant="caption text"
+                component="span"
+              >
+                {item.quote}
+              </Typography>
+            </Grid>
+          )}
+        </TabPanel>
+      ))}
+    </>
+  );
+};
+
 const PairProgrammingPage = () => {
   const [value, setValue] = React.useState(0);
 
-  //functon to set an active tab
+  //function to set an active tab
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -174,73 +258,11 @@ const PairProgrammingPage = () => {
   return (
     <>
       <CssBaseline />
-      <Typography variant="h2" align="center" gutterBottom>
-        A guide to Pair Programming
-      </Typography>
-      <Grid container role="container for all camponents" spacing={1}>
-        <Grid item xs={4} role="container for tabs">
-          <Tabs
-            role="tabs"
-            value={value}
-            onChange={handleChange}
-            aria-label="tabs to navigate through the page"
-            orientation="vertical"
-            sx={{ height: "100%" }} //do I need height here?
-          >
-            {pairProgrammingInfo.map((item, index) => (
-              <Tab
-                role="tab"
-                key={index}
-                sx={{ backgroundColor: "#ff5c35", opacity: 0.9, my: 1 }}
-                label={item.label}
-                {...a11yProps(index)}
-              ></Tab>
-            ))}
-          </Tabs>
-        </Grid>
+      <PairPrgTitle />
 
-        {pairProgrammingInfo.map((item, index) => (
-          <TabPanel value={value} index={index} key={-index}>
-          
-            <Grid role="container for text" item xs={9}>
-              <Typography variant="h4" key={item.header}>
-                {item.header}
-              </Typography>
-              <List key={`${index}ul`}>
-                {item.content.map((p, index) => {
-                  return renderingFunction(p, index);
-                })}
-              </List>
-            </Grid>
-            
-            {/* check if object item has an key 'image' and render an image */}
-            <Grid role="container for img" item xs={3}>
-              {item.img && (
-                <Image
-                  alt=""
-                  width={150}
-                  height={150}
-                  key={`${index}image`}
-                  src={item.img}
-                />
-              )}
-            </Grid>
-            {/* check if object item has a 'quote' key and render it */}
-            {item.quote && (
-              <Grid role="container for quote" item sx={{mt: 3}} >
-                <Typography
-                  sx={{ fontFamily: "cursive", fontWeight: "bold" }}
-                  align="center"
-                  variant="caption text"
-                  component="span"
-                >
-                  {item.quote}
-                </Typography>
-              </Grid>
-            )}
-          </TabPanel>
-         
-        ))}
+      <Grid container role="container for all camponents" spacing={1}>
+        <PairPrgNav value={value} handleChange={handleChange} />
+        <PairPrgBody pairProgrammingInfo={pairProgrammingInfo} value={value} />
       </Grid>
     </>
   );
