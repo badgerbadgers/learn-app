@@ -17,7 +17,7 @@ const PairProgrammingPage = () => {
 
   return (
     <>
-      <CssBaseline /> //not sure it it needed here, if we are going to use it - better to wrap around myapp
+      <CssBaseline /> {/* not sure it it needed here, if we are going to use it - better to wrap around myapp */}
       <KnowledgePageLayout
         title={<PairPrgTitle />}
         index={
