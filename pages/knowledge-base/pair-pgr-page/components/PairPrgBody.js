@@ -14,7 +14,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
     <Grid
-    key={`gridTab${index}`}
+      key={`gridTab${index}`}
       item
       xs={12}
       role="tabpanel"
@@ -23,9 +23,13 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      <Box p={1}  key={`boxTab${index}`}>
+      <Box p={1} key={`boxTab${index}`}>
         {value === index && (
-          <Grid container role="container to render TabPanel"  key={`gridTabcont${index}`}>
+          <Grid
+            container
+            role="container to render TabPanel"
+            key={`gridTabcont${index}`}
+          >
             {children}
           </Grid>
         )}
@@ -95,12 +99,18 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
           )}
           {/* check if object item has a 'quote' key and render it */}
           {item.quote && (
-            <Grid role="container for quote" item sx={{ mt: 3 }} key={item.quote}>
+            <Grid
+              role="container for quote"
+              item
+              sx={{ mt: 3 }}
+              key={item.quote}
+            >
               <Typography
                 sx={{ fontFamily: "cursive", fontWeight: "bold" }}
                 align="center"
                 variant="caption text"
                 component="span"
+                key={`${index}quote`}
               >
                 {item.quote}
               </Typography>
