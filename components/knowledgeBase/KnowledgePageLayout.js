@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Grid, Typography } from "@mui/material";
 
 //Create a Layout for the knowledge Pages.
-
+//researched - memo hook doesn't work here ...?
 const KnowledgePageLayout = memo(({ title, index, body }) => {
   return (
     <div style={{ margin: "70px 47px 0px 47px" }}>

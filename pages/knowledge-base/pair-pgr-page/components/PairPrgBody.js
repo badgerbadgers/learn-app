@@ -1,11 +1,8 @@
 import Image from "next/image";
 
 import {
-  CssBaseline,
   Grid,
-  Tabs,
   Typography,
-  Tab,
   Box,
   List,
   ListItem,
@@ -17,6 +14,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
     <Grid
+    key={`gridTab${index}`}
       item
       xs={12}
       role="tabpanel"
@@ -25,9 +23,9 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      <Box p={1}>
+      <Box p={1}  key={`boxTab${index}`}>
         {value === index && (
-          <Grid container role="container to render TabPanel">
+          <Grid container role="container to render TabPanel"  key={`gridTabcont${index}`}>
             {children}
           </Grid>
         )}
@@ -45,9 +43,9 @@ const renderingFunction = (item) => {
         {item.subHeader}
       </Typography>
     );
-    let ul = []; //empty array where will be stored each string as a list item
+    let arrayOfStrings = []; //empty array where will be stored each string as a list item to map through it
     item.subcontent.map((content) => {
-      ul.push(
+      arrayOfStrings.push(
         <ListItem key={content}>
           <ListItemText primary={content} />
         </ListItem>
@@ -55,7 +53,7 @@ const renderingFunction = (item) => {
     });
     return (
       <>
-        {subHeader} <List key={subHeader}>{ul}</List>
+        {subHeader} <List key={subHeader}>{arrayOfStrings}</List>
       </>
     );
   } else {
@@ -72,12 +70,12 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
     <>
       {pairProgrammingInfo.map((item, index) => (
         <TabPanel value={value} index={index} key={-index}>
-          <Grid role="container for text" item xs={9}>
+          <Grid role="container for text" item xs={9} key={`grid${index}`}>
             <Typography variant="h4" key={item.header}>
               {item.header}
             </Typography>
             <List key={`${index}ul`}>
-              {item.content.map((p, index) => {
+              {item.content.map((p) => {
                 return renderingFunction(p);
               })}
             </List>
@@ -85,7 +83,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
 
           {/* check if object item has an key 'image' and render an image */}
           {item.img && (
-            <Grid role="container for img" item xs={3}>
+            <Grid role="container for img" item xs={3} key={`img${index}`}>
               <Image
                 alt=""
                 width={220}
@@ -97,7 +95,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
           )}
           {/* check if object item has a 'quote' key and render it */}
           {item.quote && (
-            <Grid role="container for quote" item sx={{ mt: 3 }}>
+            <Grid role="container for quote" item sx={{ mt: 3 }} key={item.quote}>
               <Typography
                 sx={{ fontFamily: "cursive", fontWeight: "bold" }}
                 align="center"
