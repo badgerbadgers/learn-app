@@ -33,6 +33,8 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
         >
           <Grid
             item
+            container
+            rote="index container"
             xs={12}
             md={3}
             sx={{
@@ -41,7 +43,7 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
           >
             {index}
           </Grid>
-          <Grid item xs={12} md={9}>
+          <Grid item container role="body container" xs={12} md={9}>
             {body}
           </Grid>
         </Grid>

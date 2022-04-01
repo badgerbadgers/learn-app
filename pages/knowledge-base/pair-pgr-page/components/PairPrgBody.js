@@ -50,14 +50,14 @@ const renderingFunction = (item) => {
     let arrayOfStrings = []; //empty array where will be stored each string as a list item to map through it
     item.subcontent.map((content) => {
       arrayOfStrings.push(
-        <ListItem key={content}>
-          <ListItemText primary={content} />
+        <ListItem key={content} role="list item">
+          <ListItemText role="list item text" primary={content} />
         </ListItem>
       );
     });
     return (
       <>
-        {subHeader} <List key={subHeader}>{arrayOfStrings}</List>
+        {subHeader} <List key={`${item.subHeader}list`} role={"list"}>{arrayOfStrings}</List>
       </>
     );
   } else {
@@ -78,11 +78,11 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
             <Typography variant="h4" key={item.header}>
               {item.header}
             </Typography>
-            <List key={`${index}ul`}>
+          {/*   <List key={`${index}ul`}> */}
               {item.content.map((p) => {
                 return renderingFunction(p);
               })}
-            </List>
+           {/*  </List> */}
           </Grid>
 
           {/* check if object item has an key 'image' and render an image */}
