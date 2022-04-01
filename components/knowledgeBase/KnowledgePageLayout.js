@@ -6,7 +6,7 @@ import { Grid, Typography } from "@mui/material";
 const KnowledgePageLayout = memo(({ title, index, body }) => {
   return (
     <div style={{ margin: "70px 47px 0px 47px" }}>
-      <Grid container p={0} m={0}>
+      <Grid container p={0} m={0} sx={{maxWidth: "1500px", margin: "auto"}}>
         {/* They can see a (div) with Page Title */}
         <Grid
           item
