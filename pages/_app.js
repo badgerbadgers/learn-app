@@ -7,7 +7,12 @@ import { Grid, Switch, Typography, Avatar } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp(props) {
+  const {
+    Component,
+    pageProps: { session, ...pageProps },
+  } = props;
+
   const [darkMode, setDarkMode] = useState(true);
 
   return (

@@ -6,7 +6,8 @@ const PublicLayout = ({children}) => {
     return (
         <>
         <Header/>
-        <main className={styles.main}>{children}</main>
+        {/* <main className={styles.main}>{children}</main> */}
+        <main>{children}</main>
         </>
     );
 }

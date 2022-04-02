@@ -2,13 +2,13 @@ import React from "react";
 import Card from "@mui/material/Card";
 import { Grid, Button, ButtonGroup } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
+import { LinkedIn, Twitter } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import { makeStyles } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import styles from "../../../../styles/Portfolio.module.css";
+import styles from "../../../styles/Portfolio.module.css";
 import DownloadIcon from "@mui/icons-material/Download";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +48,7 @@ function ContactCard({ user }) {
             </Typography>
             <Typography variant="h5" component="div">
               Tech Stack: <br />
-              {user.techStack.map((data) => {
+              {user.techStackArray.map((data) => {
                 return (
                   // Styling tech stack listing
                   <Typography

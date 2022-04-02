@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import MediaCard from "./components/MediaCard";
-import ContactCard from "./components/ContactCard";
-import SkillsCard from "./components/SkillsCard";
-import PreviousIndustryCard from "./components/PreviousIndustryCard";
+import axios from 'axios';
+import { useRouter } from "next/router";
+import ContactCard from "../components/ContactCard";
+import MediaCard from "../components/MediaCard";
+import SkillsCard from "../components/SkillsCard";
+import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Container } from "@mui/material";
 import styles from '../../../styles/Portfolio.module.css'
 
@@ -10,15 +12,18 @@ function Cards() {
   const [user, setUser] = useState(null);
 
   // Consuming local JSON data using fetch API
-  const getData = async () => {
-    let res = await fetch("/api/users");
-    let data = await res.json();
-    console.log(data);
+  const router = useRouter();
+  const id = router.query.id;
+
+  const getUserData = async () => {
+    let res = await axios.get("/api/users", {params: {id: id}});
+    let data = await res.data;
     return data;
   };
+
   useEffect(() => {
     (async () => {
-      const userFromFetch = await getData();
+      const userFromFetch = await getUserData();
       setUser(userFromFetch);
     })();
   }, []);
@@ -34,11 +39,11 @@ function Cards() {
         </div>
 
         <div className={styles.portfolioItem}>
-          {user && <SkillsCard skills={user.skills} />}
+          {user && <SkillsCard skills={user.skillsArray} />}
         </div>
         <div className={styles.portfolioItem}>
           {user && (
-            <PreviousIndustryCard previousIndustry={user.previousIndustry} />
+            <PreviousIndustryCard previousIndustry={user.previousIndustryArray} />
           )}
         </div>
       </div>
