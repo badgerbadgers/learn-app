@@ -1,23 +1,11 @@
 import NextAuth from "next-auth";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../lib/mongodb";
+import { clientPromise } from "../../../lib/mongodb";
 import GitHubProvider from "next-auth/providers/github";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
-  // jwt: true,
-  // logger: {
-  //   error(code, metadata) {
-  //     console.error(code, metadata);
-  //   },
-  //   warn(code) {
-  //     console.warn(code);
-  //   },
-  //   debug(code, metadata) {
-  //     console.debug(code, metadata);
-  //   },
-  // },
   session: {
     // Choose how you want to save the user session.
     // The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
@@ -35,30 +23,12 @@ export default NextAuth({
     // Note: This option is ignored if using JSON Web Tokens
     updateAge: 24 * 60 * 60, // 24 hours
   },
-  // callbacks: {
-  //   // async session({ session, token, user }) {
-  //   //   console.debug(user, 'session-user');
-  //   //   return session
-  //   // },
-  //   async signIn({ user, account, profile, email, credentials }) {
-  
-  //     return true;
-  //   },
-  //   // async jwt({ token, user, account, profile, isNewUser }) {
-  //   //   console.debug(user, 'jwt-user');
-  //   //   console.debug(profile, 'jwt-profile');
-  //   //   return profile
-  //   // }
-  // },
-  // events: {
-  //   async signIn(message) { /* on successful sign in */ },
-  //   async signOut(message) { /* on signout */ },
-  //   async createUser(message) { /* user created */ },
-  //   async updateUser(message) { /* user updated - e.g. their email was verified */ },
-  //   async linkAccount(message) { /* account (e.g. Twitter) linked to a user */ },
-  //   async session(message) { /* session is active */ },
-  //   async error(message) { /* error in authentication flow */ }
-  // },
+  callbacks: {
+    async session({ session, token, user }) {
+      console.log(session, 'session - next-auth')
+      return {...session, user}
+    },
+},
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
@@ -91,6 +61,7 @@ export default NextAuth({
         profile(profile) {
           return {
             id: profile.id.toString(),
+            gh_id: profile.id,
             name: profile.name,
             email: profile.email,
             image: profile.avatar_url,
@@ -100,12 +71,22 @@ export default NextAuth({
           }
     }),
   ],
-  // pages: {
-  //   signIn: '/auth/signin',
-  //   signOut: '/auth/signout',
-  //   error: '/auth/error', // Error code passed in query string as ?error=
-  //   verifyRequest: '/auth/verify-request', // (used for check email message)
-  //   newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-  // },
+  //TODO: add theme colors to sign in 
+//   theme: {
+//     colorScheme: "light", // "auto" | "dark" | "light"
+//     brandColor: "", // Hex color code
+//     logo: "" // Absolute URL to image
+// },
   // debug: true,
+  // logger: {
+  //   error(code, metadata) {
+  //     console.error(code, metadata);
+  //   },
+  //   warn(code) {
+  //     console.warn(code);
+  //   },
+  //   debug(code, metadata) {
+  //     console.debug(code, metadata);
+  //   },
+  // },
 });
