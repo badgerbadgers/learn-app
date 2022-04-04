@@ -8,21 +8,20 @@ function a11yProps(index) {
   };
 }
 
-const PairPrgNav = ({ value, handleChange, pairProgrammingInfo }) => {
+const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
   return (
     <Grid item xs={12} p={0} role="container for tabs">
       <Tabs
         role="tabs"
         value={value}
-        onChange={handleChange}
+        onChange={handleActiveTab}
         aria-label="tabs to navigate through the page"
         orientation="vertical"
-        sx={{ height: "100%" }} //do I need height here?
       >
         {pairProgrammingInfo.map((item, index) => (
           <Tab
             role="tab"
-            key={index}
+            key={item.label}
             sx={{
               backgroundColor: "#ff5c35",
               opacity: 0.9,

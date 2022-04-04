@@ -11,7 +11,7 @@ const PairProgrammingPage = () => {
   const [value, setValue] = React.useState(0);
 
   //function to set an active tab
-  const handleChange = (event, newValue) => {
+  const handleActiveTab = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -23,7 +23,7 @@ const PairProgrammingPage = () => {
         index={
           <PairPrgNav
             value={value}
-            handleChange={handleChange}
+            handleActiveTab={handleActiveTab}
             pairProgrammingInfo={pairProgrammingInfo}
           />
         }
