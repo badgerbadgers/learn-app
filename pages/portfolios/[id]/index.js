@@ -31,7 +31,6 @@ function Cards() {
   }, []);
 
   if (isLoading) return <p>Loading...</p>
-  if (!user) return <p>No profile data</p>
 
   return (
     <Container>
