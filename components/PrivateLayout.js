@@ -1,13 +1,13 @@
 import styles from "../styles/Home.module.css";
 import Header from "./Header";
+import NavBar from "./NavBar";
 
 const PublicLayout = ({ children }) => {
   return (
     <>
       <Header />
-      {/* TO DO ADD NAVBAR*/}
+      <NavBar/>
        <main className={styles.main}>{children}</main>
-      {/* <main>{children}</main> */}
     </>
   );
 };

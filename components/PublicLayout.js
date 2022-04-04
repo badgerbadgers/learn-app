@@ -7,7 +7,6 @@ const PublicLayout = ({children}) => {
         <>
         <Header/>
         <main className={styles.main}>{children}</main>
-        {/* <main>{children}</main> */}
         </>
     );
 }
