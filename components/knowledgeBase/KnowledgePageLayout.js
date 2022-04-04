@@ -6,7 +6,7 @@ import { Grid, Typography } from "@mui/material";
 const KnowledgePageLayout = memo(({ title, index, body }) => {
   return (
     <div style={{ margin: "70px 47px 0px 47px" }}>
-      <Grid container p={0} m={0} sx={{maxWidth: "1500px", margin: "auto"}}>
+      <Grid container p={0} m={0} sx={{ maxWidth: "1500px", margin: "auto" }}>
         {/* They can see a (div) with Page Title */}
         <Grid
           item
@@ -28,7 +28,6 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
         {/* Content Body container (div) which has 2 sub grids 1.Index / Navigation with links 2.Display Body */}
         <Grid
           container
-          spacing={2}
           sx={{ margin: 0, align: "center", textAlign: "center" }}
         >
           <Grid
@@ -39,11 +38,12 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
             md={3}
             sx={{
               borderRight: "1px solid #f1f1f1",
+              paddingTop: 4,
             }}
           >
             {index}
           </Grid>
-          <Grid item container role="body container" xs={12} md={9}>
+          <Grid item container role="body container" xs={12} md={9} sx={{paddingTop: 4}}>
             {body}
           </Grid>
         </Grid>
