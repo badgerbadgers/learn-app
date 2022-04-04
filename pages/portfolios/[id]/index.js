@@ -10,6 +10,7 @@ import styles from '../../../styles/Portfolio.module.css'
 
 function Cards() {
   const [user, setUser] = useState(null);
+  const [isLoading, setLoading] = useState(false)
 
   // Consuming local JSON data using fetch API
   const router = useRouter();
@@ -18,8 +19,6 @@ function Cards() {
   const getUserData = async () => {
     let res = await axios.get("/api/users", {params: {id: id}});
     let data = await res.data;
-
-    console.log(data);
     return data;
   };
 
@@ -27,8 +26,12 @@ function Cards() {
     (async () => {
       const userFromFetch = await getUserData();
       setUser(userFromFetch);
+      setLoading(false);
     })();
   }, []);
+
+  if (isLoading) return <p>Loading...</p>
+  if (!user) return <p>No profile data</p>
 
   return (
     <Container>
