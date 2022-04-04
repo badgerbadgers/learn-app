@@ -56,26 +56,13 @@ const NavBar = () => {
             <Link href="/" passHref>
               <MenuItem onClick={handleMenuClose}>Home</MenuItem>
             </Link>
-            {session && (
-              <div>
-                <li>
-                  <Link
-                    href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
-                  >
-                    Portfolio
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={`/userform/${encodeURIComponent(session.user.gh)}`}
-                  >
-                    Edit Portfolio
-                  </Link>
-                </li>
-              </div>
-            )}
+            <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
+              <MenuItem>Portfolio</MenuItem>
+            </Link>
+            <Link href={`/userform/${encodeURIComponent(session.user.gh)}`}>
+              <MenuItem>Edit Portfolio</MenuItem>
+            </Link>
           </Menu>
-
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Code the Dream
           </Typography>
