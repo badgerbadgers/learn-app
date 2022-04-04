@@ -23,7 +23,7 @@ const renderingFunction = (item) => {
     return (
       <>
         {subHeader}
-        <List key={`${item.subHeader.slice(0, 7)}`} role={"list"}>
+        <List key={`${item.subHeader.slice(0, 7)}`} >
           {listOfItems}
         </List>
       </>
@@ -41,9 +41,9 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
   return (
     <>
       {pairProgrammingInfo.map((item, index) => (
-        <TabPanel value={value} index={index.header} key={-index}>
+        <TabPanel value={value} index={index} key={item.header}>
           <Grid item xs={9} key={`grid${index}`}>
-            <Typography variant="h4" key={item.header}>
+            <Typography variant="h4" key={item.header.slice(0,5)}>
               {item.header}
             </Typography>
             <List key={`${index}ul`}>
@@ -55,7 +55,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
 
           {/* check if object item has an key 'image' and render an image */}
           {item.img && (
-            <Grid role="container for img" item xs={3} key={`img${index}`}>
+            <Grid item xs={3} key={`img${index}`}>
               <Image
                 alt=""
                 width={220}
@@ -68,7 +68,6 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
           {/* check if object item has a 'quote' key and render it */}
           {item.quote && (
             <Grid
-              role="container for quote"
               item
               sx={{ mt: 3 }}
               key={item.quote}

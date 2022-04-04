@@ -10,9 +10,8 @@ function a11yProps(index) {
 
 const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
   return (
-    <Grid item xs={12} p={0} role="container for tabs">
+    <Grid item xs={12} p={0} >
       <Tabs
-        role="tabs"
         value={value}
         onChange={handleActiveTab}
         aria-label="tabs to navigate through the page"
@@ -20,7 +19,6 @@ const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
       >
         {pairProgrammingInfo.map((item, index) => (
           <Tab
-            role="tab"
             key={item.label}
             sx={{
               backgroundColor: "#ff5c35",
