@@ -16,26 +16,26 @@ function MyApp(props) {
   const [darkMode, setDarkMode] = useState(true);
 
   return (
-    // <ThemeContextWrapper>
-    //   <ThemeContext.Consumer>
-    //     {({ changeTheme }) => (
-    //       <Grid item display="flex" m={4}>
-    //         <Avatar alt="Code the Deam" src="../img/ctd-logo.png">
-    //           CD
-    //         </Avatar>
-    //         <Switch
-    //           checked={darkMode}
-    //           onClick={() => {
-    //             setDarkMode(!darkMode);
-    //             changeTheme(darkMode ? themes.light : themes.dark);
-    //           }}
-    //         />
-    //         <Typography variant="8" alignSelf="center">
-    //           {darkMode ? "Dark Mode" : "Light Mode"}
-    //         </Typography>
-    //       </Grid>
-    //     )}
-    //   </ThemeContext.Consumer>
+    <ThemeContextWrapper>
+      <ThemeContext.Consumer>
+        {({ changeTheme }) => (
+          <Grid item display="flex" m={4}>
+            <Avatar variant="square" alt="Code the Dream logo" src="../img/ctd-logo.png">
+              CD
+            </Avatar>
+            <Switch
+              checked={darkMode}
+              onClick={() => {
+                setDarkMode(!darkMode);
+                changeTheme(darkMode ? themes.light : themes.dark);
+              }}
+            />
+            <Typography variant="8" alignSelf="center">
+              {darkMode ? "Dark Mode" : "Light Mode"}
+            </Typography>
+          </Grid>
+        )}
+      </ThemeContext.Consumer>
       <SessionProvider session={session}>
         {props.Component.name === "Cards" ? (
           <PublicLayout>
@@ -47,7 +47,7 @@ function MyApp(props) {
           </PrivateLayout>
         )}
       </SessionProvider>
-    // </ThemeContextWrapper>
+    </ThemeContextWrapper>
   );
 }
 
