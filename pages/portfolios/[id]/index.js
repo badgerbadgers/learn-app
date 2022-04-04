@@ -18,6 +18,8 @@ function Cards() {
   const getUserData = async () => {
     let res = await axios.get("/api/users", {params: {id: id}});
     let data = await res.data;
+
+    console.log(data);
     return data;
   };
 

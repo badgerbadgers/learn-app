@@ -6,8 +6,8 @@ const PublicLayout = ({ children }) => {
     <>
       <Header />
       {/* TO DO ADD NAVBAR*/}
-       {/* <main className={styles.main}>{children}</main> */}
-      <main>{children}</main>
+       <main className={styles.main}>{children}</main>
+      {/* <main>{children}</main> */}
     </>
   );
 };

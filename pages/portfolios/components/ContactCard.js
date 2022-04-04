@@ -37,7 +37,7 @@ function ContactCard({ user }) {
             className={classes.avatarImage}
             style={{ alignItems: "center" }}
             alt="User Picture"
-            src={user.userAvatar}
+            src={user.image}
           />
           <div>
             <Typography variant="h4" component="div" marginTop="15px">

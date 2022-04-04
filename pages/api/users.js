@@ -1,3 +1,4 @@
+import { getSession } from 'next-auth/react'
 import { connectToDatabase } from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
@@ -28,9 +29,9 @@ export default async function handler(req, res) {
 const getUser = async (res, req) => {
   // connect to database
   const { db } = await connectToDatabase();
-
   // find the document matching the query.id - github id
   let doc = await db.collection('usersprofile').findOne({gh: req.query.id})
+
   return res.status(200).json(doc);
 };
 
@@ -38,22 +39,32 @@ const getUser = async (res, req) => {
 const updateUser = async (req, res) => {
   //connect to database 
   const { db } = await connectToDatabase();
-  //data object from submit form  -- need to add image, github html
+
+  //get user ObjectId and image from session 
+  const session = await getSession({ req })
+  const userId = session.user.id;
+  const image = session.user.image; 
+
+
+  //data object from submit form
   let data = req.body.body;
 
   data = JSON.parse(data);
   data["gh"] = req.query.id
-  data["user_id"] //  = ObjectId(from the get user - so make another call or grab it from the session) 
+  data["userId"] = ObjectId(userId);
+  data["image"] = image; 
 
+  // TODO: DO I add a date
   // data.date = new Date(data.date); -- should i add a data when I update it. 
+  
+  /* The function below should do the following
+    1) find the document and if exists update it, if not create a new one
+    2) insertOne or findOneAndUpdate ()
+    3) 
+  
+  */
 
-  let doc = await db.collection('usersprofile').insertOne(data, function(err, res) {
-    if (err) throw err;
-    console.log("1 document inserted");
-    // db.close();
-  });
+  let doc = await db.collection('usersprofile').findOneAndUpdate({gh: req.query.id}, {$set:data}, {upsert: true});
 
-  // let doc = await db.collection('users').insert({gh: req.query.id}, {$set:data}, {upsert: true})
-
-  res.json({ message: `update User ${req.query.id}` });
+  res.status(200).json({ message: `updated User ${req.query.id}` });
 };

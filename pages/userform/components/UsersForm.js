@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Chip, Grid, TextField, Typography, Button } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
 import { useRouter } from "next/router";
 // import { makeStyles } from "@mui/styles";
 // import { useTheme } from "@mui/material/styles";
@@ -81,13 +81,17 @@ function UsersForm() {
       techStackArray,
       previousIndustryArray,
     };
-    axios.post("/api/users", {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)},
-     {params: {id: id}}
-    )
+    axios
+      .post(
+        "/api/users",
+        {
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        },
+        { params: { id: id } }
+      )
       .then((res) => {
-      console.log(res.status, 'res status')
+        console.log(res, "response");
       })
       .catch((error) => {
         console.error("Error:", error);
