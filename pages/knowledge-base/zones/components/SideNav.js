@@ -75,6 +75,7 @@ export default memo(function SideNav({
           accordion;
         return (
           <Accordion
+          key={id}
             role={heading}
             expanded={expanded === id || isDesktop}
             onChange={handleChange(id)}
