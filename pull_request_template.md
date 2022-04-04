@@ -1,6 +1,6 @@
 ## Description
 
-<!-- What does this code change? Why did I choose this approach? Did I learn anything worth sharing? 
+<!-- What does this code change? Why did I choose this approach? Did I learn anything worth sharing? -->
 
 ## Related Issue
 
@@ -32,7 +32,7 @@
 
 ### After
 
-<!-- If UI feature, take provide screenshots -->å
+<!-- If UI feature, take provide screenshots -->
 
 ## Testing Steps / QA Criteria
 
