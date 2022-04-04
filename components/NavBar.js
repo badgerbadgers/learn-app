@@ -53,15 +53,21 @@ const NavBar = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <Link href="/" passHref>
-              <MenuItem onClick={handleMenuClose}>Home</MenuItem>
-            </Link>
-            <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
-              <MenuItem>Portfolio</MenuItem>
-            </Link>
-            <Link href={`/userform/${encodeURIComponent(session.user.gh)}`}>
-              <MenuItem>Edit Portfolio</MenuItem>
-            </Link>
+            {session && (
+              <div>
+                <Link href="/" passHref>
+                  <MenuItem onClick={handleMenuClose}>Home</MenuItem>
+                </Link>
+                <Link
+                  href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
+                >
+                  <MenuItem>Portfolio</MenuItem>
+                </Link>
+                <Link href={`/userform/${encodeURIComponent(session.user.gh)}`}>
+                  <MenuItem>Edit Portfolio</MenuItem>
+                </Link>
+              </div>
+            )}
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Code the Dream
