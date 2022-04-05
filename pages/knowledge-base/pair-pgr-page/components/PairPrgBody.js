@@ -21,12 +21,12 @@ const renderingFunction = (item) => {
       );
     });
     return (
-      <>
+      <div key={item.subHeader.slice(0,8)}>
         {subHeader}
         <List key={`${item.subHeader.slice(0, 7)}`} >
           {listOfItems}
         </List>
-      </>
+      </div>
     );
   } else {
     return (

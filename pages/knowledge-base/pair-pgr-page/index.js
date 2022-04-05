@@ -1,28 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import PairPrgBody from "./components/PairPrgBody";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import PairPrgNav from "./components/PairPrgNav";
 import PairPrgTitle from "./components/PairPrgTitle";
 import { pairProgrammingInfo } from "../../../lib/pairPrgInfo";
 
-import { CssBaseline } from "@mui/material";
-
 const PairProgrammingPage = () => {
-  const [value, setValue] = React.useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   //function to set an active tab
   const handleActiveTab = (event, newValue) => {
-    setValue(newValue);
+    setActiveTab(newValue);
   };
 
   return (
     <>
-      <CssBaseline /> {/* not sure it it needed here, if we are going to use it - better to wrap around myapp */}
       <KnowledgePageLayout
         title={<PairPrgTitle />}
         index={
           <PairPrgNav
-            value={value}
+            value={activeTab}
             handleActiveTab={handleActiveTab}
             pairProgrammingInfo={pairProgrammingInfo}
           />
@@ -30,7 +27,7 @@ const PairProgrammingPage = () => {
         body={
           <PairPrgBody
             pairProgrammingInfo={pairProgrammingInfo}
-            value={value}
+            value={activeTab}
           />
         }
       ></KnowledgePageLayout>
