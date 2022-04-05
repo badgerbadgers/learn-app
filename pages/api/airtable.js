@@ -1,8 +1,7 @@
-var Airtable = require("airtable");
-var base = new Airtable({ apiKey: process.env.AT_KEY }).base(
-  "appbGPDD4eNnI25Si"
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
+  process.env.AIRTABLE_BASE_ID
 );
-import axios from "axios";
 
 export default function handler(req, res) {
   const { method } = req;

@@ -65,15 +65,8 @@ const DisplayZones = ({ skillData }) => {
   return (
     <>
       {skillData.map((doc) => (
-        <Grid
-          item
-          container
-          role="ZoneData content"
-          p={0}
-          marginBottom={3}
-          key={doc.id}
-        >
-          <Grid item role="skill Title" xs={12} pl={0}>
+        <Grid item container role="grid" p={0} marginBottom={3} key={doc.id}>
+          <Grid item xs={12} pl={0}>
             <Typography
               variant="h4"
               sx={{
@@ -83,7 +76,7 @@ const DisplayZones = ({ skillData }) => {
               {doc.fields.Name}
             </Typography>
           </Grid>
-          <Grid item role="skill description" xs={12} pt={4}>
+          <Grid item xs={12} pt={4}>
             <Typography variant="body">
               {doc.fields.Description.replace(/^\s+|\s+$/g, "")}
             </Typography>
@@ -91,7 +84,6 @@ const DisplayZones = ({ skillData }) => {
           <Grid
             item
             container
-            role="Display cards container"
             rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 2 }}
             p={2}
@@ -99,14 +91,7 @@ const DisplayZones = ({ skillData }) => {
             m={0}
           >
             {zoneArr.map((doc) => (
-              <Grid
-                item
-                xs={12}
-                md={4}
-                key={doc.head}
-                role="each card item grid"
-                sx={{}}
-              >
+              <Grid item xs={12} md={4} key={doc.head} sx={{}}>
                 <Card
                   sx={{
                     border: "1px solid",
@@ -125,7 +110,6 @@ const DisplayZones = ({ skillData }) => {
                     title={doc.head}
                   />
                   <CardContent
-                    role="Card Container"
                     sx={{
                       display: "flex",
                       paddingBottom: "10px",

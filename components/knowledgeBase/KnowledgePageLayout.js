@@ -10,7 +10,6 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
         {/* div for Page Title */}
         <Grid
           item
-          role="title container"
           xs={12}
           sx={{
             align: "center",
@@ -39,7 +38,6 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
           <Grid
             item
             container
-            role="index container"
             xs={12}
             md={3}
             sx={{
@@ -49,14 +47,7 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
           >
             {index}
           </Grid>
-          <Grid
-            item
-            container
-            role="body container"
-            xs={12}
-            md={9}
-            sx={{ paddingTop: 4 }}
-          >
+          <Grid item container xs={12} md={9} sx={{ paddingTop: 4 }}>
             {body}
           </Grid>
         </Grid>

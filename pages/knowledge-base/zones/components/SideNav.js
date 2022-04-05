@@ -16,32 +16,42 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default memo(function SideNav({
   techIndex,
-  persnIndex,
+  personIndex,
   setSkillID,
   skillID,
 }) {
   const [liValue, setLiValue] = useState("");
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState({});
   const isDesktop = useMediaQuery("(min-width:900px)");
 
-  // isDesktop checks if the screen width is more than 600px and if true expanded is false.
+  //isDesktop checks if the screen width is more than 900px and if true expanded is false.
 
-  const handleChange = (panel) => (isExpanded) => {
+  const handleChange = (accordion) => (event, isExpanded) => {
+    //console.log(isExpanded, "******value of panel");
+    //console.log(panel, "**** panel value");
+    console.log("****isDesktop: " + isDesktop);
     if (isDesktop) {
       return;
     }
-    setExpanded(isExpanded ? panel : false);
+
+    const updatedExpanded = expanded;
+    updatedExpanded[accordion] = !updatedExpanded[accordion];
+    setExpanded(updatedExpanded);
+    console.log(
+      "************updatedExpanded: " + JSON.stringify(updatedExpanded)
+    );
   };
 
+  console.log(expanded);
   useEffect(() => {
     setLiValue(skillID);
-  }, [persnIndex, techIndex]);
+  }, [personIndex, techIndex]);
 
   //created an array of object with respective skills index data so we iterate over the data to form accordion panel for each skill type.
 
   const sideIndex = [
     {
-      id: "panel1",
+      id: "panel1bh",
       icon: (
         <CodeOffOutlinedIcon
           sx={{ width: "25%", flexShrink: 0, fontSize: "1.8rem" }}
@@ -49,42 +59,52 @@ export default memo(function SideNav({
       ),
       heading: "Technical Skills",
       details: techIndex,
-      ulLabel: "tech sskill index ul",
+      ulLabel: "tech skill index ul",
       liLabel: "technical skills index li",
       bgColor: "#FF5C35",
+      isExpanded: true,
     },
     {
-      id: "panel2",
+      id: "panel2bh",
       icon: (
         <PsychologyOutlinedIcon
           sx={{ width: "25%", flexShrink: 0, fontSize: "2rem" }}
         />
       ),
       heading: "Personal Skills",
-      details: persnIndex,
+      details: personIndex,
       ulLabel: "personal skills index ul",
       liLabel: "personal skills index li",
       bgColor: "#12284C",
+      isExpanded: true,
     },
   ];
 
   return (
     <div style={{ padding: "16px" }}>
       {sideIndex.map((accordion) => {
-        const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
-          accordion;
+        const {
+          id,
+          icon,
+          heading,
+          details,
+          ulLabel,
+          liLabel,
+          bgColor,
+          isExpanded,
+        } = accordion;
         return (
           <Accordion
-            role={heading}
-            expanded={expanded === id || isDesktop}
+            key={id}
+            expanded={expanded[id] || isDesktop}
             onChange={handleChange(id)}
           >
             <AccordionSummary
               expandIcon={
                 isDesktop ? "" : <ExpandMoreIcon sx={{ color: "#fff" }} />
               }
-              aria-controls="{id}-content"
-              id="{id}-header"
+              aria-controls={`${id}-content`}
+              id={`${id}-header`}
               sx={{
                 backgroundColor: bgColor,
                 color: "#fff",

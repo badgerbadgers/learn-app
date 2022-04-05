@@ -10,9 +10,13 @@ function Skillszoning() {
 
   // Consuming local JSON data using fetch API from api/airtable.js
   const getData = async () => {
-    let res = await axios.get("/api/airtable", { params: { isZones: true } });
-    let data = await res.data;
-    return data;
+    try {
+      let res = await axios.get("/api/airtable", { params: { isZones: true } });
+      let data = await res.data;
+      return data;
+    } catch (e) {
+      console.log("ERROR with ZONES FETCH", e.message);
+    }
   };
 
   useEffect(() => {
@@ -36,7 +40,7 @@ function Skillszoning() {
       : []
   );
 
-  const persnIndex = zoningData.flatMap((doc) =>
+  const personIndex = zoningData.flatMap((doc) =>
     doc.fields["Single Select"] == "Soft Skills"
       ? [
           {
@@ -61,7 +65,7 @@ function Skillszoning() {
       index={
         <SideNav
           techIndex={techIndex}
-          persnIndex={persnIndex}
+          personIndex={personIndex}
           skillID={skillID}
           setSkillID={setSkillID}
         />
