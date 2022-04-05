@@ -1,5 +1,16 @@
 import React, { memo } from "react";
-import { Grid, Typography } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  createTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from "@mui/material";
+
+// Create a theme which will resize the title font size based on the screen width.
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
 
 //Create a Layout for the knowledge Pages. Add a max width of 1500px screen size
 
@@ -16,14 +27,17 @@ const KnowledgePageLayout = memo(({ title, index, body }) => {
             boxShadow: "0 4px 2px -2px #f1f1f2",
           }}
         >
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            {title}
-          </Typography>
+          {/* Applying the theme for the Title */}
+          <ThemeProvider theme={theme}>
+            <Typography
+              variant="h2"
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              {title}
+            </Typography>
+          </ThemeProvider>
         </Grid>
         {/* Content Body container (div) which has 2 sub divs 1.Index / Navigation with links 2.Display Body with top padding of 32px */}
         <Grid

@@ -31,22 +31,15 @@ export default memo(function SideNav({
   //isDesktop checks if the screen width is more than 900px and if true expanded is false.
 
   const handleChange = (accordion) => (event, isExpanded) => {
-    //console.log(isExpanded, "******value of panel");
-    //console.log(panel, "**** panel value");
-    console.log("****isDesktop: " + isDesktop);
+    console.log(isExpanded);
     if (isDesktop) {
       return;
     }
 
     const updatedExpanded = expanded;
     updatedExpanded[accordion] = !updatedExpanded[accordion];
-    setExpanded(updatedExpanded);
-    console.log(
-      "************updatedExpanded: " + JSON.stringify(updatedExpanded)
-    );
+    setExpanded({ ...updatedExpanded });
   };
-
-  console.log(expanded);
 
   //created an array of object with respective skills index data so we iterate over the data to form accordion panel for each skill type.
 

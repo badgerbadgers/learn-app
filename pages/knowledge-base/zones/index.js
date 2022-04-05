@@ -4,20 +4,21 @@ import axios from "axios";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
 
+const getData = async () => {
+  try {
+    let res = await axios.get("/api/airtable", { params: { isZones: true } });
+    let data = await res.data;
+    return data;
+  } catch (e) {
+    console.log("ERROR with ZONES FETCH", e.message);
+  }
+};
+
 function Skillszoning() {
   const [zoningData, setZoningData] = useState([]);
   const [skillID, setSkillID] = useState("");
 
   // Consuming local JSON data using fetch API from api/airtable.js
-  const getData = async () => {
-    try {
-      let res = await axios.get("/api/airtable", { params: { isZones: true } });
-      let data = await res.data;
-      return data;
-    } catch (e) {
-      console.log("ERROR with ZONES FETCH", e.message);
-    }
-  };
 
   useEffect(() => {
     (async () => {
