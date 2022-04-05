@@ -91,7 +91,7 @@ function UsersForm() {
         { params: { id: id } }
       )
       .then((res) => {
-        console.log(res, "response");
+        console.log(res.data.message, "response message");
       })
       .catch((error) => {
         console.error("Error:", error);

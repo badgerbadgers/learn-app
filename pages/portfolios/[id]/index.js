@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useRouter } from "next/router";
 import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
 import SkillsCard from "../components/SkillsCard";
 import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Container } from "@mui/material";
-import styles from '../../../styles/Portfolio.module.css'
+import styles from "../../../styles/Portfolio.module.css";
 
 function Cards() {
   const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(true);
 
   // Consuming local JSON data using fetch API
   const router = useRouter();
   const id = router.query.id;
 
   const getUserData = async () => {
-    let res = await axios.get("/api/users", {params: {id: id}});
-    let data = await res.data;
-    return data;
+    try {
+      let res = await axios.get("/api/users", { params: { id: id } });
+      let data = await res.data;
+      return data;
+    } catch (error) {
+      console.log(error, "error - getUserData - Portfolios ");
+    }
   };
 
   useEffect(() => {
@@ -30,7 +34,7 @@ function Cards() {
     })();
   }, []);
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <Container>
@@ -47,11 +51,12 @@ function Cards() {
         </div>
         <div className={styles.portfolioItem}>
           {user && (
-            <PreviousIndustryCard previousIndustry={user.previousIndustryArray} />
+            <PreviousIndustryCard
+              previousIndustry={user.previousIndustryArray}
+            />
           )}
         </div>
       </div>
-
     </Container>
   );
 }
