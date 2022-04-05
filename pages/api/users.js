@@ -49,19 +49,15 @@ const updateUser = async (req, res) => {
   // data["createdAt"] = new Date();
 
   try {
-    await db
-      .collection("usersprofile")
-      .findOneAndUpdate(
-        { gh: req.query.id },
-        { $set: data },
-        { upsert: true },
-        // thought the statement below would add last modified doesn't seem too 
-        { $currentDate: { lastModified: true } }
-      );
+    await db.collection("usersprofile").findOneAndUpdate(
+      { gh: req.query.id },
+      { $set: data },
+      { upsert: true },
+      // thought the statement below would add last modified doesn't seem too
+      { $currentDate: { lastModified: true } }
+    );
+    res.status(200).json({ message: `updated User ${req.query.id}` });
   } catch (error) {
     console.log(error, "error from updateUser in api/users");
   }
-
-  // does this go in the try / catch ? 
-  res.status(200).json({ message: `updated User ${req.query.id}` });
 };

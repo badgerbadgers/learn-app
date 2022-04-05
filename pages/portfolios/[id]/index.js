@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
@@ -8,27 +7,22 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 
+import getData from "../../../lib/getData";
+
 function Cards() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
-  // Consuming local JSON data using fetch API
+
   const router = useRouter();
   const id = router.query.id;
 
-  const getUserData = async () => {
-    try {
-      let res = await axios.get("/api/users", { params: { id: id } });
-      let data = await res.data;
-      return data;
-    } catch (error) {
-      console.log(error, "error - getUserData - Portfolios ");
-    }
-  };
+  const url = "/api/users"
+  const params = { params: { id: id } }
 
   useEffect(() => {
     (async () => {
-      const userFromFetch = await getUserData();
+      const userFromFetch = await getData(params, url);
       setUser(userFromFetch);
       setLoading(false);
     })();
