@@ -24,6 +24,10 @@ export default memo(function SideNav({
   const [expanded, setExpanded] = useState({});
   const isDesktop = useMediaQuery("(min-width:900px)");
 
+  useEffect(() => {
+    setLiValue(skillID);
+  }, [personIndex, techIndex]);
+
   //isDesktop checks if the screen width is more than 900px and if true expanded is false.
 
   const handleChange = (accordion) => (event, isExpanded) => {
@@ -43,9 +47,6 @@ export default memo(function SideNav({
   };
 
   console.log(expanded);
-  useEffect(() => {
-    setLiValue(skillID);
-  }, [personIndex, techIndex]);
 
   //created an array of object with respective skills index data so we iterate over the data to form accordion panel for each skill type.
 
@@ -62,7 +63,6 @@ export default memo(function SideNav({
       ulLabel: "tech skill index ul",
       liLabel: "technical skills index li",
       bgColor: "#FF5C35",
-      isExpanded: true,
     },
     {
       id: "panel2bh",
@@ -76,23 +76,14 @@ export default memo(function SideNav({
       ulLabel: "personal skills index ul",
       liLabel: "personal skills index li",
       bgColor: "#12284C",
-      isExpanded: true,
     },
   ];
-
+  //
   return (
     <div style={{ padding: "16px" }}>
       {sideIndex.map((accordion) => {
-        const {
-          id,
-          icon,
-          heading,
-          details,
-          ulLabel,
-          liLabel,
-          bgColor,
-          isExpanded,
-        } = accordion;
+        const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
+          accordion;
         return (
           <Accordion
             key={id}
