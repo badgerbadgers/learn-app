@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import axios from "axios";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
+import getData from "../../../lib/getData";
 
-const getData = async () => {
-  try {
-    let res = await axios.get("/api/airtable", { params: { isZones: true } });
-    let data = await res.data;
-    return data;
-  } catch (e) {
-    console.log("ERROR with ZONES FETCH", e.message);
-  }
-};
+const url = "/api/airtable";
+const params = { params: { isZones: true } };
 
 function Skillszoning() {
   const [zoningData, setZoningData] = useState([]);
   const [skillID, setSkillID] = useState("");
 
-  // Consuming local JSON data using fetch API from api/airtable.js
+  // Consuming local JSON data using fetch API from api/airtable.js using the getData function from lib.
 
   useEffect(() => {
     (async () => {
-      const zonesData = await getData();
+      const zonesData = await getData(params, url);
       setZoningData(zonesData);
       setSkillID(zonesData[0].id);
     })();
