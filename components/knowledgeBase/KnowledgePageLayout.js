@@ -7,16 +7,24 @@ import {
   responsiveFontSizes,
 } from "@mui/material";
 
+// Create a theme which will resize the title font size based on the screen width.
+
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
-//Create a Layout for the knowledge Pages.
-//researched - memo hook doesn't work here ...?
+//Create a Layout for the knowledge Pages. Add a max width of 1500px screen size
+
 const KnowledgePageLayout = ({ title, index, body }) => {
   return (
     <div style={{ margin: "70px 30px 0px" }}>
-      <Grid container p={0} m={0} sx={{ maxWidth: "1500px", margin: "auto" }}>
-        {/* They can see a (div) with Page Title */}
+      <Grid
+        container
+        p={0}
+        m={0}
+        sx={{ maxWidth: "1500px", margin: "auto" }}
+        justify="center"
+      >
+        {/* div for Page Title */}
         <Grid
           item
           xs={12}
@@ -25,6 +33,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
             boxShadow: "0 4px 2px -2px #f1f1f2",
           }}
         >
+          {/* Applying the theme for the Title */}
           <ThemeProvider theme={theme}>
             <Typography
               variant="h2"
@@ -36,11 +45,15 @@ const KnowledgePageLayout = ({ title, index, body }) => {
             </Typography>
           </ThemeProvider>
         </Grid>
-        {/* Content Body container (div) which has 2 sub grids 1.Index / Navigation with links 2.Display Body */}
+        {/* Content Body container (div) which has 2 sub divs 1.Index / Navigation with links 2.Display Body with top padding of 32px */}
         <Grid
           item
           container
-          sx={{ margin: 0, align: "center", textAlign: "center" }}
+          sx={{
+            margin: 0,
+            align: "center",
+            textAlign: "center",
+          }}
         >
           <Grid
             item
