@@ -15,7 +15,7 @@ const DisplayZones = ({ skillData }) => {
   1. pushing the individual zone data as object into an array to help iterate over the zone data to create
   Cards and also to give conditional card header and border color between Technical and Personal skills. 
   
-  2. Replaced the blank space from fron and end of the data along with the dots to create Li */
+  2. Replaced the blank space from front and end of the data along with the dots to create Li */
 
   skillData.map((doc) =>
     zoneArr.push(
@@ -24,7 +24,7 @@ const DisplayZones = ({ skillData }) => {
         data: doc.fields.Zone1.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
         bgColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF9D85" : "#8D9DB9",
-        borColor:
+        borderColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
       },
       {
@@ -32,7 +32,7 @@ const DisplayZones = ({ skillData }) => {
         data: doc.fields.Zone2.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
         bgColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF8D70" : "#7488AA",
-        borColor:
+        borderColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
       },
       {
@@ -40,7 +40,7 @@ const DisplayZones = ({ skillData }) => {
         data: doc.fields.Zone3.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
         bgColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF7C5C" : "#506891",
-        borColor:
+        borderColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
       },
       {
@@ -48,7 +48,7 @@ const DisplayZones = ({ skillData }) => {
         data: doc.fields.Zone4.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
         bgColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FA6F4C" : "#324A71",
-        borColor:
+        borderColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
       },
       {
@@ -56,7 +56,7 @@ const DisplayZones = ({ skillData }) => {
         data: doc.fields.Zone5.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
         bgColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-        borColor:
+        borderColor:
           doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
       }
     )
@@ -95,7 +95,7 @@ const DisplayZones = ({ skillData }) => {
                 <Card
                   sx={{
                     border: "1px solid",
-                    borderColor: doc.borColor,
+                    borderColor: doc.borderColor,
                     borderRadius: "0.25rem",
                     margin: "0 auto",
                     height: "100%",
