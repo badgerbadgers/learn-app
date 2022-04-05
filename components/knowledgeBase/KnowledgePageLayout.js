@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { memo } from "react";
+=======
+import React from "react";
+>>>>>>> 1ca9456f5e7315b8b8f61cebed36efb7c119188b
 import {
   Grid,
   Typography,
@@ -7,6 +11,7 @@ import {
   responsiveFontSizes,
 } from "@mui/material";
 
+<<<<<<< HEAD
 // Create a theme which will resize the title font size based on the screen width.
 
 let theme = createTheme();
@@ -25,6 +30,18 @@ const KnowledgePageLayout = ({ title, index, body }) => {
         justify="center"
       >
         {/* div for Page Title */}
+=======
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
+
+//Create a Layout for the knowledge Pages.
+//researched - memo hook doesn't work here ...?
+const KnowledgePageLayout = ({ title, index, body }) => {
+  return (
+    <div style={{ margin: "70px 30px 0px" }}>
+      <Grid container p={0} m={0} sx={{ maxWidth: "1500px", margin: "auto" }}>
+        {/* They can see a (div) with Page Title */}
+>>>>>>> 1ca9456f5e7315b8b8f61cebed36efb7c119188b
         <Grid
           item
           xs={12}
@@ -33,7 +50,10 @@ const KnowledgePageLayout = ({ title, index, body }) => {
             boxShadow: "0 4px 2px -2px #f1f1f2",
           }}
         >
+<<<<<<< HEAD
           {/* Applying the theme for the Title */}
+=======
+>>>>>>> 1ca9456f5e7315b8b8f61cebed36efb7c119188b
           <ThemeProvider theme={theme}>
             <Typography
               variant="h2"
@@ -49,11 +69,15 @@ const KnowledgePageLayout = ({ title, index, body }) => {
         <Grid
           item
           container
+<<<<<<< HEAD
           sx={{
             margin: 0,
             align: "center",
             textAlign: "center",
           }}
+=======
+          sx={{ margin: 0, align: "center", textAlign: "center" }}
+>>>>>>> 1ca9456f5e7315b8b8f61cebed36efb7c119188b
         >
           <Grid
             item
