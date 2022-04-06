@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Chip, Grid, TextField, Typography, Button } from "@mui/material";
+import axios from "axios";
+import { useRouter } from "next/router";
 // import { makeStyles } from "@mui/styles";
 // import { useTheme } from "@mui/material/styles";
 
@@ -27,6 +29,9 @@ function UsersForm() {
   const [skillsArray, setSkillsArray] = useState([]);
   const [techStackArray, setTechStackArray] = useState([]);
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
+
+  const router = useRouter();
+  const id = router.query.id;
 
   const handleTechStackArray = () => {
     const arrayTech = [...techStackArray];
@@ -76,13 +81,17 @@ function UsersForm() {
       techStackArray,
       previousIndustryArray,
     };
-    fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
+    axios
+      .post(
+        "/api/users",
+        {
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        },
+        { params: { id: id } }
+      )
       .then((res) => {
-        console.log(res.status, "res status");
+        console.log(res.data.message, "response message");
       })
       .catch((error) => {
         console.error("Error:", error);
