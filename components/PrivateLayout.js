@@ -2,7 +2,7 @@ import styles from "../styles/Home.module.css";
 import Header from "./Header";
 import NavBar from "./NavBar";
 
-const PublicLayout = ({ children }) => {
+const PrivateLayout = ({ children }) => {
   return (
     <>
       <Header />
@@ -12,4 +12,4 @@ const PublicLayout = ({ children }) => {
   );
 };
 
-export default PublicLayout;
+export default PrivateLayout;

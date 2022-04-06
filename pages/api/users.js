@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { connectToDatabase } from "../../lib/mongodb";
+import  clientPromise  from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
@@ -18,11 +18,12 @@ export default async function handler(req, res) {
 
 const getUser = async (res, req) => {
   // connect to database
-  const { db } = await connectToDatabase();
+  const client = await clientPromise;
+  const database = client.db("myFirstDatabase")
 
   // find the document matching the query.id - github id
   try {
-    let doc = await db.collection("usersprofile").findOne({ gh: req.query.id });
+    let doc = await database.collection("usersprofile").findOne({ gh: req.query.id });
     return res.status(200).json(doc);
   } catch (error) {
     console.log(error, "error from getUser in /api/users");
@@ -30,8 +31,10 @@ const getUser = async (res, req) => {
 };
 
 const updateUser = async (req, res) => {
+
   //connect to database
-  const { db } = await connectToDatabase();
+  const client = await clientPromise;
+  const database = client.db("myFirstDatabase");
 
   //get user ObjectId and image from session
   const session = await getSession({ req });
@@ -45,11 +48,10 @@ const updateUser = async (req, res) => {
   data["gh"] = req.query.id;
   data["userId"] = ObjectId(userId);
   data["image"] = image;
-
-  // data["createdAt"] = new Date();
+  data["createdAt"] = new Date();
 
   try {
-    await db.collection("usersprofile").findOneAndUpdate(
+    await database.collection("usersprofile").findOneAndUpdate(
       { gh: req.query.id },
       { $set: data },
       { upsert: true },

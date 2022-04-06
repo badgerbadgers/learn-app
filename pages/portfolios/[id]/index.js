@@ -11,8 +11,7 @@ import getData from "../../../lib/getData";
 
 function Cards() {
   const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-
+  // const [isLoading, setLoading] = useState(true);
 
   const router = useRouter();
   const id = router.query.id;
@@ -24,11 +23,11 @@ function Cards() {
     (async () => {
       const userFromFetch = await getData(params, url);
       setUser(userFromFetch);
-      setLoading(false);
+      // setLoading(false);
     })();
   }, []);
 
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <p>Loading...</p>;
 
   return (
     <Container>
