@@ -1,40 +1,40 @@
-var Airtable = require('airtable');
-var base = new Airtable({apiKey: process.env.AT_KEY}).base('appbGPDD4eNnI25Si');
-import axios from 'axios'
+const Airtable = require("airtable");
+const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
+  process.env.AIRTABLE_BASE_ID
+);
 
-export default function handler (req, res)  {
-  const {method} = req
+export default function handler(req, res) {
+  const { method } = req;
   switch (method) {
-    case 'GET':
-      console.log('REQ', req.query)
+    case "GET":
+      console.log("REQ", req.query);
       if (req.query.isZones) {
-        return getZoneData(res)
-      } 
+        return getZoneData(res);
+      }
       // handle other cases here
-      break
-    case 'POST':
+      break;
+    case "POST":
       // return handlePost(req, res)
-      break
-    case 'PUT':
-      // return handleUpdate(req, res)
-    case 'DELETE':
-      // return handleDelete(req, res)
+      break;
+    case "PUT":
+    // return handleUpdate(req, res)
+    case "DELETE":
+    // return handleDelete(req, res)
     default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
-
 
 const getZoneData = async (res) => {
   try {
-    const records = await base('Zones').select().all();
-    res.status(200).json(records)
+    const records = await base("Zones").select().all();
+    res.status(200).json(records);
   } catch (e) {
-    console.log('ERROR with ZONES FETCH', e.message)
-    res.status(400).json(e.message)
+    console.log("ERROR with ZONES FETCH", e.message);
+    res.status(400).json(e.message);
   }
-}
+};
 
 // const handlePost = () => {
 
