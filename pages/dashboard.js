@@ -33,7 +33,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'white-content' ? '#1A2027' : "#F4F5F7",
+  backgroundColor: theme.palette.mode === 'white-content' ? '#1A2027' : "#F4F5F7", //not working for now
   maxWidth: 800,
 }));
 
@@ -66,7 +66,7 @@ const Dashboard = () => {
           <>
             <Button sx={{backgroundColor: "#F4F5F7"}}>
               <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
-                Go to your Portfolio
+                Visit your Portfolio page
               </Link>
             </Button>
             <IconButton
@@ -109,8 +109,9 @@ const Dashboard = () => {
           sx={{
             my: 2,
             mx: "auto",
-            p: 8,
+            p: 8
           }}
+          padding={{xs: 1, md: 4, lg: 8}}
         >
           <Grid
             container
@@ -119,10 +120,10 @@ const Dashboard = () => {
             sx={{ justifyContent: "center" }}
           >
             <Grid item >
-              <Card sx={{ minWidth: 275, backgroundColor: "#DFE2E8", padding: '20px' }} >
+              <Card sx={{ minWidth: 315, backgroundColor: "#DFE2E8", padding: '20px' }} >
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
-                  <Typography>Find info about skills zoning</Typography>
+                  <Typography variant="body1">Find info about skills zoning</Typography>
                 </CardContent>
                 <CardActions>
                   <Button
@@ -135,9 +136,9 @@ const Dashboard = () => {
               </Card>
             </Grid>
             <Grid item>
-              <Card sx={{ minWidth: 275, backgroundColor: "#CBCFD9", padding: '20px' }}>
+              <Card sx={{ minWidth: 315, backgroundColor: "#CBCFD9", padding: '20px' }}>
                 <CardHeader title="Pair Programming"></CardHeader>
-                <CardContent><Typography>Find info about pair programming</Typography></CardContent>
+                <CardContent><Typography variant="body1">Find info about pair programming</Typography></CardContent>
                 <CardActions>
                   <Button
                     size="small"
@@ -151,7 +152,7 @@ const Dashboard = () => {
           </Grid>
         </StyledPaper>
       </Container>
-      <Footer />
+      
     </>
   );
 };
