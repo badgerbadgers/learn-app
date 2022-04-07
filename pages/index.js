@@ -6,7 +6,7 @@ import getGitHub from "../lib/github";
 export default function Home() {
   const { data: session } = useSession();
 
-  console.log( getGitHub(), 'octokit response');
+  getGitHub();
 
   return (
     <>
