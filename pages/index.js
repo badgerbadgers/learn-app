@@ -1,12 +1,13 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LogIn from "../components/Login";
-import getGitHub from "../lib/github";
+import {getGitHubMembers, getGitHubRepos} from "../lib/github";
 
 export default function Home() {
   const { data: session } = useSession();
 
-  getGitHub();
+  // getGitHubMembers()
+  // getGitHubRepos()
 
   return (
     <>
