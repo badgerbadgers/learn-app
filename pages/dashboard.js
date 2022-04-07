@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Footer from "../components/Footer";
 import MuiAlert from "@mui/material/Alert";
 import { styled } from "@mui/material/styles";
 import {
@@ -32,18 +31,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'white-content' ? '#1A2027' : "#F4F5F7", //not working for now
-  maxWidth: 800,
-}));
-
 const Dashboard = () => {
-    console.log(theme)
   const { data: session } = useSession();
 
   const [open, setOpen] = useState(false);
 
-  /* const link = `/portfolios/${session.user.gh}`; */
   let router = useRouter();
 
   const handleShare = () => {
@@ -64,7 +56,7 @@ const Dashboard = () => {
       <Container sx={{ py: "2rem" }}>
         {session && (
           <>
-            <Button sx={{backgroundColor: "#F4F5F7"}}>
+            <Button sx={{ backgroundColor: "#F4F5F7" }}>
               <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
                 Visit your Portfolio page
               </Link>
@@ -102,16 +94,18 @@ const Dashboard = () => {
       <Container sx={{ textAlign: "center" }}>
         <ThemeProvider theme={theme}>
           <Typography variant="h3" gutterBottom>
-            Visit out knowledge base section
+            Visit our knowledge base section
           </Typography>
         </ThemeProvider>
-        <StyledPaper
+        <Paper
           sx={{
+            backgroundColor: "#F4F5F7",
+            maxWidth: 800,
             my: 2,
             mx: "auto",
-            p: 8
+            p: 8,
           }}
-          padding={{xs: 1, md: 4, lg: 8}}
+          padding={{ xs: 1, md: 4, lg: 8 }}
         >
           <Grid
             container
@@ -119,11 +113,19 @@ const Dashboard = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
-            <Grid item >
-              <Card sx={{ minWidth: 315, backgroundColor: "#DFE2E8", padding: '20px' }} >
+            <Grid item>
+              <Card
+                sx={{
+                  minWidth: 315,
+                  backgroundColor: "#DFE2E8",
+                  padding: "20px",
+                }}
+              >
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
-                  <Typography variant="body1">Find info about skills zoning</Typography>
+                  <Typography variant="body1">
+                    Find info about skills zoning
+                  </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
@@ -136,9 +138,19 @@ const Dashboard = () => {
               </Card>
             </Grid>
             <Grid item>
-              <Card sx={{ minWidth: 315, backgroundColor: "#CBCFD9", padding: '20px' }}>
+              <Card
+                sx={{
+                  minWidth: 315,
+                  backgroundColor: "#CBCFD9",
+                  padding: "20px",
+                }}
+              >
                 <CardHeader title="Pair Programming"></CardHeader>
-                <CardContent><Typography variant="body1">Find info about pair programming</Typography></CardContent>
+                <CardContent>
+                  <Typography variant="body1">
+                    Find info about pair programming
+                  </Typography>
+                </CardContent>
                 <CardActions>
                   <Button
                     size="small"
@@ -150,9 +162,8 @@ const Dashboard = () => {
               </Card>
             </Grid>
           </Grid>
-        </StyledPaper>
+        </Paper>
       </Container>
-      
     </>
   );
 };
