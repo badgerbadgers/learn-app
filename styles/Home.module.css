@@ -11,6 +11,17 @@
   padding-bottom: 2.5rem; /* footer height */
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.8rem; 
+  background-color: #FF5C35;
+  text-align: center;
+  color: white;
+  font-size: 0.8rem;
+  padding-top: 10px;
+}
 
 .title a {
   color: #0070f3;
