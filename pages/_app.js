@@ -17,10 +17,14 @@ function MyApp(props) {
 
   return (
     <ThemeContextWrapper>
-      <ThemeContext.Consumer>
+      {/* <ThemeContext.Consumer>
         {({ changeTheme }) => (
           <Grid item display="flex" m={4}>
-            <Avatar variant="square" alt="Code the Dream logo" src="../img/ctd-logo.png">
+            <Avatar
+              variant="square"
+              alt="Code the Dream logo"
+              src="../img/ctd-logo.png"
+            >
               CD
             </Avatar>
             <Switch
@@ -35,7 +39,7 @@ function MyApp(props) {
             </Typography>
           </Grid>
         )}
-      </ThemeContext.Consumer>
+      </ThemeContext.Consumer> */}
       <SessionProvider session={session}>
         {props.Component.name === "Cards" ? (
           <PublicLayout>

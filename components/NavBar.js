@@ -1,36 +1,135 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
+import { ThemeContext, themes } from "../components/theme/themeContext";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import { useSession } from "next-auth/react";
+import {
+  AppBar,
+  Container,
+  Switch,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+  Tooltip,
+  Avatar,
+} from "@mui/material/";
 
 const NavBar = () => {
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(true);
   const { data: session, status } = useSession();
+  const user = null;
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  if (status === "authenticated") {
+    user = { ...(session.user.name || session.user.gh) };
+  }
+
+  const settings = [
+    {
+      href: "{`/portfolios/${encodeURIComponent(user)}`}",
+      title: "Portfolio",
+    },
+    {
+      href: "/",
+      title: "Github",
+    },
+    {
+      href: "/",
+      title: "Logout",
+    },
+  ];
 
   //change to more normal JS
-  const open = Boolean(anchorEl);
+  const open = !anchorElUser;
 
+  // open the Menu when hover over the avatar
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // close the Menu when you select any Menu item
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setAnchorElUser(null);
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
+    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          {/* code for Logo */}
+          <Avatar
+            variant="square"
+            alt="Code the Dream logo"
+            src="../img/CTD-Labs_Primary[1].png"
+            noWrap
+            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            onClick={() => {
+              router.push({ pathname: "/" });
+            }}
+          >
+            CD
+          </Avatar>
+          {/* Dark Mode switch */}
+          <Switch
+            checked={darkMode}
+            onClick={() => {
+              setDarkMode(!darkMode);
+              changeTheme(darkMode ? themes.light : themes.dark);
+            }}
+          />
+          <Typography variant="8" alignSelf="center">
+            {darkMode ? "Dark Mode" : "Light Mode"}
+          </Typography>
+
+          {/* Box for the user Image and Menu */}
+          {session && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleMenuClick} sx={{ p: 0 }}>
+                  <Avatar alt="User Image" src={session.user.image} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleMenuClose}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.title} onClick={handleMenuClose}>
+                    <Link href={setting.href} passHref>
+                      <Typography textAlign="center">
+                        {setting.title}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
+export default NavBar;
+
+{
+  /* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -43,8 +142,10 @@ const NavBar = () => {
             onClick={handleMenuClick}
           >
             <MenuIcon />
-          </IconButton>
-          <Menu
+          </IconButton> */
+}
+{
+  /* <Menu
             id="basic-menu"
             anchorEl={anchorEl}
             open={open}
@@ -79,10 +180,5 @@ const NavBar = () => {
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Code the Dream
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  );
-};
-export default NavBar;
+          </Typography> */
+}
