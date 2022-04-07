@@ -6,8 +6,8 @@ const PrivateLayout = ({ children }) => {
   return (
     <>
       <Header />
-      <NavBar/>
-       <main className={styles.main}>{children}</main>
+      <NavBar />
+      <main className={styles.main}>{children}</main>
     </>
   );
 };
