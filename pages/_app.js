@@ -20,7 +20,11 @@ function MyApp(props) {
       <ThemeContext.Consumer>
         {({ changeTheme }) => (
           <Grid item display="flex" m={4}>
-            <Avatar variant="square" alt="Code the Dream logo" src="../img/ctd-logo.png">
+            <Avatar
+              variant="square"
+              alt="Code the Dream logo"
+              src="../img/ctd-logo.png"
+            >
               CD
             </Avatar>
             <Switch
@@ -37,7 +41,7 @@ function MyApp(props) {
         )}
       </ThemeContext.Consumer>
       <SessionProvider session={session}>
-        {props.Component.name === "Cards" ? (
+        {props.Component.name === ("Portfolio" || "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>

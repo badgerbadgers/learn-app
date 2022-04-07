@@ -4,9 +4,9 @@ import { Stack, Button, Typography } from "@mui/material/";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
-  font: {
-    font: "Gotham Rounded Bold A",
-  },
+  // font: {
+  //   fontSize: "Gotham Rounded",
+  // },
   button: {
     backgroundColor: "#FF5C35",
     "&:hover": {
@@ -17,59 +17,69 @@ const useStyles = makeStyles({
 
 export default function LogIn() {
   const { data: session, status } = useSession();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isloggedIn, setIsLoggedIn] = useState(false);
 
   const classes = useStyles();
 
   const handleLogin = () => {
-    if (loggedIn === true) {
-      console.log("***** SignOut***");
+    // if (status === "authenticated") {
+    if (status === "authenticated") {
+      setIsLoggedIn(false);
+      console.log("***** SignOut***  loggedout");
+      // console.log("Signed in as", session.user.name || session.user.gh);
       signOut();
     } else {
-      console.log("*******I am SingIn", loggedIn);
+      console.log("*******I am waiting for SingIn loggedIn");
+      console.log("Signed in as", session.user.name || session.user.gh);
       signIn();
+      setIsLoggedIn(true);
     }
+
+    // }
   };
 
-  console.log(loggedIn);
+  console.log(isloggedIn, "*****loggedIn status");
 
   const buttonData = [
     {
-      title: loggedIn ? "Log-Out" : "Log-In",
+      title: isloggedIn ? "Log-Out" : "Log-In",
       onClick: () => {
-        handleLogin;
-        setLoggedIn(!loggedIn);
+        signIn();
       },
     },
     {
       title: "Sign-Up",
       onClick: () => {
-        "";
+        {
+          `/userform/${encodeURIComponent(session.user.gh)}`;
+        }
       },
     },
   ];
 
   return (
-    <Stack spacing={8} mt={6}>
-      {buttonData.map((btn, i) => (
-        <Button
-          key={i}
-          size="large"
-          variant="contained"
-          onClick={btn.onClick}
-          sx={{
-            width: 300,
-            height: 100,
-            backgroundColor: "#FF5C35",
-            "&:hover": {
-              backgroundColor: "#12284C",
-            },
-          }}
-        >
-          <Typography font={classes.font}>{btn.title}</Typography>
-        </Button>
-      ))}
-    </Stack>
+    <>
+      <Stack spacing={8} mt={6}>
+        {buttonData.map((btn, i) => (
+          <Button
+            key={i}
+            size="large"
+            variant="contained"
+            onClick={btn.onClick}
+            sx={{
+              width: 300,
+              height: 100,
+              backgroundColor: "#FF5C35",
+              "&:hover": {
+                backgroundColor: "#12284C",
+              },
+            }}
+          >
+            <Typography>{btn.title}</Typography>
+          </Button>
+        ))}
+      </Stack>
+    </>
   );
 }
 

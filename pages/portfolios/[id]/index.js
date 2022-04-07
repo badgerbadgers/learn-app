@@ -9,15 +9,15 @@ import styles from "../../../styles/Portfolio.module.css";
 
 import getData from "../../../lib/getData";
 
-function Cards() {
+function Portfolio() {
   const [user, setUser] = useState(null);
   // const [isLoading, setLoading] = useState(true);
 
   const router = useRouter();
   const id = router.query.id;
 
-  const url = "/api/users"
-  const params = { params: { id: id } }
+  const url = "/api/users";
+  const params = { params: { id: id } };
 
   useEffect(() => {
     (async () => {
@@ -54,4 +54,4 @@ function Cards() {
   );
 }
 
-export default Cards;
+export default Portfolio;
