@@ -1,10 +1,20 @@
 
 html,
 body {
-  padding: 0;
+  position: relative;
+  min-height: 100vh;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem; 
+  background-color: #FF5C35;
+  text-align: center;
 }
 
 a {
