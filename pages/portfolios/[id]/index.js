@@ -7,10 +7,9 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import Image from "next/image";
-
 import getData from "../../../lib/getData";
 
-function Cards() {
+function Portfolio() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
@@ -58,4 +57,5 @@ function Cards() {
   );
 }
 
-export default Cards;
+export default Portfolio;
+
