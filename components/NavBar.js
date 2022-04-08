@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import { ThemeContext, themes } from "../components/theme/themeContext";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import {
   AppBar,
   Container,
@@ -22,6 +20,7 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
   const { data: session, status } = useSession();
+  const router = useRouter();
   const user = null;
 
   if (status === "authenticated") {
@@ -32,23 +31,23 @@ const NavBar = () => {
     {
       href: "{`/portfolios/${encodeURIComponent(user)}`}",
       title: "Portfolio",
+      onClick: "",
     },
     {
-      href: "/",
+      href: "http://github.com/?${session.user.gh}",
       title: "Github",
+      onClick: "",
     },
     {
-      href: "/",
+      href: "",
       title: "Logout",
+      onClick: () => signOut(),
     },
   ];
 
-  //change to more normal JS
-  const open = !anchorElUser;
-
-  // open the Menu when hover over the avatar
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  // open the Menu when clicked on the avatar
+  const handleMenuOpen = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
   // close the Menu when you select any Menu item
@@ -57,73 +56,112 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* code for Logo */}
-          <Avatar
-            variant="square"
-            alt="Code the Dream logo"
-            src="../img/CTD-Labs_Primary[1].png"
-            noWrap
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => {
-              router.push({ pathname: "/" });
+    <ThemeContext.Consumer>
+      {({ changeTheme }) => (
+        <div>
+          <AppBar
+            role="appBar"
+            position="static"
+            color="default"
+            sx={{
+              backgroundColor: "white",
             }}
           >
-            CD
-          </Avatar>
-          {/* Dark Mode switch */}
-          <Switch
-            checked={darkMode}
-            onClick={() => {
-              setDarkMode(!darkMode);
-              changeTheme(darkMode ? themes.light : themes.dark);
-            }}
-          />
-          <Typography variant="8" alignSelf="center">
-            {darkMode ? "Dark Mode" : "Light Mode"}
-          </Typography>
+            <Container maxWidth={false} sx={{ mx: 0 }}>
+              <Toolbar disableGutters>
+                {/* code for Logo */}
+                <Avatar
+                  variant="square"
+                  alt="Code the Dream logo"
+                  src={
+                    !darkMode
+                      ? "../img/CTD-Labs_Primary-Blue-BG[1].png"
+                      : "../img/CTD-Labs_Primary[1].png"
+                  }
+                  sx={{
+                    mr: 3,
+                    display: "flex",
+                    width: "auto",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    router.push({ pathname: "/" });
+                  }}
+                >
+                  CD
+                </Avatar>
+                {/* Dark Mode switch */}
 
-          {/* Box for the user Image and Menu */}
-          {session && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleMenuClick} sx={{ p: 0 }}>
-                  <Avatar alt="User Image" src={session.user.image} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={handleMenuClose}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting.title} onClick={handleMenuClose}>
-                    <Link href={setting.href} passHref>
-                      <Typography textAlign="center">
-                        {setting.title}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          )}
-        </Toolbar>
-      </Container>
-    </AppBar>
+                <Switch
+                  checked={darkMode}
+                  onClick={() => {
+                    setDarkMode(!darkMode);
+                    changeTheme(darkMode ? themes.light : themes.dark);
+                  }}
+                />
+                <Typography variant="8" alignSelf="center" color="default">
+                  {darkMode ? "Dark Mode" : "Light Mode"}
+                </Typography>
+
+                {/* Box for the user Image and Menu */}
+                {session && (
+                  <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                        <Avatar alt="User Image" src={session.user.image} />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Menu
+                      sx={{
+                        mt: "45px",
+                        top: { xs: "-9px" },
+                        left: { xs: "10px" },
+                      }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleMenuClose}
+                    >
+                      {settings.map((setting) => (
+                        <MenuItem
+                          key={setting.title}
+                          onClick={() => {
+                            {
+                              setting.onClick;
+                            }
+                            handleMenuClose();
+                          }}
+                        >
+                          <a
+                            href={setting.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Typography textAlign="center">
+                              {setting.title}
+                            </Typography>
+                          </a>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                )}
+              </Toolbar>
+            </Container>
+          </AppBar>
+        </div>
+      )}
+    </ThemeContext.Consumer>
   );
 };
 export default NavBar;
