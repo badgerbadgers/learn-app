@@ -100,7 +100,7 @@ function UsersForm() {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(userInfoData);
-    handleDialogChange();
+    handleDialogChange(); // To pass it in onClick event as multiple functions 
 
     // POST data to API route using fetch API
     // Remove key object from user form when is posted to the users route
@@ -147,16 +147,11 @@ function UsersForm() {
     setOpen(!open)
   }
 
+  // Passing multiple functions on onClick event
   const handleDialogComplete = () => {
-    {
-      router.push("/dashboard");
-    }
-    {
-      handleDialogChange();
-    }
+    handleDialogChange();
+    router.push("/dashboard");
   }
-
-
 
   return (
     <form>
