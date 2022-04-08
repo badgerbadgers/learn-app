@@ -31,13 +31,13 @@ const NavBar = () => {
   console.log(session);
   const settings = [
     {
-      href: `/portfolios/${encodeURIComponent(session.user.gh)}`,
+      href: "{`/portfolios/${encodeURIComponent(session.user.gh)}`}",
       target: "_self",
       title: "Portfolio",
     },
 
     {
-      href: `https://github.com/${session.user.gh}`,
+      href: "{`https://github.com/${session.user.gh}`}",
       target: "_blank",
       title: "Github",
     },
@@ -65,13 +65,7 @@ const NavBar = () => {
     <ThemeContext.Consumer>
       {({ changeTheme }) => (
         <div>
-          <AppBar
-            enableColorOnDark
-            position="static"
-            sx={{
-              backgroundColor: "transparent",
-            }}
-          >
+          <AppBar enableColorOnDark position="static">
             <Container maxWidth={false} sx={{ mx: 0 }}>
               <Toolbar disableGutters>
                 {/* code for Logo */}
@@ -111,6 +105,10 @@ const NavBar = () => {
                 {/* Box for the user Image and Menu */}
                 {session && (
                   <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
+                    <Typography variant="body" mr={1}>
+                      Hi, {session.user.name || session.user.gh}
+                    </Typography>
+
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                         <Avatar alt="User Image" src={session.user.image} />
@@ -140,6 +138,7 @@ const NavBar = () => {
                       {settings.map((setting) => (
                         <MenuItem key={setting.title} onClick={handleMenuClose}>
                           <Link
+                            a
                             href={setting.href}
                             target={setting.target}
                             rel="noopener noreferrer"
