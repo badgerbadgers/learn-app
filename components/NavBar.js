@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ThemeContext, themes } from "../components/theme/themeContext";
 import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
 import {
   AppBar,
   Container,
@@ -27,21 +28,26 @@ const NavBar = () => {
     user = { ...(session.user.name || session.user.gh) };
   }
 
+  console.log(session);
   const settings = [
     {
-      href: "{`/portfolios/${encodeURIComponent(user)}`}",
+      href: `/portfolios/${encodeURIComponent(session.user.gh)}`,
+      target: "_self",
       title: "Portfolio",
-      onClick: "",
     },
+
     {
-      href: "http://github.com/?${session.user.gh}",
+      href: `https://github.com/${session.user.gh}`,
+      target: "_blank",
       title: "Github",
-      onClick: "",
     },
     {
-      href: "",
+      href: "#",
+      target: "_parent",
       title: "Logout",
-      onClick: () => signOut(),
+      onClick: () => {
+        signOut(router.push("/"));
+      },
     },
   ];
 
@@ -60,11 +66,10 @@ const NavBar = () => {
       {({ changeTheme }) => (
         <div>
           <AppBar
-            role="appBar"
+            enableColorOnDark
             position="static"
-            color="default"
             sx={{
-              backgroundColor: "white",
+              backgroundColor: "transparent",
             }}
           >
             <Container maxWidth={false} sx={{ mx: 0 }}>
@@ -133,24 +138,17 @@ const NavBar = () => {
                       onClose={handleMenuClose}
                     >
                       {settings.map((setting) => (
-                        <MenuItem
-                          key={setting.title}
-                          onClick={() => {
-                            {
-                              setting.onClick;
-                            }
-                            handleMenuClose();
-                          }}
-                        >
-                          <a
+                        <MenuItem key={setting.title} onClick={handleMenuClose}>
+                          <Link
                             href={setting.href}
-                            target="_blank"
+                            target={setting.target}
                             rel="noopener noreferrer"
+                            onClick={setting.onClick}
                           >
                             <Typography textAlign="center">
                               {setting.title}
                             </Typography>
-                          </a>
+                          </Link>
                         </MenuItem>
                       ))}
                     </Menu>
