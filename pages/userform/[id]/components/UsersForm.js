@@ -1,82 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { Chip, Grid, TextField, Typography, Button } from "@mui/material";
-import axios from "axios";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import { makeStyles } from "@mui/styles";
 import { useRouter } from "next/router";
-// import { makeStyles } from "@mui/styles";
-// import { useTheme } from "@mui/material/styles";
+import axios from "axios";
 
+const useStyles = makeStyles((theme) => ({
+  chipStyle: {
+    backgroundColor: "#FF5C35",
+    color: "#FFFFFF",
+    margin: "8px 4px 8px 0px",
+  },
+}));
+
+// Will animate the display message after the form is submitted
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+// Add input default values and initialize the state values
 const initialFormValues = {
-  id: 0,
   firstName: "",
   lastName: "",
-  email: "",
   pronouns: "",
-  techStack: "",
+  email: "",
   github: "",
-  facebook: "",
   linkedin: "",
   twitter: "",
+  videoUrl: "",
+  techStack: "",
   skills: "",
   previousIndustry: "",
-  videoUrl: "",
-  userAvatar: "",
-  resume: "",
 };
 
 function UsersForm() {
-  // const classes = useStyles();
+  const classes = useStyles();
+  const router = useRouter();
   const [userInfoData, setUserInfoData] = useState(initialFormValues);
+  const [open, setOpen] = useState(false);
   const [skillsArray, setSkillsArray] = useState([]);
   const [techStackArray, setTechStackArray] = useState([]);
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
+  const [errors, setErrors] = useState({ email: "" });
 
-  const router = useRouter();
-  const id = router.query.id;
-
-  const handleTechStackArray = () => {
-    const arrayTech = [...techStackArray];
-    arrayTech.push(userInfoData.techStack);
-    setTechStackArray(arrayTech);
-    // clear the input form
-    let data = userInfoData;
-    data.techStack = "";
-    setUserInfoData(data);
-    console.log("useInfodata", userInfoData);
-  };
-
-  const handleSkillsArray = () => {
-    const arraySkill = [...skillsArray];
-    arraySkill.push(userInfoData.skills);
-    setSkillsArray(arraySkill);
-    // clear the input form
-    let data = userInfoData;
-    data.skills = "";
-    setUserInfoData(data);
-    console.log("arraySkill", arraySkill);
-  };
-
-  const handlePreviousIndustryArray = () => {
-    const arrayPreviousIndust = [...previousIndustryArray];
-    arrayPreviousIndust.push(userInfoData.previousIndustry);
-    setPreviousIndustryArray(arrayPreviousIndust);
-    // clear the input form
-    let data = userInfoData;
-    data.previousIndustry = "";
-    console.log("arrayPreviousIndust", arrayPreviousIndust);
-  };
-
+  // Handle multiple input change to update the properties of userInfoData
+  // Then update the value of the event that was triggered by that onChange
+  // and validate the email from the user.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserInfoData({ ...userInfoData, [name]: value });
+
+    if (name === "email") {
+      let reg = new RegExp(/$^|.+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
+      if (!reg) {
+        setErrors({ email: "Valid email address required." });
+      } else {
+        setErrors({ email: "" });
+      }
+    }
+  };
+
+  const id = router.query.id;
+
+  const handleTechStackArray = () => {
+    const arrayTech = [...techStackArray]; // Make a copy of the tech stack array first.
+    arrayTech.push(userInfoData.techStack); // Update it with the modified tech stack entry.
+    setTechStackArray(arrayTech); // Update the state.
+    // clear the input form
+    let data = userInfoData; // Assigning userInfoData to data variable.
+    data.techStack = ""; // Take tech Stack and assign to empty string
+    setUserInfoData(data); // update the state
+  };
+
+  const handleSkillsArray = () => {
+    const arraySkill = [...skillsArray]; 
+    arraySkill.push(userInfoData.skills); 
+    setSkillsArray(arraySkill); 
+    // clear the input form
+    let data = userInfoData; 
+    data.skills = ""; 
+    setUserInfoData(data); 
+  };
+
+  const handlePreviousIndustryArray = () => {
+    const arrayPreviousIndust = [...previousIndustryArray]; 
+    arrayPreviousIndust.push(userInfoData.previousIndustry);
+    setPreviousIndustryArray(arrayPreviousIndust); 
+    // clear the input form
+    let data = userInfoData; 
+    data.previousIndustry = ""; 
+    setUserInfoData(data); 
   };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(userInfoData);
+    handleDialogChange(); // To pass it in onClick event as multiple functions 
 
     // POST data to API route using fetch API
+    // Remove key object from user form when is posted to the users route
+    const { skills, techStack, previousIndustry, ...updatedUserInfoData } = userInfoData;
     const data = {
-      ...userInfoData,
+      ...updatedUserInfoData,
       skillsArray,
       techStackArray,
       previousIndustryArray,
@@ -96,9 +126,10 @@ function UsersForm() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  };
+  };    
 
-  // Handle delete functions to cancel input into array
+  // Handle delete functions to cancel input into array of
+  // Do not remove the param skill, tech and previousIndust
   const handleDeleteSkills = (item) => {
     setSkillsArray((prevState) => prevState.filter((skill, i) => i !== item));
   };
@@ -111,6 +142,16 @@ function UsersForm() {
       prevState.filter((previousIndust, i) => i !== item)
     );
   };
+
+  const handleDialogChange = () => {
+    setOpen(!open)
+  }
+
+  // Passing multiple functions on onClick event
+  const handleDialogComplete = () => {
+    handleDialogChange();
+    router.push("/dashboard");
+  }
 
   return (
     <form>
@@ -170,6 +211,7 @@ function UsersForm() {
               fullWidth
               required
               size="small"
+              type="text"
               InputLabelProps={{ shrink: true }}
               value={userInfoData.techStack}
               onChange={(e) => handleInputChange(e)}
@@ -191,11 +233,7 @@ function UsersForm() {
             {techStackArray.map((tech, item) => (
               <Chip
                 key={tech}
-                style={{
-                  backgroundColor: "#FF5C35",
-                  color: "#FFFFFF",
-                  margin: "8px 4px 8px 0px",
-                }}
+                className={classes.chipStyle}
                 label={tech}
                 onDelete={() => handleDeleteTechStack(item)}
               />
@@ -231,11 +269,7 @@ function UsersForm() {
             {skillsArray.map((skill, item) => (
               <Chip
                 key={skill}
-                style={{
-                  backgroundColor: "#FF5C35",
-                  color: "#FFFFFF",
-                  margin: "8px 4px 8px 0px",
-                }}
+                className={classes.chipStyle}
                 label={skill}
                 onDelete={() => handleDeleteSkills(item)}
               />
@@ -271,11 +305,7 @@ function UsersForm() {
             {previousIndustryArray.map((previousIndust, item) => (
               <Chip
                 key={previousIndust}
-                style={{
-                  backgroundColor: "#FF5C35",
-                  color: "#FFFFFF",
-                  margin: "8px 4px 8px 0px",
-                }}
+                className={classes.chipStyle}
                 label={previousIndust}
                 onDelete={() => handleDeletePreviousIndustry(item)}
               />
@@ -298,6 +328,8 @@ function UsersForm() {
               variant="outlined"
               fullWidth
               size="small"
+              error={Boolean(errors?.email)}
+              helperText={errors?.email}
               InputLabelProps={{ shrink: true }}
               value={userInfoData.email}
               onChange={(e) => handleInputChange(e)}
@@ -306,7 +338,7 @@ function UsersForm() {
           <Grid item xs={12} sm={6} width="100%">
             <TextField
               name="linkedin"
-              placeholder="https://linkedin.com/in/username"
+              placeholder="Enter your @username"
               label="LinkedIn"
               variant="outlined"
               fullWidth
@@ -319,7 +351,7 @@ function UsersForm() {
           <Grid item xs={12} sm={6} width="100%">
             <TextField
               name="twitter"
-              placeholder="https://twitter.com/username"
+              placeholder="Enter your @username"
               label="Twitter"
               variant="outlined"
               fullWidth
@@ -351,9 +383,42 @@ function UsersForm() {
               justifyContent: "center",
             }}
           >
-            <Button variant="contained" onClick={handleSubmitForm}>
-              Submit
-            </Button>
+            <div>
+              <Button
+                variant="contained"
+                disabled={
+                  userInfoData.firstName.length === 0 ||
+                  userInfoData.lastName.length === 0 ||
+                  userInfoData.email.length === 0
+                }
+                onClick={(e) => handleSubmitForm(e)} 
+              >           
+                Submit
+              </Button>
+              <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleDialogChange}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle color="green">
+                  {"Code The Dream Apprenticeship Form"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    Thank you for submitting the CTD apprenticeship Form.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={handleDialogComplete}
+                  >
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </Grid>
         </Grid>
       </Grid>
