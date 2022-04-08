@@ -13,7 +13,6 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
 
   return (
