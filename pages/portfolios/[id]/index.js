@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useSession, getSession} from 'next-auth/react';
 import { useRouter } from "next/router";
 import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
@@ -13,6 +14,10 @@ function Cards() {
   const [user, setUser] = useState(null);
   // const [isLoading, setLoading] = useState(true);
 
+  const { data: session } = useSession()
+
+  console.log(session, 'session');
+  
   const router = useRouter();
   const id = router.query.id;
 
@@ -55,3 +60,11 @@ function Cards() {
 }
 
 export default Cards;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  }
+}
