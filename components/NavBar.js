@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import LogIn from "./Login";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -80,6 +81,14 @@ const NavBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Code the Dream
           </Typography>
+          {status === "authenticated" ? (
+            <>
+              {session.user.name || session.user.gh} <br />
+              <button onClick={() => signOut()}>Sign out</button>
+            </>
+          ) : (
+            ""
+          )}
         </Toolbar>
       </AppBar>
     </Box>

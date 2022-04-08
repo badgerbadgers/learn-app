@@ -4,10 +4,10 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 
 export default function LogIn() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { data: session, status } = useSession();
 
   const router = useRouter();
+
   const buttonData = [
     {
       title: "Log-In",

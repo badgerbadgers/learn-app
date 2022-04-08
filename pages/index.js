@@ -18,25 +18,19 @@ export default function Home() {
 
   return (
     <>
-      {/* {isLoading ? (
-        <Image width={240} height={240} src="/img/loading.gif" alt="loading" />
-      ) : ( */}
-      <>
-        <ThemeProvider theme={theme}>
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: "center",
-              fontFamily: "Gotham Rounded B",
-              fontSize: "42px",
-            }}
-          >
-            Code the Dream Apprentice Landing Page
-          </Typography>
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Typography
+          variant="h2"
+          sx={{
+            textAlign: "center",
+            fontFamily: "Gotham Rounded B",
+            fontSize: "42px",
+          }}
+        >
+          Code the Dream Apprentice Landing Page
+        </Typography>
         <LogIn />
-      </>
-      {/* )} */}
+      </ThemeProvider>
     </>
   );
 }
