@@ -4,7 +4,7 @@ import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
 import SkillsCard from "../components/SkillsCard";
 import PreviousIndustryCard from "../components/PreviousIndustryCard";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import Image from "next/image";
 
@@ -30,29 +30,38 @@ function Cards() {
 
   return (
     <>
-      {isLoading && <Image width={240} height={240} src="/img/loading.gif" alt="loading" />}
+      {isLoading && (
+        <Image width={240} height={240} src="/img/loading.gif" alt="loading" />
+      )}
       {!isLoading && (
-        <Container>
-          <div className={styles.portfolioGrid}>
-            <div className={styles.portfolioItem}>
-              {user && <ContactCard user={user} />}
-            </div>
-            <div className={styles.portfolioItem}>
-              {user && <MediaCard videoUrl={user.videoUrl} />}
-            </div>
+        <>
+          <Container>
+            <div className={styles.portfolioGrid}>
+              <div className={styles.portfolioItem}>
+                {user && <ContactCard user={user} />}
+              </div>
+              <div className={styles.portfolioItem}>
+                {user && <MediaCard videoUrl={user.videoUrl} />}
+              </div>
 
-            <div className={styles.portfolioItem}>
-              {user && <SkillsCard skills={user.skillsArray} />}
+              <div className={styles.portfolioItem}>
+                {user && <SkillsCard skills={user.skillsArray} />}
+              </div>
+              <div className={styles.portfolioItem}>
+                {user && (
+                  <PreviousIndustryCard
+                    previousIndustry={user.previousIndustryArray}
+                  />
+                )}
+              </div>
             </div>
-            <div className={styles.portfolioItem}>
-              {user && (
-                <PreviousIndustryCard
-                  previousIndustry={user.previousIndustryArray}
-                />
-              )}
-            </div>
-          </div>
-        </Container>
+          </Container>
+          {user && 
+          <Container>
+            <Button onClick={()=>router.push('/dashboard')} sx={{ backgroundColor: "#F4F5F7", marginTop: "3rem" }}>Back to dashboard</Button>
+          </Container>
+          }
+        </>
       )}
     </>
   );
