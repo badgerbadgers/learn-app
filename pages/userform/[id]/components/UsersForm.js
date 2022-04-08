@@ -100,6 +100,7 @@ function UsersForm() {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(userInfoData);
+    handleDialogChange();
 
     // POST data to API route using fetch API
     // Remove key object from user form when is posted to the users route
@@ -145,6 +146,17 @@ function UsersForm() {
   const handleDialogChange = () => {
     setOpen(!open)
   }
+
+  const handleDialogComplete = () => {
+    {
+      router.push("/dashboard");
+    }
+    {
+      handleDialogChange();
+    }
+  }
+
+
 
   return (
     <form>
@@ -384,14 +396,7 @@ function UsersForm() {
                   userInfoData.lastName.length === 0 ||
                   userInfoData.email.length === 0
                 }
-                onClick={(e) => {
-                  {
-                    handleSubmitForm(e);
-                  }
-                  {
-                    handleDialogChange();
-                  }
-                }}
+                onClick={(e) => handleSubmitForm(e)} 
               >           
                 Submit
               </Button>
@@ -412,14 +417,7 @@ function UsersForm() {
                 </DialogContent>
                 <DialogActions>
                   <Button
-                    onClick={() => {
-                      {
-                        router.push("/");
-                      }
-                      {
-                        handleDialogChange();
-                      }
-                    }}
+                    onClick={handleDialogComplete}
                   >
                     Close
                   </Button>
