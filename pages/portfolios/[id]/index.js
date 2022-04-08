@@ -75,7 +75,7 @@ function Cards() {
           )}
         </>
       ) }
-       {(!isLoading && !user) &&(<Container>User with id <strong>{id}</strong> wasn't found</Container>)}
+       {(!isLoading && !user) &&(<Container sx={{textAlign: "center"}}>User with id <strong>{id}</strong> wasn't found</Container>)}
     </>
   );
 }
