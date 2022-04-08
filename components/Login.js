@@ -13,14 +13,14 @@ export default function LogIn() {
       title: "Log-In",
       onClick: () => {
         signIn("github", {
-          callbackUrl: "/knowledge-base/pair-pgr-page",
+          callbackUrl: "/dashboard",
         });
       },
     },
     {
       title: "Sign-Up",
       onClick: () => {
-        router.push("/knowledge-base/zones");
+        router.push(`/userform/${encodeURIComponent(session.user.gh)}`);
       },
     },
   ];
