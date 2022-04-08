@@ -46,7 +46,7 @@ const NavBar = () => {
       target: "_parent",
       title: "Logout",
       onClick: () => {
-        signOut(router.push("/"));
+        signOut({ callbackUrl: "/" });
       },
     },
   ];
@@ -65,7 +65,11 @@ const NavBar = () => {
     <ThemeContext.Consumer>
       {({ changeTheme }) => (
         <div>
-          <AppBar enableColorOnDark position="static">
+          <AppBar
+            enableColorOnDark
+            position="static"
+            sx={{ backgroundColor: "transparent" }}
+          >
             <Container maxWidth={false} sx={{ mx: 0 }}>
               <Toolbar disableGutters>
                 {/* code for Logo */}
@@ -98,14 +102,22 @@ const NavBar = () => {
                     changeTheme(darkMode ? themes.light : themes.dark);
                   }}
                 />
-                <Typography variant="8" alignSelf="center" color="default">
+                <Typography
+                  variant="8"
+                  alignSelf="center"
+                  sx={{ color: darkMode ? "#000" : "#fff" }}
+                >
                   {darkMode ? "Dark Mode" : "Light Mode"}
                 </Typography>
 
                 {/* Box for the user Image and Menu */}
                 {session && (
                   <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                    <Typography variant="body" mr={1}>
+                    <Typography
+                      variant="body"
+                      mr={1}
+                      sx={{ color: darkMode ? "#000" : "#fff" }}
+                    >
                       Hi, {session.user.name || session.user.gh}
                     </Typography>
 
@@ -138,7 +150,6 @@ const NavBar = () => {
                       {settings.map((setting) => (
                         <MenuItem key={setting.title} onClick={handleMenuClose}>
                           <Link
-                            a
                             href={setting.href}
                             target={setting.target}
                             rel="noopener noreferrer"
