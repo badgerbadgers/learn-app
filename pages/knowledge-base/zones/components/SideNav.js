@@ -43,7 +43,10 @@ export default memo(function SideNav({
 
   //created an array of object with respective skills index data so we iterate over the data to form accordion panel for each skill type.
 
-  const sideIndex = [
+  let sideIndex;
+
+  {if (techIndex && personIndex) {
+     sideIndex = [
     {
       id: "panel1bh",
       icon: (
@@ -70,68 +73,78 @@ export default memo(function SideNav({
       liLabel: "personal skills index li",
       bgColor: "#12284C",
     },
-  ];
-  //
+    ]
+  }
+}
+  
   return (
-    <div style={{ padding: "16px" }}>
-      {sideIndex.map((accordion) => {
-        const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
-          accordion;
-        return (
-          <Accordion
-            key={id}
-            expanded={expanded[id] || isDesktop}
-            onChange={handleChange(id)}
-          >
-            <AccordionSummary
-              expandIcon={
-                isDesktop ? "" : <ExpandMoreIcon sx={{ color: "#fff" }} />
-              }
-              aria-controls={`${id}-content`}
-              id={`${id}-header`}
-              sx={{
-                backgroundColor: bgColor,
-                color: "#fff",
-                alignItems: "center",
-              }}
-            >
-              {icon}
-              <Typography variant="h5">{heading}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List sx={{ width: "100%" }} aria-label={ulLabel}>
-                {details.map((doc) => (
-                  <ListItem disablePadding key={doc.id} aria-label={liLabel}>
-                    <ListItemButton
-                      onClick={() => {
-                        setSkillID(doc.id);
-                        setLiValue(doc.id);
-                      }}
-                    >
-                      <ListItemText
-                        sx={{
-                          padding: "0px",
-                        }}
-                        inset
-                        primary={
-                          <Typography
+    <>
+      {sideIndex && (
+        <div style={{ padding: "16px" }}>
+          {sideIndex.map((accordion) => {
+            const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
+              accordion;
+            return (
+              <Accordion
+                key={id}
+                expanded={expanded[id] || isDesktop}
+                onChange={handleChange(id)}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    isDesktop ? "" : <ExpandMoreIcon sx={{ color: "#fff" }} />
+                  }
+                  aria-controls={`${id}-content`}
+                  id={`${id}-header`}
+                  sx={{
+                    backgroundColor: bgColor,
+                    color: "#fff",
+                    alignItems: "center",
+                  }}
+                >
+                  {icon}
+                  <Typography variant="h5">{heading}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List sx={{ width: "100%" }} aria-label={ulLabel}>
+                    {details.map((doc) => (
+                      <ListItem
+                        disablePadding
+                        key={doc.id}
+                        aria-label={liLabel}
+                      >
+                        <ListItemButton
+                          onClick={() => {
+                            setSkillID(doc.id);
+                            setLiValue(doc.id);
+                          }}
+                        >
+                          <ListItemText
                             sx={{
-                              fontWeight:
-                                liValue === doc.id ? "fontWeightBold" : "",
+                              padding: "0px",
                             }}
-                          >
-                            {doc.Name}
-                          </Typography>
-                        }
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-    </div>
+                            inset
+                            primary={
+                              <Typography
+                                sx={{
+                                  fontWeight:
+                                    liValue === doc.id ? "fontWeightBold" : "",
+                                }}
+                              >
+                                {doc.Name}
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 });
