@@ -21,6 +21,7 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
   const { data: session, status } = useSession();
+
   const router = useRouter();
   const user = null;
 
@@ -68,7 +69,7 @@ const NavBar = () => {
           <AppBar
             enableColorOnDark
             position="static"
-            sx={{ backgroundColor: "transparent" }}
+            sx={{ backgroundColor: "transparent", boxShadow: darkMode ? "" : '0 2px 4px -1px #f1f1f2' }}
           >
             <Container maxWidth={false} sx={{ mx: 0 }}>
               <Toolbar disableGutters>
@@ -147,7 +148,7 @@ const NavBar = () => {
                       open={Boolean(anchorElUser)}
                       onClose={handleMenuClose}
                     >
-                      {settings.map((setting) => (
+                      {settings && settings.map((setting) => (
                         <MenuItem key={setting.title} onClick={handleMenuClose}>
                           <Link
                             href={setting.href}
