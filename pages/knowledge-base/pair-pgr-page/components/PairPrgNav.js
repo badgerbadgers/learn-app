@@ -10,29 +10,33 @@ function a11yProps(index) {
 
 const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
   return (
-    <Grid item xs={12} p={0} >
-      <Tabs
-        value={value}
-        onChange={handleActiveTab}
-        aria-label="tabs to navigate through the page"
-        orientation="vertical"
-      >
-        {pairProgrammingInfo.map((item, index) => (
-          <Tab
-            key={item.label}
-            sx={{
-              backgroundColor: "#ff5c35",
-              opacity: 0.9,
-              my: 1,
-              maxWidth: 900,
-              color: "white",
-            }}
-            label={item.label}
-            {...a11yProps(index)}
-          ></Tab>
-        ))}
-      </Tabs>
-    </Grid>
+    <>
+      {pairProgrammingInfo && (
+        <Grid item xs={12} p={0}>
+          <Tabs
+            value={value}
+            onChange={handleActiveTab}
+            aria-label="tabs to navigate through the page"
+            orientation="vertical"
+          >
+            {pairProgrammingInfo.map((item, index) => (
+              <Tab
+                key={item.label}
+                sx={{
+                  backgroundColor: "#ff5c35",
+                  opacity: 0.9,
+                  my: 1,
+                  maxWidth: 900,
+                  color: "white",
+                }}
+                label={item.label}
+                {...a11yProps(index)}
+              ></Tab>
+            ))}
+          </Tabs>
+        </Grid>
+      )}
+    </>
   );
 };
 export default PairPrgNav;
