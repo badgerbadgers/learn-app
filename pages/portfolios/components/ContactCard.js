@@ -1,14 +1,14 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { Grid, Button, ButtonGroup } from "@mui/material";
+import { Grid, Button, ButtonGroup, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
+import { LinkedIn, Twitter } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import { makeStyles } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import styles from "../../../../styles/Portfolio.module.css";
+import styles from "../../../styles/Portfolio.module.css";
 import DownloadIcon from "@mui/icons-material/Download";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,11 +17,18 @@ const useStyles = makeStyles((theme) => ({
     width: "150px",
     margin: "10px",
   },
+  contactCardIcons: {
+    backgroundColor: "#12284C",
+    color: "#FFFFFF",
+    borderRadius: "5px",
+    maxWidth: "26px",
+    minWidth: "26px",
+    paddingRight: 0,
+  },
+  button: {
+    textTransform: "none"
+  }
 }));
-
-const card = {
-  height: "100%",
-};
 
 function ContactCard({ user }) {
   const classes = useStyles();
@@ -29,15 +36,17 @@ function ContactCard({ user }) {
     return <div>Loading...</div>;
   }
 
+  console.log("GitHub:", user.gh);
+  
   return (
     <Grid item sx={{ textAlign: "center" }}>
-      <Card variant="outlined" sx={card}>
+      <Card variant="outlined" sx={{height: "100%"}}>
         <div className={styles.innerCard}>
           <Avatar
             className={classes.avatarImage}
             style={{ alignItems: "center" }}
             alt="User Picture"
-            src={user.userAvatar}
+            src={user.image}
           />
           <div>
             <Typography variant="h4" component="div" marginTop="15px">
@@ -48,7 +57,7 @@ function ContactCard({ user }) {
             </Typography>
             <Typography variant="h5" component="div">
               Tech Stack: <br />
-              {user.techStack.map((data) => {
+              {user.techStackArray.map((data) => {
                 return (
                   // Styling tech stack listing
                   <Typography
@@ -66,83 +75,60 @@ function ContactCard({ user }) {
                 );
               })}
             </Typography>
-            <ButtonGroup>
+            <ButtonGroup sx={{
+                "& .MuiButtonGroup-grouped": {
+                  minWidth: "0px",
+                },
+              }}>
               <Stack direction="row" spacing={0.5} m={2}>
-                <Stack direction="row" spacing={0.5}>
+                <Box >
                   <Button
+                    className={classes.contactCardIcons}
                     size="small"
                     variant="contained"
                     color="primary"
                     startIcon={<LinkedIn />}
-                    style={{
-                      backgroundColor: "#12284C",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
-                    href={user.linkedin}
+                    href={`https://www.linkedin.com/in/${user.linkedin}`}
                     target="_blank"
                   />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
+                </Box>
+                <Box>
                   <Button
+                    className={classes.contactCardIcons}
                     size="small"
                     variant="contained"
                     color="primary"
                     startIcon={<GitHubIcon />}
-                    style={{
-                      backgroundColor: "#12284C",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
-                    href={user.github}
+                    href={`https://github.com/${user.gh}`}
                     target="_blank"
                   />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
+                </Box>
+                <Box>
                   <Button
+                    className={classes.contactCardIcons}
                     size="small"
                     variant="contained"
                     color="primary"
                     startIcon={<EmailIcon />}
-                    style={{
-                      backgroundColor: "#12284C",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
                     href={`mailto:${user.email}`}
                     target="_blank"
                   />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
+                </Box>
+                <Box>
                   <Button
+                    className={classes.contactCardIcons}
                     size="small"
                     variant="contained"
                     startIcon={<Twitter />}
-                    style={{
-                      backgroundColor: "#12284C",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
-                    href={user.twitter}
+                    href={`https://twitter.com/${user.twitter}`}
                     target="_blank"
                   />
-                </Stack>
+                </Box>
               </Stack>
             </ButtonGroup>
             {/* <Grid item m={1}>
               <Button
+                className={classes.button}
                 variant="outlined"
                 color="success"
                 startIcon={<DownloadIcon />}

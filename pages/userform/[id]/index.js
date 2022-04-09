@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
+import React, { useState } from "react";
+import UsersForm from "./components/UsersForm";
+import { Container, Paper, Typography } from "@mui/material";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import styles from "../../../styles/Portfolio.module.css";
 
 function InputForm() {
-  // const [user, setUser] = useState()
-  // const getData = async () => {
-  //   let res = await fetch('/api/users');
-  //   let data = await res.json();
-  //   return data;
-  // }
-  // useEffect(() => {
-  //   getData();
-  // }, [])
+  const [newUser, setNewUser] = useState("");
 
   return (
-    <div>
-      <Layout />
-    </div>
-  )
+    <Container>
+      <Paper elevation={15}>
+        <div className={styles.titleForm}>
+          {<DriveFileRenameOutlineIcon fontSize="large" />}
+          <Typography p={2} variant="h5">
+            Input Form
+          </Typography>
+        </div>
+        <UsersForm addUser={setNewUser} newUser={newUser} />
+      </Paper>
+    </Container>
+  );
 }
 
-export default InputForm;
+export default InputForm
