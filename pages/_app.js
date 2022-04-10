@@ -41,7 +41,7 @@ function MyApp(props) {
         )}
       </ThemeContext.Consumer>
       <SessionProvider session={session}>
-        {props.Component.name === ("Portfolio" || "Home") ? (
+        {props.Component.name === ("Portfolio" && "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>
