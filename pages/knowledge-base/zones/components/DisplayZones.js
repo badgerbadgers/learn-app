@@ -1,5 +1,6 @@
 import {
   Card,
+  Paper,
   CardContent,
   Typography,
   Grid,
@@ -65,6 +66,7 @@ const DisplayZones = ({ skillData }) => {
   return (
     <>
       {skillData.map((doc) => (
+      
         <Grid item container role="grid" p={0} marginBottom={3} key={doc.id}>
           <Grid item xs={12} pl={0}>
             <Typography
@@ -73,7 +75,7 @@ const DisplayZones = ({ skillData }) => {
                 textAlign: "center",
               }}
             >
-              {doc.fields.Name}
+              {doc.fields.Name} 
             </Typography>
           </Grid>
           <Grid item xs={12} pt={4}>
@@ -91,7 +93,7 @@ const DisplayZones = ({ skillData }) => {
             m={0}
           >
             {zoneArr.map((doc) => (
-              <Grid item xs={12} md={4} key={doc.head} sx={{}}>
+              <Grid item xs={12} md={4} key={doc.head} sx={{}} >
                 <Card
                   sx={{
                     border: "1px solid",
@@ -99,6 +101,7 @@ const DisplayZones = ({ skillData }) => {
                     borderRadius: "0.25rem",
                     margin: "0 auto",
                     height: "100%",
+                  
                   }}
                 >
                   <CardHeader
@@ -116,6 +119,7 @@ const DisplayZones = ({ skillData }) => {
                       padding: "10px 10px 2px 10px",
                     }}
                   >
+                    <Typography >
                     <List sx={{ width: "100%" }} aria-label="zone data ul">
                       {doc.data.split(".").map((li, i) => (
                         <ListItem
@@ -124,15 +128,18 @@ const DisplayZones = ({ skillData }) => {
                           sx={{ display: "list-item" }}
                         >
                           {li}
+                        
                         </ListItem>
                       ))}
                     </List>
+                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>
             ))}
           </Grid>
         </Grid>
+        
       ))}
     </>
   );

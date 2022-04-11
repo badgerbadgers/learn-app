@@ -19,7 +19,7 @@ import {
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -32,13 +32,13 @@ const NavBar = () => {
   console.log(session);
   const settings = [
     {
-      href: "{`/portfolios/${encodeURIComponent(session.user.gh)}`}",
+      href: `/portfolios/${session.user.gh}`,
       target: "_self",
       title: "Portfolio",
     },
 
     {
-      href: "{`https://github.com/${session.user.gh}`}",
+      href: `https://github.com/${session.user.gh}`,
       target: "_blank",
       title: "Github",
     },
@@ -69,7 +69,7 @@ const NavBar = () => {
           <AppBar
             enableColorOnDark
             position="static"
-            sx={{ backgroundColor: "transparent", boxShadow: darkMode ? "" : '0 2px 4px -1px #f1f1f2' }}
+            sx={{ backgroundColor: "transparent", boxShadow: darkMode ? '0 2px 4px -1px #f1f1f2' : "" }}
           >
             <Container maxWidth={false} sx={{ mx: 0 }}>
               <Toolbar disableGutters>
@@ -78,7 +78,7 @@ const NavBar = () => {
                   variant="square"
                   alt="Code the Dream logo"
                   src={
-                    !darkMode
+                    darkMode
                       ? "../img/CTD-Labs_Primary-Blue-BG[1].png"
                       : "../img/CTD-Labs_Primary[1].png"
                   }
@@ -89,7 +89,7 @@ const NavBar = () => {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    router.push({ pathname: "/" });
+                    router.push( "/" );
                   }}
                 >
                   CD
@@ -106,9 +106,9 @@ const NavBar = () => {
                 <Typography
                   variant="8"
                   alignSelf="center"
-                  sx={{ color: darkMode ? "#000" : "#fff" }}
+                  sx={{ color: darkMode ? "#fff" : "#000" }}
                 >
-                  {darkMode ? "Dark Mode" : "Light Mode"}
+                  {darkMode ? "Light Mode" : "Dark Mode"}
                 </Typography>
 
                 {/* Box for the user Image and Menu */}
@@ -117,7 +117,7 @@ const NavBar = () => {
                     <Typography
                       variant="body"
                       mr={1}
-                      sx={{ color: darkMode ? "#000" : "#fff" }}
+                      sx={{ color: darkMode ? "#fff" : "#000" }}
                     >
                       Hi, {session.user.name || session.user.gh}
                     </Typography>
@@ -150,7 +150,7 @@ const NavBar = () => {
                     >
                       {settings && settings.map((setting) => (
                         <MenuItem key={setting.title} onClick={handleMenuClose}>
-                          <Link
+                          <a
                             href={setting.href}
                             target={setting.target}
                             rel="noopener noreferrer"
@@ -159,7 +159,7 @@ const NavBar = () => {
                             <Typography textAlign="center">
                               {setting.title}
                             </Typography>
-                          </Link>
+                          </a>
                         </MenuItem>
                       ))}
                     </Menu>

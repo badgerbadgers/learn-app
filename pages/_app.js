@@ -3,22 +3,20 @@ import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import { ThemeContext, themes } from "../components/theme/themeContext";
 import PrivateLayout from "../components/PrivateLayout";
 import PublicLayout from "../components/PublicLayout";
-import { Grid, Switch, Typography, Avatar } from "@mui/material";
+import { Grid, Switch, Typography, Avatar, ThemeProvider} from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 
 function MyApp(props) {
+
   const {
     Component,
     pageProps: { session, ...pageProps },
   } = props;
 
-  //const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <ThemeContextWrapper>
-      {/* <ThemeContext.Consumer>
-        {({ changeTheme }) => ( */}
+    <ThemeContextWrapper> 
       <SessionProvider session={session}>
         {props.Component.name === "Cards" ? (
           <PublicLayout>
@@ -29,30 +27,10 @@ function MyApp(props) {
             <Component {...pageProps} />
           </PrivateLayout>
         )}
-      </SessionProvider>
-      {/* )}
-      </ThemeContext.Consumer> */}
-    </ThemeContextWrapper>
+      </SessionProvider>   
+   </ThemeContextWrapper>
   );
 }
 
 export default MyApp;
-// <Grid item display="flex" m={4}>
-//   <Avatar
-//     variant="square"
-//     alt="Code the Dream logo"
-//     src="../img/ctd-logo.png"
-//   >
-//     CD
-//   </Avatar>
-//   <Switch
-//     checked={darkMode}
-//     onClick={() => {
-//       setDarkMode(!darkMode);
-//       changeTheme(darkMode ? themes.light : themes.dark);
-//     }}
-//   />
-//   <Typography variant="8" alignSelf="center">
-//     {darkMode ? "Dark Mode" : "Light Mode"}
-//   </Typography>
-// </Grid>
+

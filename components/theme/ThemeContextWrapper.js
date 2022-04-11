@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ThemeContext, themes } from "./themeContext";
+//import {CssBaseline, ThemeProvider} from "@mui/material";
+
 
 function ThemeContextWrapper(props) {
-  const [theme, setTheme] = useState(themes.dark);
+ const [theme, setTheme] = useState(themes.light);
 
   const changeTheme = (theme) => {
     setTheme(theme);
@@ -11,12 +13,13 @@ function ThemeContextWrapper(props) {
   useEffect(() => {
     switch (theme) {
       case themes.light:
-        document.body.classList.add("white-content");
-        break;
-      case themes.dark:
       default:
         document.body.classList.remove("white-content");
         break;
+      case themes.dark:
+        document.body.classList.add("white-content");
+        break;
+      
     }
   }, [theme]);
 
@@ -26,9 +29,14 @@ function ThemeContextWrapper(props) {
         { theme: theme, changeTheme: changeTheme }
       }
     >
+
+  
       {props.children}
+ 
     </ThemeContext.Provider>
   );
 }
 
 export default ThemeContextWrapper;
+
+//.

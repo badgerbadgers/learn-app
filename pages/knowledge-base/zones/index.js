@@ -5,6 +5,7 @@ import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
 import getData from "../../../lib/getData";
 
+
 const url = "/api/airtable";
 const params = { params: { isZones: true } };
 
@@ -55,7 +56,8 @@ function Skillszoning() {
   });
 
   return (
-    <KnowledgePageLayout
+      
+      <KnowledgePageLayout
       title="Skills Zoning"
       index={
         <SideNav
@@ -67,6 +69,7 @@ function Skillszoning() {
       }
       body={<DisplayZones skillData={skillData} />}
     />
+   
   );
 }
 
