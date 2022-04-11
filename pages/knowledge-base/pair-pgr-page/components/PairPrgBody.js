@@ -40,7 +40,9 @@ const renderingFunction = (item) => {
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
   return (
     <>
-      {pairProgrammingInfo.map((item, index) => (
+    {pairProgrammingInfo && 
+    
+      (pairProgrammingInfo.map((item, index) => (
         <TabPanel value={value} index={index} key={item.header}>
           <Grid item xs={9} >
             <Typography variant="h4">
@@ -81,7 +83,8 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
             </Grid>
           )}
         </TabPanel>
-      ))}
+      )))
+    }
     </>
   );
 };

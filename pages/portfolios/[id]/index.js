@@ -7,13 +7,9 @@ import SkillsCard from "../components/SkillsCard";
 import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
-import { useSession, getSession  } from "next-auth/react";
-
 import getData from "../../../lib/getData";
 
-const url = "/api/users";
-
-function Cards() {
+function Portfolio() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
@@ -79,5 +75,5 @@ function Cards() {
   );
 }
 
+export default Portfolio;
 
-export default Cards;
