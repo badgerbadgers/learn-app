@@ -6,12 +6,15 @@ import PublicLayout from "../components/PublicLayout";
 import { Grid, Switch, Typography, Avatar } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
+import { useRouter } from "next/router";
 
 function MyApp(props) {
   const {
     Component,
     pageProps: { session, ...pageProps },
   } = props;
+
+  const router = useRouter();
 
   const [darkMode, setDarkMode] = useState(true);
 
@@ -24,6 +27,7 @@ function MyApp(props) {
               variant="square"
               alt="Code the Dream logo"
               src="../img/ctd-logo.png"
+              onClick={()=>{router.push("/")}}
             >
               CD
             </Avatar>
