@@ -8,6 +8,7 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import getData from "../../../lib/getData";
+import { useSession } from "next-auth/react";
 
 function Portfolio() {
   const [user, setUser] = useState(null);
@@ -16,26 +17,28 @@ function Portfolio() {
   const router = useRouter();
   const id = router.query.id;
 
-  const params = { params: { id: id } };
+  const url = "/api/users";
 
-  const { data: session } = useSession();
-  console.log("session", session);
-
+  const { data: session, status } = useSession();
+  
   useEffect(() => {
-    
+
+    const params = { params: { id: id } };
+
     (async () => {
-      const userFromFetch = await getData(params, url);
-      setUser(userFromFetch);
-      setLoading(false);
+      await getData(params, url).then((data) => {
+        setUser(data);
+        setLoading(false);
+      });
     })();
-  }, []);
+  }, [id]);
 
   return (
     <>
       {isLoading && (
         <Image width={240} height={240} src="/img/loading.gif" alt="loading" />
       )}
-      {!isLoading  && (
+      {!isLoading && (
         <>
           <Container>
             <div className={styles.portfolioGrid}>
@@ -58,7 +61,7 @@ function Portfolio() {
               </div>
             </div>
           </Container>
-          {session && (
+          {(status === "authenticated") && (
             <Container>
               <Button
                 onClick={() => router.push("/dashboard")}
@@ -69,11 +72,14 @@ function Portfolio() {
             </Container>
           )}
         </>
-      ) }
-       {(!isLoading && !user) &&(<Container sx={{textAlign: "center"}}>User with id <strong>{id}</strong> wasn't found</Container>)}
+      )}
+      {(!isLoading && !user) && (
+        <Container sx={{ textAlign: "center" }}>
+          User with id <strong>{id}</strong> wasn&apos;t found
+        </Container>
+      )}
     </>
   );
 }
 
 export default Portfolio;
-

@@ -17,6 +17,7 @@ export default async function handler(req, res) {
 }
 
 const getUser = async (res, req) => {
+
   // connect to database
   const client = await clientPromise;
   const database = client.db("myFirstDatabase")
