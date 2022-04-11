@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 const getUser = async (res, req) => {
   // connect to database
   const client = await clientPromise;
-  const database = client.db("myFirstDatabase")
+  const database = client.db(process.env.MONGODB_DB)
 
   // find the document matching the query.id - github id
   try {
@@ -30,11 +30,14 @@ const getUser = async (res, req) => {
   }
 };
 
+// const createNewUser & updateUser
+
+
 const updateUser = async (req, res) => {
 
   //connect to database
   const client = await clientPromise;
-  const database = client.db("myFirstDatabase");
+  const database = client.db(process.env.MONGODB_DB);
 
   //get user ObjectId and image from session
   const session = await getSession({ req });
