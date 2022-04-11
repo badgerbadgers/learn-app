@@ -33,8 +33,7 @@ function Cards() {
       setLoading(false);
     })();
   }, []);
-  console.log("user", user);
-  console.log(router);
+
   return (
     <>
       {isLoading && (
@@ -82,11 +81,3 @@ function Cards() {
 
 
 export default Cards;
-
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
-  }
-}
