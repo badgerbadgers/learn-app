@@ -1,18 +1,43 @@
- import { createContext } from "react";
+import { createContext } from "react";
 
+// export const themes = {
+//   light: "",
+//   dark: "white-content",
 
-export const themes = {
-  light: "",
-  dark: "white-content",
-  
-};
+// };
 
+//   export const ThemeContext = createContext({
+//     theme: themes.light,
+//     changeTheme: () => {},
+//   });
 
-  export const ThemeContext = createContext({
-    theme: themes.light,
-    changeTheme: () => {},
-  });
+// Created Dark theme with MUI
 
+import { createTheme } from "@mui/material";
+
+// const themes = createTheme({
+//   palette: {
+//     mode: "",
+//   },
+// });
+
+export const ThemeContext = createContext({
+  mode: "light",
+  changeMode: () => {},
+});
+
+// export const themes = createTheme({
+//   palette: {
+//     light: "",
+//     ...themeObj[mode],
+//   },
+//   overrides: {
+//     MuiAppBar: {
+//       backgroundColor: "transparent",
+//       boxShadow: "0 2px 4px -1px #f1f1f2",
+//     },
+//   },
+// });
 
 // export const themes = createTheme({
 //   components: {
@@ -47,17 +72,16 @@ export const themes = {
 //     },
 //     secondary: {
 //       main: "#f1f1f2",
-//       main2: '#F3C300', 
+//       main2: '#F3C300',
 //     },
 //   },
 //   light: "",
 //   dark: "white-content",
-  
-// })
 
+// })
 
 // export const themes = createMuiTheme({
 //   light: "",
 //   dark: "white-content",
-  
+
 // });
