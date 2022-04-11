@@ -18,50 +18,71 @@ const DisplayZones = ({ skillData }) => {
   
   2. Replaced the blank space from front and end of the data along with the dots to create Li */
 
-  skillData.map((doc) =>
-    zoneArr.push(
-      {
-        head: "Zone 1",
-        data: doc.fields.Zone1.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
-        bgColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF9D85" : "#8D9DB9",
-        borderColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-      },
-      {
-        head: "Zone 2",
-        data: doc.fields.Zone2.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
-        bgColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF8D70" : "#7488AA",
-        borderColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-      },
-      {
-        head: "Zone 3",
-        data: doc.fields.Zone3.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
-        bgColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF7C5C" : "#506891",
-        borderColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-      },
-      {
-        head: "Zone 4",
-        data: doc.fields.Zone4.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
-        bgColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FA6F4C" : "#324A71",
-        borderColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-      },
-      {
-        head: "Zone 5",
-        data: doc.fields.Zone5.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
-        bgColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-        borderColor:
-          doc.fields["Single Select"] == "Tech Skills" ? "#FF5C35" : "#12284C",
-      }
-    )
-  );
+  skillData &&
+    skillData.map((doc) =>
+      zoneArr.push(
+        {
+          head: "Zone 1",
+          data: doc.fields.Zone1.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
+          bgColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF9D85"
+              : "#8D9DB9",
+          borderColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+        },
+        {
+          head: "Zone 2",
+          data: doc.fields.Zone2.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
+          bgColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF8D70"
+              : "#7488AA",
+          borderColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+        },
+        {
+          head: "Zone 3",
+          data: doc.fields.Zone3.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
+          bgColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF7C5C"
+              : "#506891",
+          borderColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+        },
+        {
+          head: "Zone 4",
+          data: doc.fields.Zone4.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
+          bgColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FA6F4C"
+              : "#324A71",
+          borderColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+        },
+        {
+          head: "Zone 5",
+          data: doc.fields.Zone5.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
+          bgColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+          borderColor:
+            doc.fields["Single Select"] == "Tech Skills"
+              ? "#FF5C35"
+              : "#12284C",
+        }
+      )
+    );
 
   return (
     <>
@@ -114,9 +135,11 @@ const DisplayZones = ({ skillData }) => {
                   />
                   <CardContent
                     sx={{
-                      display: "flex",
-                      paddingBottom: "10px",
-                      padding: "10px 10px 2px 10px",
+                      border: "1px solid",
+                      borderColor: doc.borderColor,
+                      borderRadius: "0.25rem",
+                      margin: "0 auto",
+                      height: "100%",
                     }}
                   >
                     <Typography >

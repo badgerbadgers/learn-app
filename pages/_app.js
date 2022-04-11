@@ -18,7 +18,7 @@ function MyApp(props) {
   return (
     <ThemeContextWrapper> 
       <SessionProvider session={session}>
-        {props.Component.name === "Cards" ? (
+        {props.Component.name === "Portfolio" ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>

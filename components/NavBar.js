@@ -32,13 +32,16 @@ const NavBar = () => {
   console.log(session);
   const settings = [
     {
-      href: `/portfolios/${session.user.gh}`,
+      href:  status === "authenticated"
+      ? `/portfolios/${encodeURIComponent(session.user.gh)}`
+      : "/",
       target: "_self",
       title: "Portfolio",
     },
 
     {
-      href: `https://github.com/${session.user.gh}`,
+      href: status === "authenticated"
+      ?`https://github.com/${session.user.gh}` : "",
       target: "_blank",
       title: "Github",
     },

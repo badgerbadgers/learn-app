@@ -25,27 +25,31 @@ function Skillszoning() {
 
   // retrieving only the Technical skills index and puting it in an array
 
-  const techIndex = zoningData.flatMap((doc) =>
-    doc.fields["Single Select"] == "Tech Skills"
-      ? [
-          {
-            id: doc.id,
-            Name: doc.fields.Name,
-          },
-        ]
-      : []
-  );
+  const techIndex =
+    zoningData &&
+    zoningData.flatMap((doc) =>
+      doc.fields["Single Select"] == "Tech Skills"
+        ? [
+            {
+              id: doc.id,
+              Name: doc.fields.Name,
+            },
+          ]
+        : []
+    );
 
-  const personIndex = zoningData.flatMap((doc) =>
-    doc.fields["Single Select"] == "Soft Skills"
-      ? [
-          {
-            id: doc.id,
-            Name: doc.fields.Name,
-          },
-        ]
-      : []
-  );
+  const personIndex =
+    zoningData &&
+    zoningData.flatMap((doc) =>
+      doc.fields["Single Select"] == "Soft Skills"
+        ? [
+            {
+              id: doc.id,
+              Name: doc.fields.Name,
+            },
+          ]
+        : []
+    );
 
   // Filtering the zoningdata based on the zonesID received from the sideNav.
 
