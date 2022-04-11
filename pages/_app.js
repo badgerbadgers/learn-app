@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             </Grid>
           )}
         </ThemeContext.Consumer>
-        {Component.name === "Cards" ? (
+        {Component.name === "Portfolio" ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>
