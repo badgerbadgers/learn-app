@@ -32,16 +32,13 @@ const NavBar = () => {
   console.log(session);
   const settings = [
     {
-      href:  status === "authenticated"
-      ? `/portfolios/${encodeURIComponent(session.user.gh)}`
-      : "/",
-      target: "_self",
+      href: status === "authenticated" ? `/portfolios/${encodeURIComponent(session.user.gh)}` : '/',
+      target: "_blank",
       title: "Portfolio",
     },
 
     {
-      href: status === "authenticated"
-      ?`https://github.com/${session.user.gh}` : "",
+      href: status === "authenticated" ? `https://github.com/${session.user.gh}` : '/',
       target: "_blank",
       title: "Github",
     },
@@ -115,6 +112,7 @@ const NavBar = () => {
                 </Typography>
 
                 {/* Box for the user Image and Menu */}
+                
                 {session && (
                   <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
                     <Typography
@@ -154,7 +152,7 @@ const NavBar = () => {
                       {settings && settings.map((setting) => (
                         <MenuItem key={setting.title} onClick={handleMenuClose}>
                           <a
-                            href={setting.href}
+                            href= {setting.href}
                             target={setting.target}
                             rel="noopener noreferrer"
                             onClick={setting.onClick}
