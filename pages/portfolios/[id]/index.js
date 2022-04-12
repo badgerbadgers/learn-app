@@ -14,23 +14,23 @@ function Portfolio() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
+  const url = "/api/users";
   const router = useRouter();
+
   const id = router.query.id;
 
-  const url = "/api/users";
-
   const { data: session, status } = useSession();
-  
+
   useEffect(() => {
-
     const params = { params: { id: id } };
-
-    (async () => {
-      await getData(params, url).then((data) => {
-        setUser(data);
-        setLoading(false);
-      });
-    })();
+    if (id) {
+      (async () => {
+        await getData(params, url).then((data) => {
+          setUser(data);
+          setLoading(false);
+        });
+      })();
+    }
   }, [id]);
 
   return (
@@ -61,7 +61,7 @@ function Portfolio() {
               </div>
             </div>
           </Container>
-          {(status === "authenticated") && (
+          {status === "authenticated" && (
             <Container>
               <Button
                 onClick={() => router.push("/dashboard")}
@@ -73,7 +73,7 @@ function Portfolio() {
           )}
         </>
       )}
-      {(!isLoading && !user) && (
+      {!isLoading && !user && (
         <Container sx={{ textAlign: "center" }}>
           User with id <strong>{id}</strong> wasn&apos;t found
         </Container>
