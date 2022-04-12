@@ -7,8 +7,9 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      return getUser(res, req);
+      return getUser(req, res);
     case "POST":
+      //if (req.query.isEdit) { updateUser(req, res) } else createUser(res, req)
       return updateUser(req, res);
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
   }
 }
 
-const getUser = async (res, req) => {
+const getUser = async (req, res) => {
   // connect to database
   const client = await clientPromise;
   const database = client.db(process.env.MONGODB_DB);
@@ -34,7 +35,7 @@ const getUser = async (res, req) => {
 
 // const createNewUser & updateUser
 
-const createNewUser = async (req, req) => {
+const createNewUser = async (req, res) => {
   //connect to database
   const client = await clientPromise;
   const database = client.db(process.env.MONGODB_DB);
@@ -70,16 +71,16 @@ const updateUser = async (req, res) => {
 
   //get user ObjectId and image from session
   const session = await getSession({ req });
-  // const userId = session.user.id;
-  // const image = session.user.image;
+  const userId = session.user.id;
+  const image = session.user.image;
 
   //data object from submit form
   let data = req.body.body;
 
   data = JSON.parse(data);
   data["gh"] = req.query.id;
-  // data["userId"] = ObjectId(userId);
-  // data["image"] = image;
+  data["userId"] = ObjectId(userId);
+  data["image"] = image;
   data["updatedAt"] = new Date();
 
   try {
