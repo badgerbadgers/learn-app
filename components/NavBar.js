@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ThemeContext, themes } from "../components/theme/themeContext";
+import { ThemeContext } from "../components/theme/themeContext";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import {
@@ -24,7 +24,7 @@ const NavBar = () => {
   const { data: session, status } = useSession();
 
   console.log(mode, "****mode from context");
-  console.log(darkMode, "******Dark Mode status");
+  console.log("DarkMode status*****" + darkMode);
   const router = useRouter();
 
   const settings = [
@@ -106,6 +106,9 @@ const NavBar = () => {
               onClick={() => {
                 setDarkMode(!darkMode);
                 changeTheme(mode);
+                !darkMode
+                  ? localStorage.setItem("preferred-theme", "dark")
+                  : localStorage.setItem("preferred-theme", "light");
               }}
             />
             <Typography

@@ -5,6 +5,23 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 function ThemeContextWrapper(props) {
   const [mode, setMode] = useState("light");
 
+  useEffect(() => {
+    const localStorage = window.localStorage;
+    const theme = localStorage.getItem("preferred-theme");
+    if (theme) {
+      if (theme === "dark") {
+        setMode("dark");
+      } else {
+        setMode("light");
+      }
+    }
+    // } else {
+    //   localStorage.setItem("preferred-theme", "light");
+    //   setMode("light");
+    // }
+    console.log(localStorage.getItem("preferred-theme"));
+  }, []);
+
   const themes = useMemo(
     () =>
       createTheme({
@@ -35,38 +52,6 @@ function ThemeContextWrapper(props) {
     </ThemeContext.Provider>
   );
 }
-
-//  const [theme, setTheme] = useState(themes.light);
-
-//   const changeTheme = (theme) => {
-//     setTheme(theme);
-//   };
-
-//   useEffect(() => {
-//     switch (theme) {
-//       case themes.light:
-//       default:
-//         document.body.classList.remove("white-content");
-//         break;
-//       case themes.dark:
-//         document.body.classList.add("white-content");
-//         break;
-
-//     }
-//   }, [theme]);
-
-//   return (
-//     <ThemeContext.Provider
-//       value={
-//         { theme: theme, changeTheme: changeTheme }
-//       }
-//     >
-
-//       {props.children}
-
-//     </ThemeContext.Provider>
-//   );
-// }
 
 export default ThemeContextWrapper;
 
