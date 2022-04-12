@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
-import { ThemeContext, themes } from "../components/theme/themeContext";
 import PrivateLayout from "../components/PrivateLayout";
 import PublicLayout from "../components/PublicLayout";
-import { Grid, Switch, Typography, Avatar, ThemeProvider} from "@mui/material";
+import { ThemeProvider} from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
+import { theme } from "../components/theme/MuiThemeContext";
 
 function MyApp(props) {
 
@@ -14,9 +14,10 @@ function MyApp(props) {
     pageProps: { session, ...pageProps },
   } = props;
 
-
   return (
-    <ThemeContextWrapper> 
+    <ThemeProvider theme={theme}>
+    <ThemeContextWrapper>
+  
       <SessionProvider session={session}>
         {props.Component.name === "Portfolio" ? (
           <PublicLayout>
@@ -27,8 +28,10 @@ function MyApp(props) {
             <Component {...pageProps} />
           </PrivateLayout>
         )}
-      </SessionProvider>   
+      </SessionProvider>
+      
    </ThemeContextWrapper>
+   </ThemeProvider> 
   );
 }
 

@@ -91,7 +91,7 @@ const DisplayZones = ({ skillData }) => {
         <Grid item container role="grid" p={0} marginBottom={3} key={doc.id}>
           <Grid item xs={12} pl={0}>
             <Typography
-              variant="h4"
+              variant="h5"
               sx={{
                 textAlign: "center",
               }}
@@ -100,7 +100,7 @@ const DisplayZones = ({ skillData }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} pt={4}>
-            <Typography variant="body">
+            <Typography variant="body1">
               {doc.fields.Description.replace(/^\s+|\s+$/g, "")}
             </Typography>
           </Grid>
@@ -131,6 +131,7 @@ const DisplayZones = ({ skillData }) => {
                       color: "#fff",
                       padding: "10px",
                     }}
+                   variant='h5'
                     title={doc.head}
                   />
                   <CardContent
@@ -142,7 +143,7 @@ const DisplayZones = ({ skillData }) => {
                       height: "100%",
                     }}
                   >
-                    <Typography >
+                    <Typography variant="body1">
                     <List sx={{ width: "100%" }} aria-label="zone data ul">
                       {doc.data.split(".").map((li, i) => (
                         <ListItem

@@ -1,3 +1,4 @@
+import { Button, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LogIn from "../components/Login";
@@ -7,7 +8,8 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="title">Code the Dream Apprentice Landing Page</h1>
+      <h1 className="title">
+        Code the Dream Apprentice Landing Page</h1>
       <LogIn></LogIn>
 
       <ul>

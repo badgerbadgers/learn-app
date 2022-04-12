@@ -125,7 +125,7 @@ export default memo(function SideNav({
                             }}
                             inset
                             primary={
-                              <Typography
+                              <Typography variant="body1"
                                 sx={{
                                   fontWeight:
                                     liValue === doc.id ? "fontWeightBold" : "",

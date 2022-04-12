@@ -2,8 +2,11 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { ThemeContext, themes } from "./themeContext";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
+
 function ThemeContextWrapper(props) {
   const [mode, setMode] = useState("light");
+
+
 
   useEffect(() => {
     const localStorage = window.localStorage;
@@ -38,10 +41,14 @@ function ThemeContextWrapper(props) {
       changeTheme: () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
+     
       mode,
     }),
     [mode]
   );
+  // mode === 'dark'
+  //       ? window.localStorage.setItem("preferred-theme", "dark")
+  //       : window.localStorage.setItem("preferred-theme", "light")
 
   return (
     <ThemeContext.Provider value={changeTheme}>

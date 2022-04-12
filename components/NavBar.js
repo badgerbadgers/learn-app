@@ -70,10 +70,10 @@ const NavBar = () => {
       <AppBar
         enableColorOnDark
         position="static"
-        sx={{
-          backgroundColor: "transparent",
-          boxShadow: darkMode ? "0 2px 4px -1px #f1f1f2" : "",
-        }}
+        color="transparent"
+        // sx={{
+        //   boxShadow: mode === "dark" ? "0 2px 4px -1px #f1f1f2" : "",
+        // }}
       >
         <Container maxWidth={false} sx={{ mx: 0 }}>
           <Toolbar disableGutters>
@@ -106,15 +106,12 @@ const NavBar = () => {
               onClick={() => {
                 setDarkMode(!darkMode);
                 changeTheme(mode);
-                !darkMode
-                  ? localStorage.setItem("preferred-theme", "dark")
-                  : localStorage.setItem("preferred-theme", "light");
               }}
             />
             <Typography
-              variant="body"
+              variant="h6"
               alignSelf="center"
-              sx={{ color: darkMode ? "#fff" : "#000" }}
+              sx={{ color: mode === 'dark' ? "#fff" : "#000" }}
             >
               {mode === "dark" ? "Light Mode" : "Dark Mode"}
             </Typography>
@@ -122,13 +119,13 @@ const NavBar = () => {
             {/* Box for the user Image and Menu */}
 
             {session && (
-              <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
+              <Box sx={{ flexGrow: 0, marginLeft: "auto", display: 'flex', alignItems: 'center' }}>
                 <Typography
                   variant="body"
                   mr={1}
                   sx={{ color: mode === "dark" ? "#fff" : "#000" }}
                 >
-                  Hi, {session.user.name || session.user.gh}
+                  {session.user.name || session.user.gh}
                 </Typography>
 
                 <Tooltip title="Open settings">
