@@ -26,12 +26,7 @@ const NavBar = () => {
   console.log(mode, "****mode from context");
   console.log(darkMode, "******Dark Mode status");
   const router = useRouter();
-  // const user = null;
 
-  // if (status === "authenticated") {
-  //   user = { ...(session.user.name || session.user.gh) };
-  // }
-  // console.log(session.user.gh);
   const settings = [
     {
       href:
@@ -71,8 +66,6 @@ const NavBar = () => {
   };
 
   return (
-    // <ThemeContext.Consumer>
-    // {({ changeTheme }) => (
     <div>
       <AppBar
         enableColorOnDark
@@ -183,63 +176,6 @@ const NavBar = () => {
         </Container>
       </AppBar>
     </div>
-    // )}
-    // </ThemeContext.Consumer>
   );
 };
 export default NavBar;
-
-{
-  /* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleMenuClick}
-          >
-            <MenuIcon />
-          </IconButton> */
-}
-{
-  /* <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleMenuClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            {session && (
-              <div>
-                <MenuItem onClick={handleMenuClose}>
-                  <Link href="/" passHref>
-                    Home
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link
-                    href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
-                  >
-                    Portfolio
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link
-                    href={`/userform/${encodeURIComponent(session.user.gh)}`}
-                  >
-                    Edit Portfolio
-                  </Link>
-                </MenuItem>
-              </div>
-            )}
-          </Menu>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Code the Dream
-          </Typography> */
-}

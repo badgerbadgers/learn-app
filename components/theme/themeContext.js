@@ -1,26 +1,5 @@
 import { createContext } from "react";
 
-// export const themes = {
-//   light: "",
-//   dark: "white-content",
-
-// };
-
-//   export const ThemeContext = createContext({
-//     theme: themes.light,
-//     changeTheme: () => {},
-//   });
-
-// Created Dark theme with MUI
-
-import { createTheme } from "@mui/material";
-
-// const themes = createTheme({
-//   palette: {
-//     mode: "",
-//   },
-// });
-
 export const ThemeContext = createContext({
   mode: "light",
   changeMode: () => {},
