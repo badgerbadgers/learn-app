@@ -7,19 +7,14 @@ import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import { theme } from "../components/theme/MuiThemeContext";
 
-function MyApp(props) {
-
-  const {
-    Component,
-    pageProps: { session, ...pageProps },
-  } = props;
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  const [darkMode, setDarkMode] = useState(true);
 
   return (
+    <SessionProvider session={session} refetchInterval={5 * 60}>
     <ThemeProvider theme={theme}>
     <ThemeContextWrapper>
-  
-      <SessionProvider session={session}>
-        {props.Component.name === "Portfolio" ? (
+        {Component.name === "Portfolio" && "Home" ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>
@@ -28,12 +23,10 @@ function MyApp(props) {
             <Component {...pageProps} />
           </PrivateLayout>
         )}
-      </SessionProvider>
-      
-   </ThemeContextWrapper>
-   </ThemeProvider> 
+      </ThemeContextWrapper>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }
 
 export default MyApp;
-

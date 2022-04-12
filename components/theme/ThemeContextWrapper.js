@@ -17,12 +17,11 @@ function ThemeContextWrapper(props) {
       } else {
         setMode("light");
       }
+    } else {
+      localStorage.setItem("preferred-theme", "light");
+      setMode("light");
     }
-    // } else {
-    //   localStorage.setItem("preferred-theme", "light");
-    //   setMode("light");
-    // }
-    console.log(localStorage.getItem("preferred-theme"));
+   
   }, []);
 
   const themes = useMemo(
@@ -38,17 +37,19 @@ function ThemeContextWrapper(props) {
   const changeTheme = useMemo(
     () => ({
       // The dark mode switch would invoke this method
-      changeTheme: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      changeTheme: (prevMode) => {
+        const newMode = prevMode === "light" ? "dark" : "light";
+        setMode(newMode);
+  
+        window.localStorage.setItem("preferred-theme", newMode);
+         
       },
      
       mode,
     }),
     [mode]
   );
-  // mode === 'dark'
-  //       ? window.localStorage.setItem("preferred-theme", "dark")
-  //       : window.localStorage.setItem("preferred-theme", "light")
+
 
   return (
     <ThemeContext.Provider value={changeTheme}>

@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../components/theme/themeContext";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
 import {
   AppBar,
   Container,
@@ -25,6 +24,7 @@ const NavBar = () => {
 
   console.log(mode, "****mode from context");
   console.log("DarkMode status*****" + darkMode);
+
   const router = useRouter();
 
   const settings = [
@@ -45,6 +45,13 @@ const NavBar = () => {
       target: "_blank",
       title: "Github",
     },
+
+    {
+      href: "/dashboard",
+      target: "_self",
+      title: "Dashboard",
+    },
+
     {
       href: "#",
       target: "_parent",
@@ -71,9 +78,9 @@ const NavBar = () => {
         enableColorOnDark
         position="static"
         color="transparent"
-        // sx={{
-        //   boxShadow: mode === "dark" ? "0 2px 4px -1px #f1f1f2" : "",
-        // }}
+        sx={{
+          boxShadow: mode === "dark" ? "0 2px 4px -1px #f1f1f2" : "",
+        }}
       >
         <Container maxWidth={false} sx={{ mx: 0 }}>
           <Toolbar disableGutters>
@@ -106,6 +113,7 @@ const NavBar = () => {
               onClick={() => {
                 setDarkMode(!darkMode);
                 changeTheme(mode);
+                
               }}
             />
             <Typography
