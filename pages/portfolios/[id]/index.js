@@ -69,6 +69,7 @@ export async function getServerSideProps(context) {
     props: {
       session: await getSession(context),
     },
+
   }
 }
 

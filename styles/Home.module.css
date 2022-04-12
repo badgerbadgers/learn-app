@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 2.5rem; /* footer height */
+  min-height: 70vh;
 }
 
 .footer {
