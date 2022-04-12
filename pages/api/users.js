@@ -1,6 +1,15 @@
-import { getSession } from "next-auth/react";
+// do i need this or can i add to user object on client side - feels like an extra network call 
+import { getSession } from "next-auth/react"; 
 import clientPromise from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
+
+
+/* 
+1) make conditional of POST (updateUser v createUser)
+2) add error handling if doc is null or id is undefined to functions
+3) remove getSession calls and add the data on the client-side 
+4) merge document for updateUser
+*/
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -35,7 +44,7 @@ const getUser = async (req, res) => {
 
 // const createNewUser & updateUser
 
-const createNewUser = async (req, res) => {
+const createUser = async (req, res) => {
   //connect to database
   const client = await clientPromise;
   const database = client.db(process.env.MONGODB_DB);
