@@ -38,23 +38,17 @@ const initialFormValues = {
   previousIndustry: "",
 };
 
-function UsersForm() {
+function UsersForm({newUser, addUser}) {
   const classes = useStyles();
   const router = useRouter();
   const [userInfoData, setUserInfoData] = useState(initialFormValues);
   const [open, setOpen] = useState(false);
+  const [errors, setErrors] = useState({ email: "" });
   const [skillsArray, setSkillsArray] = useState([]);
   const [techStackArray, setTechStackArray] = useState([]);
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
-  const [errors, setErrors] = useState({ email: "" });
 
-  const [array, setArray] = useState({
-    tech: [],
-    skills: [],
-    previousIndustry: [],
-  })
 
-  
   // Handle multiple input change to update the properties of userInfoData
   // Then update the value of the event that was triggered by that onChange
   // and validate the email from the user.
@@ -74,12 +68,6 @@ function UsersForm() {
 
   const id = router.query.id;
 
-  handleArrayData = (e) => {
-    const { name, value } = e.target;
-    const array = [...name];
-    array.push(userInfoData.name);
-    setArray.tech([array]);
-  }
 
   const handleTechStackArray = () => {
     const arrayTech = [...techStackArray]; // Make a copy of the tech stack array first.
