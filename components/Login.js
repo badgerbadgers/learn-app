@@ -20,12 +20,8 @@ export default function LogIn() {
     {
       title: "Sign-Up",
       onClick: () => {
-        const callback =
-          status === "authenticated"
-            && `/userform/${encodeURIComponent(session.user.gh)}`
-            // : `/userform/${encodeURIComponent(session.user.gh)}`;
         signIn("github", {
-          callbackUrl: callback,
+          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
         });
       },
     },
