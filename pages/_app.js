@@ -19,8 +19,8 @@ function MyApp(props) {
   const [darkMode, setDarkMode] = useState(true);
 
   return (
+    <SessionProvider session={session} refetchInterval={5 * 60}>
     <ThemeContextWrapper>
-      <SessionProvider session={session}>
         {props.Component.name === ("Portfolio" && "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
@@ -30,8 +30,8 @@ function MyApp(props) {
             <Component {...pageProps} />
           </PrivateLayout>
         )}
-      </SessionProvider>
-    </ThemeContextWrapper>
+      </ThemeContextWrapper>
+    </SessionProvider>
   );
 }
 
