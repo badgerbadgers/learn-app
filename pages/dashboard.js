@@ -35,10 +35,10 @@ const Dashboard = () => {
 
   const [open, setOpen] = useState(false);
 
-  let router = useRouter();
+  const router = useRouter();
 
   const handleShare = () => {
-    let url = `https://labs.codethedream.org/portfolios/${session.user.gh}`;
+    const url = `https://labs.codethedream.org/portfolios/${session.user.gh}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url);
       setOpen(true);
