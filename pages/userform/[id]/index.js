@@ -5,7 +5,6 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import styles from "../../../styles/Portfolio.module.css";
 
 function InputForm() {
-  const [newUser, setNewUser] = useState("");
 
   return (
     <Container>
@@ -16,7 +15,7 @@ function InputForm() {
             Input Form
           </Typography>
         </div>
-        <UsersForm addUser={setNewUser} newUser={newUser} />
+        <UsersForm />
       </Paper>
     </Container>
   );
