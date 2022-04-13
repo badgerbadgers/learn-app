@@ -1,24 +1,9 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-export const MuiThemeContext = createTheme({
-    palette: {
-        //contained buttons: Use the contrastText color as the text color and main color as the background color
-        // text | outlined buttons: Use the main color (e.g. primary.main) as the text color.
-
-        primary: {
-            main: '#FF5C35',
-            contrastText: "#fff",
-
-        },
-        secondary: {
-            main: '#12284C',
-            contrastText: "#fff",
-            borderColor: '#FF5C35'
-        },
-    },
+const baseTheme = responsiveFontSizes(createTheme({
     typography: {
         fontFamily: ['Gotham Rounded A', 'Gotham Rounded B'].join(','),
-        fontFamilySecondary: "Montserrat",
+        fontFamilySecondary: ["Montserrat", 'sans-serif'].join(','),
         h3: {
             //title of any page. Header
             fontSize: '2rem',
@@ -43,8 +28,42 @@ export const MuiThemeContext = createTheme({
             fontSize: '1.1rem',
             },
     },
-});  
+}));  
+
+const darkTheme = createTheme({
+    ...baseTheme,
+    palette: {
+        //contained buttons: Use the contrastText color as the text color and main color as the background color
+        // text | outlined buttons: Use the main color (e.g. primary.main) as the text color.
+        type : "dark",
+        primary: {
+            main: '#FF5C35',
+            contrastText: "#fff",
+        },
+        secondary: {
+            main: '#F3C300',
+            contrastText: "#000",
+        },
+    },
+})
+
+const lightTheme = createTheme({
+    ...baseTheme,
+    palette: {
+      type: "light",
+      primary: {
+        main: '#FF5C35',
+        contrastText: "#fff",
+    },
+    secondary: {
+        main: '#12284C',
+        contrastText: "#fff",
+    },
+},
+})
 
 // Auto adjust the typography fontSize to match the media breakpoints. 
-export let theme = createTheme();
-theme = responsiveFontSizes(MuiThemeContext);
+
+
+
+export { darkTheme, lightTheme }

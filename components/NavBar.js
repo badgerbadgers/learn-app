@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ThemeContext } from "../components/theme/themeContext";
+import { ThemeContext } from "../components/theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
 import {
   AppBar,
@@ -15,6 +15,7 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material/";
+import { DarkMode } from "@mui/icons-material";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -79,7 +80,7 @@ const NavBar = () => {
         position="static"
         color="transparent"
         sx={{
-          boxShadow: mode === "dark" ? "0 2px 4px -1px #f1f1f2" : "",
+          boxShadow: darkMode ? "0 2px 4px -1px #f1f1f2" : "",
         }}
       >
         <Container maxWidth={false} sx={{ mx: 0 }}>
@@ -113,11 +114,10 @@ const NavBar = () => {
               onClick={() => {
                 setDarkMode(!darkMode);
                 changeTheme(mode);
-                
               }}
             />
             <Typography
-              variant="h6"
+              variant="body1"
               alignSelf="center"
               sx={{ color: mode === 'dark' ? "#fff" : "#000" }}
             >
@@ -129,7 +129,7 @@ const NavBar = () => {
             {session && (
               <Box sx={{ flexGrow: 0, marginLeft: "auto", display: 'flex', alignItems: 'center' }}>
                 <Typography
-                  variant="body"
+                  variant="body1"
                   mr={1}
                   sx={{ color: mode === "dark" ? "#fff" : "#000" }}
                 >

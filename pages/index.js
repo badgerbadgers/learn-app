@@ -11,7 +11,7 @@ export default function Home() {
       <h1 className="title">
         Code the Dream Apprentice Landing Page</h1>
       <LogIn></LogIn>
-
+    <Button variant="contained" color="secondary">Hello</Button>
       <ul>
         <li>
           <Link href="/">Home</Link>
