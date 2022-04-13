@@ -51,7 +51,7 @@ const createAndUpdateUser = async (req, res) => {
   data["gh"] = req.query.id;
   data["userId"] = ObjectId(userId);
   data["image"] = image;
-  if (data["createAt"]) {
+  if (data["createdAt"]) {
     data["updatedAt"] = new Date();
   } else {
     data["createdAt"] = new Date();
