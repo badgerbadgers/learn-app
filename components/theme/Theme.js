@@ -1,9 +1,11 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-
+// Auto adjust the typography fontSize to match the media breakpoints. 
 const baseTheme = responsiveFontSizes(createTheme({
     typography: {
+        root: {
         fontFamily: ['Gotham Rounded A', 'Gotham Rounded B'].join(','),
         fontFamilySecondary: ["Montserrat", 'sans-serif'].join(','),
+        },
         h3: {
             //title of any page. Header
             fontSize: '2rem',
@@ -36,6 +38,10 @@ const darkTheme = createTheme({
         //contained buttons: Use the contrastText color as the text color and main color as the background color
         // text | outlined buttons: Use the main color (e.g. primary.main) as the text color.
         type : "dark",
+        // background: {
+        //     //default: "#000",
+        //     // paper: '#000',
+        //   },
         primary: {
             main: '#FF5C35',
             contrastText: "#fff",
@@ -44,6 +50,9 @@ const darkTheme = createTheme({
             main: '#F3C300',
             contrastText: "#000",
         },
+        text: {
+            primary: "#fff"
+          },
     },
 })
 
@@ -51,6 +60,7 @@ const lightTheme = createTheme({
     ...baseTheme,
     palette: {
       type: "light",
+
       primary: {
         main: '#FF5C35',
         contrastText: "#fff",
@@ -62,8 +72,5 @@ const lightTheme = createTheme({
 },
 })
 
-// Auto adjust the typography fontSize to match the media breakpoints. 
 
-
-
-export { darkTheme, lightTheme }
+export { darkTheme, lightTheme };

@@ -136,7 +136,7 @@ const NavBar = () => {
                   {session.user.name || session.user.gh}
                 </Typography>
 
-                <Tooltip title="Open settings">
+                <Tooltip title="Open settings" role="UL Div">
                   <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                     <Avatar alt="User Image" src={session.user.image} />
                   </IconButton>
@@ -147,6 +147,7 @@ const NavBar = () => {
                     mt: "45px",
                     top: { xs: "-9px" },
                     left: { xs: "10px" },
+                    
                   }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}

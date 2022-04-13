@@ -44,7 +44,7 @@ function ThemeContextWrapper(props) {
 
   return (
     <ThemeContext.Provider value={changeTheme}>
-      <ThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
+      <ThemeProvider theme={mode ? darkTheme : lightTheme}>
         <CssBaseline />
         {props.children}
       </ThemeProvider>

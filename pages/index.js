@@ -8,8 +8,8 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="title">
-        Code the Dream Apprentice Landing Page</h1>
+      <Typography variant="h3">
+        Code the Dream Apprentice Landing Page</Typography>
       <LogIn></LogIn>
     <Button variant="contained" color="secondary">Hello</Button>
       <ul>
