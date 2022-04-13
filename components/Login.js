@@ -22,8 +22,8 @@ export default function LogIn() {
       onClick: () => {
         const callback =
           status === "authenticated"
-            ? `/userform/${encodeURIComponent(session.user.gh)}`
-            : "/";
+            && `/userform/${encodeURIComponent(session.user.gh)}`
+            // : `/userform/${encodeURIComponent(session.user.gh)}`;
         signIn("github", {
           callbackUrl: callback,
         });

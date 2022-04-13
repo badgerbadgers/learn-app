@@ -19,7 +19,7 @@ export default function Home() {
     <>
       <ThemeProvider theme={theme}>
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{
             textAlign: "center",
             fontFamily: "Gotham Rounded B",
@@ -34,24 +34,3 @@ export default function Home() {
   );
 }
 
-{
-  /* <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        {session && (
-          <>
-            <li>
-              <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
-                View Portfolio Page
-              </Link>
-            </li>
-            <li>
-              <Link href={`/userform/${encodeURIComponent(session.user.gh)}`}>
-                Edit Portfolio Page
-              </Link>
-            </li>
-          </>
-        )}
-      </ul> */
-}

@@ -20,30 +20,6 @@ function MyApp(props) {
 
   return (
     <ThemeContextWrapper>
-      <ThemeContext.Consumer>
-        {({ changeTheme }) => (
-          <Grid item display="flex" m={4}>
-            <Avatar
-              variant="square"
-              alt="Code the Dream logo"
-              src="../img/ctd-logo.png"
-              onClick={()=>{router.push("/")}}
-            >
-              CD
-            </Avatar>
-            <Switch
-              checked={darkMode}
-              onClick={() => {
-                setDarkMode(!darkMode);
-                changeTheme(darkMode ? themes.light : themes.dark);
-              }}
-            />
-            <Typography variant="8" alignSelf="center">
-              {darkMode ? "Dark Mode" : "Light Mode"}
-            </Typography>
-          </Grid>
-        )}
-      </ThemeContext.Consumer>
       <SessionProvider session={session}>
         {props.Component.name === ("Portfolio" && "Home") ? (
           <PublicLayout>
