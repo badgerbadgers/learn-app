@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
+import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 
-export default function LogIn() {
-  const { data: session, status } = useSession();
+export default function LogIn () {
+ const { data: session } = useSession();
 
-  const router = useRouter();
-
+console.log(session)
   const buttonData = [
     {
       title: "Log-In",
@@ -21,7 +19,7 @@ export default function LogIn() {
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
+          callbackUrl: `${window.location.origin}/userform/${encodeURIComponent(session.user.gh)}`,
         });
       },
     },
@@ -52,32 +50,13 @@ export default function LogIn() {
   );
 }
 
-// if(status === "authenticated") (
-//return (
-//       <>
-//         Signed in as {session.user.name || session.user.gh} <br />
-//         <button onClick={()=>signOut()}>Sign out</button>
-//       </>
-//     );
-//   }
-//   return (
-//     <>
-//       Not signed in <br />
-//       <button onClick={()=>signIn()}>Sign in</button>
-//     </>
-//   );
-// }
+export async function getServerSideProps(context) {
 
-// if (status === "authenticated") {
-// if (status === "authenticated") {
-//   setIsLoggedIn(false);
-//   console.log("***** SignOut***  loggedout");
-//   console.log("Signed in as", session.user.name || session.user.gh);
-//   signOut();
-// } else {
-//   const handleLogin = () => {
-//     console.log("*******I am waiting for SingIn loggedIn");
-//     //console.log("Signed in as", session.user.name || session.user.gh) { callbackUrl: "http://www.google.com" };
 
-//   };
-// }
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}

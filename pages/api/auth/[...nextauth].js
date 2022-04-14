@@ -34,6 +34,12 @@ export default NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      id: "github",
+      // name: "GitHub",
+      // type: "oauth",
+      // authorization:
+      //   "https://github.com/login/oauth/authorize?scope=read:user+user:email",
+      // token: "https://github.com/login/oauth/access_token",
       userinfo: {
         url: "https://api.github.com/user",
         async request({ client, tokens }) {
@@ -47,6 +53,8 @@ export default NextAuth({
                 headers: { Authorization: `token ${tokens.access_token}` },
               })
             ).json();
+
+            console.log(emails, 'emails');
 
             if (emails?.length > 0) {
               // Get primary email
