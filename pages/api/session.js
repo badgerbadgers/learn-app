@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react"
 
-export default async (req, res) => {
+export default session = async (req, res) => {
   const session = await getSession({ req })
   if (session) {
     // // Signed in

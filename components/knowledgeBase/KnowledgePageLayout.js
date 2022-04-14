@@ -16,7 +16,7 @@ theme = responsiveFontSizes(theme);
 
 const KnowledgePageLayout = ({ title, index, body }) => {
   return (
-    <div style={{ margin: "70px 30px 0px" }}>
+    <div style={{ margin: "0px 30px 0px" }}>
       <Grid
         container
         p={0}
@@ -36,7 +36,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
           {/* Applying the theme for the Title */}
           <ThemeProvider theme={theme}>
             <Typography
-              variant="h2"
+              variant="h3"
               sx={{
                 textAlign: "center",
               }}

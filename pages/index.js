@@ -1,15 +1,17 @@
 import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import LogIn from "../components/Login";
+import { Typography } from "@mui/material";
 
 export default function Home() {
   const { data: session } = useSession();
 
   return (
     <>
-      <h1 className="title">Code the Dream Apprentice Landing Page</h1>
+      <Typography variant="h3">
+        Code the Dream Apprentice Landing Page</Typography>
       <LogIn></LogIn>
-
+  
       <ul>
         <li>
           <Link href="/dashboard">Home</Link>
