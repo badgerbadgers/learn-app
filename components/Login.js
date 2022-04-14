@@ -3,9 +3,8 @@ import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 
 export default function LogIn () {
- const { data: session } = useSession();
+ const { data: session, status } = useSession();
 
-console.log(session)
   const buttonData = [
     {
       title: "Log-In",
@@ -19,7 +18,7 @@ console.log(session)
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: `${window.location.origin}/userform/${encodeURIComponent(session.user.gh)}`,
+          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
         });
       },
     },
