@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
-import { styled } from "@mui/material/styles";
-import Link from "next/link";
 import {
   Button,
   Container,
@@ -19,7 +17,8 @@ import {
   responsiveFontSizes,
 } from "@mui/material";
 
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
+import Link from "next/link";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { useRouter } from "next/router";
@@ -169,3 +168,14 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export async function getServerSideProps(context) {
+
+
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}

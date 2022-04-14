@@ -1,5 +1,4 @@
-import { Button, Typography } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import LogIn from "../components/Login";
 
@@ -11,10 +10,10 @@ export default function Home() {
       <Typography variant="h3">
         Code the Dream Apprentice Landing Page</Typography>
       <LogIn></LogIn>
-    <Button variant="contained" color="secondary">Hello</Button>
+  
       <ul>
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/dashboard">Home</Link>
         </li>
         {session && (
           <>
@@ -35,3 +34,14 @@ export default function Home() {
   );
 }
 
+
+export async function getServerSideProps(context) {
+
+
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}
