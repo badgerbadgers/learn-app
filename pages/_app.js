@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <SessionProvider session={session} refetchInterval={5 * 60}>
+    <SessionProvider session={session} >
       <ThemeContextWrapper>
         <ThemeContext.Consumer>
           {({ changeTheme }) => (

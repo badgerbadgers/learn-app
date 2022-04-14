@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useSession, getSession} from 'next-auth/react';
 import { useRouter } from "next/router";
 import Image from "next/image";
 import ContactCard from "../components/ContactCard";
@@ -8,12 +9,11 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import getData from "../../../lib/getData";
-import { useSession } from "next-auth/react";
 
 function Portfolio() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
-
+  
   const url = "/api/users";
   const router = useRouter();
 
@@ -83,3 +83,14 @@ function Portfolio() {
 }
 
 export default Portfolio;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}
+
+
