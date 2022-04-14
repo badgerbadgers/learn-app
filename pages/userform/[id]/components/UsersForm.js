@@ -33,9 +33,9 @@ const initialFormValues = {
   linkedin: "",
   twitter: "",
   videoUrl: "",
-  techStack: "",
-  skills: "",
-  previousIndustry: "",
+  techStack: [],
+  skills: [],
+  previousIndustry: [],
 };
 
 function UsersForm() {
@@ -48,18 +48,18 @@ function UsersForm() {
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
   const [errors, setErrors] = useState({ email: "" });
 
-  const [array, setArray] = useState({
-    tech: [],
-    skills: [],
-    previousIndustry: [],
+  const [arrays, setArrays] = useState({
+    techStack : "",
+
+
   })
 
-  
   // Handle multiple input change to update the properties of userInfoData
   // Then update the value of the event that was triggered by that onChange
   // and validate the email from the user.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(e.target,value);
     setUserInfoData({ ...userInfoData, [name]: value });
 
     if (name === "email") {
@@ -72,44 +72,67 @@ function UsersForm() {
     }
   };
 
+
   const id = router.query.id;
 
-  handleArrayData = (e) => {
-    const { name, value } = e.target;
-    const array = [...name];
-    array.push(userInfoData.name);
-    setArray.tech([array]);
+  const handleArrayData = (e) => {
+    console.log(e)
+    const { name} = e.target;
+    console.log(e.target)
+    if (name === 'techStackBtn') {
+      const newArray = [...techStackArray];
+      newArray.push(userInfoData.techStack);
+      setTechStackArray(newArray);
+      let data = userInfoData; // Assigning userInfoData to data variable.
+      data.techStack = ""; // Take tech Stack and assign to empty string
+      setUserInfoData(data); // update the state
+    } else if (name === 'skillsBtn') {
+      const newArray = [...skillsArray];
+      newArray.push(userInfoData.skills);
+      setSkillsArray(newArray);
+      let data = userInfoData; // Assigning userInfoData to data variable.
+      data.skills = ""; // Take tech Stack and assign to empty string
+      setUserInfoData(data); // update the state
+    } else if (name === 'previousIndustryBtn') {
+      const newArray =  [...previousIndustryArray];
+      newArray.push(userInfoData.skills);
+      setPreviousIndustryArray(newArray);
+      let data = userInfoData; // Assigning userInfoData to data variable.
+      data.previousIndustry = ""; // Take tech Stack and assign to empty string
+      setUserInfoData(data); // update the state
+    }
+    
   }
 
-  const handleTechStackArray = () => {
-    const arrayTech = [...techStackArray]; // Make a copy of the tech stack array first.
-    arrayTech.push(userInfoData.techStack); // Update it with the modified tech stack entry.
-    setTechStackArray(arrayTech); // Update the state.
-    // clear the input form
-    let data = userInfoData; // Assigning userInfoData to data variable.
-    data.techStack = ""; // Take tech Stack and assign to empty string
-    setUserInfoData(data); // update the state
-  };
+  // const handleTechStackArray = () => {
+  //   const arrayTech = [...techStackArray]; // Make a copy of the tech stack array first.
+  //   arrayTech.push(userInfoData.techStack); // Update it with the modified tech stack entry.
+  //   setTechStackArray(arrayTech); // Update the state.
+  //   // clear the input form
+  //   let data = userInfoData; // Assigning userInfoData to data variable.
+  //   data.techStack = ""; // Take tech Stack and assign to empty string
+  //   setUserInfoData(data); // update the state
+  // };
 
-  const handleSkillsArray = () => {
-    const arraySkill = [...skillsArray]; 
-    arraySkill.push(userInfoData.skills); 
-    setSkillsArray(arraySkill); 
-    // clear the input form
-    let data = userInfoData; 
-    data.skills = ""; 
-    setUserInfoData(data); 
-  };
+  // const handleSkillsArray = () => {
+  //   const arraySkill = [...skillsArray]; 
+  //   arraySkill.push(userInfoData.skills); 
+  //   setSkillsArray(arraySkill); 
+  //   // clear the input form
+  //   let data = userInfoData; 
+  //   data.skills = ""; 
+  //   setUserInfoData(data); 
+  // };
 
-  const handlePreviousIndustryArray = () => {
-    const arrayPreviousIndust = [...previousIndustryArray]; 
-    arrayPreviousIndust.push(userInfoData.previousIndustry);
-    setPreviousIndustryArray(arrayPreviousIndust); 
-    // clear the input form
-    let data = userInfoData; 
-    data.previousIndustry = ""; 
-    setUserInfoData(data); 
-  };
+  // const handlePreviousIndustryArray = () => {
+  //   const arrayPreviousIndust = [...previousIndustryArray]; 
+  //   arrayPreviousIndust.push(userInfoData.previousIndustry);
+  //   setPreviousIndustryArray(arrayPreviousIndust); 
+  //   // clear the input form
+  //   let data = userInfoData; 
+  //   data.previousIndustry = ""; 
+  //   setUserInfoData(data); 
+  // };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -119,6 +142,7 @@ function UsersForm() {
     // POST data to API route using fetch API
     // Remove key object from user form when is posted to the users route
     const { skills, techStack, previousIndustry, ...updatedUserInfoData } = userInfoData;
+   
     const data = {
       ...updatedUserInfoData,
       skillsArray,
@@ -234,8 +258,9 @@ function UsersForm() {
                   <Button
                     size="small"
                     variant="contained"
+                    name="techStackBtn"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
-                    onClick={handleTechStackArray}
+                    onClick={(e) => handleArrayData(e)}
                     disabled={userInfoData.techStack.length === 0}
                   >
                     Add
@@ -269,9 +294,10 @@ function UsersForm() {
                 endAdornment: userInfoData && (
                   <Button
                     size="small"
+                    name="skillsBtn"
                     variant="contained"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
-                    onClick={handleSkillsArray}
+                    onClick={(e) => handleArrayData(e)}
                     disabled={userInfoData.skills.length === 0}
                   >
                     Add
@@ -304,10 +330,11 @@ function UsersForm() {
               InputProps={{
                 endAdornment: userInfoData && (
                   <Button
-                    size="small"
+                  name="previousIndustryBtn"
+                  size="small"
                     variant="contained"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
-                    onClick={handlePreviousIndustryArray}
+                    onClick={(e) => handleArrayData(e)}
                     disabled={userInfoData.previousIndustry.length === 0}
                   >
                     Add
