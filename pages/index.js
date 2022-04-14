@@ -1,6 +1,7 @@
 import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import LogIn from "../components/Login";
+import { Typography } from "@mui/material";
 
 export default function Home() {
   const { data: session } = useSession();

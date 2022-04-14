@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../components/theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -15,16 +15,13 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material/";
-import { DarkMode } from "@mui/icons-material";
+import Link from "next/link";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(false);
   const { data: session, status } = useSession();
-
-  console.log(mode, "****mode from context");
-  console.log("DarkMode status*****" + darkMode);
 
   const router = useRouter();
 
@@ -166,8 +163,8 @@ const NavBar = () => {
                   {settings &&
                     settings.map((setting) => (
                       <MenuItem key={setting.title} onClick={handleMenuClose}>
+                        <Link href={setting.href}>
                         <a
-                          href={setting.href}
                           target={setting.target}
                           rel="noopener noreferrer"
                           onClick={setting.onClick}
@@ -176,6 +173,7 @@ const NavBar = () => {
                             {setting.title}
                           </Typography>
                         </a>
+                        </Link>
                       </MenuItem>
                     ))}
                 </Menu>

@@ -26,7 +26,7 @@ export default memo(function SideNav({
 
   useEffect(() => {
     setLiValue(skillID);
-  }, [personIndex, techIndex]);
+  }, [personIndex, techIndex, skillID]);
 
   //isDesktop checks if the screen width is more than 900px and if true expanded is false.
 
