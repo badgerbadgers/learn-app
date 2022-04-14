@@ -15,6 +15,7 @@
 
 @media (max-width: 600px) {
   .resourcesGrid {
-    grid-template-columns: 1fr;
+    width: 100%;
+    /* grid-template-columns: 1fr; */
   }
 }
