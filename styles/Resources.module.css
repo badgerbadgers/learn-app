@@ -1,0 +1,20 @@
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* grid-gap: 10px */
+}
+
+.resourcesItem {
+  min-width: 350px;
+}
+
+.innerCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+@media (max-width: 600px) {
+  .resourcesGrid {
+    grid-template-columns: 1fr;
+  }
+}
