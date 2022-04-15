@@ -16,7 +16,7 @@ const renderingFunction = (item) => {
     let listOfItems = item.subcontent.map((content) => {
       return (
         <ListItem key={content} >
-          <ListItemText  primary={content} />
+          <ListItemText  primary={content}   dangerouslySetInnerHTML={{__html: content}}/>
         </ListItem>
       );
     });

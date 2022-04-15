@@ -93,11 +93,9 @@ const Dashboard = () => {
         )}
       </Container>
       <Container sx={{ textAlign: "center" }}>
-        <ThemeProvider theme={theme}>
           <Typography variant="h3" gutterBottom>
-            Visit our knowledge base section
+            Knowledge Base
           </Typography>
-        </ThemeProvider>
         <Paper
           sx={{
             backgroundColor: "#F4F5F7",
@@ -123,12 +121,12 @@ const Dashboard = () => {
                 }}
               >
                 <TrackChangesIcon color="primary" style={{
-                  fontSize:'38px'
+                  fontSize:'38px', top: '15px', position: 'relative'
                 }}/>
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                    Find info about skills zoning
+                   CTD Labs skills and zones rubric used for apprentice evaluations.
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -150,13 +148,13 @@ const Dashboard = () => {
                 }}
               >
                 <ConnectWithoutContactIcon color="primary" style={{
-                  fontSize:'38px'
+                  fontSize:'38px', top: '15px', position: 'relative'
                 }}/>
                 <CardHeader title="Pair Programming">
                 </CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                    Find info about pair programming
+                    Information and process about how CTD Labs implements pair programming.
                   </Typography>
                 </CardContent>
                 <CardActions>
