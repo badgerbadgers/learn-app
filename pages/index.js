@@ -15,7 +15,7 @@ export default function Home() {
     <>
       {/* <Typography variant="h3">
         Code the Dream Apprentice Landing Page</Typography> */}
-      <Image src="/img/ctd-logo.png" width={300} height={300}/>
+      <Image src="/img/ctd-log" width={300} height={300}/>
       <LogIn />  
     </>
   );

@@ -9,6 +9,7 @@ import {
   ListItem,
 } from "@mui/material";
 
+
 const DisplayZones = ({ skillData }) => {
   let zoneArr = [];
 
@@ -115,7 +116,7 @@ const DisplayZones = ({ skillData }) => {
             m={0}
           >
             {zoneArr.map((doc) => (
-              <Grid item xs={12} md={6} key={doc.head} >
+              <Grid item xs={12} md={6} key={doc.head}>
                 <Card
                   sx={{
                     border: "1px solid",
@@ -123,8 +124,7 @@ const DisplayZones = ({ skillData }) => {
                     borderRadius: "0.25rem",
                     margin: "0 auto",
                     height: "100%",
-
-                  
+                
                   }}
                 >
                   <CardHeader
@@ -143,6 +143,7 @@ const DisplayZones = ({ skillData }) => {
                       borderRadius: "0.25rem",
                       margin: "0 auto",
                       height: "100%",
+                      paddingTop: '0'
                     }}
                   >
                     <Typography variant="body1">

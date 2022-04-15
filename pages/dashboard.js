@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import {
   Button,
   Container,
@@ -120,6 +122,9 @@ const Dashboard = () => {
                   padding: "16px",
                 }}
               >
+                <TrackChangesIcon color="primary" style={{
+                  fontSize:'38px'
+                }}/>
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
                   <Typography variant="body1">
@@ -144,7 +149,11 @@ const Dashboard = () => {
                   padding: "16px",
                 }}
               >
-                <CardHeader title="Pair Programming"></CardHeader>
+                <ConnectWithoutContactIcon color="primary" style={{
+                  fontSize:'38px'
+                }}/>
+                <CardHeader title="Pair Programming">
+                </CardHeader>
                 <CardContent>
                   <Typography variant="body1">
                     Find info about pair programming
