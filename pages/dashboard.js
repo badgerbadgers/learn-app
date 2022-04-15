@@ -32,7 +32,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Dashboard = () => {
   const { data: session } = useSession();
-
+  console.log('SESSION', session)
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -99,7 +99,7 @@ const Dashboard = () => {
         <Paper
           sx={{
             backgroundColor: "#F4F5F7",
-            maxWidth: 800,
+            // maxWidth: 800,
             my: 2,
             mx: "auto",
             p: 8,
@@ -112,12 +112,12 @@ const Dashboard = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
-            <Grid item>
+            <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  minWidth: 315,
+                  minWidth: 350,
                   backgroundColor: "#DFE2E8",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
                 <CardHeader title="Skills Zones"></CardHeader>
@@ -136,12 +136,12 @@ const Dashboard = () => {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  minWidth: 315,
+                  minWidth: 350,
                   backgroundColor: "#CBCFD9",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
                 <CardHeader title="Pair Programming"></CardHeader>

@@ -72,4 +72,8 @@ p {
   font-family: "'Montserrat'";
 }
 
+.MuiGrid-container {
+  max-width: 1250px;    
+}
+
 
