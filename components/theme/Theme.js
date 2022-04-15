@@ -3,30 +3,31 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 const baseTheme = responsiveFontSizes(createTheme({
     typography: {
         root: {
-        fontFamily: ['Gotham Rounded A', 'Gotham Rounded B', 'sans-serif'].join(','),
-        fontFamilySecondary: ["Montserrat", 'sans-serif'].join(','),
+        fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
+        fontFamilySecondary: "Montserrat",
         },
         h3: {
             //title of any page. Header
-            fontSize: '2rem',
+            fontSize: '3.2rem',
             fontWeight: '700 !important',
-            fontFamily: ['Gotham Rounded A', 'Gotham Rounded B', 'sans-serif'].join(','),
+            fontFamily: 'gothamRoundedBold',
             },
+            
         h5: {
             //subheaders on the page
             fontSize:  '1.6rem',
-            fontFamily: ['Gotham Rounded A', 'Gotham Rounded B', 'sans-serif'].join(','),
+            fontFamily: 'gothamRoundedMedium',
             fontWeight: '500 !important',
             },
         h6: {
-            // NavBar Elements
+            // Header Elements
             fontSize: '0.9rem',
-            fontWeight: '500 !important',
             textTransform: 'uppercase',
-           fontFamily: ['Gotham Rounded A', 'Gotham Rounded B', 'sans-serif'].join(','),
+           fontFamily: 'gothamRoundedMedium',
+           overflowWrap: 'break-word',
             },
         body1: {
-            fontFamily: ["Montserrat", 'sans-serif'].join(','),
+            fontFamily: "Montserrat",
             fontSize: '1.1rem',
             },
     },

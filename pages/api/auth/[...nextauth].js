@@ -25,9 +25,10 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, token, user }) {
-      return {...session, user}
+      return { ...session, user };
     },
-},
+  },
+
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
@@ -65,25 +66,25 @@ export default NextAuth({
           return profile;
         },
       },
-        profile(profile) {
-          return {
-            id: profile.id.toString(),
-            gh_id: profile.id,
-            name: profile.name,
-            email: profile.email,
-            image: profile.avatar_url,
-            gh: profile.login,
-            url: profile.html_url
-          }
-          }
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          gh_id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.avatar_url,
+          gh: profile.login,
+          url: profile.html_url,
+        };
+      },
     }),
   ],
-  //TODO: add theme colors to sign in 
-//   theme: {
-//     colorScheme: "light", // "auto" | "dark" | "light"
-//     brandColor: "", // Hex color code
-//     logo: "" // Absolute URL to image
-// },
+  //TODO: add theme colors to sign in
+  //   theme: {
+  //     colorScheme: "light", // "auto" | "dark" | "light"
+  //     brandColor: "", // Hex color code
+  //     logo: "" // Absolute URL to image
+  // },
   // debug: true,
   // logger: {
   //   error(code, metadata) {

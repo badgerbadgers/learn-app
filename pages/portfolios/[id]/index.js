@@ -24,6 +24,7 @@ function Portfolio() {
   useEffect(() => {
     const params = { params: { id: id } };
     if (id) {
+      
       (async () => {
         await getData(params, url).then((data) => {
           setUser(data);

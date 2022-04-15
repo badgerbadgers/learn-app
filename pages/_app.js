@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import PrivateLayout from "../components/PrivateLayout";
 import PublicLayout from "../components/PublicLayout";
@@ -10,7 +9,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session} >
     <ThemeContextWrapper>
-        {Component.name === "Portfolio" && "Home" ? (
+        {(Component.name === "Portfolio" || Component.name === "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>
