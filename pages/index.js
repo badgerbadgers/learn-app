@@ -4,13 +4,19 @@ import { Typography } from "@mui/material";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from 'next/image'
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter()
-  if (session) {
-    router.push('/dashboard')
-  }
+
+
+  useEffect(() => {
+    if (session) {
+      router.push('/dashboard')
+    }
+  }, [])
+  
   return (
     <>
       {/* <Typography variant="h3">
