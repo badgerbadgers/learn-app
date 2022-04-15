@@ -5,6 +5,7 @@ export default function MyDocument() {
     <Html>
       <Head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="stylesheet" href="https://fonts.google.com/specimen/Montserrat"></link>
       </Head>
       <body>
         <Main />

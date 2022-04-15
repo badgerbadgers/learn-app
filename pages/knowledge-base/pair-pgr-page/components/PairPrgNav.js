@@ -28,6 +28,11 @@ const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
                   my: 1,
                   maxWidth: 900,
                   color: "white",
+                  "&.Mui-selected": {
+                    color: '#12284C',
+                    backgroundColor: "white",
+                    border: '1px orange solid'
+                  }
                 }}
                 label={item.label}
                 {...a11yProps(index)}
