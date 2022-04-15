@@ -1,6 +1,7 @@
 import { getSession, signIn } from "next-auth/react";
 import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 export default function LogIn () {
  const { data: session, status } = useSession();
@@ -13,6 +14,7 @@ export default function LogIn () {
           callbackUrl: "/dashboard",
         });
       },
+      icon: <GitHubIcon style={{fontSize:'32px'}}/>
     },
     {
       title: "Sign-Up",
@@ -21,6 +23,7 @@ export default function LogIn () {
           callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
         });
       },
+      icon: <GitHubIcon style={{fontSize:'32px'}}/>
     },
   ];
 
@@ -39,6 +42,7 @@ export default function LogIn () {
               backgroundColor: "#12284C",
             },
           }}
+          startIcon={btn.icon}
         >
           <Typography sx={{ fontFamily: "Gotham Rounded B", fontSize: "2rem" }}>
             {btn.title}

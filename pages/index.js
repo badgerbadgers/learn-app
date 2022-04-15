@@ -3,6 +3,8 @@ import LogIn from "../components/Login";
 import { Typography } from "@mui/material";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Image from 'next/image'
+
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter()
@@ -11,8 +13,9 @@ export default function Home() {
   }
   return (
     <>
-      <Typography variant="h3">
-        Code the Dream Apprentice Landing Page</Typography>
+      {/* <Typography variant="h3">
+        Code the Dream Apprentice Landing Page</Typography> */}
+      <Image src="/img/ctd-logo.png" width={300} height={300}/>
       <LogIn />  
     </>
   );

@@ -18,7 +18,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
         container
         p={0}
         m={0}
-        sx={{ maxWidth: "1500px", margin: "auto" }}
+        sx={{ maxWidth: "1250px", margin: "auto" }}
         justify="center"
       >
         {/* div for Page Title */}
