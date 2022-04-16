@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import PsychologyIcon from '@mui/icons-material/Psychology';
 import {
   Button,
   Container,
@@ -93,8 +94,11 @@ const Dashboard = () => {
         )}
       </Container>
       <Container sx={{ textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Knowledge Base
+       
+          <Typography variant="h3" gutterBottom color="secondary">
+          <PsychologyIcon color="secondary" style={{
+                  fontSize:'54px', position: 'relative', top: '8px'
+                }}/>  Knowledge Base
           </Typography>
         <Paper
           sx={{

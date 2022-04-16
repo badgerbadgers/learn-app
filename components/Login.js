@@ -2,9 +2,12 @@ import { getSession, signIn } from "next-auth/react";
 import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { useTheme } from '@mui/styles';
+
 
 export default function LogIn () {
  const { data: session, status } = useSession();
+ const theme = useTheme();
 
   const buttonData = [
     {
@@ -28,23 +31,23 @@ export default function LogIn () {
   ];
 
   return (
-    <Stack spacing={8} mt={6}>
+    <Stack spacing={4} mt={6}>
       {buttonData.map((btn, i) => (
         <Button
           key={i}
-          size="large"
+          size="medium"
           variant="contained"
           onClick={btn.onClick}
           sx={{
-            padding: "36px 54px",
-            backgroundColor: "#FF5C35",
+            padding: "16px 34px",
+            backgroundColor: "#12284C",
             "&:hover": {
-              backgroundColor: "#12284C",
+              backgroundColor: "#FF5C35",
             },
           }}
           startIcon={btn.icon}
         >
-          <Typography sx={{ fontFamily: "Gotham Rounded B", fontSize: "2rem" }}>
+          <Typography sx={{fontSize: "1.5rem" }}>
             {btn.title}
           </Typography>
         </Button>
