@@ -21,10 +21,16 @@ export default function Home() {
 
   return (
     <>
-    <DreamWall />
-      <Typography variant="h3">
-        Code the Dream Apprentice Landing Page</Typography>
-      <LogIn />  
+    <DreamWall /> 
+      <div className={styles.homeOuter}>
+        <div className={styles.left}></div>
+        <div className={styles.right}></div>
+        <div className={styles.inner}>
+          <Image src="/img/labs-g-01.png" width={420} height={320}/>
+          <LogIn />  
+        </div>
+      </div>
+
     </>
   );
 }
