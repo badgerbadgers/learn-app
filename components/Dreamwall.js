@@ -7,8 +7,7 @@ const Sketch = dynamic(() => import("react-p5"),
  
 
 const DreamWall = () => {
-  let x;
-  let y;
+ 
   // const { height, width } = useWindowDimensions();
   let cnv;
   let images =[];
