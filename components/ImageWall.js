@@ -5,8 +5,7 @@ const Sketch = dynamic(() => import("react-p5"),
   { ssr: false }
 ) 
  
-
-const DreamWall = () => {
+const ImageWall = () => {
  
   // const { height, width } = useWindowDimensions();
   let cnv;
@@ -118,4 +117,4 @@ class Square {
 
  }
 
- export default DreamWall
+ export default ImageWall

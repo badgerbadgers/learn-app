@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Image from 'next/image'
 import { useEffect } from "react";
 import styles from '../styles/Home.module.css'
-import DreamWall from '../components/DreamWall'
+import ImageWall from '../components/ImageWall'
 
 export default function Home() {
   const { data: session } = useSession();
@@ -21,15 +21,15 @@ export default function Home() {
 
   return (
     <>
-    <DreamWall /> 
-      <div className={styles.homeOuter}>
-        <div className={styles.left}></div>
-        <div className={styles.right}></div>
-        <div className={styles.inner}>
-          <Image src="/img/labs-g-01.png" width={420} height={320}/>
-          <LogIn />  
-        </div>
+    <ImageWall /> 
+    <div className={styles.homeOuter}>
+      <div className={styles.left}></div>
+      <div className={styles.right}></div>
+      <div className={styles.inner}>
+        <Image src="/img/labs-g-01.png" width={420} height={320}/>
+        <LogIn />  
       </div>
+    </div>
 
     </>
   );
