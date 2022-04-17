@@ -72,6 +72,9 @@ function Portfolio() {
               </Button>
             </Container>
           )}
+          <div className={styles.headerLogo}>
+            <Image src='/img/labs_mc-01.png' width={160} height={125} layout="responsive"/>
+          </div>
         </>
       )}
       {!isLoading && !user && (
@@ -79,6 +82,7 @@ function Portfolio() {
           User with id <strong>{id}</strong> wasn&apos;t found
         </Container>
       )}
+   
     </>
   );
 }

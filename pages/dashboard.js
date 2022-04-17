@@ -25,6 +25,7 @@ import Link from "next/link";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { useRouter } from "next/router";
+import {useEffect} from 'react'
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -52,6 +53,12 @@ const Dashboard = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if(!session) {
+      router.push('/')
+    }
+  },[])
 
   return (
     <>
