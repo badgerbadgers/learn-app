@@ -9,14 +9,11 @@ import {
 
 // Create a theme which will resize the title font size based on the screen width.
 
-let theme = createTheme();
-theme = responsiveFontSizes(theme);
-
 //Create a Layout for the knowledge Pages. Add a max width of 1500px screen size
 
 const KnowledgePageLayout = ({ title, index, body }) => {
   return (
-    <div style={{ margin: "70px 30px 0px" }}>
+    <div style={{ margin: "0px 30px 0px" }}>
       <Grid
         container
         p={0}
@@ -34,16 +31,16 @@ const KnowledgePageLayout = ({ title, index, body }) => {
           }}
         >
           {/* Applying the theme for the Title */}
-          <ThemeProvider theme={theme}>
+         
             <Typography
-              variant="h2"
+              variant="h3"
               sx={{
                 textAlign: "center",
               }}
             >
               {title}
             </Typography>
-          </ThemeProvider>
+       
         </Grid>
         {/* Content Body container (div) which has 2 sub divs 1.Index / Navigation with links 2.Display Body with top padding of 32px */}
         <Grid

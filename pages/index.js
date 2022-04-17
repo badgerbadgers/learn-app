@@ -1,35 +1,25 @@
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+//import { getSession } from "next-auth/react";
 import LogIn from "../components/Login";
+import { Typography } from "@mui/material";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
     <>
-      <h1 className="title">Code the Dream Apprentice Landing Page</h1>
-      <LogIn></LogIn>
-
-      <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        {session && (
-          <>
-          <li>
-            <Link href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
-              View Portfolio Page
-            </Link>
-          </li>
-          <li>
-            <Link href={`/userform/${encodeURIComponent(session.user.gh)}`}>
-              Edit Portfolio Page
-            </Link>
-          </li>
-          </>
-        )}
-      </ul>
+      <Typography variant="h3">
+        Code the Dream Apprentice Landing Page</Typography>
+      <LogIn />  
     </>
   );
 }
 
+
+// export async function getServerSideProps(context) {
+
+
+//   return {
+//     props: {
+//       session: await getSession(context),
+//     },
+
+//   }
+// }
