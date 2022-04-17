@@ -87,7 +87,7 @@ class Square {
 
   show(p5) {
     // x position follows a circle
-    if (this.tint > 174) {
+    if (this.tint > 128) {
       this.darken=false;
       } if( this.tint <= 0) {
       this.darken = true
