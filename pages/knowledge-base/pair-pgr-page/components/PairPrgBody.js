@@ -44,8 +44,8 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
     
       (pairProgrammingInfo.map((item, index) => (
         <TabPanel value={value} index={index} key={item.header}>
-          <Grid item xs={9} sx={{position: "relative"}} >
-            <Typography variant="h4">
+          <Grid item sx={{position: "relative"}} >
+            <Typography sx={{backgroundColor: '#FF9D85', color: "white", fontFamily: "gothamRoundedMedium", lineHeight: '3.6rem'}} variant="h4">
               {item.header}
             </Typography>
             <List>
