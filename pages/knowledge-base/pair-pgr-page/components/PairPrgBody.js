@@ -4,7 +4,7 @@ import styles from "../../../../styles/Knowledge.module.css";
 import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-//function that takes an item/string and returns an html element,
+//function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
 const renderingFunction = (item) => {
   if (item.subHeader) {
@@ -17,11 +17,9 @@ const renderingFunction = (item) => {
       );
     });
     return (
-      <Grid item xs={6} role="test" key={item.subHeader.slice(0, 8)}>
-        <>
-          {subHeader}
-          <List>{listOfItems}</List>
-        </>
+      <Grid item sm={6} xs={12} mt={2} key={item.subHeader.slice(0, 8)}>
+        {subHeader}
+        <List>{listOfItems}</List>
       </Grid>
     );
   } else {
@@ -40,7 +38,6 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
       {pairProgrammingInfo &&
         pairProgrammingInfo.map((item, index) => (
           <TabPanel value={value} index={index} key={item.header}>
-            {console.log("item", item)}
             <Typography
               sx={{
                 backgroundColor: "#FF9D85",
@@ -53,15 +50,15 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
               {item.header}
             </Typography>
 
-            <Grid role="grid inside" container item xs={12} mt={1}>
+            <Grid container item xs={12}>
               {item.label === "A pair programming session" ? (
-                item.content.map((p) => {
-                  return renderingFunction(p);
+                item.content.map((content) => {
+                  return renderingFunction(content);
                 })
               ) : (
                 <List>
-                  {item.content.map((p) => {
-                    return renderingFunction(p);
+                  {item.content.map((content) => {
+                    return renderingFunction(content);
                   })}
                 </List>
               )}

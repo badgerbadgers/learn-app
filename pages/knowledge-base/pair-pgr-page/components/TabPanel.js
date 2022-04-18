@@ -3,14 +3,13 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 //create a Grid container to render content of a tab (body)
 export default function TabPanel(props) {
-  const matches = useMediaQuery("(min-width:900px)");
-  console.log(matches);
   const { children, value, index, ...other } = props;
+  
+  const matches = useMediaQuery("(min-width:900px)");
   return (
     <>
       {value === index && (
         <Grid
-          role="grid for tabpanel"
           key={`gridTab${index}`}
           container
           item
@@ -22,7 +21,6 @@ export default function TabPanel(props) {
           py={matches ? 1 : 0}
         >
           <Card
-            role="card"
             sx={{
               width: "100%",
               position: "relative",
