@@ -22,7 +22,7 @@ export default memo(function SideNav({
 }) {
   const [liValue, setLiValue] = useState("");
   const [expanded, setExpanded] = useState({});
-  const isDesktop = useMediaQuery("(min-width:900px)");
+  const isDesktop = useMediaQuery("(min-width:1260px)");
 
   useEffect(() => {
     setLiValue(skillID);
@@ -80,12 +80,12 @@ export default memo(function SideNav({
   return (
     <>
       {sideIndex && (
-        <div style={{ padding: "16px" }}>
+        <div style={{width: '100%'}}>
           {sideIndex.map((accordion) => {
             const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
               accordion;
             return (
-              <Accordion
+              <Accordion sx={{minWidth: '300px'}}
                 key={id}
                 expanded={expanded[id] || isDesktop}
                 onChange={handleChange(id)}
@@ -100,13 +100,14 @@ export default memo(function SideNav({
                     backgroundColor: bgColor,
                     color: "#fff",
                     alignItems: "center",
+                    padding: '0'
                   }}
                 >
                   {icon}
                   <Typography variant="h5">{heading}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <List sx={{ width: "100%" }} aria-label={ulLabel}>
+                  <List sx={{ width: "100%", padding: '0'}} aria-label={ulLabel}>
                     {details.map((doc) => (
                       <ListItem
                         disablePadding
@@ -114,6 +115,9 @@ export default memo(function SideNav({
                         aria-label={liLabel}
                       >
                         <ListItemButton
+                          sx = {{
+                            padding: '0'
+                          }}
                           onClick={() => {
                             setSkillID(doc.id);
                             setLiValue(doc.id);
@@ -129,6 +133,12 @@ export default memo(function SideNav({
                                 sx={{
                                   fontWeight:
                                     liValue === doc.id ? "fontWeightBold" : "",
+                                  textTransform: 'uppercase',
+                                  fontSize: '14px !important'
+                                  // borderBottom: '1px solid black',
+                                  // "&:last-child": {
+                                  //   borderBottom: 'none'
+                                  // } 
                                 }}
                               >
                                 {doc.Name}

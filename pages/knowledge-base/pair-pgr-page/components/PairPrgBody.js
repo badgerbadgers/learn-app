@@ -1,6 +1,6 @@
 import Image from "next/image";
 import TabPanel from "./TabPanel";
-
+import styles from '../../../../styles/Knowledge.module.css'
 import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
 
 //function that takes an item/string and returns an html element,
@@ -44,7 +44,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
     
       (pairProgrammingInfo.map((item, index) => (
         <TabPanel value={value} index={index} key={item.header}>
-          <Grid item xs={9} >
+          <Grid item xs={9} sx={{position: "relative"}} >
             <Typography variant="h4">
               {item.header}
             </Typography>
@@ -53,19 +53,22 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                 return renderingFunction(p);
               })}
             </List>
+            {item.img && (
+              <div className={styles.ppImageBG}>
+                <Image
+                  alt=""
+                  width={220}
+                  height={150}                
+                  src={item.img}
+                  layout="responsive"
+
+                />
+              </div>
+          )}
           </Grid>
 
           {/* check if object item has an key 'image' and render an image */}
-          {item.img && (
-            <Grid item xs={3}>
-              <Image
-                alt=""
-                width={220}
-                height={150}                
-                src={item.img}
-              />
-            </Grid>
-          )}
+       
           {/* check if object item has a 'quote' key and render it */}
           {item.quote && (
             <Grid
