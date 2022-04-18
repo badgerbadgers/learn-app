@@ -9,6 +9,7 @@ import {
   ListItem,
 } from "@mui/material";
 
+
 const DisplayZones = ({ skillData }) => {
   let zoneArr = [];
 
@@ -88,8 +89,8 @@ const DisplayZones = ({ skillData }) => {
     <>
       {skillData && skillData.map((doc) => (
       
-        <Grid item container role="grid" p={0} marginBottom={3} key={doc.id}>
-          <Grid item xs={12} pl={0}>
+        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0"}}>
+          {/* <Grid item xs={12} pl={0}>
             <Typography
               variant="h5"
               sx={{
@@ -103,18 +104,19 @@ const DisplayZones = ({ skillData }) => {
             <Typography variant="body1">
               {doc.fields.Description.replace(/^\s+|\s+$/g, "")}
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid
             item
             container
             rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 2 }}
+            paddingTop={0} 
             p={2}
             pt={4}
             m={0}
           >
             {zoneArr.map((doc) => (
-              <Grid item xs={12} md={4} key={doc.head} sx={{}} >
+              <Grid item xs={12} md={6} key={doc.head}>
                 <Card
                   sx={{
                     border: "1px solid",
@@ -122,7 +124,7 @@ const DisplayZones = ({ skillData }) => {
                     borderRadius: "0.25rem",
                     margin: "0 auto",
                     height: "100%",
-                  
+                
                   }}
                 >
                   <CardHeader
@@ -141,10 +143,11 @@ const DisplayZones = ({ skillData }) => {
                       borderRadius: "0.25rem",
                       margin: "0 auto",
                       height: "100%",
+                      paddingTop: '0'
                     }}
                   >
                     <Typography variant="body1">
-                    <List sx={{ width: "100%" }} aria-label="zone data ul">
+                    <List sx={{ width: "100%", listStyle:'square', listStylePosition: 'inside'  }} aria-label="zone data ul">
                       {doc.data.split(".").map((li, i) => (
                         <ListItem
                           aria-label="zone data li"

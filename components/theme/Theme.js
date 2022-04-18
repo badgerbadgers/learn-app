@@ -28,8 +28,8 @@ const baseTheme = responsiveFontSizes(createTheme({
             },
         body1: {
             fontFamily: "Montserrat",
-            fontSize: '1.1rem',
-            },
+            fontSize: '1rem',
+            }
     },
 }));  
 

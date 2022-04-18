@@ -17,6 +17,14 @@
   text-align: center;
 }
 
+.headerLogo {
+  width: 120px;
+  height: auto;
+  margin: 0 auto;
+  position: relative;
+  
+}
+
 @media (max-width: 600px) {
   .portfolioGrid {
     grid-template-columns: 1fr;

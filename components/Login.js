@@ -1,9 +1,13 @@
 import { getSession, signIn } from "next-auth/react";
 import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { useTheme } from '@mui/styles';
+
 
 export default function LogIn () {
  const { data: session, status } = useSession();
+ const theme = useTheme();
 
   const buttonData = [
     {
@@ -13,6 +17,7 @@ export default function LogIn () {
           callbackUrl: "/dashboard",
         });
       },
+      icon: <GitHubIcon style={{fontSize:'32px'}}/>
     },
     {
       title: "Sign-Up",
@@ -21,26 +26,28 @@ export default function LogIn () {
           callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
         });
       },
+      icon: <GitHubIcon style={{fontSize:'32px'}}/>
     },
   ];
 
   return (
-    <Stack spacing={8} mt={6}>
+    <Stack spacing={4} mt={6}>
       {buttonData.map((btn, i) => (
         <Button
           key={i}
-          size="large"
+          size="medium"
           variant="contained"
           onClick={btn.onClick}
           sx={{
-            padding: "36px 54px",
-            backgroundColor: "#FF5C35",
+            padding: "12px 64px",
+            backgroundColor: "#12284C",
             "&:hover": {
-              backgroundColor: "#12284C",
+              backgroundColor: "#FF5C35",
             },
           }}
+          startIcon={btn.icon}
         >
-          <Typography sx={{ fontFamily: "Gotham Rounded B", fontSize: "2rem" }}>
+          <Typography sx={{fontSize: "1.2rem" }}>
             {btn.title}
           </Typography>
         </Button>
