@@ -1,7 +1,7 @@
 import Image from "next/image";
 import TabPanel from "./TabPanel";
 import styles from '../../../../styles/Knowledge.module.css'
-import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
+import { Grid, Typography, List, ListItem, ListItemText, CardMedia } from "@mui/material";
 
 //function that takes an item/string and returns an html element,
 //if item is an object - it maps througth this object
@@ -54,6 +54,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
               })}
             </List>
             {item.img && (
+              <CardMedia>
               <div className={styles.ppImageBG}>
                 <Image
                   alt=""
@@ -64,6 +65,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
 
                 />
               </div>
+              </CardMedia>
           )}
           </Grid>
 
@@ -76,7 +78,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
               sx={{ mt: 3 }}
             >
               <Typography
-                sx={{ fontFamily: "cursive", fontWeight: "bold" }}
+                sx={{ fontFamily: "cursive", fontWeight: "bold", m: '1rem' }}
                 align="center"
                 variant="caption text"
                 component="span"                

@@ -2,8 +2,9 @@
   position: absolute;
   height:auto;
   width: 500px;
-  z-index: -1;
-  top: 70%;
+ /*  z-index: -1; */
+ /*  top: 70%; */
+  margin-top: 2rem;
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: .15;
