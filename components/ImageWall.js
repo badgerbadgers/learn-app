@@ -18,6 +18,7 @@ const ImageWall = () => {
   let rows;
   let lottoArray;
   let selectedIndex;
+  let height, width;
  // array to hold snowflake objects
 const preload = (p5) => {
   img1 = p5.loadImage('/img/dreamwall/1.jpg');
@@ -37,19 +38,18 @@ const preload = (p5) => {
   imageSelectorArray = [img1, img2, img3,img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14]
 }
 const setup = (p5, canvasParentRef) => {
-  const height = p5.windowHeight
-  const width = p5.windowWidth
-  console.log('height', width)
+  height = p5.windowHeight
+  width = p5.windowWidth
   cnv = p5.createCanvas(width,  height).parent(canvasParentRef)
-  columns = Math.floor(width / 90) + 1;
-  rows = Math.floor(height / 90) +1;
+  columns = Math.floor(width / imgSize) + 1;
+  rows = Math.floor(height / imgSize) +1;
   p5.background(220);
   p5.noStroke();
-  p5.frameRate(30)
+  p5.frameRate(60)
   for (var i =0; i < width; i++) {
     // lottoArray.push(i)
-    const x = (90 * Math.floor(p5.random(columns)))
-    const y = (90 * Math.floor(p5.random(rows)))
+    const x = (imgSize * Math.floor(p5.random(columns)))
+    const y = (imgSize * Math.floor(p5.random(rows)))
 
     const theImage = imageSelectorArray[Math.round(p5.random(0, imageSelectorArray.length -1))]
     images[i] = new Square(p5, theImage, x, y)
@@ -58,19 +58,42 @@ const setup = (p5, canvasParentRef) => {
 }
 
 const draw = (p5, canvasParentRef) => {
+  
   p5.background(255)
-  if (p5.frameCount % 11) {
-    selectedIndex = Math.round(p5.random(0, images.length -1));
-    selectedImages.push(images[selectedIndex])
- 
-  } 
+  selectedIndex = Math.round(p5.random(0, images.length -1));
+  selectedImages.push(images[selectedIndex])
+
   for (var i=0; i < selectedImages.length -1; i++) {
-    if (selectedImages[i].tint < 1 && selectedImages[i].darken == false) {
+    if (selectedImages[i].tint == 0 && selectedImages[i].darken == false) {
       selectedImages.splice(i, 1)
     }
      selectedImages[i].show(p5);
   }
-}
+
+  // for (var i=0; i < width; i+=90) {
+  //   for (var j=0; j < height; j+=90) {
+  //     selectedIndex = Math.round(p5.random(0, images.length -1));
+  //     // selectedImages.push(images[selectedIndex])
+  //     if (selectedImages[i].tint == 0 && selectedImages[i].darken == false) {
+  //           selectedImages.splice(i, 1)
+  //     } else {
+  //       selectedImages.push(images[selectedIndex])
+  //       selectedImages[i].show(p5);
+  //     }
+  //   }
+  // }
+  }
+  
+    // selectedIndex = Math.round(p5.random(0, images.length -1));
+  // selectedImages.push(images[selectedIndex])
+  
+  // if (p5.frameCount) {
+    // selectedIndex = Math.round(p5.random(0, images.length -1));
+    // selectedImages.push(images[selectedIndex])
+ 
+  // } 
+
+// }
 
 // snowflake class
 class Square {
@@ -81,26 +104,25 @@ class Square {
     this.y = y;
     this.tint=0;
     this.darken = true; 
+    this.imgFadeSpeed = 10;
   }
 
   show(p5) {
     // x position follows a circle
-    if (this.tint > 128) {
+    if (this.tint > 205) {
       this.darken=false;
       } if( this.tint <= 0) {
       this.darken = true
       }
       p5.image(this.img, this.x, this.y);
-      p5.tint(255, this.tint);
+      p5.tint(205, this.tint);
       if (this.darken) {
-        this.tint+=7
+        this.tint+=this.imgFadeSpeed
       } else {
-        this.tint -=7;
+        this.tint -=this.imgFadeSpeed;
       }
     }
   }
-
-
 
  return (
    <div id='canvas-parent' className={styles.canvasParent}>

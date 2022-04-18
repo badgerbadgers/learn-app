@@ -28,6 +28,7 @@ export default function Home() {
       <div className={styles.right}></div>
       <div className={styles.inner}>
         <Image src="/img/labs-g-01.png" width={420} height={320}/>
+        <Typography  variant="h5" sx={{textAlign: 'center'}}>Building Together</Typography>
         <LogIn />  
       </div>
     </div>

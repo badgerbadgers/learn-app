@@ -39,7 +39,7 @@ export default function LogIn () {
           variant="contained"
           onClick={btn.onClick}
           sx={{
-            padding: "16px 34px",
+            padding: "12px 64px",
             backgroundColor: "#12284C",
             "&:hover": {
               backgroundColor: "#FF5C35",
@@ -47,7 +47,7 @@ export default function LogIn () {
           }}
           startIcon={btn.icon}
         >
-          <Typography sx={{fontSize: "1.5rem" }}>
+          <Typography sx={{fontSize: "1.2rem" }}>
             {btn.title}
           </Typography>
         </Button>
