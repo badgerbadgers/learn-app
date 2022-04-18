@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
-import { styled } from "@mui/material/styles";
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import PsychologyIcon from '@mui/icons-material/Psychology';
 import {
   Button,
   Container,
@@ -18,11 +20,12 @@ import {
   responsiveFontSizes,
 } from "@mui/material";
 
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { useRouter } from "next/router";
+import {useEffect} from 'react'
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -33,13 +36,13 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Dashboard = () => {
   const { data: session } = useSession();
-
+  console.log('SESSION', session)
   const [open, setOpen] = useState(false);
 
-  let router = useRouter();
+  const router = useRouter();
 
   const handleShare = () => {
-    let url = `https://labs.codethedream.org/portfolios/${session.user.gh}`;
+    const url = `https://labs.codethedream.org/portfolios/${session.user.gh}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url);
       setOpen(true);
@@ -50,6 +53,12 @@ const Dashboard = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if(!session) {
+      router.push('/')
+    }
+  },[])
 
   return (
     <>
@@ -92,15 +101,16 @@ const Dashboard = () => {
         )}
       </Container>
       <Container sx={{ textAlign: "center" }}>
-        <ThemeProvider theme={theme}>
-          <Typography variant="h3" gutterBottom>
-            Visit our knowledge base section
+       
+          <Typography variant="h3" gutterBottom color="secondary">
+          <PsychologyIcon color="secondary" style={{
+                  fontSize:'54px', position: 'relative', top: '8px'
+                }}/>  Knowledge Base
           </Typography>
-        </ThemeProvider>
         <Paper
           sx={{
             backgroundColor: "#F4F5F7",
-            maxWidth: 800,
+            // maxWidth: 800,
             my: 2,
             mx: "auto",
             p: 8,
@@ -113,18 +123,21 @@ const Dashboard = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
-            <Grid item>
+            <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  minWidth: 315,
+                  minWidth: 350,
                   backgroundColor: "#DFE2E8",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
+                <TrackChangesIcon color="primary" style={{
+                  fontSize:'38px', top: '15px', position: 'relative'
+                }}/>
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                    Find info about skills zoning
+                   CTD Labs skills and zones rubric used for apprentice evaluations.
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -137,18 +150,22 @@ const Dashboard = () => {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  minWidth: 315,
+                  minWidth: 350,
                   backgroundColor: "#CBCFD9",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
-                <CardHeader title="Pair Programming"></CardHeader>
+                <ConnectWithoutContactIcon color="primary" style={{
+                  fontSize:'38px', top: '15px', position: 'relative'
+                }}/>
+                <CardHeader title="Pair Programming">
+                </CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                    Find info about pair programming
+                    Information and process about how CTD Labs implements pair programming.
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -169,3 +186,14 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export async function getServerSideProps(context) {
+
+
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}

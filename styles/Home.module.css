@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 2.5rem; /* footer height */
+  margin-top: 70px;
 }
 
 .footer {
@@ -101,4 +102,32 @@
 .logo {
   height: 1em;
   margin-left: 0.5rem;
+}
+
+
+.inner {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%)
+}
+.canvasParent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  /* background: rgba(0,0,0,.4); */
+  z-index: -1;
+}
+
+.indexOverlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255,255,255,.5);
 }
