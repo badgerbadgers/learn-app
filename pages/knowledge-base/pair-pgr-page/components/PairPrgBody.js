@@ -17,10 +17,12 @@ const renderingFunction = (item) => {
       );
     });
     return (
-      <div role="test" key={item.subHeader.slice(0, 8)}>
-        {subHeader}
-        <List>{listOfItems}</List>
-      </div>
+      <Grid item xs={6} role="test" key={item.subHeader.slice(0, 8)}>
+        <>
+          {subHeader}
+          <List>{listOfItems}</List>
+        </>
+      </Grid>
     );
   } else {
     return (
@@ -38,6 +40,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
       {pairProgrammingInfo &&
         pairProgrammingInfo.map((item, index) => (
           <TabPanel value={value} index={index} key={item.header}>
+            {console.log("item", item)}
             <Typography
               sx={{
                 backgroundColor: "#FF9D85",
@@ -49,11 +52,20 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
             >
               {item.header}
             </Typography>
-            <List>
-              {item.content.map((p) => {
-                return renderingFunction(p);
-              })}
-            </List>
+
+            <Grid role="grid inside" container item xs={12} mt={1}>
+              {item.label === "A pair programming session" ? (
+                item.content.map((p) => {
+                  return renderingFunction(p);
+                })
+              ) : (
+                <List>
+                  {item.content.map((p) => {
+                    return renderingFunction(p);
+                  })}
+                </List>
+              )}
+            </Grid>
             {/* check if object item has an key 'image' and render an image */}
             {item.img && (
               <div className={styles.ppImageBG}>
