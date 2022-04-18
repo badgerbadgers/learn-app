@@ -2,6 +2,7 @@ import Image from "next/image";
 import TabPanel from "./TabPanel";
 import styles from '../../../../styles/Knowledge.module.css'
 import { Grid, Typography, List, ListItem, ListItemText, CardMedia } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 //function that takes an item/string and returns an html element,
 //if item is an object - it maps througth this object
@@ -38,13 +39,14 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
+  const matches = useMediaQuery("(min-width:900px)");
   return (
     <>
     {pairProgrammingInfo && 
     
       (pairProgrammingInfo.map((item, index) => (
         <TabPanel value={value} index={index} key={item.header}>
-          <Grid item sx={{position: "relative"}} >
+          <Grid item >
             <Typography sx={{backgroundColor: '#FF9D85', color: "white", fontFamily: "gothamRoundedMedium", lineHeight: '3.6rem'}} variant="h4">
               {item.header}
             </Typography>
@@ -54,19 +56,17 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
               })}
             </List>
             {item.img && (
-              <CardMedia>
+              
               <div className={styles.ppImageBG}>
                 <Image
                   alt=""
                   width={220}
                   height={150}                
                   src={item.img}
-                  layout="responsive"
-
+                 layout={matches ? "responsive" : null}
                 />
               </div>
-              </CardMedia>
-          )}
+                       )}
           </Grid>
 
           {/* check if object item has an key 'image' and render an image */}

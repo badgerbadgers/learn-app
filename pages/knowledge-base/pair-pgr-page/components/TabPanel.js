@@ -24,7 +24,7 @@ export default function TabPanel(props) {
           <Card
             role="card"
             
-            sx={{ position: "relative", marginLeft: matches ? 2 : 0, marginBottom: matches ? 0 : 2 }}
+            sx={{ width: '100%', position: "relative", marginLeft: matches ? 2 : 0, marginBottom: matches ? 0 : 2 }}
           >
             {children}
           </Card>
