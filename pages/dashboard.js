@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
-import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
-import PsychologyIcon from '@mui/icons-material/Psychology';
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import PsychologyIcon from "@mui/icons-material/Psychology";
 import {
   Button,
   Container,
@@ -25,7 +25,8 @@ import Link from "next/link";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { useRouter } from "next/router";
-import {useEffect} from 'react'
+import { useEffect } from "react";
+import DashBoardCardCopm from "../components/dashBoardCardCopm";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -36,7 +37,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Dashboard = () => {
   const { data: session } = useSession();
-  console.log('SESSION', session)
+  console.log("SESSION", session);
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -55,10 +56,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if(!session) {
-      router.push('/')
+    if (!session) {
+      router.push("/");
     }
-  },[])
+  }, []);
 
   return (
     <>
@@ -101,12 +102,17 @@ const Dashboard = () => {
         )}
       </Container>
       <Container sx={{ textAlign: "center" }}>
-       
-          <Typography variant="h3" gutterBottom color="secondary">
-          <PsychologyIcon color="secondary" style={{
-                  fontSize:'54px', position: 'relative', top: '8px'
-                }}/>  Knowledge Base
-          </Typography>
+        <Typography variant="h3" gutterBottom color="secondary">
+          <PsychologyIcon
+            color="secondary"
+            style={{
+              fontSize: "54px",
+              position: "relative",
+              top: "8px",
+            }}
+          />{" "}
+          Knowledge Base
+        </Typography>
         <Paper
           sx={{
             backgroundColor: "#F4F5F7",
@@ -123,6 +129,12 @@ const Dashboard = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
+            <DashBoardCardCopm
+              icon={"icon"}
+              title={"title"}
+              text={"text"}
+              href={"href"}
+            />
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
@@ -131,21 +143,27 @@ const Dashboard = () => {
                   padding: "16px",
                 }}
               >
-                <TrackChangesIcon color="primary" style={{
-                  fontSize:'38px', top: '15px', position: 'relative'
-                }}/>
+                <TrackChangesIcon
+                  color="primary"
+                  style={{
+                    fontSize: "38px",
+                    top: "15px",
+                    position: "relative",
+                  }}
+                />
                 <CardHeader title="Skills Zones"></CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                   CTD Labs skills and zones rubric used for apprentice evaluations.
+                    CTD Labs skills and zones rubric used for apprentice
+                    evaluations.
                   </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
                     size="small"
-                    onClick={() => router.push("/knowledge-base/zones")}
+                    
                   >
-                    Learn More
+                    <Link href={"/knowledge-base/zones"}>Learn More</Link>
                   </Button>
                 </CardActions>
               </Card>
@@ -158,22 +176,29 @@ const Dashboard = () => {
                   padding: "16px",
                 }}
               >
-                <ConnectWithoutContactIcon color="primary" style={{
-                  fontSize:'38px', top: '15px', position: 'relative'
-                }}/>
-                <CardHeader title="Pair Programming">
-                </CardHeader>
+                <ConnectWithoutContactIcon
+                  color="primary"
+                  style={{
+                    fontSize: "38px",
+                    top: "15px",
+                    position: "relative",
+                  }}
+                />
+                <CardHeader title="Pair Programming"></CardHeader>
                 <CardContent>
                   <Typography variant="body1">
-                    Information and process about how CTD Labs implements pair programming.
+                    Information and process about how CTD Labs implements pair
+                    programming.
                   </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
                     size="small"
-                    onClick={() => router.push("/knowledge-base/pair-pgr-page")}
+                  
                   >
+                  <Link href={"/knowledge-base/pair-pgr-page"}>
                     Learn More
+                    </Link>
                   </Button>
                 </CardActions>
               </Card>
@@ -188,12 +213,9 @@ const Dashboard = () => {
 export default Dashboard;
 
 export async function getServerSideProps(context) {
-
-
   return {
     props: {
       session: await getSession(context),
     },
-
-  }
+  };
 }
