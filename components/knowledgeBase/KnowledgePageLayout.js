@@ -13,7 +13,7 @@ import {
 
 const KnowledgePageLayout = ({ title, index, body }) => {
   return (
-    <div style={{ margin: "0px 30px 0px" }}>
+    <div style={{ margin: "0px 30px 20px" }}>
       <Grid
         container
         p={0}
@@ -64,7 +64,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
           >
             {index}
           </Grid>
-          <Grid item container xs={12} md={9} sx={{ paddingTop: 4 }}>
+          <Grid item role="body" container xs={12} md={9} sx={{ paddingTop: 4 }}>
             {body}
           </Grid>
         </Grid>

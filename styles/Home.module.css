@@ -25,6 +25,12 @@
   padding-top: 10px;
 }
 
+@media screen and (max-width: 900px) {
+  .footer {
+    font-size: 0.6rem;
+  }
+}
+
 .title a {
   color: #0070f3;
   text-decoration: none;
