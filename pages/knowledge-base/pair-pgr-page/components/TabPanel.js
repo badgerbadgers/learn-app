@@ -19,12 +19,16 @@ export default function TabPanel(props) {
           id={`simple-tabpanel-${index}`}
           aria-labelledby={`simple-tab-${index}`}
           {...other}
-          p={matches ? 1 : 0}
+          py={matches ? 1 : 0}
         >
           <Card
             role="card"
+            sx={{
+              width: "100%",
+              position: "relative",
+              marginLeft: matches ? 3 : 0,
             
-            sx={{ width: '100%', position: "relative", marginLeft: matches ? 2 : 0, marginBottom: matches ? 0 : 2 }}
+            }}
           >
             {children}
           </Card>
