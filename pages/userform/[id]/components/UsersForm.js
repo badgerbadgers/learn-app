@@ -23,45 +23,23 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-// Add input default values and initialize the state values
-const initialFormValues = {
-  firstName: "",
-  lastName: "",
-  pronouns: "",
-  email: "",
-  github: "",
-  linkedin: "",
-  twitter: "",
-  videoUrl: "",
-  techStack: [],
-  skills: [],
-  previousIndustry: [],
-};
-
-function UsersForm() {
+function UsersForm({userInfoData, setUserInfoData}) {
   const classes = useStyles();
   const router = useRouter();
-  const [userInfoData, setUserInfoData] = useState(initialFormValues);
+  // const [userInfoData, setUserInfoData] = useState(initialFormValues);
   const [open, setOpen] = useState(false);
   const [skillsArray, setSkillsArray] = useState([]);
-  const [techStackArray, setTechStackArray] = useState([]);
+  const [techStackArray, setTechStackArray] = useState("");
   const [previousIndustryArray, setPreviousIndustryArray] = useState([]);
   const [errors, setErrors] = useState({ email: "" });
-
-  const [arrays, setArrays] = useState({
-    techStack : "",
-
-
-  })
+ 
+  const id = router.query.id;
 
   // Handle multiple input change to update the properties of userInfoData
   // Then update the value of the event that was triggered by that onChange
   // and validate the email from the user.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(e.target,value);
-    setUserInfoData({ ...userInfoData, [name]: value });
-
     if (name === "email") {
       let reg = new RegExp(/$^|.+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
       if (!reg) {
@@ -69,70 +47,47 @@ function UsersForm() {
       } else {
         setErrors({ email: "" });
       }
-    }
+    } else 
+    setUserInfoData({ ...userInfoData, [name]: value });
+
   };
 
+  // else if (name === "techStack") {
+    // setArrayValue(value);
+    // () => setTechStackArray(...techStackArray, arrayValue)
+  
+  console.log('****Initial userInfo Data***' + JSON.stringify(userInfoData));
+  console.log('*****Initial userInfo tech data***' + JSON.stringify(userInfoData.techStack))
+  console.log('***techStackarray' + techStackArray)
+  console.log('*****length userInfo tech data***' + JSON.stringify(userInfoData.techStack.length))
 
-  const id = router.query.id;
+
 
   const handleArrayData = (e) => {
-    console.log(e)
-    const { name} = e.target;
-    console.log(e.target)
+    e.preventDefault();
+    const {name, value} = e.target;  
     if (name === 'techStackBtn') {
-      const newArray = [...techStackArray];
-      newArray.push(userInfoData.techStack);
-      setTechStackArray(newArray);
-      let data = userInfoData; // Assigning userInfoData to data variable.
-      data.techStack = ""; // Take tech Stack and assign to empty string
-      setUserInfoData(data); // update the state
+     
+      setUserInfoData({techStack: [...userInfoData.techStack, techStackArray]});
+      //let data = userInfoData; // Assigning userInfoData to data variable.
+      setTechStackArray(''); // Take tech Stack and assign to empty string
+      //setUserInfoData(data); // update the state
     } else if (name === 'skillsBtn') {
       const newArray = [...skillsArray];
       newArray.push(userInfoData.skills);
       setSkillsArray(newArray);
       let data = userInfoData; // Assigning userInfoData to data variable.
-      data.skills = ""; // Take tech Stack and assign to empty string
+      data.skills = []; // Take tech Stack and assign to empty string
       setUserInfoData(data); // update the state
     } else if (name === 'previousIndustryBtn') {
       const newArray =  [...previousIndustryArray];
-      newArray.push(userInfoData.skills);
+      newArray.push(userInfoData.previousIndustry);
       setPreviousIndustryArray(newArray);
       let data = userInfoData; // Assigning userInfoData to data variable.
-      data.previousIndustry = ""; // Take tech Stack and assign to empty string
+      data.previousIndustry = []; // Take tech Stack and assign to empty string
       setUserInfoData(data); // update the state
-    }
-    
+    } 
   }
-
-  // const handleTechStackArray = () => {
-  //   const arrayTech = [...techStackArray]; // Make a copy of the tech stack array first.
-  //   arrayTech.push(userInfoData.techStack); // Update it with the modified tech stack entry.
-  //   setTechStackArray(arrayTech); // Update the state.
-  //   // clear the input form
-  //   let data = userInfoData; // Assigning userInfoData to data variable.
-  //   data.techStack = ""; // Take tech Stack and assign to empty string
-  //   setUserInfoData(data); // update the state
-  // };
-
-  // const handleSkillsArray = () => {
-  //   const arraySkill = [...skillsArray]; 
-  //   arraySkill.push(userInfoData.skills); 
-  //   setSkillsArray(arraySkill); 
-  //   // clear the input form
-  //   let data = userInfoData; 
-  //   data.skills = ""; 
-  //   setUserInfoData(data); 
-  // };
-
-  // const handlePreviousIndustryArray = () => {
-  //   const arrayPreviousIndust = [...previousIndustryArray]; 
-  //   arrayPreviousIndust.push(userInfoData.previousIndustry);
-  //   setPreviousIndustryArray(arrayPreviousIndust); 
-  //   // clear the input form
-  //   let data = userInfoData; 
-  //   data.previousIndustry = ""; 
-  //   setUserInfoData(data); 
-  // };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -194,7 +149,7 @@ function UsersForm() {
   return (
     <form>
       <Grid container p={3}>
-        <Typography variant="body2" gutterBottom>
+        <Typography variant="body1" gutterBottom>
           <strong>Personal Info: </strong>
         </Typography>
         <Grid container spacing={2}>
@@ -247,12 +202,13 @@ function UsersForm() {
               label="Tech Stack"
               variant="outlined"
               fullWidth
-              required
               size="small"
               type="text"
               InputLabelProps={{ shrink: true }}
-              value={userInfoData.techStack}
-              onChange={(e) => handleInputChange(e)}
+              
+              onChange={(e) => 
+                setTechStackArray(e.target.value)
+              }
               InputProps={{
                 endAdornment: userInfoData && (
                   <Button
@@ -261,22 +217,34 @@ function UsersForm() {
                     name="techStackBtn"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
                     onClick={(e) => handleArrayData(e)}
-                    disabled={userInfoData.techStack.length === 0}
+                    disabled={userInfoData.techStack && userInfoData.techStack.length === 0}
                   >
                     Add
                   </Button>
                 ),
               }}
             />
-            {/* It will map and style the tech stack array */}
-            {techStackArray.map((tech, item) => (
-              <Chip
+            {userInfoData.techStack.length > 0 ? userInfoData.techStack.map((tech, item) => (
+              <Chip 
                 key={tech}
-                className={classes.chipStyle}
+                color="primary"
+                sx={{margin: "8px 4px 8px 0px"}}
+                // className={classes.chipStyle}
                 label={tech}
                 onDelete={() => handleDeleteTechStack(item)}
               />
-            ))}
+            )) : ""/* It will map and style the tech stack array */
+            //     techStackArray.map((tech, item) => (
+            //   <Chip 
+            //     key={tech}
+            //     color="primary"
+            //     sx={{margin: "8px 4px 8px 0px"}}
+            //     // className={classes.chipStyle}
+            //     label={tech}
+            //     onDelete={() => handleDeleteTechStack(item)}
+            //   />
+             //))
+             }
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             <TextField
@@ -285,7 +253,6 @@ function UsersForm() {
               label="Skills"
               variant="outlined"
               fullWidth
-              required
               size="small"
               InputLabelProps={{ shrink: true }}
               value={userInfoData.skills}
@@ -298,21 +265,33 @@ function UsersForm() {
                     variant="contained"
                     style={{ maxWidth: "40px", minWidth: "40px" }}
                     onClick={(e) => handleArrayData(e)}
-                    disabled={userInfoData.skills.length === 0}
+                    disabled={userInfoData.skills && userInfoData.skills.length === 0}
                   >
                     Add
                   </Button>
                 ),
               }}
             />
+
+            {/* {userInfoData.skills ? userInfoData.skills.map((skill, i) => (
+              <Chip
+              key={skill}
+              className={classes.chipStyle}
+              label={skill}
+              onDelete={() => handleDeleteSkills(item)}
+              />
+              )) : ""} */}
+
             {/* It will map and style the skills array */}
             {skillsArray.map((skill, item) => (
+                  
               <Chip
                 key={skill}
                 className={classes.chipStyle}
                 label={skill}
                 onDelete={() => handleDeleteSkills(item)}
               />
+              
             ))}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
@@ -322,7 +301,6 @@ function UsersForm() {
               label="Previous Industry"
               variant="outlined"
               fullWidth
-              required
               size="small"
               InputLabelProps={{ shrink: true }}
               value={userInfoData.previousIndustry}
@@ -330,20 +308,31 @@ function UsersForm() {
               InputProps={{
                 endAdornment: userInfoData && (
                   <Button
+                  disabled={userInfoData.previousIndustry && userInfoData.previousIndustry.length === 0}
+                  onClick={(e) => handleArrayData(e)}
                   name="previousIndustryBtn"
                   size="small"
-                    variant="contained"
-                    style={{ maxWidth: "40px", minWidth: "40px" }}
-                    onClick={(e) => handleArrayData(e)}
-                    disabled={userInfoData.previousIndustry.length === 0}
+                  variant="contained"
+                  style={{ maxWidth: "40px", minWidth: "40px" }}
                   >
                     Add
                   </Button>
                 ),
               }}
             />
+            {/* {userInfoData.previousIndustry && userInfoData.previousIndustry.map((previousIndust, item) => (
+              console.log({previousIndust}),
+              <Chip
+                key={previousIndust}
+                className={classes.chipStyle}
+                label={previousIndust}
+                onDelete={() => handleDeletePreviousIndustry(item)}
+              />
+            ))} */}
+
             {/* It will map and style the previous industry array */}
             {previousIndustryArray.map((previousIndust, item) => (
+              console.log({previousIndust}),
               <Chip
                 key={previousIndust}
                 className={classes.chipStyle}
@@ -354,7 +343,7 @@ function UsersForm() {
           </Grid>
         </Grid>
         <br />
-        <Typography variant="body2" mt={2} gutterBottom>
+        <Typography variant="body1" mt={2} gutterBottom>
           <strong>Personal Contact: </strong>
         </Typography>
         {/* Input values to personal contact fields */}
@@ -427,11 +416,11 @@ function UsersForm() {
             <div>
               <Button
                 variant="contained"
-                disabled={
-                  userInfoData.firstName.length === 0 ||
-                  userInfoData.lastName.length === 0 ||
-                  userInfoData.email.length === 0
-                }
+                // disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email) &&
+                //   userInfoData.firstName.length === 0 ||
+                //   userInfoData.lastName.length === 0 ||
+                //   userInfoData.email.length === 0
+                // }
                 onClick={(e) => handleSubmitForm(e)} 
               >           
                 Submit
