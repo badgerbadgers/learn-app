@@ -45,7 +45,7 @@ const setup = (p5, canvasParentRef) => {
   rows = Math.floor(height / imgSize) +1;
   p5.background(220);
   p5.noStroke();
-  p5.frameRate(60)
+  p5.frameRate(30)
   for (var i =0; i < width; i++) {
     // lottoArray.push(i)
     const x = (imgSize * Math.floor(p5.random(columns)))
@@ -60,14 +60,18 @@ const setup = (p5, canvasParentRef) => {
 const draw = (p5, canvasParentRef) => {
   
   p5.background(255)
-  selectedIndex = Math.round(p5.random(0, images.length -1));
-  selectedImages.push(images[selectedIndex])
+  if (selectedImages.length < width) {
+    selectedIndex = Math.round(p5.random(0, images.length -1));
+    selectedImages.push(images[selectedIndex])
+  }
 
   for (var i=0; i < selectedImages.length -1; i++) {
-    if (selectedImages[i].tint == 0 && selectedImages[i].darken == false) {
-      selectedImages.splice(i, 1)
-    }
-     selectedImages[i].show(p5);
+    selectedImages[i].show(p5);
+    // if (selectedImages[i].tint == 0 && selectedImages[i].darken == false) {
+    //   // console.log('removing')
+    //   // selectedImages.splice(i, 1)
+    // }
+  
   }
 
   // for (var i=0; i < width; i+=90) {
@@ -111,16 +115,18 @@ class Square {
     // x position follows a circle
     if (this.tint > 205) {
       this.darken=false;
-      } if( this.tint <= 0) {
+    } 
+    if( this.tint <= 0) {
       this.darken = true
-      }
-      p5.image(this.img, this.x, this.y);
-      p5.tint(205, this.tint);
-      if (this.darken) {
-        this.tint+=this.imgFadeSpeed
-      } else {
-        this.tint -=this.imgFadeSpeed;
-      }
+    }
+    
+    p5.image(this.img, this.x, this.y);
+    p5.tint(205, this.tint);
+    if (this.darken) {
+      this.tint+=this.imgFadeSpeed
+    } else {
+      this.tint -=this.imgFadeSpeed;
+    }
     }
   }
 
