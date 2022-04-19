@@ -16,7 +16,6 @@ import {
   Snackbar,
   Paper,
   createTheme,
-  ThemeProvider,
   responsiveFontSizes,
 } from "@mui/material";
 

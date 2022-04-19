@@ -33,7 +33,7 @@ const baseTheme = responsiveFontSizes(
       },
       button: {
         fontFamily: "gothamRoundedMedium",
-        fontSize: "0.9rem",
+        fontSize: "1rem",
       },
     },
   })
