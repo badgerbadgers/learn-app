@@ -45,7 +45,7 @@ const setup = (p5, canvasParentRef) => {
   rows = Math.floor(height / imgSize) +1;
   p5.background(220);
   p5.noStroke();
-  p5.frameRate(60)
+  p5.frameRate(30)
   for (var i =0; i < width; i++) {
     // lottoArray.push(i)
     const x = (imgSize * Math.floor(p5.random(columns)))

@@ -37,6 +37,7 @@ export default function Home() {
   );
 }
 
+Home.displayName = "Home"
 
 export async function getServerSideProps(context) {
 
