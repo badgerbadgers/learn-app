@@ -87,6 +87,8 @@ function Portfolio() {
   );
 }
 
+Portfolio.displayName = "Portfolio"
+
 export default Portfolio;
 
 export async function getServerSideProps(context) {
