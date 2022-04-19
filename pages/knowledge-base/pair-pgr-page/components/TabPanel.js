@@ -10,6 +10,7 @@ export default function TabPanel(props) {
     <>
       {value === index && (
         <Grid
+
           key={`gridTab${index}`}
           container
           item
@@ -18,14 +19,14 @@ export default function TabPanel(props) {
           id={`simple-tabpanel-${index}`}
           aria-labelledby={`simple-tab-${index}`}
           {...other}
-          py={matches ? 1 : 0}
+          py={1}
         >
           <Card
             sx={{
               width: "100%",
               position: "relative",
               marginLeft: matches ? 3 : 0,
-            
+              minHeight: "220px"
             }}
           >
             {children}

@@ -68,10 +68,10 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
               <div className={styles.ppImageBG}>
                 <Image
                   alt=""
-                  width={220}
-                  height={150}
+                  width={340}
+                  height={200}
                   src={item.img}
-                  layout={matches && "responsive"}
+                  layout={matches ? "responsive" : "fixed"}
                 />
               </div>
             )}
