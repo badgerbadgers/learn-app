@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <>
-    <ImageWall /> 
+    {/* <ImageWall />  */}
     <div className={styles.indexOverlay}></div>
     <div className={styles.homeOuter}>
       <div className={styles.left}></div>
