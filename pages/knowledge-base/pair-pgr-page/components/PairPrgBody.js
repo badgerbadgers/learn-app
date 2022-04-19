@@ -3,6 +3,7 @@ import TabPanel from "./TabPanel";
 import styles from "../../../../styles/Knowledge.module.css";
 import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@emotion/react";
 
 //function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
@@ -32,6 +33,11 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
+
+  const {
+    palette: { primary },
+  } = useTheme();
+
   const matches = useMediaQuery("(min-width:900px)");
   return (
     <>
@@ -41,11 +47,10 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
             <Typography
               sx={{
                 backgroundColor: "#FF9D85",
-                color: "white",
-                fontFamily: "gothamRoundedMedium",
+                color: primary.contrastText,
                 lineHeight: "3.6rem",
               }}
-              variant="h4"
+              variant="h5"
             >
               {item.header}
             </Typography>
