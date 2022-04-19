@@ -1,18 +1,21 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, CardActionArea, CardActions, Paper } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-
+import { makeStyles, ThemeProvider } from "@mui/styles";
+import { height } from "@mui/system";
+// import { createTheme } from "@mui/material";
 // Setting the styles on the root element of ResourceCard component
+
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 200,
+    minHeight: 550,
   },
   button: {
     textTransform: "none",
@@ -22,14 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResourceCards() {
+function ResourceCard({ resource }) {
   const classes = useStyles();
+  console.log("RESOURCE:", resource);
 
   return (
-    <Paper elevation={15}>
-      <Card
-      // sx={{ maxWidth: 300 }}
-      >
+    <Paper elevation={15} >
+      <Card className={classes.root}>
         {/* CardActionArea's button will allow users to interact with the entirety 
               of its surface to trigger its main action */}
         <CardActionArea>
@@ -40,33 +42,35 @@ function ResourceCards() {
             alt="Temple"
           />
         </CardActionArea>
-        <Paper
-          // className={classes.cardContentArea}
-          sx={{ background: "#CDDC39" }}
-        >
-          <CardContent>
+        <Grid sx={{
+          background: "#CDDC39",
+          justifySelf: "stretch",
+          // height: "100%"
+        }}>
+          <CardContent sx={{height: "100%"}}>
             <Typography gutterBottom variant="h6" component="div">
-              Coding style guige (Google)
+              {resource.fields.Name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Coding style/conventional that Google developers want you to
-              have/follow.
+              {resource.fields.Description}
             </Typography>
           </CardContent>
-          <CardActions>
+          <ThemeProvider
+          // theme={myTheme}
+          >
             <Button
               size="small"
               color="primary"
               variant="outlined"
               className={classes.button}
             >
-              JavaScript
+              {resource.fields["Name (from language)"]}
             </Button>
-          </CardActions>
-        </Paper>
+          </ThemeProvider>
+        </Grid>
       </Card>
     </Paper>
   );
 }
 
-export default ResourceCards;
+export default ResourceCard;
