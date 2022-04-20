@@ -29,8 +29,12 @@ const baseTheme = responsiveFontSizes(createTheme({
         body1: {
             fontFamily: "Montserrat",
             fontSize: '1rem',
-            }
+            },
+        button: {
+            fontFamily: "Montserrat",
+            },
     },
+   
 }));  
 
 const darkTheme = createTheme({
