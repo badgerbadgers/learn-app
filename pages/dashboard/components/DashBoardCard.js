@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "../../../styles/Knowledge.module.css";
 import {
   Button,
   Link,
@@ -16,11 +15,14 @@ export default function DashBoardCard({ title, text, icon, href }) {
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-        
           minWidth: 280,
           backgroundColor: "#DFE2E8",
           padding: "16px",
           minHeight: 275,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         {icon}
@@ -29,9 +31,11 @@ export default function DashBoardCard({ title, text, icon, href }) {
         <CardContent>
           <Typography variant="body1">{text}</Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">
-            <Link href={href}>Learn More</Link>
+        <CardActions sx={{ marginTop: "auto", alignSelf: "flex-start" }}>
+          <Button size="small" sx={{}}>
+            <Link href={href} sx={{ textDecoration: "none" }}>
+              Learn More
+            </Link>
           </Button>
         </CardActions>
       </Card>

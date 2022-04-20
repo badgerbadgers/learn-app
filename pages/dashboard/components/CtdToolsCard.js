@@ -79,19 +79,27 @@ export default function CtdTooldCard() {
           </Typography>
         </CardContent>
         <CardActions>
-          
-            <Link sx={{flexGrow: 1}} href={`/portfolios/${encodeURIComponent(session.user.gh)}`}>
-              Visit your Portfolio page
-            </Link>
-          
+          <Link
+            sx={{ flexGrow: 1 }}
+            href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
+          >
+            Visit your Portfolio page
+          </Link>
+
           <IconButton
+            title="edit user form"
+            aria-label="edit user form icon"
             onClick={() =>
               router.push(`/userform/${encodeURIComponent(session.user.gh)}`)
             }
           >
             <ModeEditOutlineIcon />
           </IconButton>
-          <IconButton onClick={handleShare}>
+          <IconButton
+            onClick={handleShare}
+            title="copy the link to your portfolio"
+            aria-label="copy the portfolip link icon"
+          >
             <ContentCopyIcon />
           </IconButton>
         </CardActions>
