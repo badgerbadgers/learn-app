@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session} >
     <ThemeContextWrapper>
-        {(Component.name === "Portfolio" || Component.name === "Home") ? (
+        {(Component.displayName === "Portfolio" || Component.displayName === "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
           </PublicLayout>
