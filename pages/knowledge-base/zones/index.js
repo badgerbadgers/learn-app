@@ -2,16 +2,15 @@ import React, { useState, useEffect, memo } from "react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
-import Airtable from 'airtable';
+import Airtable from "airtable";
 
-
-function Skillszoning({data}) {
+function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
   const [skillID, setSkillID] = useState("");
 
   useEffect(() => {
-      setZoningData(data);
-      setSkillID(data[0].id);
+    setZoningData(data);
+    setSkillID(data[0].id);
   }, [data]);
 
   // retrieving only the Technical skills index and putting it in an array
@@ -51,8 +50,7 @@ function Skillszoning({data}) {
   });
 
   return (
-      
-      <KnowledgePageLayout
+    <KnowledgePageLayout
       title="Skills Zoning"
       index={
         <SideNav
@@ -64,23 +62,21 @@ function Skillszoning({data}) {
       }
       body={<DisplayZones skillData={skillData} />}
     />
-   
   );
 }
 
 export default Skillszoning;
 
 export async function getStaticProps() {
-
   const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
     process.env.AIRTABLE_BASE_ID
   );
   try {
     const records = await base("Zones").select().all();
-    const data = JSON.parse(JSON.stringify(records))
+    const data = JSON.parse(JSON.stringify(records));
     return {
       props: {
-        data
+        data,
       },
     };
   } catch (e) {
