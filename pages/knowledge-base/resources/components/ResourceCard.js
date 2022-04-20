@@ -51,6 +51,9 @@ function ResourceCard({ resource }) {
             <Typography gutterBottom variant="h6" component="div">
               {resource.fields.Name}
             </Typography>
+            <Button color="secondary">
+              {resource.fields.Type}
+            </Button>
             <Typography variant="body2" color="text.secondary">
               {resource.fields.Description}
             </Typography>

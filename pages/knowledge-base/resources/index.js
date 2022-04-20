@@ -34,11 +34,15 @@ function Resources({ resources }) {
 export default Resources;
 
 export async function getServerSideProps(context) {
+  // Deconstructing the object from the context body
   const Airtable = require("airtable");
   const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
     process.env.AIRTABLE_BASE_ID
   );
   try {
+    // Create the items constant to select all base resources from the items table
+    // Then saved the items as data that is send as json file
+    // Finally, it will send the items as resources by minify items data.
     const items = await base("resources").select().all();
     const data = JSON.parse(JSON.stringify(items));
     console.log("Data:", data);
