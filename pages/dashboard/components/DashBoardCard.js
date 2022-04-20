@@ -16,10 +16,11 @@ export default function DashBoardCard({ title, text, icon, href }) {
     <Grid item xs={12} md={6}>
       <Card
         sx={{
+        
           minWidth: 280,
           backgroundColor: "#DFE2E8",
           padding: "16px",
-          minHeight: 270,
+          minHeight: 275,
         }}
       >
         {icon}
