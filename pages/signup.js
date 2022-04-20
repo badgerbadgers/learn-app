@@ -5,7 +5,7 @@ import { useSession, getSession} from "next-auth/react";
 import clientPromise from "../lib/mongodb";
 import { useRouter } from "next/router";
 
-const signUp = () => {
+export const SignUp = () => {
  const [userInfoData, setUserInfoData] = useState({});
 const [loading, setLoading] = useState(false);
 const { data: session} = useSession();
@@ -65,8 +65,6 @@ return (
       )}
       </>
   )};
-
-export default signUp;
 
 export async function getServerSideProps(context) {
     return {

@@ -1,32 +1,27 @@
 import Image from "next/image";
 import TabPanel from "./TabPanel";
-import styles from '../../../../styles/Knowledge.module.css'
+import styles from "../../../../styles/Knowledge.module.css";
 import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@emotion/react";
 
-//function that takes an item/string and returns an html element,
+//function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
 const renderingFunction = (item) => {
-
   if (item.subHeader) {
-    const subHeader = (
-      <Typography variant="h6" >
-        {item.subHeader}
-      </Typography>
-    );
+    const subHeader = <Typography variant="h6">{item.subHeader}</Typography>;
     let listOfItems = item.subcontent.map((content) => {
       return (
-        <ListItem key={content} >
-          <ListItemText  primary={content} />
+        <ListItem key={content}>
+          <ListItemText primary={content} />
         </ListItem>
       );
     });
     return (
-      <div key={item.subHeader.slice(0,8)}>
+      <Grid item sm={6} xs={12} mt={2} key={item.subHeader.slice(0, 8)}>
         {subHeader}
-        <List>
-          {listOfItems}
-        </List>
-      </div>
+        <List>{listOfItems}</List>
+      </Grid>
     );
   } else {
     return (
@@ -38,56 +33,69 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
+
+  const {
+    palette: { primary },
+  } = useTheme();
+
+  const matches = useMediaQuery("(min-width:900px)");
   return (
     <>
-    {pairProgrammingInfo && 
-    
-      (pairProgrammingInfo.map((item, index) => (
-        <TabPanel value={value} index={index} key={item.header}>
-          <Grid item xs={9} sx={{position: "relative"}} >
-            <Typography variant="h4">
+      {pairProgrammingInfo &&
+        pairProgrammingInfo.map((item, index) => (
+          <TabPanel value={value} index={index} key={item.header}>
+            <Typography
+              sx={{
+                backgroundColor: "#FF9D85",
+                color: primary.contrastText,
+                lineHeight: "3.6rem",
+              }}
+              variant="h5"
+            >
               {item.header}
             </Typography>
-            <List>
-              {item.content.map((p) => {
-                return renderingFunction(p);
-              })}
-            </List>
+
+            <Grid container item xs={12}>
+              {item.label === "A pair programming session" ? (
+                item.content.map((content) => {
+                  return renderingFunction(content);
+                })
+              ) : (
+                <List>
+                  {item.content.map((content) => {
+                    return renderingFunction(content);
+                  })}
+                </List>
+              )}
+            </Grid>
+            {/* check if object item has an key 'image' and render an image */}
             {item.img && (
               <div className={styles.ppImageBG}>
                 <Image
                   alt=""
-                  width={220}
-                  height={150}                
+                  width={340}
+                  height={200}
                   src={item.img}
-                  layout="responsive"
-
+                  layout={matches ? "responsive" : "fixed"}
                 />
               </div>
-          )}
-          </Grid>
+            )}
 
-          {/* check if object item has an key 'image' and render an image */}
-       
-          {/* check if object item has a 'quote' key and render it */}
-          {item.quote && (
-            <Grid
-              item
-              sx={{ mt: 3 }}
-            >
-              <Typography
-                sx={{ fontFamily: "cursive", fontWeight: "bold" }}
-                align="center"
-                variant="caption text"
-                component="span"                
-              >
-                {item.quote}
-              </Typography>
-            </Grid>
-          )}
-        </TabPanel>
-      )))
-    }
+            {/* check if object item has a 'quote' key and render it */}
+            {item.quote && (
+              <Grid item sx={{ mt: 3 }}>
+                <Typography
+                  sx={{ fontFamily: "cursive", fontWeight: "bold", m: "1rem" }}
+                  align="center"
+                  variant="caption text"
+                  component="span"
+                >
+                  {item.quote}
+                </Typography>
+              </Grid>
+            )}
+          </TabPanel>
+        ))}
     </>
   );
 };
