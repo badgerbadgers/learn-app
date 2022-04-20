@@ -1,31 +1,23 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
-import { makeStyles } from "@mui/styles";
 import minifyItems from "../../api/minifyItems";
 
-// Setting the styles on the root element of ResourceCard component
-const useStyles = makeStyles((theme) => ({
-  griContainer: {
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    marginTop: "5px",
-  },
-}));
-
 function Resources({ resources }) {
-  const classes = useStyles();
-  console.log("RESOURCES:", resources);
-  
+
   return (
     <Grid
       container
       spacing={2}
-      className={classes.griContainer}
       justifyContent="center"
+      sx={{
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        marginTop: "5px",
+      }}
     >
       {resources.map((resource) => {
-        return <ResourceCard key={resource.id} resource={resource} />
+        return <ResourceCard key={resource.id} resource={resource} />;
       })}
     </Grid>
   );

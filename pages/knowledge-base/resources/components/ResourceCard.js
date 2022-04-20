@@ -15,12 +15,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
     minHeight: 400,
   },
-  button: {
-    textTransform: "none",
-    borderRadius: "30px",
-    marginLeft: "10px",
-    marginBottom: "8px",
-  },
 }));
 
 function ResourceCard({ resource }) {
@@ -51,9 +45,7 @@ function ResourceCard({ resource }) {
             <Typography gutterBottom variant="h6" component="div">
               {resource.fields.Name}
             </Typography>
-            <Button color="secondary">
-              {resource.fields.Type}
-            </Button>
+            <Button color="secondary">{resource.fields.Type}</Button>
             <Typography variant="body2" color="text.secondary">
               {resource.fields.Description}
             </Typography>
@@ -63,7 +55,12 @@ function ResourceCard({ resource }) {
               size="small"
               color="primary"
               variant="outlined"
-              className={classes.button}
+              sx={{
+                textTransform: "none",
+                borderRadius: "30px",
+                marginLeft: "10px",
+                marginBottom: "8px",
+              }}
             >
               {resource.fields["Name (from language)"]}
             </Button>
