@@ -3,6 +3,9 @@ import MuiAlert from "@mui/material/Alert";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import PsychologyIcon from "@mui/icons-material/Psychology";
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+
 import {
   Button,
   Container,
@@ -33,6 +36,33 @@ theme = responsiveFontSizes(theme);
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+const iconStyle = {
+  fontSize: "38px",
+  position: "relative",
+  top: "8px" 
+}
+
+const dashBoardInfo = [
+  {
+    title: "Skills Zones",
+    text: "CTD Labs skills and zones rubric used for apprentice evaluations.",
+    icon: <TrackChangesIcon color="primary" style={iconStyle}  />,
+    href: "/knowledge-base/zones",
+  },
+  {
+    title: "Pair Programming",
+    text: "Information and process about how CTD Labs implements pair programming.",
+    icon: <ConnectWithoutContactIcon color="primary" style={iconStyle} />,
+    href: "/knowledge-base/pair-pgr-page",
+  },
+  {
+    title: "Resourses",
+    text: "Student Resources.",
+    icon: <CastForEducationIcon color="primary" style={iconStyle} />,
+    href: "/knowledge-base/resourses",
+  },
+];
 
 const Dashboard = () => {
   const { data: session } = useSession();
@@ -113,97 +143,29 @@ const Dashboard = () => {
           Knowledge Base
         </Typography>
 
-        
         <Paper
           sx={{
+            minWidth: 330,
             backgroundColor: "#F4F5F7",
             // maxWidth: 800,
             my: 2,
             mx: "auto",
-            p: 8,
+            p: 2
           }}
-          padding={{ xs: 1, md: 4, lg: 8 }}
+          
         >
+
           <Grid
             container
             rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
-            <DashBoardCard
-              icon={"icon"}
-              title={"title"}
-              text={"text"}
-              href={"href"}
-            />
-            <Grid item xs={12} md={6}>
-              <Card
-                sx={{
-                  minWidth: 350,
-                  backgroundColor: "#DFE2E8",
-                  padding: "16px",
-                }}
-              >
-                <TrackChangesIcon
-                  color="primary"
-                  style={{
-                    fontSize: "38px",
-                    top: "15px",
-                    position: "relative",
-                  }}
-                />
-                <CardHeader title="Skills Zones"></CardHeader>
-                <CardContent>
-                  <Typography variant="body1">
-                    CTD Labs skills and zones rubric used for apprentice
-                    evaluations.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    
-                  >
-                    <Link href={"/knowledge-base/zones"}>Learn More</Link>
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card
-                sx={{
-                  minWidth: 350,
-                  backgroundColor: "#CBCFD9",
-                  padding: "16px",
-                }}
-              >
-                <ConnectWithoutContactIcon
-                  color="primary"
-                  style={{
-                    fontSize: "38px",
-                    top: "15px",
-                    position: "relative",
-                  }}
-                />
-                <CardHeader title="Pair Programming"></CardHeader>
-                <CardContent>
-                  <Typography variant="body1">
-                    Information and process about how CTD Labs implements pair
-                    programming.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                  
-                  >
-                  <Link href={"/knowledge-base/pair-pgr-page"}>
-                    Learn More
-                    </Link>
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
+          {dashBoardInfo.map((info) => {
+            return <DashBoardCard key={info.title} title={info.title} text={info.text} icon={info.icon} href={info.href} />;
+          })}
+           
+            
           </Grid>
         </Paper>
       </Container>
