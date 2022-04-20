@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useSession, getSession} from 'next-auth/react';
 import { useRouter } from "next/router";
 import Image from "next/image";
 import ContactCard from "../components/ContactCard";
@@ -8,12 +9,11 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import getData from "../../../lib/getData";
-import { useSession } from "next-auth/react";
 
 function Portfolio() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
-
+  
   const url = "/api/users";
   const router = useRouter();
 
@@ -24,6 +24,7 @@ function Portfolio() {
   useEffect(() => {
     const params = { params: { id: id } };
     if (id) {
+      
       (async () => {
         await getData(params, url).then((data) => {
           setUser(data);
@@ -71,6 +72,9 @@ function Portfolio() {
               </Button>
             </Container>
           )}
+          <div className={styles.headerLogo}>
+            <Image src='/img/labs_mc-01.png' width={160} height={125} layout="responsive"/>
+          </div>
         </>
       )}
       {!isLoading && !user && (
@@ -78,8 +82,22 @@ function Portfolio() {
           User with id <strong>{id}</strong> wasn&apos;t found
         </Container>
       )}
+   
     </>
   );
 }
 
+Portfolio.displayName = "Portfolio"
+
 export default Portfolio;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+
+  }
+}
+
+

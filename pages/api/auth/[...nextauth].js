@@ -25,14 +25,21 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, token, user }) {
-      return {...session, user}
+      return { ...session, user };
     },
-},
+  },
+
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      id: "github",
+      // name: "GitHub",
+      // type: "oauth",
+      // authorization:
+      //   "https://github.com/login/oauth/authorize?scope=read:user+user:email",
+      // token: "https://github.com/login/oauth/access_token",
       userinfo: {
         url: "https://api.github.com/user",
         async request({ client, tokens }) {
@@ -47,6 +54,8 @@ export default NextAuth({
               })
             ).json();
 
+            console.log(emails, 'emails');
+
             if (emails?.length > 0) {
               // Get primary email
               profile.email = emails.find((email) => email.primary)?.email;
@@ -57,25 +66,25 @@ export default NextAuth({
           return profile;
         },
       },
-        profile(profile) {
-          return {
-            id: profile.id.toString(),
-            gh_id: profile.id,
-            name: profile.name,
-            email: profile.email,
-            image: profile.avatar_url,
-            gh: profile.login,
-            url: profile.html_url
-          }
-          }
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          gh_id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.avatar_url,
+          gh: profile.login,
+          url: profile.html_url,
+        };
+      },
     }),
   ],
-  //TODO: add theme colors to sign in 
-//   theme: {
-//     colorScheme: "light", // "auto" | "dark" | "light"
-//     brandColor: "", // Hex color code
-//     logo: "" // Absolute URL to image
-// },
+  //TODO: add theme colors to sign in
+  //   theme: {
+  //     colorScheme: "light", // "auto" | "dark" | "light"
+  //     brandColor: "", // Hex color code
+  //     logo: "" // Absolute URL to image
+  // },
   // debug: true,
   // logger: {
   //   error(code, metadata) {
