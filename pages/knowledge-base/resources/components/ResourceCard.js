@@ -19,54 +19,57 @@ const useStyles = makeStyles((theme) => ({
 
 function ResourceCard({ resource }) {
   const classes = useStyles();
-  console.log("RESOURCE:", resource);
-
+  
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Paper elevation={15} sx={{ height: "100%" }}>
-        <Card
-          className={classes.root}
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            backgroundColor: "#CDDC39",
-          }}
-        >
-          {/* CardActionArea's button will allow users to interact with the entirety 
+      <Card
+        elevation={15}
+        className={classes.root}
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "#CDDC39",
+        }}
+      >
+        {/* CardActionArea's button will allow users to interact with the entirety 
               of its surface to trigger its main action */}
-          <CardMedia
-            component="img"
-            height="300"
-            image="../img/Kodayi-temple.jpg"
-            alt="Temple"
-          />
-          <CardContent sx={{ height: "100%" }}>
-            <Typography gutterBottom variant="h6" component="div">
-              {resource.fields.Name}
-            </Typography>
-            <Button color="secondary">{resource.fields.Type}</Button>
-            <Typography variant="body2" color="text.secondary">
-              {resource.fields.Description}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              variant="outlined"
-              sx={{
-                textTransform: "none",
-                borderRadius: "30px",
-                marginLeft: "10px",
-                marginBottom: "8px",
-              }}
-            >
-              {resource.fields["Name (from language)"]}
-            </Button>
-          </CardActions>
-        </Card>
-      </Paper>
+        <CardMedia
+          component="img"
+          height="300"
+          image="../img/Kodayi-temple.jpg"
+          alt="Temple"
+        />
+        <CardContent>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            sx={{textAlign: "center"}}
+          >
+            {resource.fields.Name}
+          </Typography>
+          <Button color="secondary">{resource.fields.Type}</Button>
+          <Typography variant="body2" color="text.secondary" marginLeft={1}>
+            {resource.fields.Description}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ marginTop: "auto" }}>
+          <Button
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{
+              textTransform: "none",
+              borderRadius: "30px",
+              marginLeft: "18px",
+              marginBottom: "8px",
+            }}
+          >
+            {resource.fields["Name (from language)"]}
+          </Button>
+        </CardActions>
+      </Card>
     </Grid>
   );
 }

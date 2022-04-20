@@ -14,6 +14,7 @@ function Resources({ resources }) {
         paddingLeft: "20px",
         paddingRight: "20px",
         marginTop: "5px",
+        marginBottom: "25px"
       }}
     >
       {resources.map((resource) => {
