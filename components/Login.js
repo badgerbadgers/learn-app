@@ -1,12 +1,11 @@
 import { getSession, signIn } from "next-auth/react";
-import { useSession} from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/styles';
 
 
 export default function LogIn () {
- const { data: session, status } = useSession();
+
  const theme = useTheme();
 
   const buttonData = [
@@ -23,7 +22,7 @@ export default function LogIn () {
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
+          callbackUrl: `/signup/`,      
         });
       },
       icon: <GitHubIcon style={{fontSize:'32px'}}/>
