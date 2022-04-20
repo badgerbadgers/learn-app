@@ -3,7 +3,7 @@ import MuiAlert from "@mui/material/Alert";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import PsychologyIcon from "@mui/icons-material/Psychology";
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
+
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
 import {
