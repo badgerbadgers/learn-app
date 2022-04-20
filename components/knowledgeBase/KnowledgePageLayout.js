@@ -13,7 +13,7 @@ import {
 
 const KnowledgePageLayout = ({ title, index, body }) => {
   return (
-    <div style={{ margin: "0px 30px 0px" }}>
+    <div style={{ margin: "0px 30px 20px" }}>
       <Grid
         container
         p={0}

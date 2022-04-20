@@ -14,7 +14,7 @@ const PairProgrammingPage = () => {
   };
 
   return (
-    <>
+    
       <KnowledgePageLayout
         title={<PairPrgTitle />}
         index={
@@ -31,7 +31,7 @@ const PairProgrammingPage = () => {
           />
         }
       ></KnowledgePageLayout>
-    </>
+   
   );
 };
 
