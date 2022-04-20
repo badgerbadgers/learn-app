@@ -47,38 +47,38 @@ export default function InputForm() {
             previousIndustryArray: "",
             });
             setLoading(false);     
+          } else {
+            try{          
+              (async () => {
+              await getData(params, url).then((data) => {
+      // Add input default values and initialize the state values
+                setUserInfoData({
+                  firstName: data.firstName,
+                  lastName: data.lastName,
+                  pronouns: data.pronouns,
+                  email: data.email,
+                  github: data.gh,
+                  linkedin: data.linkedin,
+                  twitter: data.twitter,
+                  videoUrl: data.videoUrl,
+                  techStackArray: data.techStackArray,
+                  skillsArray: data.skillsArray,
+                  previousIndustryArray: data.previousIndustryArray,
+                  techStackInput: "",
+                  skillInput: "",
+                  previousIndustryInput: "",
+                });
+                  setLoading(false);         
+                });
+              })();
+            }catch (error){
+              console.log(error, "error from getData in /api/usersprofile");
+            }
           }
         }
       )}catch (error){
         console.log(error, "error from getUser in /api/users");
     }
-      try{          
-          (async () => {
-          await getData(params, url).then((data) => {
-  // Add input default values and initialize the state values
-            setUserInfoData({
-              firstName: data.firstName,
-              lastName: data.lastName,
-              pronouns: data.pronouns,
-              email: data.email,
-              github: data.gh,
-              linkedin: data.linkedin,
-              twitter: data.twitter,
-              videoUrl: data.videoUrl,
-              techStackArray: data.techStackArray,
-              skillsArray: data.skillsArray,
-              previousIndustryArray: data.previousIndustryArray,
-              techStackInput: "",
-              skillInput: "",
-              previousIndustryInput: "",
-            });
-              setLoading(false);         
-            });
-          })();
-        } 
-     catch (error){
-          console.log(error, "error from getData in /api/usersprofile");
-      }
     }      
   }, [id]);
 
