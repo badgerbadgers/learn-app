@@ -53,6 +53,10 @@ export default function CtdTooldCard() {
           backgroundColor: "#Dd2E8",
           padding: "16px",
           minHeight: 275,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <HandymanIcon
@@ -70,9 +74,12 @@ export default function CtdTooldCard() {
             Don&apos;t forget to update your portfolio
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions
+          sx={{ marginTop: "auto", alignSelf: "flex-start", width: "100%" }}
+        >
           <Link
-            sx={{ flexGrow: 1 }}
+            aria-label="link to portfolio page"
+            sx={{ textDecoration: "none" }}
             href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
           >
             Visit your Portfolio page

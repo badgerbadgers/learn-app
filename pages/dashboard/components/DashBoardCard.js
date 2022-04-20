@@ -32,7 +32,7 @@ export default function DashBoardCard({ title, text, icon, href }) {
           <Typography variant="body1">{text}</Typography>
         </CardContent>
         <CardActions sx={{ marginTop: "auto", alignSelf: "flex-start" }}>
-          <Button size="small" sx={{}}>
+          <Button size="small" >
             <Link href={href} sx={{ textDecoration: "none" }}>
               Learn More
             </Link>
