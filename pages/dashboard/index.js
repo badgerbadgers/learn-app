@@ -8,8 +8,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { Container, Grid, Typography, Paper } from "@mui/material";
 import { dashBoardInfo } from "../../lib/dashBoardCardsInfo";
-
-import PsychologyIcon from "@mui/icons-material/Psychology";
+import DashbrdHeader from "./components/DashbrdHeader";
+import CardsLayoutDashbrd from "./components/CardsLayoutDashbrd";
 
 const Dashboard = () => {
   const { data: session } = useSession();
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const matches = useMediaQuery("(min-width:600px)");
   console.log("session", session);
   const router = useRouter();
-  
+
   useEffect(() => {
     if (!session) {
       router.push("/");
@@ -29,48 +29,22 @@ const Dashboard = () => {
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       {session && (
         <>
-          <Typography variant="h3" gutterBottom color="secondary">
-            <PsychologyIcon
-              color="secondary"
-              style={{
-                fontSize: "54px",
-                position: "relative",
-                top: "8px",
-              }}
-            />{" "}
-            Knowledge Base
-          </Typography>
+          <DashbrdHeader />
+          <CardsLayoutDashbrd matches={matches}>
+            <CtdTooldCard />
 
-          <Paper
-            sx={{
-              minWidth: 330,
-              backgroundColor: "#F4F5F7",
-              my: 2,
-              mx: "auto",
-              p: matches ? 8 : 1,
-            }}
-          >
-            <Grid
-              container
-              rowSpacing={2}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              sx={{ justifyContent: "center" }}
-            >
-              <CtdTooldCard />
-
-              {dashBoardInfo.map((info) => {
-                return (
-                  <DashBoardCard
-                    key={info.title}
-                    title={info.title}
-                    text={info.text}
-                    icon={info.icon}
-                    href={info.href}
-                  />
-                );
-              })}
-            </Grid>
-          </Paper>
+            {dashBoardInfo.map((info) => {
+              return (
+                <DashBoardCard
+                  key={info.title}
+                  title={info.title}
+                  text={info.text}
+                  icon={info.icon}
+                  href={info.href}
+                />
+              );
+            })}
+          </CardsLayoutDashbrd>
         </>
       )}
     </Container>

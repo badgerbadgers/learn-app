@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import MuiAlert from "@mui/material/Alert";
-import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
-import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+
 import HandymanIcon from "@mui/icons-material/Handyman";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import styles from "../../../styles/Knowledge.module.css";
+
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import {
-  Button,
   Link,
-  Container,
   Grid,
   Typography,
   Card,
@@ -22,10 +18,6 @@ import {
   CardActions,
   IconButton,
   Snackbar,
-  Paper,
-  createTheme,
-  ThemeProvider,
-  responsiveFontSizes,
 } from "@mui/material";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -123,4 +115,12 @@ export default function CtdTooldCard() {
       ) : null}
     </Grid>
   );
+}
+//as session is used inside this component so moved a getserversideprop here too..??
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  };
 }
