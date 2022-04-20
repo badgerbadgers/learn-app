@@ -10,19 +10,14 @@ import {
   CardActions,
 } from "@mui/material";
 
-export default function DashBoardCard({ title, text, icon, href }) {
+export default function DashBoardCard({ title, text, icon, href, style }) {
+  console.log(style)
   return (
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-          minWidth: 280,
           backgroundColor: "#DFE2E8",
-          padding: "16px",
-          minHeight: 275,
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          ...style
         }}
       >
         {icon}

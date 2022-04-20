@@ -24,7 +24,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CtdTooldCard() {
+export default function CtdTooldCard({style}) {
   //a state to manage pop up alert window
   const [open, setOpen] = useState(false);
 
@@ -44,19 +44,13 @@ export default function CtdTooldCard() {
   const handleClose = () => {
     setOpen(false);
   };
-
+console.log("ctd rendered")
   return (
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-          minWidth: 280,
           backgroundColor: "#Dd2E8",
-          padding: "16px",
-          minHeight: 275,
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          ...style
         }}
       >
         <HandymanIcon
@@ -79,7 +73,7 @@ export default function CtdTooldCard() {
         >
           <Link
             aria-label="link to portfolio page"
-            sx={{ textDecoration: "none" }}
+            sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
             href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
           >
             Visit your Portfolio page

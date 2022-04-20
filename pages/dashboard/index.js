@@ -11,12 +11,22 @@ import { dashBoardInfo } from "../../lib/dashBoardCardsInfo";
 import DashbrdHeader from "./components/DashbrdHeader";
 import CardsLayoutDashbrd from "./components/CardsLayoutDashbrd";
 
+const cardStyles = {
+  minWidth: 280,
+  padding: "16px",
+  minHeight: 275,
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const Dashboard = () => {
   const { data: session } = useSession();
 
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
-  console.log("session", session);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +41,7 @@ const Dashboard = () => {
         <>
           <DashbrdHeader />
           <CardsLayoutDashbrd matches={matches}>
-            <CtdTooldCard />
+            <CtdTooldCard style={cardStyles}/>
 
             {dashBoardInfo.map((info) => {
               return (
@@ -41,6 +51,7 @@ const Dashboard = () => {
                   text={info.text}
                   icon={info.icon}
                   href={info.href}
+                  style={cardStyles}
                 />
               );
             })}
