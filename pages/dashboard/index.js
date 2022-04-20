@@ -29,6 +29,7 @@ import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import DashBoardCard from "./components/DashBoardCard";
+import CtdTooldCard from "./components/CtdToolsCard";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -150,7 +151,7 @@ const Dashboard = () => {
             // maxWidth: 800,
             my: 2,
             mx: "auto",
-            p: 2
+            p: 8
           }}
           
         >
@@ -161,6 +162,8 @@ const Dashboard = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             sx={{ justifyContent: "center" }}
           >
+          <CtdTooldCard />
+          
           {dashBoardInfo.map((info) => {
             return <DashBoardCard key={info.title} title={info.title} text={info.text} icon={info.icon} href={info.href} />;
           })}

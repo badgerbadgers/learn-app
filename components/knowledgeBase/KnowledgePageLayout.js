@@ -64,7 +64,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
           >
             {index}
           </Grid>
-          <Grid item role="body" container xs={12} md={9} sx={{ paddingTop: 4 }}>
+          <Grid item container xs={12} md={9} sx={{ paddingTop: 4 }}>
             {body}
           </Grid>
         </Grid>
