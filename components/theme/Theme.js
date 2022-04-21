@@ -13,6 +13,11 @@ const baseTheme = responsiveFontSizes(
         fontWeight: "700 !important",
         fontFamily: "gothamRoundedBold",
       },
+      h4: {
+        //title of any page. Header
+        fontSize: "2.2rem",
+        fontFamily: "gothamRoundedBold",
+      },
 
       h5: {
         //subheaders on the page
@@ -34,6 +39,17 @@ const baseTheme = responsiveFontSizes(
       button: {
         fontFamily: "gothamRoundedMedium",
         fontSize: "1rem",
+      },
+    },
+    components: {
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            fontSize: "1rem",
+            textTransform: "uppercase",
+            fontFamily: "gothamRoundedMedium",
+          },
+        },
       },
     },
   })
