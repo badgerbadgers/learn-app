@@ -36,6 +36,17 @@ const baseTheme = responsiveFontSizes(
         fontSize: "1rem",
       },
     },
+    components: {
+      MuiLink: {
+        styleOverrides: {
+           root: {
+            fontSize: "1rem",
+            textTransform: "uppercase",
+            fontFamily: "gothamRoundedMedium",
+          },
+        },
+      },
+    },
   })
 );
 

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 export default function DashBoardCard({ title, text, icon, href, style }) {
-  console.log(style)
+
   return (
     <Grid item xs={12} md={6}>
       <Card
