@@ -32,8 +32,9 @@ const baseTheme = responsiveFontSizes(
             fontSize: '1rem',
             },
         button: {
-            fontFamily: "Montserrat",
-            },
+          fontFamily: "gothamRoundedMedium",
+          fontSize: "1rem",
+        },
     },
    
 }));  
