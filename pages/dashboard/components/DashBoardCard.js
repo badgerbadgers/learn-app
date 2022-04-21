@@ -11,13 +11,12 @@ import {
 } from "@mui/material";
 
 export default function DashBoardCard({ title, text, icon, href, style }) {
-
   return (
     <Grid item xs={12} md={6}>
       <Card
         sx={{
           backgroundColor: "#DFE2E8",
-          ...style
+          ...style,
         }}
       >
         {icon}
@@ -27,8 +26,12 @@ export default function DashBoardCard({ title, text, icon, href, style }) {
           <Typography variant="body1">{text}</Typography>
         </CardContent>
         <CardActions sx={{ marginTop: "auto", alignSelf: "flex-start" }}>
-          <Button size="small" >
-            <Link href={href} sx={{ textDecoration: "none" }}>
+          <Button size="small">
+            <Link
+              href={href}
+              aria-label="learn more"
+              sx={{ textDecoration: "none" }}
+            >
               Learn More
             </Link>
           </Button>

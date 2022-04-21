@@ -22,6 +22,7 @@ const cardStyles = {
 };
 
 const Dashboard = () => {
+
   const { data: session } = useSession();
 
   //use a query to adjust mobile view
@@ -33,8 +34,8 @@ const Dashboard = () => {
     if (!session) {
       router.push("/");
     }
-  }, [router, session]);
-
+  }, []);
+/* console.log("index rendered", props) */
   return (
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       {session && (
@@ -65,6 +66,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 export async function getServerSideProps(context) {
+  
   return {
     props: {
       session: await getSession(context),

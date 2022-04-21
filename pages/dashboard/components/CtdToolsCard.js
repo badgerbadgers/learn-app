@@ -91,7 +91,7 @@ console.log("ctd rendered")
           <IconButton
             onClick={handleShare}
             title="copy the link to your portfolio"
-            aria-label="copy the portfolip link icon"
+            aria-label="copy the portfolio link icon"
           >
             <ContentCopyIcon />
           </IconButton>
@@ -117,7 +117,7 @@ console.log("ctd rendered")
     </Grid>
   );
 }
-//as session is used inside this component so moved a getserversideprop here too..??
+//as session is used inside this component so moved a getserversideprops here too..??
 export async function getServerSideProps(context) {
   return {
     props: {
