@@ -73,7 +73,7 @@ function Portfolio() {
             </Container>
           )}
           <div className={styles.headerLogo}>
-            <Image src='/img/labs_mc-01.png' width={160} height={125} layout="responsive"/>
+            <Image src='/img/labs_mc-01.png' alt="CTD Labs Logo" width={160} height={125} layout="responsive"/>
           </div>
         </>
       )}

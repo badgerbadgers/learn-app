@@ -2,6 +2,17 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Auto adjust the typography fontSize to match the media breakpoints.
 const baseTheme = responsiveFontSizes(
   createTheme({
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontSize: "1em",
+            backgroundColor: "black",
+            color: "white",
+          },
+        },
+      },
+    },
     typography: {
       root: {
         fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",

@@ -58,7 +58,7 @@ const KnowledgePageLayout = ({ title, index, body }) => {
             xs={12}
             md={3}
             sx={{
-              paddingTop: 4,
+              paddingTop: 2,
               justifyContent: "center",
             }}
           >

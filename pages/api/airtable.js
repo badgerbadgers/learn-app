@@ -7,7 +7,7 @@ export default function handler(req, res) {
   const { method } = req;
   switch (method) {
     case "GET":
-      console.log("REQ", req.query);
+      // console.log("REQ", req.query);
       if (req.query.isZones) {
         return getZoneData(res);
       }
