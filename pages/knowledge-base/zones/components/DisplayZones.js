@@ -89,21 +89,6 @@ const DisplayZones = ({ skillData }) => {
       {skillData && skillData.map((doc) => (
       
         <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0"}}>
-          {/* <Grid item xs={12} pl={0}>
-            <Typography
-              variant="h5"
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {doc.fields.Name} 
-            </Typography>
-          </Grid>
-          <Grid item xs={12} pt={4}>
-            <Typography variant="body1">
-              {doc.fields.Description.replace(/^\s+|\s+$/g, "")}
-            </Typography>
-          </Grid> */}
           <Grid
             item
             container

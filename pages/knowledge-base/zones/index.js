@@ -22,6 +22,7 @@ function Skillszoning({ data }) {
             {
               id: doc.id,
               Name: doc.fields.Name,
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
             },
           ]
         : []
@@ -35,6 +36,7 @@ function Skillszoning({ data }) {
             {
               id: doc.id,
               Name: doc.fields.Name,
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
             },
           ]
         : []
