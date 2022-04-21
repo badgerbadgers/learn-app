@@ -9,7 +9,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useTheme } from '@mui/styles';
 import styles from "../styles/Portfolio.module.css";
 
 
@@ -20,7 +19,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 function UserForm({userInfoData, setUserInfoData}) {
-  const theme = useTheme();
   const router = useRouter();
   // const [userInfoData, setUserInfoData] = useState(initialFormValues);
   const [open, setOpen] = useState(false);

@@ -22,7 +22,7 @@ export default function LogIn () {
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: "/signup",      
+          callbackUrl: "/signup", 
         });
       },
       icon: <GitHubIcon style={{fontSize:'32px'}}/>
@@ -46,7 +46,7 @@ export default function LogIn () {
           }}
           startIcon={btn.icon}
         >
-          <Typography sx={{fontSize: "1.2rem" }}>
+          <Typography>
             {btn.title}
           </Typography>
         </Button>
@@ -61,6 +61,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: await getSession(context),
+      gh_id: await getUser(context),
     },
 
   }
