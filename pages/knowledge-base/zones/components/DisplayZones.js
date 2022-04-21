@@ -1,6 +1,5 @@
 import {
   Card,
-  Paper,
   CardContent,
   Typography,
   Grid,
@@ -110,9 +109,6 @@ const DisplayZones = ({ skillData }) => {
             container
             rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 2 }}
-            paddingTop={0} 
-            p={2}
-            pt={4}
             m={0}
           >
             {zoneArr.map((doc) => (

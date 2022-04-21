@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default memo(function SideNav({
+export default memo (function SideNav({
   techIndex,
   personIndex,
   setSkillID,
@@ -22,7 +22,7 @@ export default memo(function SideNav({
 }) {
   const [liValue, setLiValue] = useState("");
   const [expanded, setExpanded] = useState({});
-  const isDesktop = useMediaQuery("(min-width:1260px)");
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   useEffect(() => {
     setLiValue(skillID);
@@ -80,12 +80,12 @@ export default memo(function SideNav({
   return (
     <>
       {sideIndex && (
-        <div style={{width: '100%'}}>
+        <div style={{width: '100%', paddingRight:"16px"}}>
           {sideIndex.map((accordion) => {
             const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
               accordion;
             return (
-              <Accordion sx={{minWidth: '300px'}}
+              <Accordion
                 key={id}
                 expanded={expanded[id] || isDesktop}
                 onChange={handleChange(id)}
