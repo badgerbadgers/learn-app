@@ -3,13 +3,13 @@ import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import DashBoardCard from "./components/DashBoardCard";
-import CtdTooldCard from "./components/CtdToolsCard";
+import CTDToolsCard from "./components/CTDToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { Container } from "@mui/material";
 import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
-import DashbrdHeader from "./components/DashbrdHeader";
-import CardsLayoutDashbrd from "./components/CardsLayoutDashbrd";
+import DashBoardHeader from "./components/DashBoardHeader";
+import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 
 
 
@@ -32,9 +32,9 @@ const Dashboard = () => {
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       {session && (
         <>
-          <DashbrdHeader />
-          <CardsLayoutDashbrd matches={matches}>
-            <CtdTooldCard style={cardStyles}/>
+          <DashBoardHeader />
+          <DashBoardCardsLayout matches={matches}>
+            <CTDToolsCard style={cardStyles}/>
 
             {dashBoardInfo.map((info) => {
               return (
@@ -48,7 +48,7 @@ const Dashboard = () => {
                 />
               );
             })}
-          </CardsLayoutDashbrd>
+          </DashBoardCardsLayout>
         </>
       )}
     </Container>

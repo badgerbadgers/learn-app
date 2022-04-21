@@ -24,7 +24,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CtdTooldCard({style}) {
+export default function CTDToolsCard({style}) {
   //a state to managev a pop up alert window
   const [open, setOpen] = useState(false);
 
