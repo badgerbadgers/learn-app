@@ -40,7 +40,7 @@ export default function CTDToolsCard({style}) {
     }
   };
 
-  //close success window on any click
+  //close success modal on click
   const handleClose = () => {
     setOpen(false);
   };
