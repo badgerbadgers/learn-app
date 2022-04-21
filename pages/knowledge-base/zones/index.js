@@ -6,11 +6,10 @@ import Airtable from "airtable";
 
 function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
-  const [skillID, setSkillID] = useState("");
+  const [skillID, setSkillID] = useState("recAbypHkbRlSb5Ha");
 
   useEffect(() => {
     setZoningData(data);
-    setSkillID(data[0].id);
   }, [data]);
 
   // retrieving only the Technical skills index and putting it in an array
@@ -74,10 +73,10 @@ export async function getStaticProps() {
   try {
     const records = await base("Zones").select().all();
     const data = JSON.parse(JSON.stringify(records));
+
     return {
       props: {
-        data,
-      },
+        data,     },
     };
   } catch (e) {
     console.log("ERROR with ZONES FETCH", e.message);
