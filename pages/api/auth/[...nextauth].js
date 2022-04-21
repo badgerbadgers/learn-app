@@ -27,20 +27,20 @@ export default NextAuth({
     async session({ session, token, user }) {
       return { ...session, user };
     },
-    async signIn(user, account, profile) { 
-      console.log(user, 'user in auth');
+  //   async signIn(user, account, profile) { 
+  //     console.log(user, 'user in auth');
 
 
-    //   const isAllowedToSignIn = true
-    //   if (isAllowedToSignIn) {
-    //     return true
-    //   } else {
-    //     // Return false to display a default error message
-    //     return false
-    //     // Or you can return a URL to redirect to:
-    //     // return '/unauthorized'
-    //   }
-  }
+  //   //   const isAllowedToSignIn = true
+  //   //   if (isAllowedToSignIn) {
+  //   //     return true
+  //   //   } else {
+  //   //     // Return false to display a default error message
+  //   //     return false
+  //   //     // Or you can return a URL to redirect to:
+  //   //     // return '/unauthorized'
+  //   //   }
+  // }
 
   },
 
