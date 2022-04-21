@@ -46,7 +46,7 @@ export default function LogIn () {
           }}
           startIcon={btn.icon}
         >
-          <Typography sx={{fontSize: "1.2rem" }} variant="h5">
+          <Typography variant="h4">
             {btn.title}
           </Typography>
         </Button>
