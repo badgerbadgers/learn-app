@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import styles from '../styles/Home.module.css'
 import ImageWall from '../components/ImageWall'
 
-export default function Home(props) {
+export default function Home() {
   const { data: session } = useSession();
   const router = useRouter()
  /*  const [session, loading] = useSession() */
@@ -18,7 +18,7 @@ export default function Home(props) {
       router.push('/dashboard')
     }
   }, [])
-console.log("index", props)
+
   return (
     <>
     {/* <ImageWall />  */}
