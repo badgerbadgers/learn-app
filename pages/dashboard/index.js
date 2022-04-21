@@ -6,20 +6,12 @@ import DashBoardCard from "./components/DashBoardCard";
 import CtdTooldCard from "./components/CtdToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { Container, Grid, Typography, Paper } from "@mui/material";
-import { dashBoardInfo } from "../../lib/dashBoardCardsInfo";
+import { Container } from "@mui/material";
+import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashbrdHeader from "./components/DashbrdHeader";
 import CardsLayoutDashbrd from "./components/CardsLayoutDashbrd";
 
-const cardStyles = {
-  minWidth: 280,
-  padding: "16px",
-  minHeight: 275,
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-};
+
 
 const Dashboard = () => {
 
@@ -35,7 +27,7 @@ const Dashboard = () => {
       router.push("/");
     }
   }, []);
-/* console.log("index rendered", props) */
+
   return (
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       {session && (

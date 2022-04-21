@@ -25,7 +25,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function CtdTooldCard({style}) {
-  //a state to manage pop up alert window
+  //a state to managev a pop up alert window
   const [open, setOpen] = useState(false);
 
   const { data: session } = useSession();
@@ -44,12 +44,12 @@ export default function CtdTooldCard({style}) {
   const handleClose = () => {
     setOpen(false);
   };
-console.log("ctd rendered")
+
   return (
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-          backgroundColor: "#Dd2E8",
+          backgroundColor: "#ffffff",
           ...style
         }}
       >
@@ -99,6 +99,7 @@ console.log("ctd rendered")
       </Card>
       {open ? (
         <Snackbar
+          aria-label="alert window"
           open={open}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           autoHideDuration={5000}

@@ -29,7 +29,7 @@ export default function DashBoardCard({ title, text, icon, href, style }) {
           <Button size="small">
             <Link
               href={href}
-              aria-label="learn more"
+              aria-label="learn more link"
               sx={{ textDecoration: "none" }}
             >
               Learn More
