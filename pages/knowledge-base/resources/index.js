@@ -17,7 +17,7 @@ function Resources({ resources }) {
         marginBottom: "25px"
       }}
     >
-      {resources.map((resource) => {
+      {resources && resources.map((resource) => {
         return <ResourceCard key={resource.id} resource={resource} />;
       })}
     </Grid>
@@ -49,6 +49,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         err: "Something went wrong 😕",
+        resources: []
       },
     };
   }
