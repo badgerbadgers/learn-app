@@ -159,7 +159,7 @@ export default memo(function SideNav({
                         </ListItemButton>
                             <Tooltip key={doc.Name} title={doc.description}>
                               <IconButton>
-                                <InfoIcon />
+                                <InfoIcon sx={{color: bgColor}} />
                               </IconButton>
                             </Tooltip>
                       </ListItem>
