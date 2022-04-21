@@ -109,7 +109,7 @@ export default memo(function SideNav({
                   }}
                 >
                   {icon}
-                  <Typography variant="h5" m={1}>
+                  <Typography variant="h5" m={1} ml={0}>
                     {heading}
                   </Typography>
                 </AccordionSummary>
@@ -159,7 +159,7 @@ export default memo(function SideNav({
                         </ListItemButton>
                             <Tooltip key={doc.Name} title={doc.description}>
                               <IconButton>
-                                <InfoIcon sx={{color: bgColor}} />
+                                <InfoIcon sx={{color: bgColor, alignSelf: "center"}} />
                               </IconButton>
                             </Tooltip>
                       </ListItem>
