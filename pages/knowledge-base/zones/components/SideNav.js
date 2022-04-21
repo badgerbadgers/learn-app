@@ -80,7 +80,7 @@ export default memo (function SideNav({
   return (
     <>
       {sideIndex && (
-        <div style={{width: '100%', paddingRight:"16px"}}>
+        <div style={{width: '100%', paddingRight: isDesktop && "16px",}}>
           {sideIndex.map((accordion) => {
             const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
               accordion;
@@ -89,6 +89,7 @@ export default memo (function SideNav({
                 key={id}
                 expanded={expanded[id] || isDesktop}
                 onChange={handleChange(id)}
+                sx={{border: "solid black 1px"}}
               >
                 <AccordionSummary
                   expandIcon={
@@ -104,7 +105,7 @@ export default memo (function SideNav({
                   }}
                 >
                   {icon}
-                  <Typography variant="h5">{heading}</Typography>
+                  <Typography variant="h5" m={1}>{heading}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <List sx={{ width: "100%", padding: '0'}} aria-label={ulLabel}>
