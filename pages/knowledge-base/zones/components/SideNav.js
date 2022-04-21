@@ -25,7 +25,7 @@ export default memo(function SideNav({
 }) {
   const [liValue, setLiValue] = useState("");
   const [expanded, setExpanded] = useState({});
-  const isDesktop = useMediaQuery("(min-width:900px)");
+  const isDesktop = useMediaQuery("(min-width:950px)");
 
   useEffect(() => {
     setLiValue(skillID);
@@ -93,7 +93,6 @@ export default memo(function SideNav({
                 key={id}
                 expanded={expanded[id] || isDesktop}
                 onChange={handleChange(id)}
-                sx={{ border: "solid black 1px" }}
               >
                 <AccordionSummary
                   expandIcon={
