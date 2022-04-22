@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
 
 function ResourceCard({ resource }) {
   const classes = useStyles();
-  
+  if (!resource) {
+    return <></>
+  }
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card

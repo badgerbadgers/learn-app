@@ -15,18 +15,19 @@ export default function InputForm() {
     linkedin: "",
     twitter: "",
     videoUrl: "",
-    techStackArray: "",
-    skillsArray: "",
-    previousIndustryArray: "",
     techStackInput: "",
     skillInput: "",
     previousIndustryInput: "",
+    techStackArray: [],
+    skillsArray:[],
+    previousIndustryArray: [],
   });
   const [loading, setLoading] = useState(false);
 
   const url = "/api/users";
   const router = useRouter();
   const id = router.query.id;
+ 
 
   useEffect(()=>{
     setLoading(true);
@@ -38,6 +39,7 @@ export default function InputForm() {
       try{      
             (async () => {
             await getData(params, url).then((data) => {
+        
         // Add input default values and initialize the state values
               setUserInfoData({
                 firstName: data.firstName,
@@ -64,7 +66,7 @@ export default function InputForm() {
       }
   }, [id]);
 
-console.log('**Userinfo Data**', userInfoData, loading)
+
   return (
     <>
       {loading && (

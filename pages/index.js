@@ -11,7 +11,7 @@ import ImageWall from '../components/ImageWall'
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter()
-
+ /*  const [session, loading] = useSession() */
 
   useEffect(() => {
     if (session) {
@@ -27,7 +27,7 @@ export default function Home() {
       <div className={styles.left}></div>
       <div className={styles.right}></div>
       <div className={styles.inner}>
-        <Image src="/img/labs-g-01.png" width={420} height={320}/>
+        <Image alt="" src="/img/labs-g-01.png" width={420} height={320}/>
         <Typography  variant="h5" sx={{textAlign: 'center'}}>Building Together</Typography>
         <LogIn />  
       </div>

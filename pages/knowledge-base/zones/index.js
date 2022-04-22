@@ -1,29 +1,18 @@
 import React, { useState, useEffect, memo } from "react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
-import axios from "axios";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
-import getData from "../../../lib/getData";
+import Airtable from "airtable";
 
-
-const url = "/api/airtable";
-const params = { params: { isZones: true } };
-
-function Skillszoning() {
+function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
-  const [skillID, setSkillID] = useState("");
-
-  // Consuming local JSON data using fetch API from api/airtable.js using the getData function from lib.
+  const [skillID, setSkillID] = useState("recAbypHkbRlSb5Ha");
 
   useEffect(() => {
-    (async () => {
-      const zonesData = await getData(params, url);
-      setZoningData(zonesData);
-      setSkillID(zonesData[0].id);
-    })();
-  }, []);
+    setZoningData(data);
+  }, [data]);
 
-  // retrieving only the Technical skills index and puting it in an array
+  // retrieving only the Technical skills index and putting it in an array
 
   const techIndex =
     zoningData &&
@@ -33,6 +22,7 @@ function Skillszoning() {
             {
               id: doc.id,
               Name: doc.fields.Name,
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
             },
           ]
         : []
@@ -46,6 +36,7 @@ function Skillszoning() {
             {
               id: doc.id,
               Name: doc.fields.Name,
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
             },
           ]
         : []
@@ -60,8 +51,7 @@ function Skillszoning() {
   });
 
   return (
-      
-      <KnowledgePageLayout
+    <KnowledgePageLayout
       title="Skills Zoning"
       index={
         <SideNav
@@ -73,8 +63,24 @@ function Skillszoning() {
       }
       body={<DisplayZones skillData={skillData} />}
     />
-   
   );
 }
 
 export default Skillszoning;
+
+export async function getStaticProps() {
+  const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
+    process.env.AIRTABLE_BASE_ID
+  );
+  try {
+    const records = await base("Zones").select().all();
+    const data = JSON.parse(JSON.stringify(records));
+
+    return {
+      props: {
+        data,     },
+    };
+  } catch (e) {
+    console.log("ERROR with ZONES FETCH", e.message);
+  }
+}

@@ -2,42 +2,69 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Auto adjust the typography fontSize to match the media breakpoints.
 const baseTheme = responsiveFontSizes(
   createTheme({
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontSize: "1em",
+            backgroundColor: "black",
+            color: "white",
+          },
+        },
+      },
+    },
     typography: {
       root: {
         fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
         fontFamilySecondary: "Montserrat",
-        },
-        h3: {
-            //title of any page. Header
-            fontSize: '3.2rem',
-            fontWeight: '700 !important',
-            fontFamily: 'gothamRoundedBold',
-            },
-            
-        h5: {
-            //subheaders on the page
-            fontSize:  '1.6rem',
-            fontFamily: 'gothamRoundedMedium',
-            fontWeight: '500 !important',
-            },
-        h6: {
-            // Header Elements
-            fontSize: '0.9rem',
-            textTransform: 'uppercase',
-           fontFamily: 'gothamRoundedMedium',
-           overflowWrap: 'break-word',
-            },
-        body1: {
-            fontFamily: "Montserrat",
-            fontSize: '1rem',
-            },
-        button: {
-          fontFamily: "gothamRoundedMedium",
-          fontSize: "1.2rem",
-        },
+      },
+      h3: {
+        //title of any page. Header
+        fontSize: "3.2rem",
+        fontWeight: "700 !important",
+        fontFamily: "gothamRoundedBold",
+      },
+      h4: {
+        //title of any page. Header
+        fontSize: "2.2rem",
+        fontFamily: "gothamRoundedBold",
+      },
+
+      h5: {
+        //subheaders on the page
+        fontSize: "1.6rem",
+        fontFamily: "gothamRoundedMedium",
+        fontWeight: "500 !important",
+      },
+      h6: {
+        // Header Elements
+        fontSize: "0.9rem",
+        textTransform: "uppercase",
+        fontFamily: "gothamRoundedMedium",
+        overflowWrap: "break-word",
+      },
+      body1: {
+        fontFamily: "Montserrat",
+        fontSize: "1rem",
+      },
+      button: {
+        fontFamily: "gothamRoundedMedium",
+        fontSize: "1rem",
+      },
     },
-   
-}));  
+    components: {
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            fontSize: "1rem",
+            textTransform: "uppercase",
+            fontFamily: "gothamRoundedMedium",
+          },
+        },
+      },
+    },
+  })
+);
 
 const darkTheme = createTheme({
   ...baseTheme,

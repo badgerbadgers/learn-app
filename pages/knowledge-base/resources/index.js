@@ -18,7 +18,7 @@ function Resources({ resources }) {
       }}
     >
       {resources.map((resource) => {
-        return <ResourceCard key={resource.id} resource={resource} />;
+          return <ResourceCard key={resource.id} resource={resource} />;
       })}
     </Grid>
   );
@@ -27,7 +27,6 @@ function Resources({ resources }) {
 export default Resources;
 
 export async function getServerSideProps(context) {
-  // Deconstructing the object from the context body
   const Airtable = require("airtable");
   const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
     process.env.AIRTABLE_BASE_ID
@@ -42,14 +41,14 @@ export async function getServerSideProps(context) {
     return {
       props: {
         resources: minifyItems(data),
-      },
+      }
     };
   } catch (error) {
     console.log(error);
     return {
       props: {
         err: "Something went wrong 😕",
-      },
+      }
     };
   }
 }

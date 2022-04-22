@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
   },
   button: {
-    textTransform: "none"
-  }
+    textTransform: "none",
+  },
 }));
 
 function ContactCard({ user }) {
@@ -37,10 +37,10 @@ function ContactCard({ user }) {
   }
 
   console.log("GitHub:", user.gh);
-  
+
   return (
     <Grid item sx={{ textAlign: "center" }}>
-      <Card variant="outlined" sx={{height: "100%"}}>
+      <Card variant="outlined" sx={{ height: "100%" }}>
         <div className={styles.innerCard}>
           <Avatar
             className={classes.avatarImage}
@@ -75,23 +75,27 @@ function ContactCard({ user }) {
                 );
               })}
             </Typography>
-            <ButtonGroup sx={{
+            <ButtonGroup
+              sx={{
                 "& .MuiButtonGroup-grouped": {
                   minWidth: "0px",
                 },
-              }}>
+              }}
+            >
               <Stack direction="row" spacing={0.5} m={2}>
-                <Box >
-                  <Button
-                    className={classes.contactCardIcons}
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<LinkedIn />}
-                    href={`https://www.linkedin.com/in/${user.linkedin}`}
-                    target="_blank"
-                  />
-                </Box>
+                {user.linkedin && (
+                  <Box>
+                    <Button
+                      className={classes.contactCardIcons}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<LinkedIn />}
+                      href={`https://www.linkedin.com/in/${user.linkedin}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
                 <Box>
                   <Button
                     className={classes.contactCardIcons}
@@ -103,27 +107,31 @@ function ContactCard({ user }) {
                     target="_blank"
                   />
                 </Box>
-                <Box>
-                  <Button
-                    className={classes.contactCardIcons}
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<EmailIcon />}
-                    href={`mailto:${user.email}`}
-                    target="_blank"
-                  />
-                </Box>
-                <Box>
-                  <Button
-                    className={classes.contactCardIcons}
-                    size="small"
-                    variant="contained"
-                    startIcon={<Twitter />}
-                    href={`https://twitter.com/${user.twitter}`}
-                    target="_blank"
-                  />
-                </Box>
+                {user.email && (
+                  <Box>
+                    <Button
+                      className={classes.contactCardIcons}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<EmailIcon />}
+                      href={`mailto:${user.email}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
+                {user.twitter && (
+                  <Box>
+                    <Button
+                      className={classes.contactCardIcons}
+                      size="small"
+                      variant="contained"
+                      startIcon={<Twitter />}
+                      href={`https://twitter.com/${user.twitter}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
               </Stack>
             </ButtonGroup>
             {/* <Grid item m={1}>

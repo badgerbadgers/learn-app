@@ -14,22 +14,18 @@ import styles from "../styles/Portfolio.module.css";
 
 // Will animate the display message after the form is submitted
 const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function UserForm({userInfoData, setUserInfoData}) {
+  const router = useRouter();
+  // const [userInfoData, setUserInfoData] = useState(initialFormValues);
   const [open, setOpen] = useState(false);
   const [techStackArray, setTechStackArray] = useState(userInfoData.techStackArray || []);
   const [skillsArray, setSkillsArray] = useState(userInfoData.skillsArray || []);
   const [previousIndustryArray, setPreviousIndustryArray] = useState(userInfoData.previousIndustryArray || []);
-  const [errors, setErrors] = useState({email: ""});
-
-console.log('******Errors value****', errors)
-
-console.log('******Errors state****',!!errors.email)
-console.log('***UserInfo email***', userInfoData.email)
-
-  const router = useRouter();
+  const [errors, setErrors] = useState({ email: "" });
+ 
   const id = router.query.id;
 
 
@@ -38,22 +34,18 @@ console.log('***UserInfo email***', userInfoData.email)
   // and validate the email from the user.
   const handleInputChange = (e) => {
   
-     const { name, value } = e.target;
+    const { name, value } = e.target;
 
-     setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
-
-     if (name === "email") {
-      // setUserInfoData({email: value});
-      let isEmailValid = new RegExp(/$^|.+@+""[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
-      console.log('******is email ****', isEmailValid)
-      if (!isEmailValid) {
-        setErrors( {email: "Valid email address required."});
+    if (name === "email") {
+      let reg = new RegExp(/$^|.+@+""[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
+      if (!reg) {
+        setErrors({ email: "Valid email address required." });
       } else {
-        setErrors({email: ""});
-        console.log(errors)
+        setErrors({ email: "" });
       }
-     }
-  
+    } else {
+      setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
+    }
   };
 
   const handleArrayData = (e) => {
@@ -222,7 +214,7 @@ console.log('***UserInfo email***', userInfoData.email)
                         name="techStackBtn"
                         style={{ maxWidth: "40px", minWidth: "40px" }}
                         onClick={(e) => handleArrayData(e)}
-                        disabled={!userInfoData.techStackInput?.length > 0}
+                        disabled={userInfoData.techStackInput && userInfoData.techStackInput.length === 0}
                       >
                         Add
                       </Button>
@@ -259,7 +251,7 @@ console.log('***UserInfo email***', userInfoData.email)
                         variant="contained"
                         style={{ maxWidth: "40px", minWidth: "40px" }}
                         onClick={(e) => handleArrayData(e)}
-                        disabled={!userInfoData.skillInput?.length > 0}
+                        disabled={userInfoData.skillInput && userInfoData.skillInput.length === 0}
                       >
                         Add
                       </Button>
@@ -291,9 +283,9 @@ console.log('***UserInfo email***', userInfoData.email)
                   value={userInfoData.previousIndustryInput}
                   onChange={(e) => handleInputChange(e)}
                   InputProps={{
-                    endAdornment: !!userInfoData && (
+                    endAdornment: userInfoData && (
                       <Button
-                      disabled={!userInfoData.previousIndustryInput?.length > 0}
+                      disabled={userInfoData.previousIndustryInput && userInfoData.previousIndustryInput.length === 0}
                       onClick={(e) => handleArrayData(e)}
                       name="previousIndustryBtn"
                       size="small"
@@ -307,7 +299,7 @@ console.log('***UserInfo email***', userInfoData.email)
                 />
                 {/* It will map and style the previous industry array */}
                 {previousIndustryArray.map((previousIndust, item) => (
-              
+                  console.log({previousIndust}),
                   <Chip
                     key={previousIndust}
                     color='secondary'
@@ -335,7 +327,7 @@ console.log('***UserInfo email***', userInfoData.email)
                   variant="outlined"
                   fullWidth
                   size="small"
-                  error={!!errors?.email}
+                  error={Boolean(errors?.email)}
                   helperText={errors?.email}
                   InputLabelProps={{ shrink: true }}
                   value={userInfoData.email}
@@ -394,10 +386,9 @@ console.log('***UserInfo email***', userInfoData.email)
                   <Button
                     variant="contained"
                     disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email) &&
-                      !userInfoData.firstName?.length > 0 ||
-                      !userInfoData.lastName?.length > 0 ||
-                      userInfoData.email.length === 0 ||
-                      !!errors.email
+                      userInfoData.firstName.length === 0 ||
+                      userInfoData.lastName.length === 0 ||
+                      userInfoData.email.length === 0
                     }
                     onClick={(e) => handleSubmitForm(e)} 
                   >           
@@ -420,7 +411,6 @@ console.log('***UserInfo email***', userInfoData.email)
                     </DialogContent>
                     <DialogActions>
                       <Button
-                      
                         onClick={handleDialogComplete}
                       >
                         Close
