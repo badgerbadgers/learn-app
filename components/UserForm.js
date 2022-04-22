@@ -24,10 +24,6 @@ function UserForm({userInfoData, setUserInfoData}) {
   const [previousIndustryArray, setPreviousIndustryArray] = useState(userInfoData.previousIndustryArray || []);
   const [errors, setErrors] = useState({email: ""});
 
-console.log('******Errors value****', errors)
-
-console.log('******Errors state****',!!errors.email)
-console.log('***UserInfo email***', userInfoData.email)
 
   const router = useRouter();
   const id = router.query.id;
@@ -43,14 +39,11 @@ console.log('***UserInfo email***', userInfoData.email)
      setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
 
      if (name === "email") {
-      // setUserInfoData({email: value});
-      let isEmailValid = new RegExp(/$^|.+@+""[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
-      console.log('******is email ****', isEmailValid)
+      let isEmailValid = new RegExp(/$^|.+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
       if (!isEmailValid) {
         setErrors( {email: "Valid email address required."});
       } else {
-        setErrors({email: ""});
-        console.log(errors)
+        setErrors({email: ""}); 
       }
      }
   
@@ -336,7 +329,7 @@ console.log('***UserInfo email***', userInfoData.email)
                   fullWidth
                   size="small"
                   error={!!errors?.email}
-                  helperText={errors?.email}
+                  helperText={errors.email}
                   InputLabelProps={{ shrink: true }}
                   value={userInfoData.email}
                   onChange={(e) => handleInputChange(e)}
