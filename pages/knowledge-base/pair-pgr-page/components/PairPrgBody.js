@@ -47,6 +47,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
             <Typography
               sx={{
                 backgroundColor: "#FF9D85",
+                opacity: 0.9,
                 color: primary.contrastText,
                 lineHeight: "3.6rem",
               }}

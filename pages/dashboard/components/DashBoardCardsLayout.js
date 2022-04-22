@@ -7,7 +7,7 @@ const CardsLayoutDashbrd = ({matches, children}) => {
     <Paper
       sx={{
         minWidth: 330,
-        backgroundColor: "background.paper",
+        backgroundColor: "background.dbpaper",
         my: 2,
         mx: "auto",
         p: matches ? 8 : 1,

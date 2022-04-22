@@ -10,7 +10,7 @@ export default function TabPanel(props) {
     <>
       {value === index && (
         <Grid
-role="test"
+
           key={`gridTab${index}`}
           container
           item

@@ -85,7 +85,8 @@ const darkTheme = createTheme({
       default: "#0B0C0C", //black
       paper: "#181919", //darkgray
       card: "#353638", //asphalt
-      ctdcard: "#454547"
+      ctdcard: "#454547", 
+      button: "#FF5C35"
     }
   },
 });
@@ -109,9 +110,10 @@ const lightTheme = createTheme({
     },
     background: {
       default: "white",
-      paper: "#F4F5F7",
+      dbpaper: "#F4F5F7",
       card: "#DFE2E8",
-      ctdcard: "#FFF"
+      ctdcard: "#FFF",
+      button: "#FF5C35"
     }
   },
 });
