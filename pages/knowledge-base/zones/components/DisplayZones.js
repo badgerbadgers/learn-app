@@ -130,20 +130,21 @@ const DisplayZones = ({ skillData }) => {
                       paddingTop: '0'
                     }}
                   >
-                    <Typography variant="body1">
                     <List sx={{ width: "100%", listStyle:'square', listStylePosition: 'inside'  }} aria-label="zone data ul">
                       {doc.data.split(".").map((li, i) => (
+                        <Typography variant="body1" key={i * 3}>
                         <ListItem
                           aria-label="zone data li"
-                          key={i * 3}
+                          
                           sx={{ display: "list-item" }}
-                        >
+                        >      
                           {li}
-                        
+                          
                         </ListItem>
+                        </Typography>
                       ))}
                     </List>
-                    </Typography>
+                  
                   </CardContent>
                 </Card>
               </Grid>
