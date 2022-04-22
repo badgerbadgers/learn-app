@@ -65,3 +65,9 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+Dashboard.auth = {
+  role: "admin",
+  // loading: <AdminLoadingSkeleton />,
+  unauthorized: "/", // redirect to this url
+}

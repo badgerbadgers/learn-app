@@ -13,11 +13,11 @@ export default function Home() {
   const router = useRouter()
  /*  const [session, loading] = useSession() */
 
-  useEffect(() => {
-    if (session) {
-      router.push('/dashboard')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (session) {
+  //     router.push('/dashboard')
+  //   }
+  // }, [])
 
   return (
     <>

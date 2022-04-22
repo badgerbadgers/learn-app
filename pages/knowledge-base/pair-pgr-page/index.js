@@ -36,3 +36,9 @@ const PairProgrammingPage = () => {
 };
 
 export default PairProgrammingPage;
+
+PairProgrammingPage.auth = {
+  role: "admin",
+  // loading: <AdminLoadingSkeleton />,
+  unauthorized: "/", // redirect to this url
+}

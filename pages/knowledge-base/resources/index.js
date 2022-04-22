@@ -25,6 +25,11 @@ function Resources({ resources }) {
 }
 
 export default Resources;
+Resources.auth = {
+  role: "admin",
+  // loading: <AdminLoadingSkeleton />,
+  unauthorized: "/", // redirect to this url
+}
 
 export async function getServerSideProps(context) {
   // Deconstructing the object from the context body

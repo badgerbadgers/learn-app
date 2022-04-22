@@ -84,3 +84,9 @@ export async function getStaticProps() {
     console.log("ERROR with ZONES FETCH", e.message);
   }
 }
+
+Skillszoning.auth = {
+  role: "admin",
+  // loading: <AdminLoadingSkeleton />,
+  unauthorized: "/", // redirect to this url
+}

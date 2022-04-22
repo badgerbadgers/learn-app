@@ -1,5 +1,7 @@
 import { useSession } from "next-auth/react"
 
+
+// Not being used but next-auth example
 export default function Admin() {
   const { status } = useSession({
     required: true,
