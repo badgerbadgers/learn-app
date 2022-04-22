@@ -11,8 +11,11 @@ import {
   ListItemButton,
   ListItemText,
   useMediaQuery,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoIcon from "@mui/icons-material/Info";
 
 export default memo(function SideNav({
   techIndex,
@@ -22,7 +25,7 @@ export default memo(function SideNav({
 }) {
   const [liValue, setLiValue] = useState("");
   const [expanded, setExpanded] = useState({});
-  const isDesktop = useMediaQuery("(min-width:1260px)");
+  const isDesktop = useMediaQuery("(min-width:950px)");
 
   useEffect(() => {
     setLiValue(skillID);
@@ -45,47 +48,48 @@ export default memo(function SideNav({
 
   let sideIndex;
 
-  {if (techIndex && personIndex) {
-     sideIndex = [
-    {
-      id: "panel1bh",
-      icon: (
-        <CodeOffOutlinedIcon
-          sx={{ width: "25%", flexShrink: 0, fontSize: "1.8rem" }}
-        />
-      ),
-      heading: "Technical Skills",
-      details: techIndex,
-      ulLabel: "tech skill index ul",
-      liLabel: "technical skills index li",
-      bgColor: "#FF5C35",
-    },
-    {
-      id: "panel2bh",
-      icon: (
-        <PsychologyOutlinedIcon
-          sx={{ width: "25%", flexShrink: 0, fontSize: "2rem" }}
-        />
-      ),
-      heading: "Personal Skills",
-      details: personIndex,
-      ulLabel: "personal skills index ul",
-      liLabel: "personal skills index li",
-      bgColor: "#12284C",
-    },
-    ]
+  {
+    if (techIndex && personIndex) {
+      sideIndex = [
+        {
+          id: "panel1bh",
+          icon: (
+            <CodeOffOutlinedIcon
+              sx={{ width: "25%", flexShrink: 0, fontSize: "1.8rem" }}
+            />
+          ),
+          heading: "Technical Skills",
+          details: techIndex,
+          ulLabel: "tech skill index ul",
+          liLabel: "technical skills index li",
+          bgColor: "#FF5C35",
+        },
+        {
+          id: "panel2bh",
+          icon: (
+            <PsychologyOutlinedIcon
+              sx={{ width: "25%", flexShrink: 0, fontSize: "2rem" }}
+            />
+          ),
+          heading: "Personal Skills",
+          details: personIndex,
+          ulLabel: "personal skills index ul",
+          liLabel: "personal skills index li",
+          bgColor: "#12284C",
+        },
+      ];
+    }
   }
-}
-  
+
   return (
     <>
       {sideIndex && (
-        <div style={{width: '100%'}}>
+        <div style={{ width: "100%", paddingRight: isDesktop && "16px" }}>
           {sideIndex.map((accordion) => {
             const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
               accordion;
             return (
-              <Accordion sx={{minWidth: '300px'}}
+              <Accordion
                 key={id}
                 expanded={expanded[id] || isDesktop}
                 onChange={handleChange(id)}
@@ -100,14 +104,19 @@ export default memo(function SideNav({
                     backgroundColor: bgColor,
                     color: "#fff",
                     alignItems: "center",
-                    padding: '0'
+                    padding: "0",
                   }}
                 >
                   {icon}
-                  <Typography variant="h5">{heading}</Typography>
+                  <Typography variant="h5" m={1} ml={0}>
+                    {heading}
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <List sx={{ width: "100%", padding: '0'}} aria-label={ulLabel}>
+                  <List
+                    sx={{ width: "100%", padding: "0" }}
+                    aria-label={ulLabel}
+                  >
                     {details.map((doc) => (
                       <ListItem
                         disablePadding
@@ -115,8 +124,8 @@ export default memo(function SideNav({
                         aria-label={liLabel}
                       >
                         <ListItemButton
-                          sx = {{
-                            padding: '0'
+                          sx={{
+                            padding: "0",
                           }}
                           onClick={() => {
                             setSkillID(doc.id);
@@ -129,16 +138,17 @@ export default memo(function SideNav({
                             }}
                             inset
                             primary={
-                              <Typography variant="body1"
+                              <Typography
+                                variant="body1"
                                 sx={{
                                   fontWeight:
                                     liValue === doc.id ? "fontWeightBold" : "",
-                                  textTransform: 'uppercase',
-                                  fontSize: '14px !important'
+                                  textTransform: "uppercase",
+                                  fontSize: "14px !important",
                                   // borderBottom: '1px solid black',
                                   // "&:last-child": {
                                   //   borderBottom: 'none'
-                                  // } 
+                                  // }
                                 }}
                               >
                                 {doc.Name}
@@ -146,6 +156,11 @@ export default memo(function SideNav({
                             }
                           />
                         </ListItemButton>
+                            <Tooltip key={doc.Name} title={doc.description}>
+                              <IconButton>
+                                <InfoIcon sx={{color: bgColor, alignSelf: "center"}} />
+                              </IconButton>
+                            </Tooltip>
                       </ListItem>
                     ))}
                   </List>
