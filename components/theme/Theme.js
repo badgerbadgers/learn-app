@@ -76,6 +76,22 @@ const darkTheme = createTheme({
       main: "#FF5C35",
       contrastText: "#fff",
     },
+    zone1: {
+      main: '#FFEB99',
+      contrastText: "#000",
+    },
+    zone2: {
+      main: '#FFE270',
+      contrastText: "#000",
+    },
+    zone3: {
+      main: '#FFDA47',
+      contrastText: "#000",
+    },
+    zone4: {
+      main: '#FFD21F',
+      contrastText: "#000",
+    },
     secondary: {
       main: "#F3C300",
       contrastText: "#000",
@@ -98,6 +114,25 @@ const lightTheme = createTheme({
     secondary: {
       main: "#12284C",
       contrastText: "#fff",
+    },
+    text: {
+      primary: "#000",
+    },
+    zone1: {
+      main: '#8D9DB9',
+      contrastText: "#000",
+    },
+    zone2: {
+      main: '#7488AA',
+      contrastText: "#000",
+    },
+    zone3: {
+      main: '#506891',
+      contrastText: "#000",
+    },
+    zone4: {
+      main: '#324A71',
+      contrastText: "#000",
     },
   },
 });

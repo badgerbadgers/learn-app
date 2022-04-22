@@ -13,7 +13,7 @@ import {
 const DisplayZones = ({ skillData }) => {
   let zoneArr = [];
 
-  const isDesktop = useMediaQuery("(min-width:950px)");
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   /*
   1. pushing the individual zone data as object into an array to help iterate over the zone data to create
@@ -30,11 +30,11 @@ const DisplayZones = ({ skillData }) => {
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
               ? "#FF9D85"
-              : "#8D9DB9",
+              : "zone1.main",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+            ? "primary.main"
+            : "secondary.main",
         },
         {
           head: "Zone 2",
@@ -42,11 +42,11 @@ const DisplayZones = ({ skillData }) => {
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
               ? "#FF8D70"
-              : "#7488AA",
+              : "zone2.main",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+            ? "primary.main"
+            : "secondary.main",
         },
         {
           head: "Zone 3",
@@ -54,11 +54,11 @@ const DisplayZones = ({ skillData }) => {
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
               ? "#FF7C5C"
-              : "#506891",
+              : "zone3.main",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+            ? "primary.main"
+            : "secondary.main",
         },
         {
           head: "Zone 4",
@@ -66,23 +66,23 @@ const DisplayZones = ({ skillData }) => {
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
               ? "#FA6F4C"
-              : "#324A71",
+              : "zone4.main",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+            ? "primary.main"
+            : "secondary.main",
         },
         {
           head: "Zone 5",
           data: doc.fields.Zone5.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+              ? "primary.main"
+              : "secondary.main",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF5C35"
-              : "#12284C",
+              ? "primary.main"
+              : "secondary.main",
         }
       )
     );
@@ -91,7 +91,7 @@ const DisplayZones = ({ skillData }) => {
     <>
       {skillData && skillData.map((doc) => (
       
-        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0"}} >
+        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0", paddingLeft: isDesktop && "16px" }} >
           <Grid
             item
             container
@@ -114,8 +114,8 @@ const DisplayZones = ({ skillData }) => {
                   <CardHeader
                     sx={{
                       backgroundColor: doc.bgColor,
-                      color: "#fff",
                       padding: "10px",
+                      color: "secondary.contrastText",
                     }}
                    variant='h5'
                     title={doc.head}
