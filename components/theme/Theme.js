@@ -2,17 +2,6 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Auto adjust the typography fontSize to match the media breakpoints.
 const baseTheme = responsiveFontSizes(
   createTheme({
-    components: {
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            fontSize: "1em",
-            backgroundColor: "black",
-            color: "white",
-          },
-        },
-      },
-    },
     typography: {
       root: {
         fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
@@ -62,6 +51,15 @@ const baseTheme = responsiveFontSizes(
           },
         },
       },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontSize: "1em",
+            backgroundColor: "black",
+            color: "white",
+          },
+        },
+      },
     },
   })
 );
@@ -83,8 +81,15 @@ const darkTheme = createTheme({
     text: {
       primary: "#fff",
     },
+    background: {
+      default: "#0B0C0C", //black
+      paper: "#181919", //darkgray
+      card: "#353638", //asphalt
+      ctdcard: "#454547"
+    }
   },
 });
+
 
 const lightTheme = createTheme({
   ...baseTheme,
@@ -92,13 +97,22 @@ const lightTheme = createTheme({
     mode: "light",
 
     primary: {
-      main: "#FF5C35",
+      main: "#FF5C35", //orange
       contrastText: "#fff",
     },
     secondary: {
-      main: "#12284C",
+      main: "#12284C", //blue
       contrastText: "#fff",
     },
+    text: {
+      primary: "#31393C" //black
+    },
+    background: {
+      default: "white",
+      paper: "#F4F5F7",
+      card: "#DFE2E8",
+      ctdcard: "#FFF"
+    }
   },
 });
 

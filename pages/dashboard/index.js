@@ -10,10 +10,13 @@ import { Container } from "@mui/material";
 import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
+import { useTheme } from "@emotion/react";
 
 
 
 const Dashboard = () => {
+
+const theme = useTheme()
 
   const { data: session } = useSession();
 
