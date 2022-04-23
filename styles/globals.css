@@ -4,6 +4,7 @@ body {
   position: relative;
   min-height: 100vh;
   margin: 0;
+  max-width: 2000px;
   font-family: 'Montserrat', 'gothamRoundedMedium', 'gothamRoundedBold';
  
 }

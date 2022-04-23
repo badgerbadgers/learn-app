@@ -71,7 +71,7 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <>
       <AppBar
         enableColorOnDark
         position="static"
@@ -116,7 +116,7 @@ const NavBar = () => {
             <Typography
               variant="body1"
               alignSelf="center"
-              sx={{ color: mode === 'dark' ? "#fff" : "#000" }}
+              sx={{ maxWidth: '47px', color: mode === 'dark' ? "#fff" : "#000" }}
             >
               {mode === "dark" ? "Light Mode" : "Dark Mode"}
             </Typography>
@@ -169,7 +169,7 @@ const NavBar = () => {
                           rel="noopener noreferrer"
                           onClick={setting.onClick}
                         >
-                          <Typography textAlign="center">
+                          <Typography variant='body1' textAlign="center">
                             {setting.title}
                           </Typography>
                         </a>
@@ -182,7 +182,7 @@ const NavBar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-    </div>
+    </>
   );
 };
 export default NavBar;
