@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../components/theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -16,15 +16,36 @@ import {
   Avatar,
 } from "@mui/material/";
 import Link from "next/link";
+import getData from "../lib/getData"
 
-const NavBar = () => {
+const NavBar = ({user}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(false);
+  const [userName, setUserName] = useState(null);
   const { data: session, status } = useSession();
 
   const router = useRouter();
+  const url = "/api/users";
+  const id = session.user.gh;
 
+// Getting the first and last names of the user to show next to their avatar. Sometimes the gitHub name / id are too long and in Mobile View they cramp up in the NavBar. 
+//So we get their first and last name from the userform to display their initials. 
+
+   useEffect(() => {
+    const params = { params: { id: id } };
+    if (id) {
+
+      (async () => {
+        await getData(params, url).then((data) => {
+          setUserName(`${data.firstName} ${data.lastName}`);
+          console.log(data);
+        });
+      })();
+    }
+  }, [id]);
+
+console.log(user)
   const settings = [
     {
       href:
@@ -114,9 +135,9 @@ const NavBar = () => {
               }}
             />
             <Typography
-              variant="body1"
+              variant="h6"
               alignSelf="center"
-              sx={{ maxWidth: '47px', color: mode === 'dark' ? "#fff" : "#000" }}
+              sx={{ color: mode === 'dark' ? "#fff" : "#000" }}// maxWidth: '47px',
             >
               {mode === "dark" ? "Light Mode" : "Dark Mode"}
             </Typography>
@@ -126,11 +147,13 @@ const NavBar = () => {
             {session && (
               <Box sx={{ flexGrow: 0, marginLeft: "auto", display: 'flex', alignItems: 'center' }}>
                 <Typography
-                  variant="body1"
+                  variant="h6"
                   mr={1}
                   sx={{ color: mode === "dark" ? "#fff" : "#000" }}
                 >
-                  {session.user.name || session.user.gh}
+                  {/* only getting the Initials from the first and Last Names */}
+                  {userName.match(/(\b\S)?/g).join("")}
+    
                 </Typography>
 
                 <Tooltip title="Open settings" role="UL Div">
