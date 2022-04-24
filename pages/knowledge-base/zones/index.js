@@ -88,8 +88,8 @@ export async function getStaticProps() {
 
 // Skillszoning.auth = true;
 
-Skillszoning.auth = {
-  role: "admin",
-  loading: <Loading />,
-  unauthorized: "/", // redirect to this url
-}
+// Skillszoning.auth = {
+//   role: "admin",
+//   loading: <Loading />,
+//   unauthorized: "/", // redirect to this url
+// }

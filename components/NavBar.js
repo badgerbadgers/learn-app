@@ -29,7 +29,7 @@ const NavBar = () => {
     {
       href:
         status === "authenticated"
-          ? `/portfolios/${encodeURIComponent(session.user.gh)}`
+          ? `/portfolios/${session.user.gh}`
           : "/",
       target: "_blank",
       title: "Portfolio",
@@ -133,7 +133,7 @@ const NavBar = () => {
                   {session.user.name || session.user.gh}
                 </Typography>
 
-                <Tooltip title="Open settings" role="UL Div">
+                <Tooltip title="Open settings">
                   <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                     <Avatar alt="User Image" src={session.user.image} />
                   </IconButton>
@@ -165,6 +165,7 @@ const NavBar = () => {
                       <MenuItem key={setting.title} onClick={handleMenuClose}>
                         <Link href={setting.href}>
                         <a
+                        role="link"
                           target={setting.target}
                           rel="noopener noreferrer"
                           onClick={setting.onClick}

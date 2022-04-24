@@ -14,13 +14,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             <Component {...pageProps} />
           </PublicLayout>
         ) : (
-          Component.auth && (
-            <Auth>
-              <PrivateLayout>
-                <Component {...pageProps} />
-              </PrivateLayout>
-            </Auth>
-          )
+          <PrivateLayout>
+            <Component {...pageProps} />
+          </PrivateLayout>
         )}
       </ThemeContextWrapper>
     </SessionProvider>
@@ -29,13 +25,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
 export default MyApp;
 
-function Auth({ children }) {
-  // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { status } = useSession({ required: true });
+// function Auth({ children }) {
+//   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
+//   const { status } = useSession({ required: true });
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
+//   if (status === "loading") {
+//     return <div>Loading...</div>;
+//   }
 
-  return children;
-}
+//   return children;
+// }

@@ -92,11 +92,19 @@ Portfolio.displayName = "Portfolio"
 export default Portfolio;
 
 export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
+  const session = await getSession(context)
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
   }
 }
 

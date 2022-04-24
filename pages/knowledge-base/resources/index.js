@@ -25,11 +25,11 @@ function Resources({ resources }) {
 }
 
 export default Resources;
-Resources.auth = {
-  role: "admin",
-  // loading: <AdminLoadingSkeleton />,
-  unauthorized: "/", // redirect to this url
-}
+// Resources.auth = {
+//   role: "admin",
+//   // loading: <AdminLoadingSkeleton />,
+//   unauthorized: "/", // redirect to this url
+// }
 
 export async function getServerSideProps(context) {
   // Deconstructing the object from the context body
@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
     // Finally, it will send the items as resources by minify items data.
     const items = await base("resources").select().all();
     const data = JSON.parse(JSON.stringify(items));
-    console.log("Data:", data);
+    // console.log("Data:", data);
     return {
       props: {
         resources: minifyItems(data),

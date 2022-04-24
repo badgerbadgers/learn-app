@@ -11,6 +11,7 @@ import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 
+import Loading from "../../components/Loading";
 
 
 const Dashboard = () => {
@@ -20,13 +21,13 @@ const Dashboard = () => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (!session) {
-      router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!session) {
+  //     router.push("/");
+  //   }
+  // }, []);
 
   return (
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
@@ -66,8 +67,8 @@ export async function getServerSideProps(context) {
   };
 }
 
-Dashboard.auth = {
-  role: "admin",
-  // loading: <AdminLoadingSkeleton />,
-  unauthorized: "/", // redirect to this url
-}
+// Dashboard.auth = {
+//   role: "admin",
+//   loading: <Loading />,
+//   unauthorized: "/", // redirect to this url
+// }
