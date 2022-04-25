@@ -3,15 +3,22 @@ import Card from "@mui/material/Card";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Stack from "@mui/material/Stack";
-import { Grid, Chip, Box } from "@mui/material";
+import { Grid, Chip } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActions } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
-import { DeveloperMode, CategoryOutlined, DescriptionRounded, CodeOffRounded, FitnessCenter, StyleOutlined, CodeOffOutlined, ContentPasteGoOutlined } from "@mui/icons-material";
+import {
+  DeveloperMode,
+  CategoryOutlined,
+  DescriptionRounded,
+  FitnessCenter,
+  StyleOutlined,
+  CodeOffOutlined,
+  AdjustOutlined,
+} from "@mui/icons-material";
 
 // Setting the styles on the root element of ResourceCard component
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +48,6 @@ function ResourceCard({ resource }) {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          // backgroundColor: "#CDDC39",
         }}
       >
         <CardContent sx={{ padding: 0 }}>
@@ -52,35 +58,23 @@ function ResourceCard({ resource }) {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-                  listStyle: "none",
-                  p: 0.5,
-                  m: 0,
-                }}
-                component="ul"
               >
-                {/* Icons to display in NavBar */}
+                {/* Icons to display in NavBar per type item */}
                 {type.map((data) => {
                   if (data === "coding") {
-                    return <CodeOffOutlined /> 
-                  }
-                  if (data === "concepts") {
-                    return <DeveloperMode /> 
-                  }
-                  if (data === "exercises") {
-                    return <FitnessCenter /> 
-                  }
-                  if (data === "docs") {
-                    return <DescriptionRounded />
-                  }
-                  if (data === "cheatsheet") {
-                    return <StyleOutlined />
-                  }
-                  if (data === "Other") {
-                    return <CategoryOutlined />
+                    return <CodeOffOutlined />;
+                  } else if (data === "concepts") {
+                    return <DeveloperMode />;
+                  } else if (data === "exercises") {
+                    return <FitnessCenter />;
+                  } else if (data === "docs") {
+                    return <DescriptionRounded />;
+                  } else if (data === "cheatsheet") {
+                    return <StyleOutlined />;
+                  } else if (data === "Other") {
+                    return <CategoryOutlined />;
+                  } else {
+                    return <AdjustOutlined />;
                   }
                 })}
               </IconButton>
@@ -113,7 +107,6 @@ function ResourceCard({ resource }) {
               ml: 1,
             }}
             component="ul"
-            // sx={{ m: 3 }} variant="h6" component="div"
           >
             {topic.map((item) => {
               // console.log("ITEM:", item);
@@ -134,8 +127,6 @@ function ResourceCard({ resource }) {
             })}
 
             {language.map((item) => {
-              // console.log("ITEM:", item);
-              // console.log('LANGUAGE:', language)
               return (
                 <div key={resource.id}>
                   <ListItem key={item}>
@@ -150,7 +141,6 @@ function ResourceCard({ resource }) {
                 </div>
               );
             })}
-
             {/* <Button
               size="small"
               color="primary"
