@@ -115,7 +115,7 @@ const DisplayZones = ({ skillData }) => {
                     sx={{
                       backgroundColor: doc.bgColor,
                       padding: "10px",
-                      color: "secondary.contrastText",
+                      color: "contrastText",
                     }}
                    variant='h5'
                     title={doc.head}
