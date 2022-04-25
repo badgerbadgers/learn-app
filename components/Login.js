@@ -11,7 +11,8 @@ export default function LogIn () {
   const buttonData = [
     {
       title: "Log-In",
-      onClick: () => {
+      onClick: (e) => {
+        // e.preventDefault();
         signIn("github", {
           callbackUrl: "/dashboard",
         });
@@ -20,7 +21,8 @@ export default function LogIn () {
     },
     {
       title: "Sign-Up",
-      onClick: () => {
+      onClick: (e) => {
+        // e.preventDefault();
         signIn("github", {
           callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
         });
