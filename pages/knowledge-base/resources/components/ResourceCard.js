@@ -34,38 +34,9 @@ const ListItem = styled("li")(({ theme }) => ({
 
 function ResourceCard({ resource }) {
   const classes = useStyles();
-  const topic = [resource.fields["Name (from topic)"]];
-  const language = [resource.fields["Name (from language)"]];
+  const topic = resource.fields["Name (from topic)"];
+  const language = resource.fields["Name (from language)"];
   const type = [resource.fields.Type];
-  // console.log("RESOURCES:", resource);
-
-  const resourcesColorTheme = [
-    { key: "docs", color: "#F1C40F" },
-    { key: "Other", color: "#E67E22" },
-    { key: "concepts", color: "#D35400" },
-    { key: "cheatsheet", color: "#8BC34A" },
-    { key: "coding", color: "#CDDC39" },
-    { key: "exercises", color: "#FFC107" },
-  ];
-
-  const bkColor = () => {
-    resourcesColorTheme.map((data) => {
-      if (data.key === "coding") {
-        return data.color;
-
-      }
-    })
-  }
-  //   resourcesColorTheme.map((data) => {
-  //     console.log(data);
-  //     if (data.key == resource.fields.Type) {
-  //       console.log(resource.fields.Type);
-  //       console.log(data.key);
-  //       return data.color;
-  //     }
-  //   });
-  // };
-  console.log(bkColor());
 
   return (
     <Grid item xs={12} sm={6}>
@@ -132,52 +103,35 @@ function ResourceCard({ resource }) {
               p: 0.5,
               ml: 1,
             }}
-            // component="ul"
           >
-            {topic.map((item) => {
-              // console.log("ITEM:", item);
-              // console.log('Topic:', topic)
-              return (
-                <div key={resource.id}>
-                  <ListItem key={item}>
-                    {topic.map((item) => (
+            {topic &&
+              topic.map((item) => {
+                return (
+                  <div key={resource.id}>
+                    <ListItem key={item}>
                       <Chip
                         key={item}
                         label={item}
                         sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
                       />
-                    ))}
-                  </ListItem>
-                </div>
-              );
-            })}
-
-            {language.map((item) => {
-              return (
-                <div key={resource.id}>
-                  <ListItem key={item}>
-                    {language.map((item) => (
+                    </ListItem>
+                  </div>
+                );
+              })}
+            {language &&
+              language.map((item) => {
+                return (
+                  <div key={resource.id}>
+                    <ListItem key={item}>
                       <Chip
                         key={item}
                         label={item}
                         sx={{ backgroundColor: "#FF5C35", color: "#FFFFFF" }}
                       />
-                    ))}
-                  </ListItem>
-                </div>
-              );
-            })}
-            {/* <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              sx={{
-                textTransform: "none",
-                borderRadius: "30px",
-              }}
-            >
-              {resource.fields["Name (from language)"]}
-            </Button> */}
+                    </ListItem>
+                  </div>
+                );
+              })}
             <Button
               size="small"
               color="secondary"
