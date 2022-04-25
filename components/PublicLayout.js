@@ -1,10 +1,9 @@
 import styles from "../styles/Home.module.css";
-import Header from "./Header";
 
 const PublicLayout = ({ children }) => {
   return (
     <>
-      <Header />
+      <title>Code the Dream Labs Internal Application </title>
       <main className={styles.main}>{children}</main>
     </>
   );
