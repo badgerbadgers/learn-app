@@ -1,4 +1,4 @@
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 import GitHubIcon from '@mui/icons-material/GitHub';
 
@@ -50,16 +50,4 @@ export default function LogIn () {
       ))}
     </Stack>
   );
-}
-
-export async function getServerSideProps(context) {
-
-
-  return {
-    props: {
-      session: await getSession(context),
-      gh_id: await getUser(context),
-    },
-
-  }
 }

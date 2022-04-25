@@ -23,7 +23,11 @@ function UserForm({userInfoData, setUserInfoData}) {
   const [skillsArray, setSkillsArray] = useState(userInfoData.skillsArray || []);
   const [previousIndustryArray, setPreviousIndustryArray] = useState(userInfoData.previousIndustryArray || []);
   const [errors, setErrors] = useState({email: ""});
-
+  const [duplicateError, setDuplicateError] = useState({
+    techMessage: "",
+    skillMessage: "",
+    pvInMessage: "",
+  });
 
   const router = useRouter();
   const id = router.query.id;
@@ -34,47 +38,67 @@ function UserForm({userInfoData, setUserInfoData}) {
   // and validate the email from the user.
   const handleInputChange = (e) => {
   
-     const { name, value } = e.target;
+    const { name, value } = e.target;
 
-     setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
+    setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
 
-     if (name === "email") {
-      let isEmailValid = new RegExp(/$^|.+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value);
-      if (!isEmailValid) {
-        setErrors( {email: "Valid email address required."});
+    const message = "This skill is already in your list.";
+
+    if (name === 'skillInput') { // checks the name of Input element
+       if (skillsArray.includes(value)) { // checks if the skillsArray already includes the same value entered in the textfield.
+        setDuplicateError({skillMessage: message}); // if the value is same it will set the error message and displayed on the screen with helperText.
       } else {
-        setErrors({email: ""}); 
+        setDuplicateError({skillMessage: ""}); // Will revert the error message when the value changes.
       }
-     }
-  
+    }else if (name === "techStackInput" ) {
+      if(techStackArray.includes(value)) { // checks if the skillsArray already includes the same value entered in the textfield.
+        setDuplicateError({techMessage: message});// if the value is same it will set the error message and displayed on the screen with helperText.
+      } else {
+      setDuplicateError({techMessage: ""}); // Will revert the error message when the value changes.
+      }
+    }else if (name === 'previousIndustryInput') {
+       if(previousIndustryArray.includes(value)) { // checks if the skillsArray already includes the same value entered in the textfield.
+        setDuplicateError({pvInMessage: message}); // if the value is same it will set the error message and displayed on the screen with helperText.
+      }else {
+      setDuplicateError({pvInMessage: ""}); // Will revert the error message when the value changes.
+      }
+    }else if (name === "email") {
+      let isEmailValid = new RegExp(/$^|.+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(value); //check the email passes the Regex test.
+      if (!isEmailValid) { //if email is not as per requirment
+        setErrors( {email: "Valid email address required."}); //set the error message
+      } else {
+        setErrors({email: ""}); //revert the error so the helperText will not be seen on the anymore.
+      }
+    }
+
   };
 
   const handleArrayData = (e) => {
     e.preventDefault();
     const {name} = e.target;  
     if (name === 'techStackBtn') {
-      const newArray = [...techStackArray];// Make a copy of the tech stack array first.
-      newArray.push(userInfoData.techStackInput);// Update it with the modified tech stack entry.
-      setTechStackArray(newArray); // Update the state.
+      const tempArray = [...techStackArray];// Make a copy of the tech stack array first.
+      tempArray.push(userInfoData.techStackInput);// Update it with the modified tech stack entry.
+      setTechStackArray(tempArray); // Update the state.
             // clear the input form
       let data = userInfoData; // Assigning userInfoData to data variable.
       data.techStackInput = ""; // Take tech Stack and assign to empty string
       setUserInfoData(data); // update the state
 
     } else if (name === 'skillsBtn') {
-      const newArray = [...skillsArray];
-      newArray.push(userInfoData.skillInput);
-      setSkillsArray(newArray);
-           // clear the input form
+      const tempArray = [...skillsArray];
+      tempArray.push(userInfoData.skillInput);
+      setSkillsArray(tempArray);
+          // clear the input form
       let data = userInfoData; // Assigning userInfoData to data variable.
       data.skillInput = ""; // Take tech Stack and assign to empty string
       setUserInfoData(data); // update the state
-
+          
     } else if (name === 'previousIndustryBtn') {
-      const newArray =  [...previousIndustryArray];
-      newArray.push(userInfoData.previousIndustryInput);
-      setPreviousIndustryArray(newArray);
-           // clear the input form
+      const tempArray =  [...previousIndustryArray];
+      tempArray.push(userInfoData.previousIndustryInput);
+      setPreviousIndustryArray(tempArray);
+          // clear the input form
       let data = userInfoData; // Assigning userInfoData to data variable.
       data.previousIndustryInput = ''; // Take tech Stack and assign to empty string
       setUserInfoData(data); // update the state
@@ -114,7 +138,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   };    
 
   // Handle delete functions to cancel input into array of
-  // Do not remove the param skill, tech and previousIndust
+  // Do not remove the param skill, tech and previousIndust. If there are 2 skills with same name and we want to delete only 1 then we we need to delete them by index and not the skill 
   const handleDeleteSkills = (item) => {
     setSkillsArray((prevState) => prevState.filter((skill, i) => i !== item));
   };
@@ -137,6 +161,7 @@ function UserForm({userInfoData, setUserInfoData}) {
     handleDialogChange();
     router.push("/dashboard");
   }
+  
 
   return (
     <Container>
@@ -205,6 +230,8 @@ function UserForm({userInfoData, setUserInfoData}) {
                   fullWidth
                   size="small"
                   type="text"
+                  error={!!duplicateError?.techMessage}
+                  helperText={duplicateError.techMessage}
                   InputLabelProps={{ shrink: true }}
                   onChange={(e) => handleInputChange(e)}
                   InputProps={{
@@ -215,7 +242,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                         name="techStackBtn"
                         style={{ maxWidth: "40px", minWidth: "40px" }}
                         onClick={(e) => handleArrayData(e)}
-                        disabled={!userInfoData.techStackInput?.length > 0}
+                        disabled={!userInfoData.techStackInput?.length > 0 || !!duplicateError.techMessage}
                       >
                         Add
                       </Button>
@@ -241,6 +268,8 @@ function UserForm({userInfoData, setUserInfoData}) {
                   variant="outlined"
                   fullWidth
                   size="small"
+                  error={!!duplicateError?.skillMessage}
+                  helperText={duplicateError.skillMessage}
                   value={userInfoData.skillInput}
                   InputLabelProps={{ shrink: true }}
                   onChange={(e) => handleInputChange(e)}
@@ -252,7 +281,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                         variant="contained"
                         style={{ maxWidth: "40px", minWidth: "40px" }}
                         onClick={(e) => handleArrayData(e)}
-                        disabled={!userInfoData.skillInput?.length > 0}
+                        disabled={!userInfoData.skillInput?.length > 0 || !!duplicateError.skillMessage}
                       >
                         Add
                       </Button>
@@ -271,6 +300,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                   />
                   
                 ))}
+               
               </Grid>
               <Grid item xs={12} sm={6} width="100%">
                 <TextField
@@ -283,10 +313,12 @@ function UserForm({userInfoData, setUserInfoData}) {
                   InputLabelProps={{ shrink: true }}
                   value={userInfoData.previousIndustryInput}
                   onChange={(e) => handleInputChange(e)}
+                  error={!!duplicateError?.pvInMessage}
+                  helperText={duplicateError.pvInMessage}
                   InputProps={{
                     endAdornment: !!userInfoData && (
                       <Button
-                      disabled={!userInfoData.previousIndustryInput?.length > 0}
+                      disabled={!userInfoData.previousIndustryInput?.length > 0 || !!duplicateError.pvInMessage}
                       onClick={(e) => handleArrayData(e)}
                       name="previousIndustryBtn"
                       size="small"
