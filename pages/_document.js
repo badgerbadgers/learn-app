@@ -4,7 +4,7 @@ export default function MyDocument() {
   return (
     <Html>
       <Head>
-      {/* <title>Code the Dream Labs Internal Application </title> */}
+     
       <meta name="description" content="Created by Code the Dream Labs" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="manifest" href="/manifest.json" />

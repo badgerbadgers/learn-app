@@ -9,6 +9,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session} >
     <ThemeContextWrapper>
+    <title>Code the Dream Labs Internal Application </title>
         {(Component.displayName === "Portfolio" || Component.displayName === "Home") ? (
           <PublicLayout>
             <Component {...pageProps} />
