@@ -18,7 +18,7 @@ import {
 import Link from "next/link";
 import getData from "../lib/getData"
 
-const NavBar = ({user}) => {
+const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(false);
@@ -39,13 +39,11 @@ const NavBar = ({user}) => {
       (async () => {
         await getData(params, url).then((data) => {
           setUserName(`${data.firstName} ${data.lastName}`);
-          console.log(data);
         });
       })();
     }
   }, [id]);
 
-console.log(user)
   const settings = [
     {
       href:
@@ -137,7 +135,6 @@ console.log(user)
             <Typography
               variant="h6"
               alignSelf="center"
-              sx={{ color: mode === 'dark' ? "#fff" : "#000" }}// maxWidth: '47px',
             >
               {mode === "dark" ? "Light Mode" : "Dark Mode"}
             </Typography>
@@ -149,14 +146,13 @@ console.log(user)
                 <Typography
                   variant="h6"
                   mr={1}
-                  sx={{ color: mode === "dark" ? "#fff" : "#000" }}
                 >
                   {/* only getting the Initials from the first and Last Names */}
-                  {userName.match(/(\b\S)?/g).join("")}
+                  {userName ? userName.match(/(\b\S)?/g).join("") : ""}
     
                 </Typography>
 
-                <Tooltip title="Open settings" role="UL Div">
+                <Tooltip title="Open settings">
                   <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                     <Avatar alt="User Image" src={session.user.image} />
                   </IconButton>

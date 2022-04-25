@@ -22,7 +22,7 @@ export default function LogIn () {
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
+          callbackUrl: "/dashboard",
         });
       },
       icon: <GitHubIcon style={{fontSize:'32px'}}/>
