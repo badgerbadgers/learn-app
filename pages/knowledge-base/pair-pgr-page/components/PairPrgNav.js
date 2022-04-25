@@ -1,4 +1,5 @@
 import { Grid, Tabs, Tab } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 //for accessibility porpose adds unique 'id' and 'aria-controls' to each tab
 function a11yProps(index) {
@@ -9,6 +10,11 @@ function a11yProps(index) {
 }
 
 const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
+
+  const {
+    palette: { primary },
+  } = useTheme();
+
   return (
     <>
       {pairProgrammingInfo && (
@@ -23,16 +29,17 @@ const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
               <Tab
                 key={item.label}
                 sx={{
-                  backgroundColor: "#ff5c35",
+                  backgroundColor: primary.main,
                   opacity: 0.9,
                   my: 1,
+                  color: primary.contrastText,
                   maxWidth: 900,
-                  color: "white",
+                  border: `1px ${primary.main} solid`,
                   "&.Mui-selected": {
-                    color: '#12284C',
+                    color: "#12284C",
                     backgroundColor: "white",
-                    border: '1px orange solid'
-                  }
+                    border: `1px ${primary.main} solid`,
+                  },
                 }}
                 label={item.label}
                 {...a11yProps(index)}

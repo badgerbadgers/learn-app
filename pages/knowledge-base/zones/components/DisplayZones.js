@@ -1,17 +1,19 @@
 import {
   Card,
-  Paper,
   CardContent,
   Typography,
   Grid,
   CardHeader,
   List,
   ListItem,
+  useMediaQuery,
 } from "@mui/material";
 
 
 const DisplayZones = ({ skillData }) => {
   let zoneArr = [];
+
+  const isDesktop = useMediaQuery("(min-width:950px)");
 
   /*
   1. pushing the individual zone data as object into an array to help iterate over the zone data to create
@@ -89,30 +91,12 @@ const DisplayZones = ({ skillData }) => {
     <>
       {skillData && skillData.map((doc) => (
       
-        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0"}}>
-          {/* <Grid item xs={12} pl={0}>
-            <Typography
-              variant="h5"
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {doc.fields.Name} 
-            </Typography>
-          </Grid>
-          <Grid item xs={12} pt={4}>
-            <Typography variant="body1">
-              {doc.fields.Description.replace(/^\s+|\s+$/g, "")}
-            </Typography>
-          </Grid> */}
+        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0"}} >
           <Grid
             item
             container
             rowSpacing={2}
             columnSpacing={{ xs: 1, sm: 2, md: 2 }}
-            paddingTop={0} 
-            p={2}
-            pt={4}
             m={0}
           >
             {zoneArr.map((doc) => (
