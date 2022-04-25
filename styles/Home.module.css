@@ -139,5 +139,5 @@
   top: 0;
   bottom: 0;
   width: 100%;
-  background: rgba(255,255,255,.5);
+  /* background: rgba(255,255,255,.5); */ /* commented out cause it overwrites background color in dard mode */
 }

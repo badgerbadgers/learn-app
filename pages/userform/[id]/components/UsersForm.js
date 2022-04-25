@@ -12,8 +12,8 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   chipStyle: {
-    backgroundColor: "#FF5C35",
-    color: "#FFFFFF",
+    //backgroundColor: "#FF5C35",
+    //color: "#FFFFFF",
     margin: "8px 4px 8px 0px",
   },
 }));
@@ -233,7 +233,8 @@ function UsersForm() {
             {techStackArray.map((tech, item) => (
               <Chip
                 key={tech}
-                className={classes.chipStyle}
+                //className={classes.chipStyle}
+                sx={{backgroundColor: "background.chip", color: "primary.contrastText"}}
                 label={tech}
                 onDelete={() => handleDeleteTechStack(item)}
               />
@@ -269,7 +270,7 @@ function UsersForm() {
             {skillsArray.map((skill, item) => (
               <Chip
                 key={skill}
-                className={classes.chipStyle}
+                sx={{backgroundColor: "background.chip", color: "primary.contrastText"}}
                 label={skill}
                 onDelete={() => handleDeleteSkills(item)}
               />
@@ -305,7 +306,7 @@ function UsersForm() {
             {previousIndustryArray.map((previousIndust, item) => (
               <Chip
                 key={previousIndust}
-                className={classes.chipStyle}
+                sx={{backgroundColor: "background.chip", color: "primary.contrastText"}}
                 label={previousIndust}
                 onDelete={() => handleDeletePreviousIndustry(item)}
               />
@@ -386,6 +387,7 @@ function UsersForm() {
             <div>
               <Button
                 variant="contained"
+                sx={{backgroundColor: "background.button"}}
                 disabled={
                   userInfoData.firstName.length === 0 ||
                   userInfoData.lastName.length === 0 ||

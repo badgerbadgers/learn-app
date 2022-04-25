@@ -72,7 +72,11 @@ const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#FF5C35",
-      contrastText: "#fff",
+      contrastText: "#EBEBEB",
+    },
+    secondary: {
+      main: "#CCA300", //not so bright as original f3c3300
+      contrastText: "#000",
     },
     zone1: {
       main: '#FFEB99',
@@ -90,19 +94,17 @@ const darkTheme = createTheme({
       main: '#FFD21F',
       contrastText: "#000",
     },
-    secondary: {
-      main: "#F3C300",
-      contrastText: "#000",
-    },
+   
     text: {
-      primary: "#fff",
+      primary: "#EBEBEB",
     },
     background: {
       default: "#0B0C0C", //black
       paper: "#181919", //darkgray
       card: "#353638", //asphalt
-      ctdcard: "#454547", 
-      button: "#FF5C35"
+      ctdcard: "#515152", //onyx gray
+      button: "#FF6C47", //orange
+      chip: "#FF6C47",
     }
   },
 });
@@ -129,13 +131,14 @@ const lightTheme = createTheme({
       dbpaper: "#F4F5F7",
       card: "#DFE2E8",
       ctdcard: "#FFF",
-      button: "#FF5C35"
+      button: "#FF5C35", 
+      chip: "#FF5C35",
     }
-      //primary: "#000",
+
     },
     zone1: {
       main: '#8D9DB9',
-      contrastText: "#000",
+      contrastText: "#fff",
     },
     zone2: {
       main: '#7488AA',
