@@ -68,18 +68,6 @@ const baseTheme = responsiveFontSizes(
           },
         },
       },
-      /* MuiSvgIcon: {
-        styleOverrides: {
-          root: {
-            backgroundColor: "background.button",
-            color: "#FFFFFF",
-            borderRadius: "5px",
-            maxWidth: "26px",
-            minWidth: "26px",
-            paddingRight: 0,
-          },
-        },
-      }, */
     },
   })
 );
