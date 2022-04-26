@@ -16,33 +16,15 @@ import {
   Avatar,
 } from "@mui/material/";
 import Link from "next/link";
-import getData from "../lib/getData"
+
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);
-  const [userName, setUserName] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);;
   const { data: session, status } = useSession();
 
   const router = useRouter();
-  const url = "/api/users";
-  const id = session.user.gh;
-
-// Getting the first and last names of the user to show next to their avatar. Sometimes the gitHub name / id are too long and in Mobile View they cramp up in the NavBar. 
-//So we get their first and last name from the userform to display their initials. 
-
-   useEffect(() => {
-    const params = { params: { id: id } };
-    if (id) {
-
-      (async () => {
-        await getData(params, url).then((data) => {
-          setUserName(`${data.firstName} ${data.lastName}`);
-        });
-      })();
-    }
-  }, [id]);
 
   const settings = [
     {
@@ -146,9 +128,10 @@ const NavBar = () => {
                 <Typography
                   variant="h6"
                   mr={1}
+                  display={{ xs: 'none', sm: 'block' }}
                 >
-                  {/* only getting the Initials from the first and Last Names */}
-                  {userName ? userName.match(/(\b\S)?/g).join("") : ""}
+                  {status === "authenticated" && session.user.name || session.user.gh}
+                 
     
                 </Typography>
 
