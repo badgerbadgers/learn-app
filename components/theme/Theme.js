@@ -69,7 +69,7 @@ const baseTheme = responsiveFontSizes(
         },
       },
     },
-    components: {
+    /* components: {
       MuiChip: {
         styleOverrides: {
           label: {
@@ -78,7 +78,7 @@ const baseTheme = responsiveFontSizes(
           },
         },
       },
-    },
+    }, */
   })
 );
 
@@ -93,7 +93,7 @@ const darkTheme = createTheme({
       contrastText: "#EBEBEB",
     },
     secondary: {
-      main: "#CCA300", //not so bright as original f3c3300
+      main: "#F3C300", //not so bright as original f3c3300
       contrastText: "#000",
     },
     zone1: {
@@ -159,8 +159,8 @@ const lightTheme = createTheme({
 
     },
     zone1: {
-      main: '#8D9DB9',
-      contrastText: "#fff",
+      /* main: '#8D9DB9', */
+      /* contrastText: "#fff", */
       personal: '#8D9DB9',
       tech: '#FF9D85',
       contrastText: "#000",
