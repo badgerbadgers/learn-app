@@ -37,7 +37,7 @@ export default function SkillsCard({ skills }) {
             return (
               <ListItem key={data}>
                 <Chip
-                  sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
+                  sx={{ backgroundColor: "background.skillsChip", color: "#FFFFFF" }}
                   label={data}
                 />
               </ListItem>

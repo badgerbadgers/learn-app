@@ -67,7 +67,7 @@ function Portfolio({user}) {
             <Container>
               <Button
                 onClick={() => router.push("/dashboard")}
-                sx={{ backgroundColor: "#F4F5F7", marginTop: "3rem" }}
+                sx={{ backgroundColor: "background", marginTop: "3rem" }}
               >
                 Back to dashboard
               </Button>
