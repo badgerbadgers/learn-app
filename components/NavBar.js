@@ -98,7 +98,7 @@ const NavBar = () => {
                 cursor: "pointer",
               }}
               onClick={() => {
-                router.push("/");
+                session ? router.push("/dashboard") : router.push("/")
               }}
             >
               CD
