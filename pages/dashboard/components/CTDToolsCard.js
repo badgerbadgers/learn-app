@@ -49,7 +49,7 @@ export default function CTDToolsCard({style}) {
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-          backgroundColor: "#ffffff",
+          backgroundColor: "background.ctdcard",
           ...style
         }}
       >
