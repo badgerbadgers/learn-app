@@ -12,8 +12,6 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   chipStyle: {
-    //backgroundColor: "#FF5C35",
-    //color: "#FFFFFF",
     margin: "8px 4px 8px 0px",
   },
 }));
@@ -233,7 +231,6 @@ function UsersForm() {
             {techStackArray.map((tech, item) => (
               <Chip
                 key={tech}
-                //className={classes.chipStyle}
                 sx={{backgroundColor: "background.chip", color: "primary.contrastText"}}
                 label={tech}
                 onDelete={() => handleDeleteTechStack(item)}

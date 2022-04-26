@@ -60,6 +60,14 @@ const baseTheme = responsiveFontSizes(
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            fontSize: "0.8em",
+            fontFamily: "gothamRoundedMedium"
+          },
+        },
+      },
     },
   })
 );

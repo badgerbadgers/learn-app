@@ -1,5 +1,4 @@
 import { Grid, Tabs, Tab } from "@mui/material";
-import { useTheme } from "@emotion/react";
 
 //for accessibility porpose adds unique 'id' and 'aria-controls' to each tab
 function a11yProps(index) {
@@ -10,10 +9,6 @@ function a11yProps(index) {
 }
 
 const PairPrgNav = ({ value, handleActiveTab, pairProgrammingInfo }) => {
-
-/*   const {
-    palette: { primary },
-  } = useTheme(); */
 
   return (
     <>
