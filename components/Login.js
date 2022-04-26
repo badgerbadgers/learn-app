@@ -8,8 +8,7 @@ export default function LogIn () {
   const buttonData = [
     {
       title: "Log-In",
-      onClick: (e) => {
-        // e.preventDefault();
+      onClick: () => {
         signIn("github", {
           callbackUrl: "/dashboard",
         });
@@ -18,8 +17,7 @@ export default function LogIn () {
     },
     {
       title: "Sign-Up",
-      onClick: (e) => {
-        // e.preventDefault();
+      onClick: () => {
         signIn("github", {
           callbackUrl: "/signup", 
         });

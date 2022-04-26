@@ -3,7 +3,6 @@ import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePage
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
 import Airtable from "airtable";
-import Loading from "../../../components/Loading";
 
 function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
