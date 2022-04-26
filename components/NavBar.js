@@ -17,12 +17,12 @@ import {
 } from "@mui/material/";
 import Link from "next/link";
 
+
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);;
   const { data: session, status } = useSession();
-
   const router = useRouter();
 
   const settings = [
@@ -71,7 +71,7 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <>
       <AppBar
         enableColorOnDark
         position="static"
@@ -114,9 +114,8 @@ const NavBar = () => {
               }}
             />
             <Typography
-              variant="body1"
+              variant="h6"
               alignSelf="center"
-              sx={{ color: mode === 'dark' ? "#fff" : "#000" }}
             >
               {mode === "dark" ? "Light Mode" : "Dark Mode"}
             </Typography>
@@ -126,14 +125,16 @@ const NavBar = () => {
             {session && (
               <Box sx={{ flexGrow: 0, marginLeft: "auto", display: 'flex', alignItems: 'center' }}>
                 <Typography
-                  variant="body1"
+                  variant="h6"
                   mr={1}
-                  sx={{ color: mode === "dark" ? "#fff" : "#000" }}
+                  display={{ xs: 'none', sm: 'block' }}
                 >
-                  {session.user.name || session.user.gh}
+                  {status === "authenticated" && session.user.name || session.user.gh}
+                 
+    
                 </Typography>
 
-                <Tooltip title="Open settings" role="UL Div">
+                <Tooltip title="Open settings">
                   <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                     <Avatar alt="User Image" src={session.user.image} />
                   </IconButton>
@@ -169,7 +170,7 @@ const NavBar = () => {
                           rel="noopener noreferrer"
                           onClick={setting.onClick}
                         >
-                          <Typography textAlign="center">
+                          <Typography variant='body1' textAlign="center">
                             {setting.title}
                           </Typography>
                         </a>
@@ -182,7 +183,7 @@ const NavBar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-    </div>
+    </>
   );
 };
 export default NavBar;

@@ -63,6 +63,16 @@ const baseTheme = responsiveFontSizes(
         },
       },
     },
+    components: {
+      MuiChip: {
+        styleOverrides: {
+          label: {
+            fontFamily: "Montserrat",
+            fontSize: "1rem",
+          },
+        },
+      },
+    },
   })
 );
 
@@ -75,6 +85,26 @@ const darkTheme = createTheme({
     primary: {
       main: "#FF5C35",
       contrastText: "#fff",
+    },
+    zone1: {
+      personal: '#FFEB99',
+      tech: '#FF9D85',
+      contrastText: "#000",
+    },
+    zone2: {
+      personal: '#FFE270',
+      tech: "#FF8D70",
+      contrastText: "#000",
+    },
+    zone3: {
+      personal: '#FFDA47',
+      tech: "#FF7C5C",
+      contrastText: "#000",
+    },
+    zone4: {
+      personal: '#FFD21F',
+      tech: "#FA6F4C",
+      contrastText: "#000",
     },
     secondary: {
       main: "#F3C300",
@@ -98,6 +128,29 @@ const lightTheme = createTheme({
     secondary: {
       main: "#12284C",
       contrastText: "#fff",
+    },
+    text: {
+      primary: "#000",
+    },
+    zone1: {
+      personal: '#8D9DB9',
+      tech: '#FF9D85',
+      contrastText: "#000",
+    },
+    zone2: {
+      personal: '#7488AA',
+      tech: "#FF8D70",
+      contrastText: "#000",
+    },
+    zone3: {
+      personal: '#506891',
+      tech: "#FF7C5C",
+      contrastText: "#000",
+    },
+    zone4: {
+      personal: '#324A71',
+      tech: "#FA6F4C",
+      contrastText: "#000",
     },
   },
 });

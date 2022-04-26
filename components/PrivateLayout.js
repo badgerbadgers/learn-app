@@ -5,7 +5,6 @@ import Footer from "./Footer";
 const PrivateLayout = ({ children }) => {
   return (
     <>
-      
       <NavBar />
       <main className={styles.main}>{children}</main>
       <Footer />
