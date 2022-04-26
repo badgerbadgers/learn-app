@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSession, getSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 import DashBoardCard from "./components/DashBoardCard";
 import CTDToolsCard from "./components/CTDToolsCard";
@@ -11,8 +10,6 @@ import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 
-import Loading from "../../components/Loading";
-
 
 const Dashboard = () => {
 
@@ -20,14 +17,6 @@ const Dashboard = () => {
 
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.push("/");
-  //   }
-  // }, []);
 
   return (
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
@@ -66,9 +55,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-// Dashboard.auth = {
-//   role: "admin",
-//   loading: <Loading />,
-//   unauthorized: "/", // redirect to this url
-// }

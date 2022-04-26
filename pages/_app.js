@@ -1,7 +1,7 @@
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import PrivateLayout from "../components/PrivateLayout";
 import PublicLayout from "../components/PublicLayout";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 
 

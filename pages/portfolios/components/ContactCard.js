@@ -35,9 +35,7 @@ function ContactCard({ user }) {
   if (!user) {
     return <div>Loading...</div>;
   }
-
-  console.log("GitHub:", user.gh);
-
+  
   return (
     <Grid item sx={{ textAlign: "center" }}>
       <Card variant="outlined" sx={{ height: "100%" }}>
