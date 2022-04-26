@@ -17,12 +17,12 @@ import {
 } from "@mui/material/";
 import Link from "next/link";
 
+
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);;
   const { data: session, status } = useSession();
-
   const router = useRouter();
 
   const settings = [
@@ -174,7 +174,7 @@ const NavBar = () => {
                           rel="noopener noreferrer"
                           onClick={setting.onClick}
                         >
-                          <Typography textAlign="center">
+                          <Typography variant='body1' textAlign="center">
                             {setting.title}
                           </Typography>
                         </a>

@@ -27,6 +27,7 @@ const getUser = async (req, res) => {
     let doc = await database
       .collection("usersprofile")
       .findOne({ gh: req.query.id });
+
     return res.status(200).json(doc);
   } catch (error) {
     console.log(error, "error from getUser in /api/users");
@@ -48,7 +49,7 @@ const createAndUpdateUser = async (req, res) => {
   let data = req.body.body;
 
   data = JSON.parse(data);
-  data["gh"] = req.query.id;
+  data["gh"] = session.user.gh;
   data["userId"] = ObjectId(userId);
   data["image"] = image;
   if (data["createdAt"]) {
