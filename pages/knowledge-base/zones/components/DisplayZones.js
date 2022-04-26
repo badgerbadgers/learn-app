@@ -122,9 +122,6 @@ const DisplayZones = ({ skillData }) => {
                   />
                   <CardContent
                     sx={{
-                      border: "1px solid",
-                      borderColor: doc.borderColor,
-                      borderRadius: "0.25rem",
                       margin: "0 auto",
                       height: "100%",
                       paddingTop: '0'
