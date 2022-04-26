@@ -105,6 +105,7 @@ export default memo(function SideNav({
                     color: "primary.contrastText",
                     alignItems: "center",
                     padding: "0",
+                    opacity: 0.9
                   }}
                 >
                   {icon}
