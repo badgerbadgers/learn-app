@@ -4,7 +4,7 @@ import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../api/minifyItems";
 
 function Resources({ resources }) {
-console.log("RESOURCES:", resources)
+
   return (
     <Grid
       container
@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
     // Finally, it will send the items as resources by minify items data.
     const items = await base("resources").select().all();
     const data = JSON.parse(JSON.stringify(items));
-    console.log("Data:", data);
+  
     return {
       props: {
         resources: minifyItems(data),

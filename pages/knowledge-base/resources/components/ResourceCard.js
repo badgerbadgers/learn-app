@@ -32,6 +32,7 @@ const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+// Defining the array of object of resources type, color and icon
 const resourcesColorIcon = [
   { key: "docs", color: "#F1C40F", icon: <DescriptionRounded /> },
   { key: "Other", color: "#E67E22", icon: <CategoryOutlined /> },
@@ -47,18 +48,17 @@ function ResourceCard({ resource }) {
   const language = resource.fields["Name (from language)"];
 
   const resourcesNavBarColor = () => {
-    if (resource) {
-      const elColor = resourcesColorIcon.find(
-        (elColor) => elColor.key === resource.fields.Type
-      );
-      if (elColor) {
-        return elColor.color;
-      } else {
-        return "#12284C";
-      }
+    // The function will change color based on resource type
+    const elColor = resourcesColorIcon.find(
+      (elColor) => elColor.key === resource.fields.Type
+    );
+    if (elColor) {
+      return elColor.color;
+    } else {
+      return "#12284C";
     }
   };
-
+  // The function will display the resources type icon
   const resourcesTypeIcon = () => {
     const elIcon = resourcesColorIcon.find(
       (elIcon) => elIcon.key === resource.fields.Type
@@ -104,13 +104,43 @@ function ResourceCard({ resource }) {
           <Typography sx={{ m: 3 }} variant="h6" component="div">
             {resource.fields.Name}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ m: 3 }}>
+          <Grid
+            direction="row"
+            spacing={1}
+            size="small"
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              ml: 2,
+            }}
+          >
+            {/* Will map the resource type: language */}
+            {language &&
+              language.map((item) => {
+                return (
+                  <div key={resource.id}>
+                    <ListItem>
+                      <Chip
+                        key={item}
+                        label={item}
+                        sx={{ backgroundColor: "#FF5C35", color: "#FFFFFF" }}
+                      />
+                    </ListItem>
+                  </div>
+                );
+              })}
+          </Grid>
+          <Typography variant="body2" sx={{ m: 3 }} fontFamily="inherit">
             {resource.fields.Description}
           </Typography>
         </CardContent>
         <CardActions sx={{ marginTop: "auto" }}>
           <Stack
-            direction="row"
+            className="stack-chips-link"
+            direction="flex"
             spacing={1}
             size="small"
             marginBottom="15px"
@@ -123,12 +153,17 @@ function ResourceCard({ resource }) {
               ml: 1,
             }}
           >
+            {/* Will map the resource by topic */}
             {topic &&
               topic.map((item) => {
                 return (
-                  <div key={resource.id}>
-                    <ListItem key={item}>
+                  <div
+                    className="chip-for-topic"
+                    key={resource.id} 
+                  >
+                    <ListItem>
                       <Chip
+                        
                         key={item}
                         label={item}
                         sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
@@ -137,20 +172,7 @@ function ResourceCard({ resource }) {
                   </div>
                 );
               })}
-            {language &&
-              language.map((item) => {
-                return (
-                  <div key={resource.id}>
-                    <ListItem key={item}>
-                      <Chip
-                        key={item}
-                        label={item}
-                        sx={{ backgroundColor: "#FF5C35", color: "#FFFFFF" }}
-                      />
-                    </ListItem>
-                  </div>
-                );
-              })}
+            {/* The link will allow to access the resource in new tab  */}
             <Button
               size="small"
               color="secondary"
