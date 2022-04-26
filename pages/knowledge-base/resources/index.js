@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
-import minifyItems from "../../api/minifyItems";
+import minifyItems from "../../../lib/minifyItems";
 
 function Resources({ resources }) {
 
