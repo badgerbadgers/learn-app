@@ -32,11 +32,43 @@ const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+const resourcesColorIcon = [
+  { key: "docs", color: "#F1C40F", icon: <DescriptionRounded /> },
+  { key: "Other", color: "#E67E22", icon: <CategoryOutlined /> },
+  { key: "concepts", color: "#D35400", icon: <DeveloperMode /> },
+  { key: "cheatsheet", color: "#8BC34A", icon: <StyleOutlined /> },
+  { key: "coding", color: "#CDDC39", icon: <CodeOffOutlined /> },
+  { key: "exercises", color: "#FFC107", icon: <FitnessCenter /> },
+];
+
 function ResourceCard({ resource }) {
   const classes = useStyles();
   const topic = resource.fields["Name (from topic)"];
   const language = resource.fields["Name (from language)"];
-  const type = [resource.fields.Type];
+
+  const resourcesNavBarColor = () => {
+    if (resource) {
+      const elColor = resourcesColorIcon.find(
+        (elColor) => elColor.key === resource.fields.Type
+      );
+      if (elColor) {
+        return elColor.color;
+      } else {
+        return "#12284C";
+      }
+    }
+  };
+
+  const resourcesTypeIcon = () => {
+    const elIcon = resourcesColorIcon.find(
+      (elIcon) => elIcon.key === resource.fields.Type
+    );
+    if (elIcon) {
+      return elIcon.icon;
+    } else {
+      return <AdjustOutlined />;
+    }
+  };
 
   return (
     <Grid item xs={12} sm={6}>
@@ -50,7 +82,10 @@ function ResourceCard({ resource }) {
         }}
       >
         <CardContent sx={{ padding: 0 }}>
-          <AppBar position="static">
+          <AppBar
+            position="static"
+            sx={{ backgroundColor: resourcesNavBarColor() }}
+          >
             <Toolbar>
               <IconButton
                 size="large"
@@ -59,23 +94,7 @@ function ResourceCard({ resource }) {
                 aria-label="menu"
               >
                 {/* Icons to display in NavBar per type item */}
-                {type.map((data) => {
-                  if (data === "coding") {
-                    return <CodeOffOutlined />;
-                  } else if (data === "concepts") {
-                    return <DeveloperMode />;
-                  } else if (data === "exercises") {
-                    return <FitnessCenter />;
-                  } else if (data === "docs") {
-                    return <DescriptionRounded />;
-                  } else if (data === "cheatsheet") {
-                    return <StyleOutlined />;
-                  } else if (data === "Other") {
-                    return <CategoryOutlined />;
-                  } else {
-                    return <AdjustOutlined />;
-                  }
-                })}
+                {resourcesTypeIcon()}
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 {resource.fields.Type}
@@ -92,7 +111,7 @@ function ResourceCard({ resource }) {
         <CardActions sx={{ marginTop: "auto" }}>
           <Stack
             direction="row"
-            spacing={2}
+            spacing={1}
             size="small"
             marginBottom="15px"
             sx={{
@@ -135,7 +154,6 @@ function ResourceCard({ resource }) {
             <Button
               size="small"
               color="secondary"
-              // variant="outlined"
               sx={{ borderRadius: "30px" }}
               href={resource.fields.URL}
               target="_blank"
