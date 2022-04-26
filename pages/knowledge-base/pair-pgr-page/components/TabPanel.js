@@ -19,8 +19,8 @@ export default function TabPanel(props) {
           id={`simple-tabpanel-${index}`}
           aria-labelledby={`simple-tab-${index}`}
           {...other}
-          py={1}
-          mt={-2}
+          pb={1}
+          mt={-1}
         >
           <Card
             sx={{

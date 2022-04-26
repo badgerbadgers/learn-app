@@ -2,11 +2,12 @@
 import { Paper, Grid } from "@mui/material";
 
 const CardsLayoutDashbrd = ({matches, children}) => {
+  
   return (
     <Paper
       sx={{
         minWidth: 330,
-        backgroundColor: "#F4F5F7",
+        backgroundColor: "background.dbpaper",
         my: 2,
         mx: "auto",
         p: matches ? 8 : 1,
