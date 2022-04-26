@@ -54,8 +54,7 @@ const NavBar = () => {
       href: "#",
       target: "_parent",
       title: "Logout",
-      onClick: (e) => {
-        e.preventDefault();
+      onClick: () => {
         signOut({ callbackUrl: "/" });
       },
     },
