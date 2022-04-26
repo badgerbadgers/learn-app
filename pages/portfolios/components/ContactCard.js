@@ -11,27 +11,10 @@ import Stack from "@mui/material/Stack";
 import styles from "../../../styles/Portfolio.module.css";
 import DownloadIcon from "@mui/icons-material/Download";
 
-const useStyles = makeStyles((theme) => ({
-  avatarImage: {
-    height: "150px",
-    width: "150px",
-    margin: "10px",
-  },
-  contactCardIcons: {
-    backgroundColor: "#12284C",
-    color: "#FFFFFF",
-    borderRadius: "5px",
-    maxWidth: "26px",
-    minWidth: "26px",
-    paddingRight: 0,
-  },
-  button: {
-    textTransform: "none",
-  },
-}));
 
 function ContactCard({ user }) {
-  const classes = useStyles();
+
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -43,7 +26,7 @@ function ContactCard({ user }) {
       <Card variant="outlined" sx={{ height: "100%" }}>
         <div className={styles.innerCard}>
           <Avatar
-            className={classes.avatarImage}
+            sx={{ height: "150px", width: "150px", margin: "10px" }}
             style={{ alignItems: "center" }}
             alt="User Picture"
             src={user.image}
@@ -86,7 +69,14 @@ function ContactCard({ user }) {
                 {user.linkedin && (
                   <Box>
                     <Button
-                      className={classes.contactCardIcons}
+                    sx={{
+                      backgroundColor: "background.contactIcon",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
                       size="small"
                       variant="contained"
                       color="primary"
@@ -98,7 +88,14 @@ function ContactCard({ user }) {
                 )}
                 <Box>
                   <Button
-                    className={classes.contactCardIcons}
+                    sx={{
+                      backgroundColor: "background.contactIcon",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
                     size="small"
                     variant="contained"
                     color="primary"
@@ -110,7 +107,14 @@ function ContactCard({ user }) {
                 {user.email && (
                   <Box>
                     <Button
-                      className={classes.contactCardIcons}
+                      sx={{
+                      backgroundColor: "background.contactIcon",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
                       size="small"
                       variant="contained"
                       color="primary"
@@ -123,7 +127,14 @@ function ContactCard({ user }) {
                 {user.twitter && (
                   <Box>
                     <Button
-                      className={classes.contactCardIcons}
+                      sx={{
+                      backgroundColor: "background.contactIcon",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
                       size="small"
                       variant="contained"
                       startIcon={<Twitter />}

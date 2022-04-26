@@ -102,7 +102,7 @@ export default memo(function SideNav({
                   id={`${id}-header`}
                   sx={{
                     backgroundColor: bgColor,
-                    color: "primary.contrastText",
+                    color: "secondary.contrastText",
                     alignItems: "center",
                     padding: "0",
                     opacity: 0.9

@@ -62,23 +62,25 @@ const baseTheme = responsiveFontSizes(
       },
       MuiChip: {
         styleOverrides: {
-          root: {
-            fontSize: "0.8em",
-            fontFamily: "gothamRoundedMedium"
-          },
-        },
-      },
-    },
-    /* components: {
-      MuiChip: {
-        styleOverrides: {
           label: {
             fontFamily: "Montserrat",
             fontSize: "1rem",
           },
         },
       },
-    }, */
+      /* MuiSvgIcon: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "background.button",
+            color: "#FFFFFF",
+            borderRadius: "5px",
+            maxWidth: "26px",
+            minWidth: "26px",
+            paddingRight: 0,
+          },
+        },
+      }, */
+    },
   })
 );
 
@@ -93,30 +95,30 @@ const darkTheme = createTheme({
       contrastText: "#EBEBEB",
     },
     secondary: {
-      main: "#F3C300", //not so bright as original f3c3300
+      main: "#F3C300", //original yellow from ctd pallete
       contrastText: "#000",
     },
     zone1: {
-      personal: '#FFEB99',
-      tech: '#FF9D85',
+      personal: "#FFEB99",
+      tech: "#FF9D85",
       contrastText: "#000",
     },
     zone2: {
-      personal: '#FFE270',
+      personal: "#FFE270",
       tech: "#FF8D70",
       contrastText: "#000",
     },
     zone3: {
-      personal: '#FFDA47',
+      personal: "#FFDA47",
       tech: "#FF7C5C",
       contrastText: "#000",
     },
     zone4: {
-      personal: '#FFD21F',
+      personal: "#FFD21F",
       tech: "#FA6F4C",
       contrastText: "#000",
     },
-   
+
     text: {
       primary: "#EBEBEB",
     },
@@ -125,12 +127,13 @@ const darkTheme = createTheme({
       paper: "#181919", //darkgray
       card: "#353638", //asphalt
       ctdcard: "#515152", //onyx gray
-      button: "#FF6C47", //orange
+      button: "#FF5C35", //orange
       chip: "#FF6C47",
-    }
+      contactIcon: "#F3C300",
+      skillsChip: "#F3C300"
+    },
   },
 });
-
 
 const lightTheme = createTheme({
   ...baseTheme,
@@ -139,48 +142,48 @@ const lightTheme = createTheme({
 
     primary: {
       main: "#FF5C35", //orange
-      contrastText: "#fff",
+      contrastText: "#fff", //white
     },
     secondary: {
       main: "#12284C", //blue
       contrastText: "#fff",
     },
     text: {
-      primary: "#31393C" //black
+      primary: "#31393C", //black
     },
     background: {
       default: "white",
       dbpaper: "#F4F5F7",
       card: "#DFE2E8",
       ctdcard: "#FFF",
-      button: "#FF5C35", 
+      button: "#FF5C35",
       chip: "#FF5C35",
-    }
-
+      contactIcon: "#FF5C35",
+      skillsChip: "#12284C"
     },
     zone1: {
       /* main: '#8D9DB9', */
       /* contrastText: "#fff", */
-      personal: '#8D9DB9',
-      tech: '#FF9D85',
+      personal: "#8D9DB9",
+      tech: "#FF9D85",
       contrastText: "#000",
     },
     zone2: {
-      personal: '#7488AA',
+      personal: "#7488AA",
       tech: "#FF8D70",
       contrastText: "#000",
     },
     zone3: {
-      personal: '#506891',
+      personal: "#506891",
       tech: "#FF7C5C",
       contrastText: "#000",
     },
     zone4: {
-      personal: '#324A71',
+      personal: "#324A71",
       tech: "#FA6F4C",
       contrastText: "#000",
     },
-  })
-
+  },
+});
 
 export { darkTheme, lightTheme };
