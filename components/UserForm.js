@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import { Chip, Grid, TextField, Typography, Button, Paper, Container } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Dialog from "@mui/material/Dialog";
@@ -10,6 +10,7 @@ import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "../styles/Portfolio.module.css";
+import { UserNameChangeContext } from "../pages/_app";
 
 
 // Will animate the display message after the form is submitted
@@ -32,7 +33,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   const router = useRouter();
   const id = router.query.id;
 
-
+  const [userNameChange, isUserNameChanged] = useContext(UserNameChangeContext)
   // Handle multiple input change to update the properties of userInfoData
   // Then update the value of the event that was triggered by that onChange
   // and validate the email from the user.
@@ -159,6 +160,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   // Passing multiple functions on onClick event
   const handleDialogComplete = () => {
     handleDialogChange();
+    userNameChange(!isUserNameChanged)
     router.push("/dashboard");
   }
   
@@ -249,14 +251,15 @@ function UserForm({userInfoData, setUserInfoData}) {
                     ),
                   }}
                 />
-                {/* It will map and style the tech stack array */}
+                {/* It will map and style the tech stack array*/}
                     {techStackArray.map((tech, item) => (
                       <Chip  
                       key={tech}
                       color='secondary'
-                      sx={{margin: "8px 4px 8px 0px", fontFamily: "Montserrat"}}
-                      label={tech}
+                      sx={{margin: "8px 4px 8px 0px"}}
                       onDelete={() => handleDeleteTechStack(item)}
+                      label={tech}
+                      
                   />
                 ))}
               </Grid>
@@ -294,7 +297,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                   <Chip
                     key={skill}
                     color='secondary'
-                    sx={{margin: "8px 4px 8px 0px", fontFamily: "Montserrat"}}
+                    sx={{margin: "8px 4px 8px 0px"}}
                     label={skill}
                     onDelete={() => handleDeleteSkills(item)}
                   />
@@ -336,8 +339,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                   <Chip
                     key={previousIndust}
                     color='secondary'
-                    sx={{margin: "8px 4px 8px 0px", fontFamily: "Montserrat"}}
-                    // className={classes.chipStyle}
+                    sx={{margin: "8px 4px 8px 0px"}}
                     label={previousIndust}
                     onDelete={() => handleDeletePreviousIndustry(item)}
                   />

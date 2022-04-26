@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext, useEffect} from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../components/theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -16,12 +16,40 @@ import {
   Avatar,
 } from "@mui/material/";
 import Link from "next/link";
+import getData from "../lib/getData"
+import { UserNameChangeContext } from "./theme/userNameChange";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(false);
   const { data: session, status } = useSession();
+const [userName, setUserName] = useState("");
+const [userNameChange, isUserNameChanged] = useContext(UserNameChangeContext)
+
+
+const id = status === 'authenticated' && session.user.gh;
+const url = "/api/users";
+
+useEffect(() => {
+  const params = { params: { id: id } };
+  if (id) {
+
+    (async () => {
+      await getData(params, url).then((data) => {
+        setUserName(`${data.firstName} ${data.lastName}`);
+        console.log(data);
+      });
+    })();
+  }
+}, [id]);
+
+useEffect(()=>{
+  window.location.reload();
+  userNameChange(false)
+}, [isUserNameChanged])
+
+console.log(userName)
 
   const router = useRouter();
 
@@ -130,7 +158,9 @@ const NavBar = () => {
                   mr={1}
                   sx={{ color: mode === "dark" ? "#fff" : "#000" }}
                 >
-                  {session.user.name || session.user.gh}
+                  {/* {session.user.name || session.user.gh} */}
+                  
+                  {userName}
                 </Typography>
 
                 <Tooltip title="Open settings" role="UL Div">

@@ -63,6 +63,16 @@ const baseTheme = responsiveFontSizes(
         },
       },
     },
+    components: {
+      MuiChip: {
+        styleOverrides: {
+          label: {
+            fontFamily: "Montserrat",
+            fontSize: "1rem",
+          },
+        },
+      },
+    },
   })
 );
 
