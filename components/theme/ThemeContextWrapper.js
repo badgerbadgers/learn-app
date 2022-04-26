@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { CssBaseline, ThemeProvider} from "@mui/material";
 import { createContext } from "react";
 import { darkTheme, lightTheme } from "./Theme"
-import { UserNameChangeContext } from "./userNameChange";
+
+
 export const ThemeContext = createContext({
   changeMode: () => {},
 });
@@ -48,7 +49,6 @@ function ThemeContextWrapper(props) {
         <CssBaseline />
         {props.children}
       </ThemeProvider>
-     
     </ThemeContext.Provider>
   );
 }

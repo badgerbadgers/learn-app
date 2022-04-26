@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useContext } from "react";
+import React, { useState, forwardRef } from "react";
 import { Chip, Grid, TextField, Typography, Button, Paper, Container } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Dialog from "@mui/material/Dialog";
@@ -10,7 +10,7 @@ import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "../styles/Portfolio.module.css";
-import { UserNameChangeContext } from "../pages/_app";
+
 
 
 // Will animate the display message after the form is submitted
@@ -33,7 +33,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   const router = useRouter();
   const id = router.query.id;
 
-  const [userNameChange, isUserNameChanged] = useContext(UserNameChangeContext)
+ 
   // Handle multiple input change to update the properties of userInfoData
   // Then update the value of the event that was triggered by that onChange
   // and validate the email from the user.
