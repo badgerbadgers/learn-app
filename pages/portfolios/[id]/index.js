@@ -93,9 +93,8 @@ Portfolio.displayName = "Portfolio"
 export default Portfolio;
 
 export async function getServerSideProps(context) {
-  // const params = { params: { id: id } };
   if (context) {
-    console.log("Setting callbackWaitsForEmptyEventLoop: false");
+    // console.log("Setting callbackWaitsForEmptyEventLoop: false");
     context.callbackWaitsForEmptyEventLoop = false;
   }
   const id = context.query.id
@@ -108,7 +107,6 @@ export async function getServerSideProps(context) {
       .collection("usersprofile")
       .findOne({ gh: id });
     user = JSON.parse(JSON.stringify(doc))
-    console.log('USER', user)
     return {
       props: {
         session: await getSession(context),

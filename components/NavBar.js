@@ -17,20 +17,16 @@ import {
 } from "@mui/material/";
 import Link from "next/link";
 
-
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);;
+  const [darkMode, setDarkMode] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
 
   const settings = [
     {
-      href:
-        status === "authenticated"
-          ? `/portfolios/${encodeURIComponent(session.user.gh)}`
-          : "/",
+      href: status === "authenticated" ? `/portfolios/${session.user.gh}` : "/",
       target: "_blank",
       title: "Portfolio",
     },
@@ -128,7 +124,11 @@ const NavBar = () => {
                 flexGrow: 0,
                 marginLeft: "auto",
                 display: "flex",
-                alignItems: "center",
+                width: "auto",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                session ? router.push("/dashboard") : router.push("/");
               }}
             >
               <Typography
@@ -139,7 +139,7 @@ const NavBar = () => {
                 {session.user.name || session.user.gh}
               </Typography>
 
-              <Tooltip title="Open settings" role="UL Div">
+              <Tooltip title="Open settings" role="tooltip">
                 <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
                   <Avatar alt="User Image" src={session.user.image} />
                 </IconButton>
@@ -170,11 +170,12 @@ const NavBar = () => {
                     <MenuItem key={setting.title} onClick={handleMenuClose}>
                       <Link href={setting.href}>
                         <a
+                          role="link"
                           target={setting.target}
                           rel="noopener noreferrer"
                           onClick={setting.onClick}
                         >
-                          <Typography variant='body1' textAlign="center">
+                          <Typography variant="body1" textAlign="center">
                             {setting.title}
                           </Typography>
                         </a>
