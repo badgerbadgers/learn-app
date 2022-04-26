@@ -9,10 +9,11 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import getData from "../../../lib/getData";
+import clientPromise from "../../../lib/mongodb";
 
-function Portfolio() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+function Portfolio({user}) {
+  // const [user, setUser] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   
   const url = "/api/users";
   const router = useRouter();
@@ -21,18 +22,18 @@ function Portfolio() {
 
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    const params = { params: { id: id } };
-    if (id) {
+  // useEffect(() => {
+  //   // const params = { params: { id: id } };
+  //   // if (id) {
       
-      (async () => {
-        await getData(params, url).then((data) => {
-          setUser(data);
-          setLoading(false);
-        });
-      })();
-    }
-  }, [id]);
+  //   //   (async () => {
+  //   //     await getData(params, url).then((data) => {
+  //   //       setUser(data);
+  //   //       setLoading(false);
+  //   //     });
+  //   //   })();
+  //   // }
+  // }, [id]);
 
   return (
     <>
@@ -103,9 +104,39 @@ export async function getServerSideProps(context) {
     }
   }
 
-  return {
-    props: { session }
+  // return {
+  //   props: { session }
+  // const params = { params: { id: id } };
+  if (context) {
+    console.log("Setting callbackWaitsForEmptyEventLoop: false");
+    context.callbackWaitsForEmptyEventLoop = false;
   }
+  const id = context.query.id
+  const client = await clientPromise;
+  const database = client.db(process.env.MONGODB_DB);
+  let user;
+  // find the document matching the query.id - github id
+  try {
+    let doc = await database
+      .collection("usersprofile")
+      .findOne({ gh: id });
+    user = JSON.parse(JSON.stringify(doc))
+    console.log('USER', user)
+    return {
+      props: {
+        session: await getSession(context),
+        user: user
+      },
+    }
+  } catch (error) {
+    console.log(error, "error from getUser in /api/users");
+    return {
+      props: {
+        error: 'Error in DB'
+      },
+    }
+  }
+
 }
 
 

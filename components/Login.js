@@ -24,7 +24,7 @@ export default function LogIn () {
       onClick: (e) => {
         // e.preventDefault();
         signIn("github", {
-          callbackUrl: `${window.location.origin}/userform/${session.user.gh}`,
+          callbackUrl: "/dashboard",
         });
       },
       icon: <GitHubIcon style={{fontSize:'32px'}}/>

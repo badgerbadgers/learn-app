@@ -25,7 +25,7 @@ export default memo(function SideNav({
 }) {
   const [liValue, setLiValue] = useState("");
   const [expanded, setExpanded] = useState({});
-  const isDesktop = useMediaQuery("(min-width:950px)");
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   useEffect(() => {
     setLiValue(skillID);
@@ -62,7 +62,7 @@ export default memo(function SideNav({
           details: techIndex,
           ulLabel: "tech skill index ul",
           liLabel: "technical skills index li",
-          bgColor: "#FF5C35",
+          bgColor: "primary.main",
         },
         {
           id: "panel2bh",
@@ -75,7 +75,7 @@ export default memo(function SideNav({
           details: personIndex,
           ulLabel: "personal skills index ul",
           liLabel: "personal skills index li",
-          bgColor: "#12284C",
+          bgColor: "secondary.main",
         },
       ];
     }
@@ -84,7 +84,7 @@ export default memo(function SideNav({
   return (
     <>
       {sideIndex && (
-        <div style={{ width: "100%", paddingRight: isDesktop && "16px" }}>
+        <div style={{ width: "100%"}}>
           {sideIndex.map((accordion) => {
             const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
               accordion;
@@ -102,7 +102,7 @@ export default memo(function SideNav({
                   id={`${id}-header`}
                   sx={{
                     backgroundColor: bgColor,
-                    color: "#fff",
+                    color: "secondary.contrastText",
                     alignItems: "center",
                     padding: "0",
                   }}
@@ -142,13 +142,9 @@ export default memo(function SideNav({
                                 variant="body1"
                                 sx={{
                                   fontWeight:
-                                    liValue === doc.id ? "fontWeightBold" : "",
+                                  liValue === doc.id ? "fontWeightBold" : "",
                                   textTransform: "uppercase",
                                   fontSize: "14px !important",
-                                  // borderBottom: '1px solid black',
-                                  // "&:last-child": {
-                                  //   borderBottom: 'none'
-                                  // }
                                 }}
                               >
                                 {doc.Name}
