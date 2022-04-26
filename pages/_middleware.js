@@ -11,7 +11,9 @@ export async function middleware(req) {
 
   if (
     req.nextUrl.pathname === "/dashboard" ||
-    //TODO: would like to refactor but unsure the best way 
+    /*TODO: would like to refactor 
+    but unsure the best way to do multiple with /k-b routes
+    "/knowledge-base/**" doesn't work */
     req.nextUrl.pathname === "/knowledge-base/zones" ||
     req.nextUrl.pathname === "/knowledge-base/resources" ||
     req.nextUrl.pathname === "/knowledge-base/pair-pgr-page" ||
