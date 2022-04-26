@@ -142,13 +142,9 @@ export default memo(function SideNav({
                                 variant="body1"
                                 sx={{
                                   fontWeight:
-                                    liValue === doc.id ? "fontWeightBold" : "",
+                                  liValue === doc.id ? "fontWeightBold" : "",
                                   textTransform: "uppercase",
                                   fontSize: "14px !important",
-                                  // borderBottom: '1px solid black',
-                                  // "&:last-child": {
-                                  //   borderBottom: 'none'
-                                  // }
                                 }}
                               >
                                 {doc.Name}

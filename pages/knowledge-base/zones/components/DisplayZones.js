@@ -29,8 +29,8 @@ const DisplayZones = ({ skillData }) => {
           data: doc.fields.Zone1.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF9D85"
-              : "zone1.main",
+              ? "zone1.tech"
+              : "zone1.personal",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
             ? "primary.main"
@@ -41,8 +41,8 @@ const DisplayZones = ({ skillData }) => {
           data: doc.fields.Zone2.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF8D70"
-              : "zone2.main",
+              ? "zone2.tech"
+              : "zone2.personal",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
             ? "primary.main"
@@ -53,8 +53,8 @@ const DisplayZones = ({ skillData }) => {
           data: doc.fields.Zone3.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FF7C5C"
-              : "zone3.main",
+              ? "zone3.tech"
+              : "zone3.personal",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
             ? "primary.main"
@@ -65,8 +65,8 @@ const DisplayZones = ({ skillData }) => {
           data: doc.fields.Zone4.replace(/^\s+|\s+$/g, "").replace(/\.$/, ""),
           bgColor:
             doc.fields["Single Select"] == "Tech Skills"
-              ? "#FA6F4C"
-              : "zone4.main",
+              ? "zone4.tech"
+              : "zone4.personal",
           borderColor:
             doc.fields["Single Select"] == "Tech Skills"
             ? "primary.main"
