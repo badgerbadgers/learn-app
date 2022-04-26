@@ -1,9 +1,18 @@
 import Image from "next/image";
 import TabPanel from "./TabPanel";
 import styles from "../../../../styles/Knowledge.module.css";
-import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@emotion/react";
+
+import DOMPurify from 'isomorphic-dompurify';
+
 
 //function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
@@ -39,6 +48,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
   } = useTheme();
 
   const matches = useMediaQuery("(min-width:900px)");
+
   return (
     <>
       {pairProgrammingInfo &&
@@ -61,11 +71,27 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                   return renderingFunction(content);
                 })
               ) : (
-                <List>
-                  {item.content.map((content) => {
-                    return renderingFunction(content);
-                  })}
-                </List>
+                <>
+                  <List>
+                    {item.content &&
+                      item.content.map((content) => {
+                        return renderingFunction(content);
+                      })}
+                  </List>
+                  
+                  <ul className={styles.pptoolspage}>
+                    {item.html &&
+                      item.html.map((html) => {
+                        console.log(html);
+                        return (
+                          <li
+                            key={html}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+                          />
+                        );
+                      })}
+                  </ul>
+                </>
               )}
             </Grid>
             {/* check if object item has an key 'image' and render an image */}

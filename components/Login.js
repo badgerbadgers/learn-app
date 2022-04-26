@@ -1,12 +1,9 @@
-import { getSession, signIn } from "next-auth/react";
-import { useSession} from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Stack, Button, Typography } from "@mui/material/";
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 
 export default function LogIn () {
- const { data: session, status } = useSession();
- 
 
   const buttonData = [
     {
@@ -24,7 +21,7 @@ export default function LogIn () {
       onClick: (e) => {
         // e.preventDefault();
         signIn("github", {
-          callbackUrl: "/dashboard",
+          callbackUrl: "/signup", 
         });
       },
       icon: <GitHubIcon style={{fontSize:'32px'}}/>
@@ -55,15 +52,4 @@ export default function LogIn () {
       ))}
     </Stack>
   );
-}
-
-export async function getServerSideProps(context) {
-
-
-  return {
-    props: {
-      session: await getSession(context),
-    },
-
-  }
 }

@@ -9,4 +9,30 @@
   transform: translate(-50%, -50%);
   opacity: .15;
 }
-
+.pptoolspage {
+   list-style: none;
+    margin: 0;
+    position: relative;
+    padding: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.pptoolspage li {
+  text-align: left;
+ /*  //flex: 1 1 auto; */
+  min-width: 0;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+ 
+}
+.pptoolspage li a {
+font-weight: bold;
+}

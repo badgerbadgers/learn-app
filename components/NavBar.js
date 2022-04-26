@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useContext} from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../components/theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -23,7 +23,6 @@ const NavBar = () => {
   const { mode, changeTheme } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(false);;
   const { data: session, status } = useSession();
-
   const router = useRouter();
 
   const settings = [
