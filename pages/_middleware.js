@@ -24,7 +24,7 @@ export async function middleware(req) {
       return NextResponse.next();
     } else {
       // the user is not logged in, redirect to home page
-      console.log("user not logged in");
+    //   console.log("user not logged in");
       return NextResponse.redirect(process.env.NEXTAUTH_URL);
     }
   }
