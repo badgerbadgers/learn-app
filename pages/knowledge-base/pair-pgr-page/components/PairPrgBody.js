@@ -7,14 +7,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  Link,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@emotion/react";
 
 import DOMPurify from 'isomorphic-dompurify';
-/* const createDOMPurify = require('dompurify'); */
-/* const { JSDOM } = require('jsdom'); */
+
 
 //function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
@@ -44,8 +42,6 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
-/*   const window = new JSDOM('').window;
-  const DOMPurify = createDOMPurify(window); */
 
   const {
     palette: { primary },
@@ -53,11 +49,6 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
 
   const matches = useMediaQuery("(min-width:900px)");
 
-/*   const data = `lorem <b onmouseover="alert('mouseover');">ipsum</b>`
-  const sanitizedData = () => ({
-    __html: DOMPurify.sanitize(data)
-  })
-  console.log(sanitizedData()) */
   return (
     <>
       {pairProgrammingInfo &&
