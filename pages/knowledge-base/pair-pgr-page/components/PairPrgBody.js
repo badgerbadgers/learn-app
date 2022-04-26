@@ -1,7 +1,14 @@
 import Image from "next/image";
 import TabPanel from "./TabPanel";
 import styles from "../../../../styles/Knowledge.module.css";
-import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Link,
+} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@emotion/react";
 
@@ -33,7 +40,6 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
-
   const {
     palette: { primary },
   } = useTheme();
@@ -61,11 +67,27 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                   return renderingFunction(content);
                 })
               ) : (
-                <List>
-                  {item.content.map((content) => {
-                    return renderingFunction(content);
-                  })}
-                </List>
+                <>
+                  <List>
+                    {item.content &&
+                      item.content.map((content) => {
+                        return renderingFunction(content);
+                      })}
+                  </List>
+                  {console.log(item.html)}
+                  <ul className={styles.pptoolspage}>
+                    {item.html &&
+                      item.html.map((html) => {
+                        console.log(html);
+                        return (
+                          <li
+                            key={html}
+                            dangerouslySetInnerHTML={{ __html: html }}
+                          />
+                        );
+                      })}
+                  </ul>
+                </>
               )}
             </Grid>
             {/* check if object item has an key 'image' and render an image */}
