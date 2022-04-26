@@ -12,6 +12,10 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@emotion/react";
 
+import DOMPurify from 'isomorphic-dompurify';
+/* const createDOMPurify = require('dompurify'); */
+/* const { JSDOM } = require('jsdom'); */
+
 //function that takes an item/string and returns an mui element,
 //if item is an object - it maps througth this object
 const renderingFunction = (item) => {
@@ -40,11 +44,20 @@ const renderingFunction = (item) => {
 };
 
 const PairPrgBody = ({ pairProgrammingInfo, value }) => {
+/*   const window = new JSDOM('').window;
+  const DOMPurify = createDOMPurify(window); */
+
   const {
     palette: { primary },
   } = useTheme();
 
   const matches = useMediaQuery("(min-width:900px)");
+
+/*   const data = `lorem <b onmouseover="alert('mouseover');">ipsum</b>`
+  const sanitizedData = () => ({
+    __html: DOMPurify.sanitize(data)
+  })
+  console.log(sanitizedData()) */
   return (
     <>
       {pairProgrammingInfo &&
@@ -74,7 +87,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                         return renderingFunction(content);
                       })}
                   </List>
-                  {console.log(item.html)}
+                  
                   <ul className={styles.pptoolspage}>
                     {item.html &&
                       item.html.map((html) => {
@@ -82,7 +95,7 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                         return (
                           <li
                             key={html}
-                            dangerouslySetInnerHTML={{ __html: html }}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
                           />
                         );
                       })}
