@@ -17,6 +17,8 @@
     "airtable": "^0.11.2",
     "axios": "^0.26.1",
     "clsx": "^1.1.1",
+    "dompurify": "^2.3.6",
+    "isomorphic-dompurify": "^0.18.0",
     "mongodb": "^4.3.1",
     "nanoid": "^3.3.1",
     "next": "12.0.10",
