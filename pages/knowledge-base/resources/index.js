@@ -17,7 +17,7 @@ function Resources({ resources }) {
         marginBottom: "25px"
       }}
     >
-      {resources.map((resource) => {
+      {resources && resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
       })}
     </Grid>
