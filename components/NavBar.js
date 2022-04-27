@@ -93,7 +93,7 @@ const NavBar = () => {
               cursor: "pointer",
             }}
             onClick={() => {
-              router.push("/");
+              session ? router.push("/dashboard") : router.push("/")
             }}
           >
             CD
@@ -126,9 +126,7 @@ const NavBar = () => {
                 display: "flex",
                 width: "auto",
                 cursor: "pointer",
-              }}
-              onClick={() => {
-                session ? router.push("/dashboard") : router.push("/");
+                alignItems: "center"
               }}
             >
               <Typography
