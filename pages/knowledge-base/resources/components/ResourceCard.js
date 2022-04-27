@@ -124,9 +124,13 @@ function ResourceCard({ resource }) {
                   <div key={resource.id}>
                     <ListItem>
                       <Chip
+                        variant="outlined"
                         key={item}
                         label={item}
-                        sx={{ backgroundColor: "#FF5C35", color: "#FFFFFF" }}
+                        sx={{
+                          color: "primary.main",
+                          borderColor: "primary.main",
+                        }}
                       />
                     </ListItem>
                   </div>
@@ -146,28 +150,32 @@ function ResourceCard({ resource }) {
             marginBottom="15px"
             sx={{
               display: "flex",
-              justifyContent: "start",
-              flexWrap: "wrap",
+              width: "100%",
+              alignItems: "end",
+              justifyContent: "space-between",
+              flexWrap: "nowrap",
               listStyle: "none",
               p: 0.5,
               ml: 1,
             }}
           >
             {/* Will map the resource by topic */}
-            {topic &&
-              topic.map((item) => {
-                return (
-                  <div className="chip-for-topic" key={resource.id}>
-                    <ListItem>
-                      <Chip
-                        key={item}
-                        label={item}
-                        sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
-                      />
-                    </ListItem>
-                  </div>
-                );
-              })}
+            <div style={{display: "flex", flexWrap: "wrap" }}>
+              {topic &&
+                topic.map((item) => {
+                  return (
+                    <div className="chip-for-topic" key={resource.id}>
+                      <ListItem>
+                        <Chip
+                          key={item}
+                          label={item}
+                          sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
+                        />
+                      </ListItem>
+                    </div>
+                  );
+                })}
+            </div>
             {/* The link will allow to access the resource in new tab  */}
             <Button
               size="small"

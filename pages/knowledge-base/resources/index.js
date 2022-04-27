@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
+import ReseourceToolBar from "./components/ReseourceToolBar";
 
 function Resources({ resources }) {
 
@@ -16,7 +17,8 @@ function Resources({ resources }) {
         marginTop: "5px",
         marginBottom: "25px"
       }}
-    >
+    > 
+      <ReseourceToolBar />
       {resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
       })}
