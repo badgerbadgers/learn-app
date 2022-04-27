@@ -8,7 +8,6 @@ import { Grid, Chip } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActions } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import {
   DeveloperMode,
@@ -19,14 +18,6 @@ import {
   CodeOffOutlined,
   AdjustOutlined,
 } from "@mui/icons-material";
-
-// Setting the styles on the root element of ResourceCard component
-const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: 200,
-    minHeight: "auto",
-  },
-}));
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -43,7 +34,6 @@ const resourcesColorIcon = [
 ];
 
 function ResourceCard({ resource }) {
-  const classes = useStyles();
   const topic = resource.fields["Name (from topic)"];
   const language = resource.fields["Name (from language)"];
 
@@ -74,8 +64,9 @@ function ResourceCard({ resource }) {
     <Grid item xs={12} sm={6}>
       <Card
         elevation={15}
-        className={classes.root}
         sx={{
+          minWidth: "200px",
+          minHeight: "auto",
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -105,8 +96,6 @@ function ResourceCard({ resource }) {
             {resource.fields.Name}
           </Typography>
           <Grid
-            direction="row"
-            spacing={1}
             size="small"
             sx={{
               display: "flex",
@@ -121,11 +110,10 @@ function ResourceCard({ resource }) {
             {language &&
               language.map((item) => {
                 return (
-                  <div key={resource.id}>
+                  <div key={item}>
                     <ListItem>
                       <Chip
                         variant="outlined"
-                        key={item}
                         label={item}
                         sx={{
                           color: "primary.main",
@@ -143,13 +131,12 @@ function ResourceCard({ resource }) {
         </CardContent>
         <CardActions sx={{ marginTop: "auto" }}>
           <Stack
-            className="stack-chips-link"
-            direction="flex"
             spacing={1}
             size="small"
             marginBottom="15px"
             sx={{
               display: "flex",
+              flexDirection: "row",
               width: "100%",
               alignItems: "end",
               justifyContent: "space-between",
@@ -164,10 +151,9 @@ function ResourceCard({ resource }) {
               {topic &&
                 topic.map((item) => {
                   return (
-                    <div className="chip-for-topic" key={resource.id}>
+                    <div key={item}>
                       <ListItem>
                         <Chip
-                          key={item}
                           label={item}
                           sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
                         />
