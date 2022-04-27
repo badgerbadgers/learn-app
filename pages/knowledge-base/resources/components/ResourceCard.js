@@ -32,7 +32,7 @@ const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-// Defining the array of object of resources type, color and icon
+// Defining the array of objects for resources type, color and icon
 const resourcesColorIcon = [
   { key: "docs", color: "#F1C40F", icon: <DescriptionRounded /> },
   { key: "Other", color: "#E67E22", icon: <CategoryOutlined /> },
@@ -157,13 +157,9 @@ function ResourceCard({ resource }) {
             {topic &&
               topic.map((item) => {
                 return (
-                  <div
-                    className="chip-for-topic"
-                    key={resource.id} 
-                  >
+                  <div className="chip-for-topic" key={resource.id}>
                     <ListItem>
                       <Chip
-                        
                         key={item}
                         label={item}
                         sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
