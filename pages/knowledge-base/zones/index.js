@@ -84,3 +84,4 @@ export async function getStaticProps() {
     console.log("ERROR with ZONES FETCH", e.message);
   }
 }
+
