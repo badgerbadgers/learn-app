@@ -1,34 +1,58 @@
-import React, { useState, useEffect } from "react";
-import { ThemeContext, themes } from "./themeContext";
+import React, { useState, useEffect, useMemo } from "react";
+import { CssBaseline, ThemeProvider} from "@mui/material";
+import { createContext } from "react";
+import { darkTheme, lightTheme } from "./Theme"
+
+
+export const ThemeContext = createContext({
+  changeMode: () => {},
+});
 
 function ThemeContextWrapper(props) {
-  const [theme, setTheme] = useState(themes.dark);
-
-  const changeTheme = (theme) => {
-    setTheme(theme);
-  };
-
+  const [mode, setMode] = useState("light");
+  
   useEffect(() => {
-    switch (theme) {
-      case themes.light:
-        document.body.classList.add("white-content");
-        break;
-      case themes.dark:
-      default:
-        document.body.classList.remove("white-content");
-        break;
+    const localStorage = window.localStorage;
+    const theme = localStorage.getItem("preferred-theme");
+    if (theme) {
+      if (theme === "dark") {
+        setMode("dark");
+      } else {
+        setMode("light");
+      }
+    } else {
+      localStorage.setItem("preferred-theme", "light");
+      setMode("light");
     }
-  }, [theme]);
+   
+  }, []);
+
+  const changeTheme = useMemo(
+    () => ({
+      // The dark mode switch would invoke this method
+      changeTheme: (prevMode) => {
+        const newMode = prevMode === "light" ? "dark" : "light";
+        setMode(newMode);
+  
+        window.localStorage.setItem("preferred-theme", newMode);
+         
+      },
+      mode,
+    }),
+    [mode]
+  );
+
 
   return (
-    <ThemeContext.Provider
-      value={
-        { theme: theme, changeTheme: changeTheme }
-      }
-    >
-      {props.children}
+    <ThemeContext.Provider value={changeTheme}>
+      <ThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme} >
+        <CssBaseline />
+        {props.children}
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 }
 
 export default ThemeContextWrapper;
+
+//.

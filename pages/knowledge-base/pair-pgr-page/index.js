@@ -14,7 +14,7 @@ const PairProgrammingPage = () => {
   };
 
   return (
-    <>
+    
       <KnowledgePageLayout
         title={<PairPrgTitle />}
         index={
@@ -31,8 +31,14 @@ const PairProgrammingPage = () => {
           />
         }
       ></KnowledgePageLayout>
-    </>
+   
   );
 };
 
 export default PairProgrammingPage;
+
+PairProgrammingPage.auth = {
+  role: "admin",
+  // loading: <AdminLoadingSkeleton />,
+  unauthorized: "/", // redirect to this url
+}

@@ -40,7 +40,7 @@ const PreviousIndustryCard = ({ previousIndustry }) => {
             return (
               <ListItem key={data}>
                 <Chip
-                  sx={{ backgroundColor: "#12284C", color: "#FFFFFF" }}
+                  sx={{ backgroundColor: "background.button", color: "#FFFFFF", opacity: 0.9}}
                   label={data}
                 />
               </ListItem>

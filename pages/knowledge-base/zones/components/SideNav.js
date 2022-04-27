@@ -11,8 +11,11 @@ import {
   ListItemButton,
   ListItemText,
   useMediaQuery,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoIcon from "@mui/icons-material/Info";
 
 export default memo(function SideNav({
   techIndex,
@@ -26,7 +29,7 @@ export default memo(function SideNav({
 
   useEffect(() => {
     setLiValue(skillID);
-  }, [personIndex, techIndex]);
+  }, [personIndex, techIndex, skillID]);
 
   //isDesktop checks if the screen width is more than 900px and if true expanded is false.
 
@@ -43,95 +46,127 @@ export default memo(function SideNav({
 
   //created an array of object with respective skills index data so we iterate over the data to form accordion panel for each skill type.
 
-  const sideIndex = [
-    {
-      id: "panel1bh",
-      icon: (
-        <CodeOffOutlinedIcon
-          sx={{ width: "25%", flexShrink: 0, fontSize: "1.8rem" }}
-        />
-      ),
-      heading: "Technical Skills",
-      details: techIndex,
-      ulLabel: "tech skill index ul",
-      liLabel: "technical skills index li",
-      bgColor: "#FF5C35",
-    },
-    {
-      id: "panel2bh",
-      icon: (
-        <PsychologyOutlinedIcon
-          sx={{ width: "25%", flexShrink: 0, fontSize: "2rem" }}
-        />
-      ),
-      heading: "Personal Skills",
-      details: personIndex,
-      ulLabel: "personal skills index ul",
-      liLabel: "personal skills index li",
-      bgColor: "#12284C",
-    },
-  ];
-  //
+  let sideIndex;
+
+  {
+    if (techIndex && personIndex) {
+      sideIndex = [
+        {
+          id: "panel1bh",
+          icon: (
+            <CodeOffOutlinedIcon
+              sx={{ width: "25%", flexShrink: 0, fontSize: "1.8rem" }}
+            />
+          ),
+          heading: "Technical Skills",
+          details: techIndex,
+          ulLabel: "tech skill index ul",
+          liLabel: "technical skills index li",
+          bgColor: "primary.main",
+        },
+        {
+          id: "panel2bh",
+          icon: (
+            <PsychologyOutlinedIcon
+              sx={{ width: "25%", flexShrink: 0, fontSize: "2rem" }}
+            />
+          ),
+          heading: "Personal Skills",
+          details: personIndex,
+          ulLabel: "personal skills index ul",
+          liLabel: "personal skills index li",
+          bgColor: "secondary.main",
+        },
+      ];
+    }
+  }
+
   return (
-    <div style={{ padding: "16px" }}>
-      {sideIndex.map((accordion) => {
-        const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
-          accordion;
-        return (
-          <Accordion
-            key={id}
-            expanded={expanded[id] || isDesktop}
-            onChange={handleChange(id)}
-          >
-            <AccordionSummary
-              expandIcon={
-                isDesktop ? "" : <ExpandMoreIcon sx={{ color: "#fff" }} />
-              }
-              aria-controls={`${id}-content`}
-              id={`${id}-header`}
-              sx={{
-                backgroundColor: bgColor,
-                color: "#fff",
-                alignItems: "center",
-              }}
-            >
-              {icon}
-              <Typography variant="h5">{heading}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List sx={{ width: "100%" }} aria-label={ulLabel}>
-                {details.map((doc) => (
-                  <ListItem disablePadding key={doc.id} aria-label={liLabel}>
-                    <ListItemButton
-                      onClick={() => {
-                        setSkillID(doc.id);
-                        setLiValue(doc.id);
-                      }}
-                    >
-                      <ListItemText
-                        sx={{
-                          padding: "0px",
-                        }}
-                        inset
-                        primary={
-                          <Typography
+    <>
+      {sideIndex && (
+        <div style={{ width: "100%"}}>
+          {sideIndex.map((accordion) => {
+            const { id, icon, heading, details, ulLabel, liLabel, bgColor } =
+              accordion;
+            return (
+              <Accordion
+                key={id}
+                expanded={expanded[id] || isDesktop}
+                onChange={handleChange(id)}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    isDesktop ? "" : <ExpandMoreIcon sx={{ color: "#fff" }} />
+                  }
+                  aria-controls={`${id}-content`}
+                  id={`${id}-header`}
+                  sx={{
+                    backgroundColor: bgColor,
+                    color: "secondary.contrastText",
+                    alignItems: "center",
+                    padding: "0",
+                    opacity: 0.9
+                  }}
+                >
+                  {icon}
+                  <Typography variant="h5" m={1} ml={0}>
+                    {heading}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List
+                    sx={{ width: "100%", padding: "0" }}
+                    aria-label={ulLabel}
+                  >
+                    {details.map((doc) => (
+                      <ListItem
+                        disablePadding
+                        key={doc.id}
+                        aria-label={liLabel}
+                      >
+                        <ListItemButton
+                          sx={{
+                            padding: "0",
+                          }}
+                          onClick={() => {
+                            setSkillID(doc.id);
+                            setLiValue(doc.id);
+                          }}
+                        >
+                          <ListItemText
                             sx={{
-                              fontWeight:
-                                liValue === doc.id ? "fontWeightBold" : "",
+                              padding: "0px",
                             }}
-                          >
-                            {doc.Name}
-                          </Typography>
-                        }
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-    </div>
+                            inset
+                            primary={
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  fontWeight:
+                                  liValue === doc.id ? "fontWeightBold" : "",
+                                  textTransform: "uppercase",
+                                  fontSize: "14px !important",
+                                }}
+                              >
+                                {doc.Name}
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                            <Tooltip key={doc.Name} title={doc.description}>
+                              <IconButton>
+                                <InfoIcon sx={{color: bgColor, alignSelf: "center"}} />
+                              </IconButton>
+                            </Tooltip>
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 });

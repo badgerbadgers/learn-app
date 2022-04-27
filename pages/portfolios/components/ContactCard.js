@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { Grid, Button, ButtonGroup } from "@mui/material";
+import { Grid, Button, ButtonGroup, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { LinkedIn, Twitter } from "@mui/icons-material";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -11,30 +11,20 @@ import Stack from "@mui/material/Stack";
 import styles from "../../../styles/Portfolio.module.css";
 import DownloadIcon from "@mui/icons-material/Download";
 
-const useStyles = makeStyles((theme) => ({
-  avatarImage: {
-    height: "150px",
-    width: "150px",
-    margin: "10px",
-  },
-}));
-
-const card = {
-  height: "100%",
-};
 
 function ContactCard({ user }) {
-  const classes = useStyles();
+
+
   if (!user) {
     return <div>Loading...</div>;
   }
-
+  
   return (
     <Grid item sx={{ textAlign: "center" }}>
-      <Card variant="outlined" sx={card}>
+      <Card variant="outlined" sx={{ height: "100%" }}>
         <div className={styles.innerCard}>
           <Avatar
-            className={classes.avatarImage}
+            sx={{ height: "150px", width: "150px", margin: "10px" }}
             style={{ alignItems: "center" }}
             alt="User Picture"
             src={user.image}
@@ -66,83 +56,96 @@ function ContactCard({ user }) {
                 );
               })}
             </Typography>
-            <ButtonGroup>
+            <ButtonGroup
+              sx={{
+                "& .MuiButtonGroup-grouped": {
+                  minWidth: "0px",
+                },
+              }}
+            >
               <Stack direction="row" spacing={0.5} m={2}>
-                <Stack direction="row" spacing={0.5}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<LinkedIn />}
-                    style={{
-                      backgroundColor: "#12284C",
+                {user.linkedin && (
+                  <Box>
+                    <Button
+                    sx={{
+                      backgroundColor: "background.contactIcon",
                       color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
                       paddingRight: 0,
                     }}
-                    href={user.linkedin}
-                    target="_blank"
-                  />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<LinkedIn />}
+                      href={`https://www.linkedin.com/in/${user.linkedin}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
+                <Box>
                   <Button
+                    sx={{
+                      backgroundColor: "background.contactIcon",
+                      color: "#FFFFFF",
+                      borderRadius: "5px",
+                      maxWidth: "26px",
+                      minWidth: "26px",
+                      paddingRight: 0,
+                    }}
                     size="small"
                     variant="contained"
                     color="primary"
                     startIcon={<GitHubIcon />}
-                    style={{
-                      backgroundColor: "#12284C",
+                    href={`https://github.com/${user.gh}`}
+                    target="_blank"
+                  />
+                </Box>
+                {user.email && (
+                  <Box>
+                    <Button
+                      sx={{
+                      backgroundColor: "background.contactIcon",
                       color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
                       paddingRight: 0,
                     }}
-                    href={user.github}
-                    target="_blank"
-                  />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<EmailIcon />}
-                    style={{
-                      backgroundColor: "#12284C",
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<EmailIcon />}
+                      href={`mailto:${user.email}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
+                {user.twitter && (
+                  <Box>
+                    <Button
+                      sx={{
+                      backgroundColor: "background.contactIcon",
                       color: "#FFFFFF",
                       borderRadius: "5px",
                       maxWidth: "26px",
                       minWidth: "26px",
                       paddingRight: 0,
                     }}
-                    href={`mailto:${user.email}`}
-                    target="_blank"
-                  />
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    startIcon={<Twitter />}
-                    style={{
-                      backgroundColor: "#12284C",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
-                    href={user.twitter}
-                    target="_blank"
-                  />
-                </Stack>
+                      size="small"
+                      variant="contained"
+                      startIcon={<Twitter />}
+                      href={`https://twitter.com/${user.twitter}`}
+                      target="_blank"
+                    />
+                  </Box>
+                )}
               </Stack>
             </ButtonGroup>
             {/* <Grid item m={1}>
               <Button
+                className={classes.button}
                 variant="outlined"
                 color="success"
                 startIcon={<DownloadIcon />}
