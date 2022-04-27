@@ -2,17 +2,6 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Auto adjust the typography fontSize to match the media breakpoints.
 const baseTheme = responsiveFontSizes(
   createTheme({
-    components: {
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            fontSize: "1em",
-            backgroundColor: "black",
-            color: "white",
-          },
-        },
-      },
-    },
     typography: {
       root: {
         fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
@@ -62,6 +51,23 @@ const baseTheme = responsiveFontSizes(
           },
         },
       },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontSize: "1em",
+            backgroundColor: "black",
+            color: "white",
+          },
+        },
+      },
+      MuiChip: {
+        styleOverrides: {
+          label: {
+            fontFamily: "Montserrat",
+            fontSize: "1rem",
+          },
+        },
+      },
     },
   })
 );
@@ -74,14 +80,45 @@ const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#FF5C35",
-      contrastText: "#fff",
+      contrastText: "#EBEBEB",
     },
     secondary: {
-      main: "#F3C300",
+      main: "#F3C300", //original yellow from ctd pallete
       contrastText: "#000",
     },
+    zone1: {
+      personal: "#FFEB99",
+      tech: "#FF9D85",
+      contrastText: "#000",
+    },
+    zone2: {
+      personal: "#FFE270",
+      tech: "#FF8D70",
+      contrastText: "#000",
+    },
+    zone3: {
+      personal: "#FFDA47",
+      tech: "#FF7C5C",
+      contrastText: "#000",
+    },
+    zone4: {
+      personal: "#FFD21F",
+      tech: "#FA6F4C",
+      contrastText: "#000",
+    },
+
     text: {
-      primary: "#fff",
+      primary: "#EBEBEB",
+    },
+    background: {
+      default: "#0B0C0C", //black
+      paper: "#181919", //darkgray
+      card: "#353638", //asphalt
+      ctdcard: "#515152", //onyx gray
+      button: "#FF5C35", //orange
+      chip: "#FF6C47",
+      contactIcon: "#F3C300",
+      skillsChip: "#F3C300"
     },
   },
 });
@@ -92,12 +129,47 @@ const lightTheme = createTheme({
     mode: "light",
 
     primary: {
-      main: "#FF5C35",
-      contrastText: "#fff",
+      main: "#FF5C35", //orange
+      contrastText: "#fff", //white
     },
     secondary: {
-      main: "#12284C",
+      main: "#12284C", //blue
       contrastText: "#fff",
+    },
+    text: {
+      primary: "#31393C", //black
+    },
+    background: {
+      default: "white",
+      dbpaper: "#F4F5F7",
+      card: "#DFE2E8",
+      ctdcard: "#FFF",
+      button: "#FF5C35",
+      chip: "#FF5C35",
+      contactIcon: "#FF5C35",
+      skillsChip: "#12284C"
+    },
+    zone1: {
+      /* main: '#8D9DB9', */
+      /* contrastText: "#fff", */
+      personal: "#8D9DB9",
+      tech: "#FF9D85",
+      contrastText: "#000",
+    },
+    zone2: {
+      personal: "#7488AA",
+      tech: "#FF8D70",
+      contrastText: "#000",
+    },
+    zone3: {
+      personal: "#506891",
+      tech: "#FF7C5C",
+      contrastText: "#000",
+    },
+    zone4: {
+      personal: "#324A71",
+      tech: "#FA6F4C",
+      contrastText: "#000",
     },
   },
 });

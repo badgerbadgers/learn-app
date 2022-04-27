@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
-import minifyItems from "../../api/minifyItems";
+import minifyItems from "../../../lib/minifyItems";
 
 function Resources({ resources }) {
 
@@ -25,6 +25,11 @@ function Resources({ resources }) {
 }
 
 export default Resources;
+// Resources.auth = {
+//   role: "admin",
+//   // loading: <AdminLoadingSkeleton />,
+//   unauthorized: "/", // redirect to this url
+// }
 
 export async function getServerSideProps(context) {
   const Airtable = require("airtable");
@@ -37,7 +42,7 @@ export async function getServerSideProps(context) {
     // Finally, it will send the items as resources by minify items data.
     const items = await base("resources").select().all();
     const data = JSON.parse(JSON.stringify(items));
-    console.log("Data:", data);
+  
     return {
       props: {
         resources: minifyItems(data),

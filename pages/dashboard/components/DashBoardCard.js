@@ -15,7 +15,7 @@ export default function DashBoardCard({ title, text, icon, href, style }) {
     <Grid item xs={12} md={6}>
       <Card
         sx={{
-          backgroundColor: "#DFE2E8",
+          backgroundColor: "background.card",
           ...style,
         }}
       >

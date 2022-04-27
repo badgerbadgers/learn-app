@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import React, { useState, useEffect, useMemo } from "react";
+import { CssBaseline, ThemeProvider} from "@mui/material";
 import { createContext } from "react";
 import { darkTheme, lightTheme } from "./Theme"
+
 
 export const ThemeContext = createContext({
   changeMode: () => {},
@@ -9,7 +10,7 @@ export const ThemeContext = createContext({
 
 function ThemeContextWrapper(props) {
   const [mode, setMode] = useState("light");
-
+  
   useEffect(() => {
     const localStorage = window.localStorage;
     const theme = localStorage.getItem("preferred-theme");
@@ -44,7 +45,7 @@ function ThemeContextWrapper(props) {
 
   return (
     <ThemeContext.Provider value={changeTheme}>
-      <ThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
+      <ThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme} >
         <CssBaseline />
         {props.children}
       </ThemeProvider>
