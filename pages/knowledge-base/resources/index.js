@@ -19,6 +19,7 @@ function Resources({ resources }) {
       }}
     > 
       <ReseourceToolBar />
+      <Grid item xs={12} marginLeft="20px">Available Resources</Grid>
       {resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
       })}
