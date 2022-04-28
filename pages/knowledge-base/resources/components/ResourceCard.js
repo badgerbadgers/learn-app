@@ -34,8 +34,8 @@ const resourcesColorIcon = [
 ];
 
 function ResourceCard({ resource }) {
-  const topic = resource.fields["Name (from topic)"];
-  const language = resource.fields["Name (from language)"];
+  const topic = resource ? resource.fields["Name (from topic)"] : [] ;
+  const language = resource ? resource.fields["Name (from language)"] : [];
 
   const resourcesNavBarColor = () => {
     // The function will change color based on resource type
@@ -59,7 +59,10 @@ function ResourceCard({ resource }) {
       return <AdjustOutlined />;
     }
   };
-
+  if (!resource) {
+    return <></>
+  }
+ 
   return (
     <Grid item xs={12} sm={6}>
       <Card

@@ -17,10 +17,10 @@ function Resources({ resources }) {
         marginTop: "5px",
         marginBottom: "25px"
       }}
-    > 
+    >
       <ReseourceToolBar />
-      <Grid item xs={12} marginLeft="20px">Available Resources</Grid>
-      {resources.map((resource) => {
+      <Grid item xs={12} marginLeft="25px" color="blue">Available Resources</Grid>
+      {resources && resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
       })}
     </Grid>

@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
+import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import EditIcon from "@mui/icons-material/Edit";
-import Divider from "@mui/material/Divider";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Fade from "@mui/material/Fade";
+import Box from '@mui/material/Box';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
+import { AddBoxOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 
+// stlyling the search input
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -29,13 +33,14 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(0),
     width: "auto",
   },
 }));
 
+// stlyling the search input icon
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(0, 1),
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
@@ -44,12 +49,13 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
+// stlyling the menu input
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(1em + ${theme.spacing(3)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
@@ -58,6 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+// stlyling the dropdown menu for listing
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
@@ -89,7 +96,7 @@ const StyledMenu = styled((props) => (
       "& .MuiSvgIcon-root": {
         fontSize: 18,
         color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
+        marginRight: theme.spacing(1.25),
       },
       "&:active": {
         backgroundColor: alpha(
@@ -101,9 +108,31 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-function ReseourceToolBar() {
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  // const open = Boolean(anchorEl);
+function ReseourceToolBar({ resource }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [filterByType, setFilterByType] = useState(false);
+  const open = Boolean(anchorEl);
+  const topic = resource ? resource.fields["Name (from topic)"] : [];
+  const language = resource ? resource.fields["Name (from language)"] : [];
+
+  const handleFilterByTypeChange = (e) => {
+    setFilterByType({
+      ...filterByType,
+      [e.target.name]: e.target.checked,
+    });
+  };
+
+  // destructuring the state filter by type and filter reponse
+  const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
+  const error = [cheatsheet, coding, concepts, docs, exercises, other].filter((v) => v).length !== 5;
+
+  // Events handlers to anchor the menu
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Grid item xs={12} sx={{ flexGrow: 1 }}>
@@ -118,55 +147,215 @@ function ReseourceToolBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            MUI
-          </Typography>
-
-          <Button
-            id="demo-customized-button"
-            aria-controls={open ? "demo-customized-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            variant="contained"
-            disableElevation
-            onClick={handleClick}
-            endIcon={<KeyboardArrowDownIcon />}
-          >
-            Options
-          </Button>
-          <StyledMenu
-            id="demo-customized-menu"
-            MenuListProps={{
-              "aria-labelledby": "demo-customized-button",
+          <Stack
+            spacing={1}
+            size="small"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              alignItems: "end",
+              justifyContent: "space-between",
+              flexWrap: "nowrap",
             }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
           >
-            <MenuItem onClick={handleClose} disableRipple>
-              <EditIcon />
-              Edit
-            </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
-              <FileCopyIcon />
-              Duplicate
-            </MenuItem>
-            <Divider sx={{ my: 0.5 }} />
-            <MenuItem onClick={handleClose} disableRipple>
-              <ArchiveIcon />
-              Archive
-            </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
-              <MoreHorizIcon />
-              More
-            </MenuItem>
-          </StyledMenu>
+            <div>
+              <Button
+                id="fade-button"
+                aria-controls={open ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                variant="contained"
+                disableElevation
+                onClick={handleClick}
+                // startIcon={<AddCircleOutlineOutlined />}
+                startIcon={<AddBoxOutlined />}
+              >
+                Resource
+              </Button>
+              {/* <Menu
+                id="fade-menu"
+                MenuListProps={{
+                  "aria-labelledby": "fade-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+              >
+                <MenuItem onClick={handleClose}>Add New Resource</MenuItem>
+              </Menu> */}
+            </div>
+
+            <div>
+              <Button
+                id="demo-customized-button"
+                aria-controls={open ? "demo-customized-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                variant="contained"
+                disableElevation
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Type
+              </Button>
+              <StyledMenu
+                id="demo-customized-menu"
+                MenuListProps={{
+                  "aria-labelledby": "demo-customized-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} disableRipple>
+                  <Box sx={{ display: "flex" }}>
+                    <FormControl
+                      sx={{ m: 2 }}
+                      component="fieldset"
+                      variant="standard"
+                    >
+                      <FormLabel component="legend">
+                        Resource Type
+                      </FormLabel>
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={cheatsheet}
+                              onChange={handleFilterByTypeChange}
+                              name="cheatsheet"
+                            />
+                          }
+                          label="Cheatsheet"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={coding}
+                              onChange={handleFilterByTypeChange}
+                              name="coding"
+                            />
+                          }
+                          label="Coding"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={concepts}
+                              onChange={handleFilterByTypeChange}
+                              name="concepts"
+                            />
+                          }
+                          label="Concepts"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={docs}
+                              onChange={handleFilterByTypeChange}
+                              name="docs"
+                            />
+                          }
+                          label="Docs"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={exercises}
+                              onChange={handleFilterByTypeChange}
+                              name="exercises"
+                            />
+                          }
+                          label="Exercises"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={other}
+                              onChange={handleFilterByTypeChange}
+                              name="other"
+                            />
+                          }
+                          label="Other"
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </Box>
+                </MenuItem>
+              </StyledMenu>
+            </div>
+            <div>
+              <Button
+                id="demo-customized-button2"
+                aria-controls={open ? "demo-customized-menu2" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                variant="contained"
+                disableElevation
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Topic
+              </Button>
+
+              {/* <StyledMenu
+                id="demo-customized-menu3"
+                MenuListProps={{
+                  "aria-labelledby": "demo-customized-button3",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} disableRipple>
+                  {topic &&
+                    topic.map((item) => {
+                      reurn(
+                        <ul key={item} style={{ listStyle: "none" }}>
+                          <li>{topic}</li>
+                        </ul>
+                      );
+                    })}
+                </MenuItem>
+              </StyledMenu> */}
+            </div>
+            <div>
+              <Button
+                id="demo-customized-button3"
+                aria-controls={open ? "demo-customized-menu3" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                variant="contained"
+                disableElevation
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Language
+              </Button>
+              {/* <StyledMenu
+                id="demo-customized-menu3"
+                MenuListProps={{
+                  "aria-labelledby": "demo-customized-button3",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} disableRipple>
+                  {language &&
+                    language.map((item) => {
+                      reurn(
+                        <ul key={item} style={{ listStyle: "none" }}>
+                          <li>{language}</li>
+                        </ul>
+                      );
+                    })}
+                </MenuItem>
+              </StyledMenu> */}
+            </div>
+          </Stack>
         </Toolbar>
       </AppBar>
     </Grid>
