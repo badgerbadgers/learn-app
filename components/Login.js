@@ -13,7 +13,7 @@ export default function LogIn () {
           callbackUrl: "/dashboard",
         });
       },
-      icon: <GitHubIcon style={{fontSize:'32px'}}/>
+      icon: <GitHubIcon style={{fontSize:'28px'}}/>
     },
     {
       title: "Sign-Up",
@@ -22,20 +22,22 @@ export default function LogIn () {
           callbackUrl: "/signup", 
         });
       },
-      icon: <GitHubIcon style={{fontSize:'32px'}}/>
+      icon: <GitHubIcon style={{fontSize:'28px'}}/>
     },
   ];
 
   return (
-    <Stack spacing={4} mt={6}>
+    <Stack spacing={4} mt={6} alignItems="center">
       {buttonData.map((btn, i) => (
         <Button
-          key={i}
+          key={btn.title}
           size="medium"
           variant="contained"
           onClick={btn.onClick}
           sx={{
-            padding: "12px 64px",
+            width: '280px',
+            margin: '0 auto',
+            padding: "12px 48px",
             backgroundColor: "#12284C",
             "&:hover": {
               backgroundColor: "#FF5C35",
@@ -43,7 +45,7 @@ export default function LogIn () {
           }}
           startIcon={btn.icon}
         >
-          <Typography variant="h4">
+          <Typography variant="h5">
             {btn.title}
           </Typography>
         </Button>
