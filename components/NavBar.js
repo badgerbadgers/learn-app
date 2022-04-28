@@ -14,8 +14,8 @@ import {
   Menu,
   Tooltip,
   Avatar,
+  Link,
 } from "@mui/material/";
-import Link from "next/link";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -50,9 +50,6 @@ const NavBar = () => {
       href: "#",
       target: "_parent",
       title: "Logout",
-      onClick: () => {
-        signOut({ callbackUrl: "/" });
-      },
     },
   ];
 
@@ -93,7 +90,7 @@ const NavBar = () => {
               cursor: "pointer",
             }}
             onClick={() => {
-              session ? router.push("/dashboard") : router.push("/")
+              session ? router.push("/dashboard") : router.push("/");
             }}
           >
             CD
@@ -126,7 +123,7 @@ const NavBar = () => {
                 display: "flex",
                 width: "auto",
                 cursor: "pointer",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <Typography
@@ -138,46 +135,52 @@ const NavBar = () => {
               </Typography>
 
               <Tooltip title="Open settings" role="tooltip">
-                <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                <IconButton 
+                onClick={handleMenuOpen} 
+                sx={{ p: 0 }}
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true">
                   <Avatar alt="User Image" src={session.user.image} />
                 </IconButton>
               </Tooltip>
 
               <Menu
-                sx={{
-                  mt: "45px",
-                  top: { xs: "-9px" },
-                  left: { xs: "10px" },
-                }}
+                // sx={{
+                //   mt: "45px",
+                //   top: { xs: "9px" },
+                //   left: { xs: "10px" },
+                // }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: "top",
+                  vertical: "bottom",
                   horizontal: "right",
-                }}
-                keepMounted
+                }}                
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "center",
                 }}
+                keepMounted
                 open={Boolean(anchorElUser)}
                 onClose={handleMenuClose}
               >
                 {settings &&
                   settings.map((setting) => (
-                    <MenuItem key={setting.title} onClick={handleMenuClose}>
-                      <Link href={setting.href}>
-                        <a
-                          role="link"
-                          target={setting.target}
-                          rel="noopener noreferrer"
-                          onClick={setting.onClick}
-                        >
-                          <Typography variant="body1" textAlign="center">
-                            {setting.title}
-                          </Typography>
-                        </a>
-                      </Link>
+                    <MenuItem
+                      key={setting.title}
+                      onClick={() => {
+                        handleMenuClose;
+                        setting.title === "Logout" && signOut();
+                      }}
+                      component={Link}
+                      href={setting.href}
+                      target={setting.target}
+                      rel="noopener noreferrer"
+                    >
+                      <Typography variant="body1" textAlign="center">
+                        {setting.title}
+                      </Typography>
                     </MenuItem>
                   ))}
               </Menu>
