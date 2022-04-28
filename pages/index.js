@@ -14,7 +14,7 @@ export default function Home() {
         <div className={styles.left}></div>
         <div className={styles.right}></div>
         <div className={styles.inner}>
-          <Image alt="" src="/img/labs-g-01.png" width={420} height={320} />
+          <Image alt="" src="/img/labs-g-01.png" width={315} height={240} />
           <Typography variant="h5" sx={{ textAlign: "center" }}>
             Building Together
           </Typography>
