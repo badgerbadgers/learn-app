@@ -20,7 +20,7 @@ import {
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);
+  const [lightMode, setLightMode] = useState(true);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -69,7 +69,7 @@ const NavBar = () => {
       position="static"
       color="transparent"
       sx={{
-        boxShadow: darkMode ? "0 2px 4px -1px #C8C8CC" : ""
+        boxShadow: !lightMode ? "0 2px 4px -1px #C8C8CC" : ""
       }}
     >
       <Container maxWidth={false} sx={{ mx: 0 }}>
@@ -95,24 +95,11 @@ const NavBar = () => {
               cursor: "pointer",
             }}
             
-          >
-            CD
-          </Avatar>
+          />
+           
           </IconButton>
           {/* Dark Mode switch */}
 
-          <Switch
-            checked={darkMode}
-            inputProps={{ "aria-label": "controlled"}}
-            onClick={() => {
-              setDarkMode(!darkMode);
-              changeTheme(mode);
-            }}
-            tabIndex={1}
-            component={IconButton}
-            
-          />
-         
           <Typography
             variant="body1"
             alignSelf="center"
@@ -120,6 +107,18 @@ const NavBar = () => {
           >
             {mode === "dark" ? "Light Mode" : "Dark Mode"}
           </Typography>
+
+          <Switch
+            checked={lightMode}
+            color="secondary"
+            inputProps={{ "aria-label": "controlled"}}
+            onClick={() => {
+              setLightMode(!lightMode);
+              changeTheme(mode);
+            }}
+            tabIndex={1}
+            component={IconButton}
+          />
 
           {/* Box for the user Image and Menu */}
 
