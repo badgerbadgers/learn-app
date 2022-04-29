@@ -11,14 +11,18 @@ import InputBase from "@mui/material/InputBase";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Box from "@mui/material/Box";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { AddBoxOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+import {
+  AddBoxOutlined,
+  AddCircleOutlineOutlined,
+  CloseOutlined,
+} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 
 // stlyling the search input
@@ -106,25 +110,12 @@ const StyledMenu = styled((props) => (
       },
     },
   },
-}));
+})); // End of styling section
 
-function ReseourceToolBar({ resource }) {
+function ReseourceToolBar({ resources, searchTerm, setSearchTerm }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterByType, setFilterByType] = useState(false);
   const open = Boolean(anchorEl);
-  const topic = resource ? resource.fields["Name (from topic)"] : [];
-  const language = resource ? resource.fields["Name (from language)"] : [];
-
-  const handleFilterByTypeChange = (e) => {
-    setFilterByType({
-      ...filterByType,
-      [e.target.name]: e.target.checked,
-    });
-  };
-
-  // destructuring the state filter by type and filter reponse
-  const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
-  const error = [cheatsheet, coding, concepts, docs, exercises, other].filter((v) => v).length !== 5;
 
   // Events handlers to anchor the menu
   const handleClick = (event) => {
@@ -132,6 +123,25 @@ function ReseourceToolBar({ resource }) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // *** SEARCH SECTION START HERE ***
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // *** FILTERS SECTION START HERE ***
+  // destructuring the state filter by type and filter reponse
+  const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
+  const error =
+    [cheatsheet, coding, concepts, docs, exercises, other].filter((v) => v)
+      .length !== 5;
+
+  const handleFilterByTypeChange = (e) => {
+    setFilterByType({
+      ...filterByType,
+      [e.target.name]: e.target.checked,
+    });
   };
 
   return (
@@ -145,6 +155,8 @@ function ReseourceToolBar({ resource }) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e)}
             />
           </Search>
           <Stack
@@ -216,9 +228,7 @@ function ReseourceToolBar({ resource }) {
                       component="fieldset"
                       variant="standard"
                     >
-                      <FormLabel component="legend">
-                        Resource Type
-                      </FormLabel>
+                      <FormLabel component="legend">Resource Type</FormLabel>
                       <FormGroup>
                         <FormControlLabel
                           control={

@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ReseourceToolBar from "./components/ReseourceToolBar";
 
 function Resources({ resources }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("Name");
 
+  let filteredCards = resources.filter((item) => {
+    if (item.fields[filterType].toLowerCase().includes(searchTerm.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  console.log("FILTERCARD:", filteredCards)
+  // console.log("RESOURCES:", resources);
+  // console.log("Search:", searchTerm)
   return (
     <Grid
       container
@@ -15,14 +27,21 @@ function Resources({ resources }) {
         paddingLeft: "20px",
         paddingRight: "20px",
         marginTop: "5px",
-        marginBottom: "25px"
+        marginBottom: "25px",
       }}
     >
-      <ReseourceToolBar />
-      <Grid item xs={12} marginLeft="25px" color="blue">Available Resources</Grid>
-      {resources && resources.map((resource) => {
+      <ReseourceToolBar
+        resources={resources}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+      <Grid item xs={12} marginLeft="25px" color="blue">
+        Available Resources
+      </Grid>
+      {filteredCards &&
+        filteredCards.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
-      })}
+        })}
     </Grid>
   );
 }
@@ -45,18 +64,18 @@ export async function getServerSideProps(context) {
     // Finally, it will send the items as resources by minify items data.
     const items = await base("resources").select().all();
     const data = JSON.parse(JSON.stringify(items));
-  
+
     return {
       props: {
         resources: minifyItems(data),
-      }
+      },
     };
   } catch (error) {
     console.log(error);
     return {
       props: {
         err: "Something went wrong 😕",
-      }
+      },
     };
   }
 }
