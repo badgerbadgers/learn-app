@@ -69,12 +69,17 @@ const NavBar = () => {
       position="static"
       color="transparent"
       sx={{
-        boxShadow: !darkMode ? "0 2px 4px -1px #C8C8CC" : "",
+        boxShadow: darkMode ? "0 2px 4px -1px #C8C8CC" : ""
       }}
     >
       <Container maxWidth={false} sx={{ mx: 0 }}>
         <Toolbar disableGutters>
           {/* code for Logo */}
+          <IconButton
+            onClick={() => {
+              session ? router.push("/dashboard") : router.push("/");
+            }}
+          >
           <Avatar
             variant="square"
             alt="Code the Dream logo"
@@ -89,22 +94,25 @@ const NavBar = () => {
               width: "auto",
               cursor: "pointer",
             }}
-            onClick={() => {
-              session ? router.push("/dashboard") : router.push("/");
-            }}
+            
           >
             CD
           </Avatar>
+          </IconButton>
           {/* Dark Mode switch */}
 
           <Switch
             checked={darkMode}
-            inputProps={{ "aria-label": "controlled" }}
+            inputProps={{ "aria-label": "controlled"}}
             onClick={() => {
               setDarkMode(!darkMode);
               changeTheme(mode);
             }}
+            tabIndex={1}
+            component={IconButton}
+            
           />
+         
           <Typography
             variant="body1"
             alignSelf="center"
@@ -144,7 +152,6 @@ const NavBar = () => {
                   <Avatar alt="User Image" src={session.user.image} />
                 </IconButton>
               </Tooltip>
-
               <Menu
                 // sx={{
                 //   mt: "45px",
