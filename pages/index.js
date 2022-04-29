@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
 
 export default function Home() {
-  // getGitHubMembers()
+  getGitHubMembers();
   // getGitHubRepos()
   return (
     <>

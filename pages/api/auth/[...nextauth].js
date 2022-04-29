@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodb";
 import GitHubProvider from "next-auth/providers/github";
+import { getGitHubMembers } from "../../../lib/github";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -28,21 +29,14 @@ export default NextAuth({
     async session({ session, token, user }) {
       return { ...session, user };
     },
-  //   async signIn(user, account, profile) { 
-  //     console.log(user, 'user in auth');
-
-
-  //   //   const isAllowedToSignIn = true
-  //   //   if (isAllowedToSignIn) {
-  //   //     return true
-  //   //   } else {
-  //   //     // Return false to display a default error message
-  //   //     return false
-  //   //     // Or you can return a URL to redirect to:
-  //   //     // return '/unauthorized'
-  //   //   }
-  // }
-
+    async signIn({user, account, profile}) {
+      const isAllowedToSignInArray = await getGitHubMembers();
+      if(isAllowedToSignInArray.includes(profile.login)){
+          return true;
+        } else {
+          return false
+        }
+    },
   },
 
   adapter: MongoDBAdapter(clientPromise),
@@ -70,7 +64,7 @@ export default NextAuth({
               })
             ).json();
 
-            console.log(emails, 'emails');
+            console.log(emails, "emails");
 
             if (emails?.length > 0) {
               // Get primary email
