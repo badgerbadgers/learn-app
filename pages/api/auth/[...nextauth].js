@@ -26,18 +26,20 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       return { ...session, user };
     },
-    async signIn({user, account, profile}) {
-      const isAllowedToSignInArray = await getGitHubMembers();
-      if(isAllowedToSignInArray.includes(profile.login)){
+    async signIn({ profile }) {
+      // calling the function from the lib folder and saving the data in the array. It is calling github CTD Org so we need the gitHub Key in .envlocal folder.
+      // GITHUB_PERSONAL_ACCESS_TOKEN
+      const isAllowedToSignInArray = await getGitHubMembers() 
+      if(isAllowedToSignInArray.includes(profile.login)) {
           return true;
         } else {
-          return false
+            return false
         }
+        },
     },
-  },
 
   adapter: MongoDBAdapter(clientPromise),
   providers: [
@@ -63,8 +65,6 @@ export default NextAuth({
                 headers: { Authorization: `token ${tokens.access_token}` },
               })
             ).json();
-
-            console.log(emails, "emails");
 
             if (emails?.length > 0) {
               // Get primary email

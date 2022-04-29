@@ -1,14 +1,11 @@
 import { getSession } from "next-auth/react";
 import LogIn from "../components/Login";
-import { getGitHubMembers, getGitHubRepos } from "../lib/github";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
 
 export default function Home() {
-  getGitHubMembers();
-  // getGitHubRepos()
   return (
     <>
       {/* <ImageWall />  */}
