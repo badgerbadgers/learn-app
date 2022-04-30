@@ -8,7 +8,7 @@ import SkillsCard from "../components/SkillsCard";
 import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
-import getData from "../../../lib/getData";
+// import getData from "../../../lib/getData";
 import clientPromise from "../../../lib/mongodb";
 
 function Portfolio({user}) {
