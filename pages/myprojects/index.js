@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ProjectHeader } from "./components/ProjectHeader";
+import ProjectHeader from "./components/ProjectHeader";
 
 const MyProjects = () => {
   return <ProjectHeader />;
