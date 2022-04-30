@@ -1,21 +1,11 @@
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
-import LinkedIn from "@mui/icons-material/LinkedIn";
-import Twitter from "@mui/icons-material/Twitter";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import EmailIcon from "@mui/icons-material/Email";
+import { Card, CardContent, Typography, Chip, Paper,  Grid, Button, ButtonGroup, Box, Stack, Avatar } from "@mui/material";
+import { LinkedIn, Twitter, GitHubIcon, EmailIcon } from "@mui/icons-material";
+
 import styles from "../../../styles/Portfolio.module.css";
 
 
-function ContactCard({ user }) {
 
-
+const UserCard = ({ user }) => {
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -24,12 +14,12 @@ function ContactCard({ user }) {
     <Grid item sx={{ textAlign: "center" }}>
       <Card variant="outlined" sx={{ height: "100%" }}>
         <div className={styles.innerCard}>
-          <Avatar
+          {/* <Avatar
             sx={{ height: "150px", width: "150px", margin: "10px" }}
             style={{ alignItems: "center" }}
             alt="User Picture"
             src={user.image}
-          />
+          /> */}
           <div>
             <Typography variant="h4" component="div" marginTop="15px">
               {user.firstName} {user.lastName}
@@ -165,4 +155,4 @@ function ContactCard({ user }) {
   );
 }
 
-export default ContactCard;
+export default UserCard;
