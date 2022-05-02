@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserForm from "../components/UserForm";
 import Image from "next/image";
-import PrivateLayout from "../components/PrivateLayout";
+import PublicLayout from "../components/PublicLayout";
 
 const SignUp = () => {
   const [userInfoData, setUserInfoData] = useState({
@@ -41,5 +41,5 @@ const SignUp = () => {
 export default SignUp;
 
 SignUp.getLayout = function getLayout(page) {
-  return <PrivateLayout>{page}</PrivateLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
