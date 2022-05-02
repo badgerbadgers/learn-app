@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
+import PrivateLayout from "../../../components/PrivateLayout";
 
 function Resources({ resources }) {
 
@@ -25,6 +26,15 @@ function Resources({ resources }) {
 }
 
 export default Resources;
+
+Resources.getLayout = function getLayout(page) {
+  return (
+    <PrivateLayout>
+      {page}
+    </PrivateLayout>
+  )
+}
+
 // Resources.auth = {
 //   role: "admin",
 //   // loading: <AdminLoadingSkeleton />,

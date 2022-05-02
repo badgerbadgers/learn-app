@@ -3,6 +3,7 @@ import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePage
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
 import Airtable from "airtable";
+import PrivateLayout from "../../../components/PrivateLayout";
 
 function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
@@ -67,6 +68,14 @@ function Skillszoning({ data }) {
 }
 
 export default Skillszoning;
+
+Skillszoning.getLayout = function getLayout(page) {
+  return (
+    <PrivateLayout>
+      {page}
+    </PrivateLayout>
+  )
+}
 
 export async function getStaticProps() {
   const base = new Airtable({ apiKey: process.env.AT_KEY }).base(

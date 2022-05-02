@@ -4,6 +4,7 @@ import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePage
 import PairPrgNav from "./components/PairPrgNav";
 import PairPrgTitle from "./components/PairPrgTitle";
 import { pairProgrammingInfo } from "../../../lib/pairPrgInfo";
+import PrivateLayout from "../../../components/PrivateLayout";
 
 const PairProgrammingPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -36,6 +37,15 @@ const PairProgrammingPage = () => {
 };
 
 export default PairProgrammingPage;
+
+PairProgrammingPage.getLayout = function getLayout(page) {
+  return (
+    <PrivateLayout>
+      {page}
+    </PrivateLayout>
+  )
+}
+
 
 PairProgrammingPage.auth = {
   role: "admin",

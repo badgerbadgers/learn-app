@@ -10,6 +10,7 @@ import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 // import getData from "../../../lib/getData";
 import clientPromise from "../../../lib/mongodb";
+import PublicLayout from "../../../components/PublicLayout";
 
 function Portfolio({user}) {
   // const [user, setUser] = useState(null);
@@ -91,6 +92,14 @@ function Portfolio({user}) {
 Portfolio.displayName = "Portfolio"
 
 export default Portfolio;
+
+Portfolio.getLayout = function getLayout(page) {
+  return (
+    <PublicLayout>
+      {page}
+    </PublicLayout>
+  )
+}
 
 export async function getServerSideProps(context) {
   if (context) {

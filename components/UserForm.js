@@ -165,7 +165,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   
 
   return (
-    <Container>
+    <Container sx={{marginBottom: "30px"}}>
       <Paper elevation={15}>
         <div className={styles.titleForm}>
           {<DriveFileRenameOutlineIcon fontSize="large" />}
