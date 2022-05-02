@@ -1,23 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ReseourceToolBar from "./components/ReseourceToolBar";
 
-function Resources({ resources }) {
+function Resources({ resources, id }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("Name");
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheck, setIsCheck] = useState([]);
+  const [list, setList] = useState([]);
+
+  // console.log("FILTER TYPE:", typeof filterType)
+  // console.log("RESOURCES:", resources);
+  // console.log("Search:", searchTerm)
+  
+  useEffect(() => {
+    setList(resources);
+  }, [list, resources]);
+
+  const handleSelectAll = () => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(list.map(li => li.id));
+    if (isCheckAll) {
+      setIsCheck([]);
+    }
+  };
+
+  const handleClickOption = (e) => {
+    const { id, checked } = e.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter(item => item !== id));
+    }
+  };
+
+  const handleSelectChange = () => {
+    handleSelectAll();
+    handleClickOption();
+  }
 
   let filteredCards = resources.filter((item) => {
+    // console.log(item.fields[filterType])
     if (item.fields[filterType].toLowerCase().includes(searchTerm.toLowerCase())) {
       return true;
     } else {
       return false;
     }
   });
-  console.log("FILTERCARD:", filteredCards)
-  // console.log("RESOURCES:", resources);
-  // console.log("Search:", searchTerm)
+  
   return (
     <Grid
       container
@@ -34,6 +65,9 @@ function Resources({ resources }) {
         resources={resources}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        setFilterType={setFilterType}
+        onChange={handleSelectChange}
+        checked={isCheck}
       />
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
