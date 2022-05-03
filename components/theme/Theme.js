@@ -79,7 +79,7 @@ const darkTheme = createTheme({
     // text | outlined buttons: Use the main color (e.g. primary.main) as the text color.
     mode: "dark",
     primary: {
-      main: "#FF5C35",
+      main: "#FF5C35",//original orange from ctd pallete
       contrastText: "#EBEBEB",
     },
     secondary: {
@@ -87,22 +87,22 @@ const darkTheme = createTheme({
       contrastText: "#000",
     },
     zone1: {
-      personal: "#FFEB99",
+      personal: "#FFEB99", // 2 shades lighter yellow than zone2
       tech: "#FF9D85",
       contrastText: "#000",
     },
     zone2: {
-      personal: "#FFE270",
+      personal: "#FFE270", //2 shades lighter blue than zone3
       tech: "#FF8D70",
       contrastText: "#000",
     },
     zone3: {
-      personal: "#FFDA47",
+      personal: "#FFDA47", //2 shades lighter blue than zone4
       tech: "#FF7C5C",
       contrastText: "#000",
     },
     zone4: {
-      personal: "#FFD21F",
+      personal: "#FFD21F", //2 shades lighter yellow than original
       tech: "#FA6F4C",
       contrastText: "#000",
     },
@@ -129,11 +129,11 @@ const lightTheme = createTheme({
     mode: "light",
 
     primary: {
-      main: "#FF5C35", //orange
+      main: "#FF5C35", //original orange from CTD
       contrastText: "#fff", //white
     },
     secondary: {
-      main: "#12284C", //blue
+      main: "#12284C", //original blue from CTD
       contrastText: "#fff",
     },
     text: {
@@ -150,25 +150,23 @@ const lightTheme = createTheme({
       skillsChip: "#12284C"
     },
     zone1: {
-      /* main: '#8D9DB9', */
-      /* contrastText: "#fff", */
-      personal: "#8D9DB9",
-      tech: "#FF9D85",
-      contrastText: "#000",
+      personal: "#8D9DB9", // 2 shades lighter blue than zone2
+      tech: "#FF9D85", // 2 shades lighter orange than zone2
+      contrastText: "#000", //black
     },
     zone2: {
-      personal: "#7488AA",
-      tech: "#FF8D70",
+      personal: "#7488AA", // 2 shades lighter blue than zone3
+      tech: "#FF8D70", // 2 shades lighter orange than zone3
       contrastText: "#000",
     },
     zone3: {
-      personal: "#506891",
-      tech: "#FF7C5C",
+      personal: "#506891", //2 shades lighter blue than zone4
+      tech: "#FF7C5C", //2 shades lighter orange than zone4
       contrastText: "#000",
     },
     zone4: {
-      personal: "#324A71",
-      tech: "#FA6F4C",
+      personal: "#324A71", //2 shades lighter blue than original
+      tech: "#FA6F4C", //2 shades lighter orange than original
       contrastText: "#000",
     },
   },

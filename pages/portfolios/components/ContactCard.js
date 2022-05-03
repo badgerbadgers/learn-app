@@ -1,15 +1,16 @@
-import React from "react";
 import Card from "@mui/material/Card";
-import { Grid, Button, ButtonGroup, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { LinkedIn, Twitter } from "@mui/icons-material";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import LinkedIn from "@mui/icons-material/LinkedIn";
+import Twitter from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
-import { makeStyles } from "@mui/styles";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
 import styles from "../../../styles/Portfolio.module.css";
-import DownloadIcon from "@mui/icons-material/Download";
 
 
 function ContactCard({ user }) {
