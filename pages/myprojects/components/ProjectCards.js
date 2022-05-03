@@ -6,11 +6,12 @@ const ProjectCards = () => {
     <Grid
       item
       container
-      spacing={2}
+      justify='center'
       xs={12}
       sx={{
-        paddingLeft: "20px",
-        paddingRight: "20px",
+        align: "center",
+        paddingLeft: "25px",
+        paddingRight: "25px",
         marginTop: "25px",
         marginBottom: "25px",
       }}

@@ -5,22 +5,23 @@ import { useSession, signOut } from "next-auth/react";
 import {
   AppBar,
   Container,
-  Switch,
   Box,
   Toolbar,
   Typography,
   IconButton,
+  Button,
   MenuItem,
   Menu,
   Tooltip,
   Avatar,
+  Link,
 } from "@mui/material/";
-import Link from "next/link";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
-  const [darkMode, setDarkMode] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -50,9 +51,12 @@ const NavBar = () => {
       href: "#",
       target: "_parent",
       title: "Logout",
-      onClick: () => {
-        signOut({ callbackUrl: "/" });
-      },
+    },
+
+    {
+      href: "#",
+      name: "mode",
+      title: mode === "dark" ? "Go to Light Mode" : "Go to Dark Mode",
     },
   ];
 
@@ -72,7 +76,7 @@ const NavBar = () => {
       position="static"
       color="transparent"
       sx={{
-        boxShadow: !darkMode ? "0 2px 4px -1px #C8C8CC" : "",
+        boxShadow: mode === "dark" ? "0 2px 4px -1px #C8C8CC" : "",
       }}
     >
       <Container maxWidth={false} sx={{ mx: 0 }}>
@@ -93,28 +97,9 @@ const NavBar = () => {
               cursor: "pointer",
             }}
             onClick={() => {
-              session ? router.push("/dashboard") : router.push("/")
-            }}
-          >
-            CD
-          </Avatar>
-          {/* Dark Mode switch */}
-
-          <Switch
-            checked={darkMode}
-            inputProps={{ "aria-label": "controlled" }}
-            onClick={() => {
-              setDarkMode(!darkMode);
-              changeTheme(mode);
+              session ? router.push("/dashboard") : router.push("/");
             }}
           />
-          <Typography
-            variant="body1"
-            alignSelf="center"
-            sx={{ color: mode === "dark" ? "#fff" : "#000" }}
-          >
-            {mode === "dark" ? "Light Mode" : "Dark Mode"}
-          </Typography>
 
           {/* Box for the user Image and Menu */}
 
@@ -126,58 +111,81 @@ const NavBar = () => {
                 display: "flex",
                 width: "auto",
                 cursor: "pointer",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
-              <Typography
-                variant="body1"
-                mr={1}
-                sx={{ color: mode === "dark" ? "#fff" : "#000" }}
-              >
+              <Typography variant="h6" mr={1}>
                 {session.user.name || session.user.gh}
               </Typography>
 
-              <Tooltip title="Open settings" role="tooltip">
-                <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton
+                  onClick={handleMenuOpen}
+                  sx={{ p: 0 }}
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                >
                   <Avatar alt="User Image" src={session.user.image} />
                 </IconButton>
               </Tooltip>
-
               <Menu
-                sx={{
-                  mt: "45px",
-                  top: { xs: "-9px" },
-                  left: { xs: "10px" },
-                }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: "top",
+                  vertical: "bottom",
                   horizontal: "right",
                 }}
-                keepMounted
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "center",
                 }}
+                keepMounted
                 open={Boolean(anchorElUser)}
                 onClose={handleMenuClose}
               >
                 {settings &&
                   settings.map((setting) => (
-                    <MenuItem key={setting.title} onClick={handleMenuClose}>
-                      <Link href={setting.href}>
-                        <a
-                          role="link"
-                          target={setting.target}
-                          rel="noopener noreferrer"
-                          onClick={setting.onClick}
+                    <MenuItem
+                      key={setting.title}
+                      onClick={() => {
+                        handleMenuClose;
+                        setting.title === "Logout" && signOut();
+                        setting.name === "mode" && changeTheme(mode);
+                      }}
+                      component={Link}
+                      href={setting.href}
+                      target={setting.target}
+                      rel="noopener noreferrer"
+                    >
+                      {setting.name === "mode" ? (
+                        // Dark Mode switch
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          title={
+                            mode === "dark"
+                              ? "Go to Light Mode"
+                              : "Go to Dark Mode"
+                          }
+                          sx={{
+                            minWidth: "35px",
+                            width: "20px",
+                            borderRadius: "24px",
+                          }}
                         >
-                          <Typography variant="body1" textAlign="center">
-                            {setting.title}
-                          </Typography>
-                        </a>
-                      </Link>
+                          {mode === "dark" ? (
+                            <LightModeIcon />
+                          ) : (
+                            <DarkModeIcon />
+                          )}
+                        </Button>
+                      ) : (
+                        // For other Links
+                        <Typography variant="body1" textAlign="center">
+                          {setting.title}
+                        </Typography>
+                      )}
                     </MenuItem>
                   ))}
               </Menu>

@@ -7,9 +7,9 @@ const MyProjects = () => {
   return (
     <Grid
       container
+      alignItems="center"
       xs={12}
-      justify="center"
-      sx={{ maxWidth: "1250px", margin: "auto" }}
+      sx={{ maxWidth: "1250px", margin: "auto"}}
     >
       <ProjectHeader />
       <ProjectCards />
