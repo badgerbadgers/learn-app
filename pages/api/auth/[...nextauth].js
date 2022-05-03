@@ -27,9 +27,10 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     signIn: ({ user, account, profile, isNewUser }) => {
-      console.log(isNewUser, "newuser");
       if (isNewUser) {
+
         console.log(isNewUser, "isNewuser");
+
         async function allUsers() {
           let isAllowedToSignInArray;
           try {
@@ -37,6 +38,7 @@ export default NextAuth({
           } catch (e) {}
           return isAllowedToSignInArray;
         }
+
         (async () => {
           const isAllowedToSignInArray = await allUsers();
           if (isAllowedToSignInArray.includes(profile.gh)) {
@@ -54,24 +56,11 @@ export default NextAuth({
     async session({ session, user }) {
       return { ...session, user };
     },
-    // async signIn({ user, account, profile, email, credentials, isNewUser }) {
-    //   // console.log(credentials, 'cred');
-    //   // console.log(account, 'accounts')
-    //   return true;
-    //   // calling the function from the lib folder and saving the data in the array. It is calling github CTD Org so we need the gitHub Key in .envlocal folder.
-    //   // GITHUB_PERSONAL_ACCESS_TOKEN
-    //   // const isAllowedToSignInArray = await getGitHubMembers()
-    //   // if(isAllowedToSignInArray.includes(profile.login)) {
-    //   //     return true;
-    //   //   } else {
-    //   //       return false
-    //   //   }
-    // },
   },
   pages: {
+    signIn: "/dashboard",
     newUser: "/signup", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
-
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
@@ -120,10 +109,9 @@ export default NextAuth({
       },
     }),
   ],
-  //TODO: add theme colors to sign in
-  //   theme: {
-  //     colorScheme: "light", // "auto" | "dark" | "light"
-  //     brandColor: "", // Hex color code
-  //     logo: "" // Absolute URL to image
-  // },
+    theme: {
+      colorScheme: "light", // "auto" | "dark" | "light"
+      brandColor: "#FF5C35", 
+      logo: "https://github.com/CodeTheDream/minfolio/blob/8efbb8e711008d4681d434b6b493788461575349/public/img/CTD-Labs_Primary%5B1%5D.png" // Absolute URL to image
+  },
 });
