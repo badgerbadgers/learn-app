@@ -80,6 +80,7 @@ const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#FF5C35",//original orange from ctd pallete
+      projectCard: "#8BC34A", // light green
       contrastText: "#EBEBEB",
     },
     secondary: {
@@ -130,6 +131,7 @@ const lightTheme = createTheme({
 
     primary: {
       main: "#FF5C35", //original orange from CTD
+      projectCard: "#F3C300", //original yellow from ctd pallete
       contrastText: "#fff", //white
     },
     secondary: {
