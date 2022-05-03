@@ -5,7 +5,8 @@ import { Grid } from "@mui/material";
 import { getProjectsData } from "../../lib/airtable";
 
 const MyProjects = ({data}) => {
-  // console.log('***data****' + data.map((doc) => doc.fields['Project Name']))
+  console.log('***data****' + data.map((doc) => doc.fields['Project Name']))
+
   return (
     <Grid
       container
@@ -24,7 +25,7 @@ export async function getServerSideProps() {
   const data = await getProjectsData();
   return {
     props: {
-      data,
+      data
     }
   } 
 }
