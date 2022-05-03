@@ -25,21 +25,52 @@ export default NextAuth({
     updateAge: 24 * 60 * 60, // 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
+  events: {
+    signIn: ({ user, account, profile, isNewUser }) => {
+      console.log(isNewUser, "newuser");
+      if (isNewUser) {
+        console.log(isNewUser, "isNewuser");
+        async function allUsers() {
+          let isAllowedToSignInArray;
+          try {
+            isAllowedToSignInArray = await getGitHubMembers();
+          } catch (e) {}
+          return isAllowedToSignInArray;
+        }
+        (async () => {
+          const isAllowedToSignInArray = await allUsers();
+          if (isAllowedToSignInArray.includes(profile.gh)) {
+            console.log("allowed to login");
+            return true;
+          } else {
+            console.log("not allowed to login");
+            return false;
+          }
+        })();
+      }
+    },
+  },
   callbacks: {
     async session({ session, user }) {
       return { ...session, user };
     },
-    async signIn({ profile }) {
-      // calling the function from the lib folder and saving the data in the array. It is calling github CTD Org so we need the gitHub Key in .envlocal folder.
-      // GITHUB_PERSONAL_ACCESS_TOKEN
-      const isAllowedToSignInArray = await getGitHubMembers() 
-      if(isAllowedToSignInArray.includes(profile.login)) {
-          return true;
-        } else {
-            return false
-        }
-        },
-    },
+    // async signIn({ user, account, profile, email, credentials, isNewUser }) {
+    //   // console.log(credentials, 'cred');
+    //   // console.log(account, 'accounts')
+    //   return true;
+    //   // calling the function from the lib folder and saving the data in the array. It is calling github CTD Org so we need the gitHub Key in .envlocal folder.
+    //   // GITHUB_PERSONAL_ACCESS_TOKEN
+    //   // const isAllowedToSignInArray = await getGitHubMembers()
+    //   // if(isAllowedToSignInArray.includes(profile.login)) {
+    //   //     return true;
+    //   //   } else {
+    //   //       return false
+    //   //   }
+    // },
+  },
+  pages: {
+    newUser: "/signup", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
 
   adapter: MongoDBAdapter(clientPromise),
   providers: [
@@ -47,11 +78,11 @@ export default NextAuth({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       id: "github",
-      // name: "GitHub",
-      // type: "oauth",
-      // authorization:
-      //   "https://github.com/login/oauth/authorize?scope=read:user+user:email",
-      // token: "https://github.com/login/oauth/access_token",
+      name: "GitHub",
+      type: "oauth",
+      authorization:
+        "https://github.com/login/oauth/authorize?scope=read:user+user:email",
+      token: "https://github.com/login/oauth/access_token",
       userinfo: {
         url: "https://api.github.com/user",
         async request({ client, tokens }) {
@@ -94,17 +125,5 @@ export default NextAuth({
   //     colorScheme: "light", // "auto" | "dark" | "light"
   //     brandColor: "", // Hex color code
   //     logo: "" // Absolute URL to image
-  // },
-  // debug: true,
-  // logger: {
-  //   error(code, metadata) {
-  //     console.error(code, metadata);
-  //   },
-  //   warn(code) {
-  //     console.warn(code);
-  //   },
-  //   debug(code, metadata) {
-  //     console.debug(code, metadata);
-  //   },
   // },
 });
