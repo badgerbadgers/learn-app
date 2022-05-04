@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
-import PublicLayout from "../components/PublicLayout";
+import { publicLayout } from "../components/PublicLayout";
 export default function Home() {
   return (
     <>
@@ -27,13 +27,7 @@ export default function Home() {
 
 Home.displayName = "Home";
 
-Home.getLayout = function getLayout(page) {
-  return (
-    <PublicLayout>
-      {page}
-    </PublicLayout>
-  )
-}
+Home.getLayout = publicLayout;
 
 export async function getServerSideProps(context) {
   return {

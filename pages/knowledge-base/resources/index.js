@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
-import PrivateLayout from "../../../components/PrivateLayout";
+import { privateLayout } from "../../../components/PrivateLayout";
 
 function Resources({ resources }) {
 
@@ -27,13 +27,7 @@ function Resources({ resources }) {
 
 export default Resources;
 
-Resources.getLayout = function getLayout(page) {
-  return (
-    <PrivateLayout>
-      {page}
-    </PrivateLayout>
-  )
-}
+Resources.getLayout = privateLayout
 
 // Resources.auth = {
 //   role: "admin",

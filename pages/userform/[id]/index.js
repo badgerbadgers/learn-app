@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import getData from "../../../lib/getData";
 import UserForm from "../../../components/UserForm";
 import Image from "next/image";
-import PrivateLayout from "../../../components/PrivateLayout";
+import { privateLayout } from "../../../components/PrivateLayout";
 
 export default function InputForm() {
   const [userInfoData, setUserInfoData] = useState({
@@ -78,10 +78,4 @@ export default function InputForm() {
     </>
 )};
 
-InputForm.getLayout = function getLayout(page) {
-  return (
-    <PrivateLayout>
-      {page}
-    </PrivateLayout>
-  )
-}
+InputForm.getLayout = privateLayout

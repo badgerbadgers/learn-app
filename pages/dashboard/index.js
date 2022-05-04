@@ -9,10 +9,9 @@ import { Container } from "@mui/material";
 import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
-import PrivateLayout from "../../components/PrivateLayout";
+import { privateLayout } from "../../components/PrivateLayout";
 
 const Dashboard = () => {
-  const { data: session } = useSession();
 
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
@@ -42,13 +41,7 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-Dashboard.getLayout = function getLayout(page) {
-  return (
-    <PrivateLayout>
-      {page}
-    </PrivateLayout>
-  )
-}
+Dashboard.getLayout = privateLayout
 
 export async function getServerSideProps(context) {
   return {

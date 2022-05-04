@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserForm from "../components/UserForm";
 import Image from "next/image";
-import PublicLayout from "../components/PublicLayout";
+import PublicLayout, { publicLayout } from "../components/PublicLayout";
 import Footer from "../components/Footer";
 
 const SignUp = () => {
@@ -41,11 +41,4 @@ const SignUp = () => {
 
 export default SignUp;
 
-SignUp.getLayout = function getLayout(page) {
-  return (
-    <>
-      <PublicLayout>{page}</PublicLayout>
-      <Footer />
-    </>
-  );
-};
+SignUp.getLayout = publicLayout

@@ -6,7 +6,7 @@ import "../styles/globals.css";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-   // Use the layout defined at the page level, if available
+   // If the component has a getLayout() function, use it. Otherwise just render the page as is.
    const getLayout = Component.getLayout || ((page) => page)
   return (
     <>
