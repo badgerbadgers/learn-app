@@ -1,54 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
-import ReseourceToolBar from "./components/ReseourceToolBar";
+import ResourceToolBar from "./components/ResourceToolBar";
 
-function Resources({ resources, id }) {
+function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("Name");
-  const [isCheckAll, setIsCheckAll] = useState(false);
-  const [isCheck, setIsCheck] = useState([]);
-  const [list, setList] = useState([]);
+  const [filterType, setFilterType] = useState("Type");
 
-  // console.log("FILTER TYPE:", typeof filterType)
-  // console.log("RESOURCES:", resources);
-  // console.log("Search:", searchTerm)
-  
-  useEffect(() => {
-    setList(resources);
-  }, [list, resources]);
+  console.log("RESOURCES:", resources);
 
-  const handleSelectAll = () => {
-    setIsCheckAll(!isCheckAll);
-    setIsCheck(list.map(li => li.id));
-    if (isCheckAll) {
-      setIsCheck([]);
-    }
+  // We want a function that we can search by: name, type, topic, language, and description
+  // Create a function that save in array the results temporary the element
+  // The input will be a string which is "search term"
+  // The return will be the filtered array
+  const searchResults = (term) => {
+    const tempResults = [];
+    const filteredResultByName = resources.filter((item) => {
+      return item.fields.Name.toLowerCase().includes(term.toLowerCase());
+    });
+
+    const filteredResultByType = resources.filter((item) => {
+      if (item.fields.Type) {
+        // console.log("ITEM", item.fields.Type);
+        return item.fields.Type.toLowerCase().includes(term.toLowerCase());
+      }
+    });
+    const filteredResultByDescription = resources.filter((item) => {
+      if (item.fields.Description) {
+        // console.log("ITEM", item.fields.Description);
+        return item.fields.Description.toLowerCase().includes(term.toLowerCase())
+      }
+    });
+    const filteredResultByTopic = resources.filter((item) => {
+      if (item.fields["Name (from topic)"]) {
+        console.log("ITEM", item.fields["Name (from topic)"]);
+        // return item.fields["Name (from topic)"].toLowerCase().includes(term.toLowerCase()); 
+      }
+    });
+    const filteredResultByLanguage = resources.filter((item) => {
+      if (item.fields["Name (from language)"]) {
+        console.log("ITEM", item.fields["Name (from topic)"]);
+        // return item.fields["Name (from language)"].toLowerCase().includes(term.toLowerCase());
+      }
+    });
+    
+    // Will push all to the temporary result array and return it
+    tempResults.push(
+      ...filteredResultByName,
+      ...filteredResultByType,
+      ...filteredResultByDescription,
+      ...filteredResultByTopic,
+      ...filteredResultByLanguage
+    );
+    console.log("FILTERTOPIC:", filteredResultByTopic);
+    console.log("FILTERLANGUAGE:", filteredResultByLanguage);
   };
 
-  const handleClickOption = (e) => {
-    const { id, checked } = e.target;
-    setIsCheck([...isCheck, id]);
-    if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
-    }
-  };
+  searchResults("exercises");
 
   const handleSelectChange = () => {
     handleSelectAll();
     handleClickOption();
-  }
+  };
 
   let filteredCards = resources.filter((item) => {
     // console.log(item.fields[filterType])
-    if (item.fields[filterType].toLowerCase().includes(searchTerm.toLowerCase())) {
+    if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
       return true;
     } else {
       return false;
     }
   });
-  
+
   return (
     <Grid
       container
@@ -61,17 +85,17 @@ function Resources({ resources, id }) {
         marginBottom: "25px",
       }}
     >
-      <ReseourceToolBar
+      <ResourceToolBar
         resources={resources}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setFilterType={setFilterType}
         onChange={handleSelectChange}
-        checked={isCheck}
       />
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
       </Grid>
+
       {filteredCards &&
         filteredCards.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;

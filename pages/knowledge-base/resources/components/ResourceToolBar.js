@@ -21,7 +21,7 @@ import {
 } from "../../../../lib/searchUtils";
 
 // The code starts here
-function ReseourceToolBar({
+function ResourceToolBar({
   resources,
   searchTerm,
   setSearchTerm,
@@ -34,7 +34,7 @@ function ReseourceToolBar({
   isCheckedAll,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [filterByType, setFilterByType] = useState(false);
+  const [filterByType, setFilterByType] = useState("");
   const open = Boolean(anchorEl);
 
   // Events handlers to anchor the menu
@@ -51,16 +51,16 @@ function ReseourceToolBar({
   };
 
   // *** FILTERS SECTION START HERE ***
-  // destructuring the state filter by type and filter reponse
+  // destructuring the state filter by type and filter response
   const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
 
-  const handleFilterByTypeChange = (e) => {
-    setFilterByType({
-      ...filterByType,
-      setFilterType,
-      [e.target.name]: e.target.checked,
-    });
-  };
+  // const handleFilterByTypeChange = (e) => {
+  //   setFilterByType({
+  //     ...filterByType,
+  //     setFilterType,
+  //     [e.target.name]: e.target.checked,
+  //   });
+  // };
 
   return (
     <Grid item xs={12} sx={{ flexGrow: 1 }}>
@@ -122,8 +122,12 @@ function ReseourceToolBar({
                         Type of Resources
                       </FormLabel>
                       <Divider />
+                      {/* 
+                        Adding multiple checkboxes with FormGroup
+                        Add a label to checkbox with the FormControlLabel to select All
+                      */}
                       <FormGroup>
-                        <FormControlLabel
+                        {/* <FormControlLabel
                           control={
                             <Checkbox
                               id="selectAll"
@@ -139,8 +143,8 @@ function ReseourceToolBar({
                         >
                           {resources}
                         </FormControlLabel>
-
-                        <FormControlLabel
+                        {/* Add a label to checkbox with the FormControlLabel for single selection */}
+                        {/* <FormControlLabel
                           control={
                             <Checkbox
                               checked={cheatsheet}
@@ -149,7 +153,6 @@ function ReseourceToolBar({
                                 setFilterType(e.target.value);
                               }}
                               name="cheatsheet"
-                              value="Name"
                             />
                           }
                           label="Cheatsheet"
@@ -203,7 +206,7 @@ function ReseourceToolBar({
                             />
                           }
                           label="Other"
-                        />
+                        />  */}
                       </FormGroup>
                     </FormControl>
                   </Box>
@@ -217,4 +220,4 @@ function ReseourceToolBar({
   );
 }
 
-export default ReseourceToolBar;
+export default ResourceToolBar;
