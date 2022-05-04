@@ -24,27 +24,32 @@ function Resources({ resources }) {
 
     const filteredResultByType = resources.filter((item) => {
       if (item.fields.Type) {
-        // console.log("ITEM", item.fields.Type);
         return item.fields.Type.toLowerCase().includes(term.toLowerCase());
       }
     });
+
     const filteredResultByDescription = resources.filter((item) => {
       if (item.fields.Description) {
-        // console.log("ITEM", item.fields.Description);
         return item.fields.Description.toLowerCase().includes(term.toLowerCase())
       }
     });
     const filteredResultByTopic = resources.filter((item) => {
       if (item.fields["Name (from topic)"]) {
-        // console.log("ITEM TOPIC", item.fields["Name (from topic)"]);
-        return item.fields["Name (from topic)"][0].toLowerCase().includes(term.toLowerCase()); 
+        // initialize the variable before use and map it after
+        let topicToLowerCase = item.fields["Name (from topic)"];
+        return topicToLowerCase.map((item) => {
+          item.toLowerCase().includes(term.toLowerCase())
+        }); 
       }
     });
-    // console.log("TOPIC",filteredResultByTopic);
+
     const filteredResultByLanguage = resources.filter((item) => {
       if (item.fields["Name (from language)"]) {
-        // console.log("ITEM Language", item.fields["Name (from language)"]);
-        return item.fields["Name (from language)"][0].toLowerCase().includes(term.toLowerCase());
+        // initialize the variable before use and map it after
+        let languageToLowerCase = item.fields["Name (from language)"];
+        return languageToLowerCase.map((item) => {
+          item.toLowerCase().includes(term.toLowerCase())
+        });
       }
     });
     
@@ -59,8 +64,9 @@ function Resources({ resources }) {
     console.log("FILTERTOPIC:", filteredResultByTopic);
     console.log("FILTERLANGUAGE:", filteredResultByLanguage);
     console.log("TEMPRESULTS", tempResults);
+    return tempResults;
   };
-
+  
   searchResults("javascript");
 
   const handleSelectChange = () => {
@@ -99,7 +105,6 @@ function Resources({ resources }) {
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
       </Grid>
-
       {filteredCards &&
         filteredCards.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
