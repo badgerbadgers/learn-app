@@ -14,6 +14,8 @@ function Resources({ resources }) {
   // Create a function that save in array the results temporary the element
   // The input will be a string which is "search term"
   // The return will be the filtered array
+  // Remove duplicates before pushing to tempResults
+  // Result by topic and language we need to loop through the array
   const searchResults = (term) => {
     const tempResults = [];
     const filteredResultByName = resources.filter((item) => {
@@ -34,14 +36,15 @@ function Resources({ resources }) {
     });
     const filteredResultByTopic = resources.filter((item) => {
       if (item.fields["Name (from topic)"]) {
-        console.log("ITEM", item.fields["Name (from topic)"]);
-        // return item.fields["Name (from topic)"].toLowerCase().includes(term.toLowerCase()); 
+        // console.log("ITEM TOPIC", item.fields["Name (from topic)"]);
+        return item.fields["Name (from topic)"][0].toLowerCase().includes(term.toLowerCase()); 
       }
     });
+    // console.log("TOPIC",filteredResultByTopic);
     const filteredResultByLanguage = resources.filter((item) => {
       if (item.fields["Name (from language)"]) {
-        console.log("ITEM", item.fields["Name (from topic)"]);
-        // return item.fields["Name (from language)"].toLowerCase().includes(term.toLowerCase());
+        // console.log("ITEM Language", item.fields["Name (from language)"]);
+        return item.fields["Name (from language)"][0].toLowerCase().includes(term.toLowerCase());
       }
     });
     
@@ -55,9 +58,10 @@ function Resources({ resources }) {
     );
     console.log("FILTERTOPIC:", filteredResultByTopic);
     console.log("FILTERLANGUAGE:", filteredResultByLanguage);
+    console.log("TEMPRESULTS", tempResults);
   };
 
-  searchResults("exercises");
+  searchResults("javascript");
 
   const handleSelectChange = () => {
     handleSelectAll();
