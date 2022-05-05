@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
@@ -6,7 +6,12 @@ import ResourceToolBar from "./components/ResourceToolBar";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterResources, setFilterResources] = useState([])
   const [filterType, setFilterType] = useState("Type");
+  
+  // useEffect(() => {
+  //   setFilterResources(searchResults(searchTerm))
+  // }, [searchTerm])
 
   console.log("RESOURCES:", resources);
 
@@ -15,7 +20,8 @@ function Resources({ resources }) {
   // The input will be a string which is "search term"
   // The return will be the filtered array
   // Remove duplicates before pushing to tempResults
-  // Result by topic and language we need to loop through the array
+  // Result by topic and language we need to "loop" through the array
+
   const searchResults = (term) => {
     const tempResults = [];
     const filteredResultByName = resources.filter((item) => {
@@ -35,7 +41,7 @@ function Resources({ resources }) {
     });
     const filteredResultByTopic = resources.filter((item) => {
       if (item.fields["Name (from topic)"]) {
-        // initialize the variable before use and map it after
+        // initialize the variable before to use and loop the array
         let topicToLowerCase = item.fields["Name (from topic)"];
         return topicToLowerCase.map((item) => {
           item.toLowerCase().includes(term.toLowerCase())
@@ -45,14 +51,21 @@ function Resources({ resources }) {
 
     const filteredResultByLanguage = resources.filter((item) => {
       if (item.fields["Name (from language)"]) {
-        // initialize the variable before use and map it after
+        // initialize the variable before to use and loop the array
         let languageToLowerCase = item.fields["Name (from language)"];
         return languageToLowerCase.map((item) => {
           item.toLowerCase().includes(term.toLowerCase())
         });
       }
     });
-    
+
+    // Remove duplicates before pushing to tempResults
+    const removeDuplicateResources = resources.filter((item, id, tempResults) => {
+      return tempResults.indexOf(item) === id;
+    });
+
+    console.log("REMOVED DUPLICATED", removeDuplicateResources);
+
     // Will push all to the temporary result array and return it
     tempResults.push(
       ...filteredResultByName,
@@ -61,27 +74,29 @@ function Resources({ resources }) {
       ...filteredResultByTopic,
       ...filteredResultByLanguage
     );
-    console.log("FILTERTOPIC:", filteredResultByTopic);
-    console.log("FILTERLANGUAGE:", filteredResultByLanguage);
-    console.log("TEMPRESULTS", tempResults);
+   
+    // console.log("FILTERTOPIC:", filteredResultByTopic);
+    // console.log("FILTERLANGUAGE:", filteredResultByLanguage);
+    // console.log("TEMPRESULTS", tempResults);
     return tempResults;
+    
   };
   
-  searchResults("javascript");
+  searchResults("w3");
 
   const handleSelectChange = () => {
     handleSelectAll();
     handleClickOption();
   };
 
-  let filteredCards = resources.filter((item) => {
-    // console.log(item.fields[filterType])
-    if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  // let filteredCards = resources.filter((item) => {
+  //   // console.log(item.fields[filterType])
+  //   if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // });
 
   return (
     <Grid
@@ -105,10 +120,20 @@ function Resources({ resources }) {
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
       </Grid>
-      {filteredCards &&
-        filteredCards.map((resource) => {
+      {/* 
+        If the condition is true, the element right after && will be rendered. 
+        If it is false, the program will ignore and skip it. 
+      */}
+      {resources &&
+        resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
-        })}
+        })
+      }
+      {/* {filterResources &&
+        filterResources.map((resource) => {
+          return <ResourceCard key={resource.id} resource={resource} />;
+        })
+      } */}
     </Grid>
   );
 }
