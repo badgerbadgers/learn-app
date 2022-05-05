@@ -44,28 +44,28 @@ const ProjectCards = () => {
           }}
         >
           {/* Container for Logo and Description */}
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={2}></Grid>
             <Grid item xs={10}></Grid>
           </Grid>
           {/* Container for MeetingTime */}
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12}></Grid>
             <Grid item xs={12}></Grid>
             <Grid item xs={12}></Grid>
           </Grid>
            {/* Container for Repo & calendar Links */}
-           <Grid container xs={12}>
+           <Grid container>
                 <Grid item xs={6}></Grid>
                 <Grid item xs={6}></Grid>
             </Grid>
           {/* Container for Team Members */}
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12}></Grid>
             <Grid item xs={12}></Grid>
           </Grid>
           {/* Container for Project Types */}
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12}></Grid>
           </Grid>
         </CardContent>
