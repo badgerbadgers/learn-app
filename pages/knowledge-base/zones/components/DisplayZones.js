@@ -91,7 +91,7 @@ const DisplayZones = ({ skillData }) => {
     <>
       {skillData && skillData.map((doc) => (
       
-        <Grid item container role="grid" p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0", paddingLeft: isDesktop && "16px" }} >
+        <Grid item container p={0} marginBottom={3} marginTop={-4} key={doc.id} sx={{ paddingTop: "0", paddingLeft: isDesktop && "16px" }} >
           <Grid
             item
             container
