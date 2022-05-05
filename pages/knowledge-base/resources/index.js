@@ -7,9 +7,9 @@ import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterResources, setFilterResources] = useState([])
+  const [filterResources, setFilterResources] = useState([]);
   const [filterType, setFilterType] = useState("Type");
-  
+
   // useEffect(() => {
   //   setFilterResources(searchResults(searchTerm))
   // }, [searchTerm])
@@ -22,7 +22,7 @@ function Resources({ resources }) {
   // The results by topic and language should be "looped" through the array
   // Remove duplicates before pushing to tempResults
   // The return will be the filtered array
-  
+
   const searchResults = (term) => {
     const tempResults = [];
     const filteredResultByName = resources.filter((item) => {
@@ -40,55 +40,63 @@ function Resources({ resources }) {
 
     const filteredResultByDescription = resources.filter((item) => {
       if (item.fields.Description) {
-        return item.fields.Description.toLowerCase().includes(term.toLowerCase())
+        return item.fields.Description.toLowerCase().includes(
+          term.toLowerCase()
+        );
       }
     });
     console.log("*filteredResultByDescription*", filteredResultByDescription)
 
+    // remove the map and use for loop
+    // Inside the loop item.fields["Name (from topic)"][i]
+    // each element inside the loop to when is tru return it to tempResults
+    // changing that string values into lowercase using the toLowerCase method.
+
     const filteredResultByTopic = resources.filter((item) => {
-      
       if (item.fields["Name (from topic)"]) {
-        let topicResults;
         // initialize the variable before to use and loop the array
-        let topicToLowerCase = item.fields["Name (from topic)"];
-        console.log("topicToLowerCase", topicToLowerCase)
-        topicToLowerCase.map((item) => {
-          let topicResults = item.toLowerCase().includes(term.toLowerCase())
-          console.log("topicResults", topicResults)
-        }); 
+        let topicResourcesResults = item.fields["Name (from topic)"];
+        for (let i = 0; i < topicResourcesResults.length; i++) {
+          // console.log("topicResourcesResults", topicResourcesResults[i]);
+          return topicResourcesResults[i]
+            .toLowerCase()
+            .includes(term.toLowerCase());
+        }
       }
-      // return topicResults;
     });
-    console.log("*filteredResultByTopic*", filteredResultByTopic)
+    console.log("*filteredResultByTopic*", filteredResultByTopic);
 
     const filteredResultByLanguage = resources.filter((item) => {
       if (item.fields["Name (from language)"]) {
         // initialize the variable before to use and loop the array
-        let languageToLowerCase = item.fields["Name (from language)"];
-        return languageToLowerCase.map((item) => {
-          item.toLowerCase().includes(term.toLowerCase())
-        });
+        let languageResourcesResults = item.fields["Name (from language)"];
+        for (let i = 0; i < languageResourcesResults.length; i++) {
+          // console.log("languageResourcesResults", languageResourcesResults[i]);
+          return languageResourcesResults[i]
+            .toLowerCase()
+            .includes(term.toLowerCase());
+        }
       }
     });
-    console.log("*filteredResultByLanguage*", filteredResultByLanguage)
+    console.log("*filteredResultByLanguage*", filteredResultByLanguage);
 
     tempResults.push(
-          ...filteredResultByName,
-          ...filteredResultByType,
-          ...filteredResultByDescription,
-          ...filteredResultByTopic,
-          ...filteredResultByLanguage
-        );
+      ...filteredResultByName,
+      ...filteredResultByType,
+      ...filteredResultByDescription,
+      ...filteredResultByTopic,
+      ...filteredResultByLanguage
+    );
     // Remove duplicates resources before pushing to tempResults
     // Will push all to the temporary result array and return it
-    const removeDuplicateResources = resources.filter((item, id, tempResults) => {
+    const removeDuplicateResources = tempResults.filter((item, id) => {
       return tempResults.indexOf(item) === id;
     });
 
-    console.log("**REMOVEDUPLICATE**", removeDuplicateResources);
-    return tempResults;
+    console.log("**REMOVE DUPLICATE**", removeDuplicateResources);
+    return removeDuplicateResources;
   };
-  
+
   searchResults("javaScript");
 
   const handleSelectChange = () => {
@@ -134,8 +142,7 @@ function Resources({ resources }) {
       {resources &&
         resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
-        })
-      }
+        })}
       {/* {filterResources &&
         filterResources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
@@ -153,11 +160,11 @@ function Resources({ resources }) {
 export default Resources;
 
 export async function getServerSideProps() {
- const data = await getResourceData();
-      // Send the data as resources by minify data.  
-    return {
-      props: {
-        resources: minifyItems(data),
-      },
-    };
-  } 
+  const data = await getResourceData();
+  // Send the data as resources by minify data.
+  return {
+    props: {
+      resources: minifyItems(data),
+    },
+  };
+}
