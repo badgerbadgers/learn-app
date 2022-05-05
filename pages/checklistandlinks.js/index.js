@@ -8,13 +8,22 @@ import {
   CardContent,
   Checkbox,
   FormControlLabel,
-  Box
+  Box,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PrivateLayout from "../../components/PrivateLayout";
+import styles from "../../styles/Knowledge.module.css"
 
+import DOMPurify from "isomorphic-dompurify";
 
-import DOMPurify from 'isomorphic-dompurify';
+const checkItemsInfo = [
+  "Track your hours every day: <a href='https://clockify.me/' target=_blank >Clockify</a>",
+  "Request time off using <a href='https://www.hrvey.com/requests/new' target=_blank>Hrvey</a>",
+  "Calendars - Make sure you are subscribed to the Google Calendars for your team",
+  "Tech Stipend:<a href='https://docs.google.com/document/d/1IBj-5i_p7uEGZoe-BBUfwyGsggEok39VGik_uunWHro/edit' target=_blank>Tech Stipend Policy</a> // <a href='https://docs.google.com/forms/d/e/1FAIpQLSeEJOAWCmqQy2syuUw4RHphSX01KgtNmrGHbVvn7DIquOyFeg/viewform' target=_blank>Tech Stipend Request Form</a>",
+  "Buying a new computer? <a href='https://docs.google.com/document/d/1ZMXFrzyrIDTTQOvR4rMK7t9NUnQwa7VKANhFqSCtMVc/edit' target=_blank>Here are the specs you should look for</a>."
+]
+
 export default function ChecklistPage() {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
@@ -55,15 +64,30 @@ export default function ChecklistPage() {
                 }}
               ></CardHeader>
               <CardContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3, textAlign: "left" }}>
-                <FormControlLabel control={<Checkbox />} label={<div
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize("Track your hours every day: <a href='https://app.clockify.me/' >Clockify</a>") }}> 
-                  </div>} />
-                <FormControlLabel label="Request time off using Hrvey" control={<Checkbox />} />{" "}
-                <FormControlLabel label="Calendars- Make sure you are subscribed to the Google Calendars for your team (LINK)" control={<Checkbox />} />{" "}
-                <FormControlLabel label="Tech Stipend: Tech Stipend Policy // Tech Stipend Request Form" control={<Checkbox />} />{" "}
-                <FormControlLabel label="Buying a new computer? Here are the specs you should look for." control={<Checkbox />} />{" "}
-                
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    ml: 3,
+                    textAlign: "left",
+                  }}
+                >
+                {checkItemsInfo.map((item) => 
+                   (<FormControlLabel
+                   className={styles.checklistLink}
+                    control={<Checkbox />}
+                    key={item}
+                    label={
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: 
+                            item
+                          
+                        }}
+                      ></div>
+                    }
+                  />)
+                 )}
                 </Box>
               </CardContent>
             </Card>
