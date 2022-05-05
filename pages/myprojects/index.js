@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import ProjectHeader from "./components/ProjectHeader";
 import ProjectCards from "./components/ProjectCards";
 import { Grid } from "@mui/material";
-import { getProjectsData } from "../../lib/airtable";
+import { getDevelopersData, getProjectsData } from "../../lib/airtable";
+import { privateLayout } from "../../components/PrivateLayout";
 
-const MyProjects = ({data}) => {
-  console.log('***data****' + data.map((doc) => doc.fields['Project Name']))
-
+const MyProjects = ({projectsData, developerData}) => {
+  
+  console.log(projectsData)
+  //console.log(developerData)
   return (
     <Grid
       container
@@ -14,18 +16,25 @@ const MyProjects = ({data}) => {
       sx={{ maxWidth: "1250px", margin: "auto"}}
     >
       <ProjectHeader />
-      <ProjectCards />
+      {projectsData && projectsData.map((project) => 
+            <ProjectCards key={project.id} project={project.fields} /> )
+      }
+      
     </Grid>
   );
 };
 
 export default MyProjects;
 
+MyProjects.getLayout = privateLayout
+
 export async function getServerSideProps() { 
-  const data = await getProjectsData();
+  const projectsData = await getProjectsData();
+  //const developerData = await getDevelopersData()
   return {
     props: {
-      data
+      projectsData
+      //developerData: developerData,
     }
   } 
 }

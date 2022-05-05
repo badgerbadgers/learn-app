@@ -1,12 +1,11 @@
-import { StayPrimaryLandscape } from "@mui/icons-material";
-import { Grid, Card, CardHeader, CardContent } from "@mui/material";
+import { Grid, Card, CardHeader, CardContent, Typography } from "@mui/material";
 
-const ProjectCards = () => {
+const ProjectCards = ({ project }) => {
   return (
     <Grid
       item
       container
-      justify='center'
+      justify="center"
       xs={12}
       sx={{
         align: "center",
@@ -16,60 +15,75 @@ const ProjectCards = () => {
         marginBottom: "25px",
       }}
     >
-      <Card
-        elevation={15}
-        sx={{
-          border: "1px solid",
-          borderColor: "primary.main",
-          borderRadius: "0.25rem",
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        <CardHeader
+        <Card
+          elevation={10}
           sx={{
-            backgroundColor: "primary.main",
-            padding: "10px",
-            textAlign: "center",
-            color: "primary.contrastText",
-          }}
-          variant="h5"
-          title="VAMOS"
-        />
-        <CardContent
-          sx={{
-            margin: "0 auto",
+            border: "1px solid",
+            borderColor: "primary.main",
+            borderRadius: "0.25rem",
             height: "100%",
-            paddingTop: "0",
+            width: "100%",
+            marginBottom: '20px',
           }}
         >
-          {/* Container for Logo and Description */}
-          <Grid container>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={10}></Grid>
-          </Grid>
-          {/* Container for MeetingTime */}
-          <Grid container>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={12}></Grid>
-          </Grid>
-           {/* Container for Repo & calendar Links */}
-           <Grid container>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6}></Grid>
+          <CardHeader
+            sx={{
+              backgroundColor: "primary.main",
+              padding: "10px",
+              textAlign: "center",
+              color: "primary.contrastText",
+            }}
+            variant="h5"
+            title={project['Project Name']}
+          />
+          <CardContent
+            sx={{
+              margin: "0 auto",
+              height: "100%",
+              paddingTop: "0",
+            }}
+          >
+            {/* Container for Logo and Description */}
+            <Grid container>
+              <Grid item xs={2}>
+                {/* {(project.photo && project.photo.length > 0) && project.photo[0]} */}
+              </Grid>
+              <Grid item xs={10}>
+                {project.Project_Description && project.Project_Description}
+                </Grid>
             </Grid>
-          {/* Container for Team Members */}
-          <Grid container>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={12}></Grid>
-          </Grid>
-          {/* Container for Project Types */}
-          <Grid container>
-            <Grid item xs={12}></Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+            {/* Container for MeetingTime */}
+            <Grid container>
+              <Grid item xs={12}>
+              <Typography>Daily Standup Time ET</Typography>
+                <Typography>{project['Daily Standup Time (ET)'] && project['Daily Standup Time (ET)']}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>Planning Meet Time ET</Typography>
+                <Typography>{project['Monday Planning Meeting (ET)'] && project['Monday Planning Meeting (ET)']}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>Daily Scrum Time ET</Typography>{""}
+                <Typography>{project['daily scrum'] && project['daily scrum'] }</Typography>
+
+                </Grid>
+            </Grid>
+            {/* Container for Repo & calendar Links */}
+            <Grid container>
+              <Grid item xs={6}></Grid>
+              <Grid item xs={6}></Grid>
+            </Grid>
+            {/* Container for Team Members */}
+            <Grid container>
+              <Grid item xs={12}>{project['Project Manager'] && project['Project Manager']}</Grid>
+              <Grid item xs={12}></Grid>
+            </Grid>
+            {/* Container for Project Types */}
+            <Grid container>
+              <Grid item xs={12}></Grid>
+            </Grid>
+          </CardContent>
+        </Card>
     </Grid>
   );
 };
