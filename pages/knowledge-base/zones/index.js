@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
-import Airtable from "airtable";
+import { getZoneData } from "../../../lib/airtable";
 
 function Skillszoning({ data }) {
   const [zoningData, setZoningData] = useState([]);
@@ -22,7 +22,7 @@ function Skillszoning({ data }) {
             {
               id: doc.id,
               Name: doc.fields.Name,
-              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, ""),
             },
           ]
         : []
@@ -36,7 +36,7 @@ function Skillszoning({ data }) {
             {
               id: doc.id,
               Name: doc.fields.Name,
-              description: doc.fields.Description.replace(/^\s+|\s+$/g, "")
+              description: doc.fields.Description.replace(/^\s+|\s+$/g, ""),
             },
           ]
         : []
@@ -69,19 +69,10 @@ function Skillszoning({ data }) {
 export default Skillszoning;
 
 export async function getStaticProps() {
-  const base = new Airtable({ apiKey: process.env.AT_KEY }).base(
-    process.env.AIRTABLE_BASE_ID
-  );
-  try {
-    const records = await base("Zones").select().all();
-    const data = JSON.parse(JSON.stringify(records));
-
-    return {
-      props: {
-        data,     },
-    };
-  } catch (e) {
-    console.log("ERROR with ZONES FETCH", e.message);
-  }
+  const data = await getZoneData();
+  return {
+    props: {
+      data
+    }
+  };
 }
-

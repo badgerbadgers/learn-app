@@ -160,7 +160,6 @@ function UserForm({userInfoData, setUserInfoData}) {
   // Passing multiple functions on onClick event
   const handleDialogComplete = () => {
     handleDialogChange();
-    userNameChange(!isUserNameChanged)
     router.push("/dashboard");
   }
   
