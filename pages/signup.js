@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import UserForm from "../components/UserForm";
-import Image from "next/image";
-import PublicLayout, { publicLayout } from "../components/PublicLayout";
+import { publicLayout } from "../components/PublicLayout";
 import Footer from "../components/Footer";
 
 const SignUp = () => {
@@ -18,23 +17,10 @@ const SignUp = () => {
     skillInput: "",
     previousIndustryInput: "",
   });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   return (
     <>
-      {loading && (
-        <Image width={240} height={240} src="/img/loading.gif" alt="loading" />
-      )}
-      {!loading && (
-        <UserForm
-          userInfoData={userInfoData}
-          setUserInfoData={setUserInfoData}
-        />
-      )}
+      <UserForm userInfoData={userInfoData} setUserInfoData={setUserInfoData} />
       <Footer />
     </>
   );
@@ -42,4 +28,4 @@ const SignUp = () => {
 
 export default SignUp;
 
-SignUp.getLayout = publicLayout
+SignUp.getLayout = publicLayout;
