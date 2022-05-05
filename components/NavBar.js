@@ -82,27 +82,24 @@ const NavBar = () => {
       <Container maxWidth={false} sx={{ mx: 0 }}>
         <Toolbar disableGutters>
           {/* code for Logo */}
-          <IconButton
+          <Avatar
+            variant="square"
+            alt="Code the Dream logo"
+            src={
+              mode === "dark"
+                ? "../img/logo/CTD-Labs_Primary-Blue-BG[1].png"
+                : "../img/logo/CTD-Labs_Primary[1].png"
+            }
+            sx={{
+              mr: 3,
+              display: "flex",
+              width: "auto",
+              cursor: "pointer",
+            }}
             onClick={() => {
               session ? router.push("/dashboard") : router.push("/");
             }}
-          >
-            <Avatar
-              variant="square"
-              alt="Code the Dream logo"
-              src={
-                mode === "dark"
-                  ? "../img/CTD-Labs_Primary-Blue-BG[1].png"
-                  : "../img/CTD-Labs_Primary[1].png"
-              }
-              sx={{
-                mr: 3,
-                display: "flex",
-                width: "auto",
-                cursor: "pointer",
-              }}
-            />
-          </IconButton>
+          />
 
           {/* Box for the user Image and Menu */}
 
