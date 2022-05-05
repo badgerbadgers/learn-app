@@ -33,7 +33,7 @@ const WeeklyMeetingsCard = () => {
           title="Don’t Forget! Weekly meetings"
           sx={{
             minHeight: "80px",
-            backgroundColor: "primary.projectCard",
+            backgroundColor: "primary.greenCard",
             //opacity: 0.9,
             color: "primary.contrastText",
           }}
