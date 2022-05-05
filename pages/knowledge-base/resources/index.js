@@ -28,6 +28,7 @@ function Resources({ resources }) {
     const filteredResultByName = resources.filter((item) => {
       return item.fields.Name.toLowerCase().includes(term.toLowerCase());
     });
+    console.log("*filteredResultByName*", filteredResultByName)
 
     const filteredResultByType = resources.filter((item) => {
       if (item.fields.Type) {
@@ -35,20 +36,30 @@ function Resources({ resources }) {
       }
     });
 
+    console.log("*filteredResultByType*", filteredResultByType)
+
     const filteredResultByDescription = resources.filter((item) => {
       if (item.fields.Description) {
         return item.fields.Description.toLowerCase().includes(term.toLowerCase())
       }
     });
+    console.log("*filteredResultByDescription*", filteredResultByDescription)
+
     const filteredResultByTopic = resources.filter((item) => {
+      
       if (item.fields["Name (from topic)"]) {
+        let topicResults;
         // initialize the variable before to use and loop the array
         let topicToLowerCase = item.fields["Name (from topic)"];
-        return topicToLowerCase.map((item) => {
-          item.toLowerCase().includes(term.toLowerCase())
+        console.log("topicToLowerCase", topicToLowerCase)
+        topicToLowerCase.map((item) => {
+          let topicResults = item.toLowerCase().includes(term.toLowerCase())
+          console.log("topicResults", topicResults)
         }); 
       }
+      // return topicResults;
     });
+    console.log("*filteredResultByTopic*", filteredResultByTopic)
 
     const filteredResultByLanguage = resources.filter((item) => {
       if (item.fields["Name (from language)"]) {
@@ -59,25 +70,26 @@ function Resources({ resources }) {
         });
       }
     });
+    console.log("*filteredResultByLanguage*", filteredResultByLanguage)
 
+    tempResults.push(
+          ...filteredResultByName,
+          ...filteredResultByType,
+          ...filteredResultByDescription,
+          ...filteredResultByTopic,
+          ...filteredResultByLanguage
+        );
     // Remove duplicates resources before pushing to tempResults
     // Will push all to the temporary result array and return it
     const removeDuplicateResources = resources.filter((item, id, tempResults) => {
       return tempResults.indexOf(item) === id;
     });
 
-    tempResults.push(
-      ...filteredResultByName,
-      ...filteredResultByType,
-      ...filteredResultByDescription,
-      ...filteredResultByTopic,
-      ...filteredResultByLanguage
-    );
-    console.log("TEMPRESULTS", removeDuplicateResources);
+    console.log("**REMOVEDUPLICATE**", removeDuplicateResources);
     return tempResults;
   };
   
-  searchResults("w3");
+  searchResults("javaScript");
 
   const handleSelectChange = () => {
     handleSelectAll();
