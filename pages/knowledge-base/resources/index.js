@@ -18,10 +18,10 @@ function Resources({ resources }) {
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
   // The input will be a string which is "search term"
-  // The return will be the filtered array
+  // The results by topic and language should be "looped" through the array
   // Remove duplicates before pushing to tempResults
-  // Result by topic and language we need to "loop" through the array
-
+  // The return will be the filtered array
+  
   const searchResults = (term) => {
     const tempResults = [];
     const filteredResultByName = resources.filter((item) => {
@@ -59,14 +59,12 @@ function Resources({ resources }) {
       }
     });
 
-    // Remove duplicates before pushing to tempResults
+    // Remove duplicates resources before pushing to tempResults
+    // Will push all to the temporary result array and return it
     const removeDuplicateResources = resources.filter((item, id, tempResults) => {
       return tempResults.indexOf(item) === id;
     });
 
-    console.log("REMOVED DUPLICATED", removeDuplicateResources);
-
-    // Will push all to the temporary result array and return it
     tempResults.push(
       ...filteredResultByName,
       ...filteredResultByType,
@@ -74,12 +72,8 @@ function Resources({ resources }) {
       ...filteredResultByTopic,
       ...filteredResultByLanguage
     );
-   
-    // console.log("FILTERTOPIC:", filteredResultByTopic);
-    // console.log("FILTERLANGUAGE:", filteredResultByLanguage);
-    // console.log("TEMPRESULTS", tempResults);
+    console.log("TEMPRESULTS", removeDuplicateResources);
     return tempResults;
-    
   };
   
   searchResults("w3");
@@ -90,12 +84,12 @@ function Resources({ resources }) {
   };
 
   // let filteredCards = resources.filter((item) => {
-  //   // console.log(item.fields[filterType])
   //   if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
   //     return true;
   //   } else {
   //     return false;
   //   }
+  //   console.log("FILTER CARDS:", filteredCards)
   // });
 
   return (
@@ -131,6 +125,11 @@ function Resources({ resources }) {
       }
       {/* {filterResources &&
         filterResources.map((resource) => {
+          return <ResourceCard key={resource.id} resource={resource} />;
+        })
+      } */}
+      {/* {filteredCards &&
+        filteredCards.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })
       } */}
