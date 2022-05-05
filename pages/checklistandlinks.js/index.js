@@ -18,6 +18,7 @@ import WeeklyMeetingsCard from "./components/WeeklyMeetingsCard";
 
 //import DOMPurify from "isomorphic-dompurify";
 import styles from "../../styles/Knowledge.module.css"
+import CTDAdminCard from "./components/CTDAdminCard";
 
 
 export default function ChecklistPage() {
@@ -46,6 +47,7 @@ export default function ChecklistPage() {
           
           <CheckListCard />
           <WeeklyMeetingsCard />
+          <CTDAdminCard />
         </Grid>
       </Paper>
     </Container>

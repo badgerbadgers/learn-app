@@ -30,9 +30,9 @@ const WeeklyMeetingsCard = () => {
         }}
       >
         <CardHeader
-          title="Check list for new Apprentices"
+          title="Don’t Forget! Weekly meetings"
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: "primary.projectCard",
             //opacity: 0.9,
             color: "primary.contrastText",
           }}
