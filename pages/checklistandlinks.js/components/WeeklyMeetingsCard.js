@@ -32,6 +32,7 @@ const WeeklyMeetingsCard = () => {
         <CardHeader
           title="Don’t Forget! Weekly meetings"
           sx={{
+            minHeight: "80px",
             backgroundColor: "primary.projectCard",
             //opacity: 0.9,
             color: "primary.contrastText",
