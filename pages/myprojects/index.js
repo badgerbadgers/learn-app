@@ -30,11 +30,11 @@ MyProjects.getLayout = privateLayout
 
 export async function getServerSideProps() { 
   const projectsData = await getProjectsData();
-  //const developerData = await getDevelopersData()
+  const developerData = await getDevelopersData()
   return {
     props: {
-      projectsData
-      //developerData: developerData,
+      projectsData : projectsData,
+      developerData: developerData,
     }
   } 
 }
