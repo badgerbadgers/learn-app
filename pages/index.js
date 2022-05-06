@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import LogIn from "../components/Login";
 import { Typography } from "@mui/material";
 import Image from "next/image";
