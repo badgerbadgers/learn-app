@@ -7,16 +7,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
 
-export default function Home(props) {
-  const { data: session } = useSession();
-  const router = useRouter()
-
-  useEffect(() => {
-    if (session) {
-      router.push('/dashboard')
-    }
-  }, [])
-
+export default function Home() {
   return (
     <>
       {/* <ImageWall />  */}
@@ -38,11 +29,18 @@ export default function Home(props) {
 
 Home.displayName = "Home";
 
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-   
-    },
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+  if (session) { //if session exists - redirect to dashboard
+    return {
+      props: {session},
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+  return { //nothing happens if no session 
+    props: {},
   };
 }
