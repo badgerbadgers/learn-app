@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Card } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ResourceToolBar from "./components/ResourceToolBar";
@@ -28,7 +28,7 @@ function Resources({ resources }) {
     const filteredResultByName = resources.filter((item) => {
       return item.fields.Name.toLowerCase().includes(term.toLowerCase());
     });
-    console.log("*filteredResultByName*", filteredResultByName)
+    console.log("*filteredResultByName*", filteredResultByName);
 
     const filteredResultByType = resources.filter((item) => {
       if (item.fields.Type) {
@@ -36,7 +36,7 @@ function Resources({ resources }) {
       }
     });
 
-    console.log("*filteredResultByType*", filteredResultByType)
+    console.log("*filteredResultByType*", filteredResultByType);
 
     const filteredResultByDescription = resources.filter((item) => {
       if (item.fields.Description) {
@@ -45,7 +45,7 @@ function Resources({ resources }) {
         );
       }
     });
-    console.log("*filteredResultByDescription*", filteredResultByDescription)
+    console.log("*filteredResultByDescription*", filteredResultByDescription);
 
     // remove the map and use for loop
     // Inside the loop item.fields["Name (from topic)"][i]
@@ -104,15 +104,6 @@ function Resources({ resources }) {
     handleClickOption();
   };
 
-  // let filteredCards = resources.filter((item) => {
-  //   if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  //   console.log("FILTER CARDS:", filteredCards)
-  // });
-
   return (
     <Grid
       container
@@ -139,20 +130,18 @@ function Resources({ resources }) {
         If the condition is true, the element right after && will be rendered. 
         If it is false, the program will ignore and skip it. 
       */}
-      {resources &&
-        resources.map((resource) => {
-          return <ResourceCard key={resource.id} resource={resource} />;
-        })}
+      
       {/* {filterResources &&
         filterResources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })
       } */}
-      {/* {filteredCards &&
-        filteredCards.map((resource) => {
+
+      {resources &&
+        resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })
-      } */}
+      }
     </Grid>
   );
 }
