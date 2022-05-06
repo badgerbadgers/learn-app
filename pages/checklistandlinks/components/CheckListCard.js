@@ -65,7 +65,6 @@ const CheckListCard = () => {
   const handleCheckboxChange = (e) => {
     let updatedCheckList = checkListItems.map((item) => {
       if (item.name === e.target.name) {
-        console.log(item, "form if");
         item.checked = !item.checked;
       }
       return item;
@@ -83,6 +82,7 @@ const CheckListCard = () => {
           width: "100%",
           position: "relative",
           margin: "0 auto",
+          backgroundColor: "background.ctdcard"
         }}
       >
         <CardHeader

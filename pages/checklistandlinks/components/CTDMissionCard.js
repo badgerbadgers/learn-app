@@ -26,6 +26,7 @@ const CTDMissionCard = () => {
           position: "relative",
           margin: "0 auto",
           display: "flex",
+          backgroundColor: "background.ctdcard"
         }}
       >
         <Grid container item xs={12}>
@@ -38,6 +39,7 @@ const CTDMissionCard = () => {
               backgroundColor: "primary.yellowCard",
               color: "primary.contrastText",
               flexGrow: "1",
+              opacity: 0.9
             }}
           ></CardHeader>
 

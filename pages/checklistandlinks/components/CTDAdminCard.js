@@ -36,6 +36,7 @@ const CTDAdminCard = () => {
           position: "relative",
           margin: "0 auto",
           display: "flex",
+          backgroundColor: "background.ctdcard"
         }}
       >
         <Grid container item xs={12}>
@@ -46,7 +47,7 @@ const CTDAdminCard = () => {
             sx={{
               minHeight: "80px",
               backgroundColor: "primary.main",
-              //opacity: 0.9,
+              opacity: 0.9,
               color: "primary.contrastText",
               flexGrow: "1",
             }}
