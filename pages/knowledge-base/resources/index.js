@@ -104,6 +104,15 @@ function Resources({ resources }) {
     handleClickOption();
   };
 
+  // let filteredCards = resources.filter((item) => {
+  //   if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  //   console.log("FILTER CARDS:", filteredCards)
+  // });
+
   return (
     <Grid
       container
