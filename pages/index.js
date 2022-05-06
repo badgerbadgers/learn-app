@@ -31,7 +31,6 @@ export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
   if (session) { //if session exists - redirect to dashboard
     return {
-      props: {session},
       redirect: {
         destination: "/dashboard",
         permanent: false,
