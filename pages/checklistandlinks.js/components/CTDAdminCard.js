@@ -50,7 +50,7 @@ const CTDAdminCard = () => {
           ></CardHeader>
 
           <Grid container item>
-            <Grid  item sm={6} xs={12}>
+            <Grid  item md={6} xs={12}>
               <CardContent>
                 <List>
                   {questionsInfo.map((item) => (
@@ -70,7 +70,7 @@ const CTDAdminCard = () => {
               </CardContent>
             </Grid>
 
-            <Grid item sm={6} xs={12}>
+            <Grid item md={6} xs={12}>
               <CardContent>
                 <List>
                   {directoryInfo.map((item) => (

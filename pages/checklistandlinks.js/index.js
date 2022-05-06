@@ -2,13 +2,6 @@ import {
   Container,
   Paper,
   Grid,
-  Card,
-  Typography,
-  CardHeader,
-  CardContent,
-  Checkbox,
-  FormControlLabel,
-  Box,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PrivateLayout from "../../components/PrivateLayout";

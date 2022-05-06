@@ -19,7 +19,7 @@ const weeklymeetingInfo = [
 const WeeklyMeetingsCard = () => {
   const matches = useMediaQuery("(min-width:600px)");
   return (
-    <Grid item xs={12} sm={6} pb={1} mt={-1}>
+    <Grid item xs={12} md={6} pb={1} mt={-1}>
       <Card
         sx={{
           height: "100%",

@@ -1,9 +1,6 @@
 import {
-  Container,
-  Paper,
   Grid,
   Card,
-  Typography,
   CardHeader,
   CardContent,
   Checkbox,
@@ -12,7 +9,7 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-
+import DOMPurify from 'isomorphic-dompurify';
 
 const checkItemsInfo = [
   "Track your hours every day: <a href='https://clockify.me/' target=_blank >Clockify</a>",
@@ -23,9 +20,10 @@ const checkItemsInfo = [
 ]
 
 const CheckListCard = () => {
+  const sanitize = DOMPurify.sanitize
   const matches = useMediaQuery("(min-width:600px)");
   return (
-  <Grid item xs={12} sm={6} pb={1} mt={-1}>
+  <Grid item xs={12} md={6} pb={1} mt={-1}>
     <Card
       sx={{
         height: "100%",
@@ -61,7 +59,7 @@ const CheckListCard = () => {
               label={
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: item,
+                    __html: sanitize(item),
                   }}
                 ></div>
               }
