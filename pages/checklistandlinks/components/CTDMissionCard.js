@@ -34,6 +34,7 @@ const CTDMissionCard = () => {
             title="CTD Mission Statement & Vision Statement"
             md={12}
             sx={{
+              minHeight: "80px",
               backgroundColor: "primary.yellowCard",
               color: "primary.contrastText",
               flexGrow: "1",
@@ -42,7 +43,7 @@ const CTDMissionCard = () => {
 
           <Grid container item>
             <Grid item sm={6} xs={12}>
-              <CardContent>
+              <CardContent >
                 <Typography variant="h6">
                   Code the Dream Mission Statement
                 </Typography>

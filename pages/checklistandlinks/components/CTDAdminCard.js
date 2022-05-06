@@ -44,6 +44,7 @@ const CTDAdminCard = () => {
             title="Admin"
             md={12}
             sx={{
+              minHeight: "80px",
               backgroundColor: "primary.main",
               //opacity: 0.9,
               color: "primary.contrastText",
@@ -53,7 +54,7 @@ const CTDAdminCard = () => {
 
           <Grid container item>
             <Grid  item md={6} xs={12}>
-              <CardContent>
+              <CardContent sx={{px: 0}}>
                 <List>
                   {questionsInfo.map((item) => (
                     <ListItem key={item}>
