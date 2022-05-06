@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemText
 } from "@mui/material";
+import WifiCalling3Icon from '@mui/icons-material/WifiCalling3';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const weeklymeetingInfo = [
@@ -30,6 +31,7 @@ const WeeklyMeetingsCard = () => {
         }}
       >
         <CardHeader
+        action={<WifiCalling3Icon />}
           title="Don’t Forget! Weekly meetings"
           sx={{
             minHeight: "80px",

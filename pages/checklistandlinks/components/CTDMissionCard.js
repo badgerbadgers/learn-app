@@ -8,6 +8,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import DiamondIcon from '@mui/icons-material/Diamond';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const missionInfo = [""];
@@ -29,6 +30,7 @@ const CTDMissionCard = () => {
       >
         <Grid container item xs={12}>
           <CardHeader
+          action={<DiamondIcon />}
             title="CTD Mission Statement & Vision Statement"
             md={12}
             sx={{

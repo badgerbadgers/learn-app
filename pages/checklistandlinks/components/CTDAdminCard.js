@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const questionsInfo = [
@@ -39,6 +40,7 @@ const CTDAdminCard = () => {
       >
         <Grid container item xs={12}>
           <CardHeader
+          action={<AdminPanelSettingsIcon />}
             title="Admin"
             md={12}
             sx={{

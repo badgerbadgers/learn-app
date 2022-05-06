@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   Box,
 } from "@mui/material";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import DOMPurify from 'isomorphic-dompurify';
@@ -34,6 +35,7 @@ const CheckListCard = () => {
       }}
     >
       <CardHeader
+        action={<CheckCircleOutlineIcon />}
         title="Check list for new Apprentices"
         sx={{
           minHeight: "80px",
