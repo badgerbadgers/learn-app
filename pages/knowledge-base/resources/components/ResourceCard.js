@@ -9,15 +9,13 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActions } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import {
-  DeveloperMode,
-  CategoryOutlined,
-  DescriptionRounded,
-  FitnessCenter,
-  StyleOutlined,
-  CodeOffOutlined,
-  AdjustOutlined,
-} from "@mui/icons-material";
+import DeveloperMode from "@mui/icons-material/DeveloperMode";
+import CategoryOutlined from "@mui/icons-material/CategoryOutlined";
+import DescriptionRounded from "@mui/icons-material/DescriptionRounded";
+import FitnessCenter from "@mui/icons-material/FitnessCenter";
+import StyleOutlined from "@mui/icons-material/StyleOutlined";
+import CodeOffOutlined from "@mui/icons-material/CodeOffOutlined";
+import AdjustOutlined from "@mui/icons-material/AdjustOutlined";
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
