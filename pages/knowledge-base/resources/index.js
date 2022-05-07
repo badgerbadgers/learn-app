@@ -28,31 +28,39 @@ function Resources({ resources }) {
   const searchResults = (term) => {
     const tempResults = [];
     let filteredResults = resources.filter((item) => {
-      if (
-        item.fields.Name ||
-        item.fields.Type ||
-        item.fields.Description ||
-        item.fields["Name (from topic)"] ||
-        item.fields["Name (from language)"]
-      ) {
-        // check if this term exist if not return empty array
-        const lowerCaseName = item.fields.Name ? item.fields.Name.toLowerCase() : [];
-        const lowerCaseType = item.fields.Type ? item.fields.Type.toLowerCase() : [];
-        const lowerCaseDescription = item.fields.Description ? item.fields.Description.toLowerCase() : [];
-        let topicSearchResults = item.fields['Name (from topic)'] ? item.fields['Name (from topic)'].map(topic => topic.toLowerCase()) : [];
-        let languageSearchResults = item.fields['Name (from language)'] ? item.fields['Name (from language)'].map(topic => topic.toLowerCase()) : [];
+      // Change string value into lowercase and check if this term exist and save it
+      // or if doesn't exist return empty array
+      const lowerCaseName = item.fields.Name
+        ? item.fields.Name.toLowerCase()
+        : [];
+      const lowerCaseType = item.fields.Type
+        ? item.fields.Type.toLowerCase()
+        : [];
+      const lowerCaseDescription = item.fields.Description
+        ? item.fields.Description.toLowerCase()
+        : [];
+      let topicSearchResults = item.fields["Name (from topic)"]
+        ? item.fields["Name (from topic)"].map((topic) => topic.toLowerCase())
+        : [];
+      let languageSearchResults = item.fields["Name (from language)"]
+        ? item.fields["Name (from language)"].map((topic) =>
+            topic.toLowerCase()
+          )
+        : [];
 
-        return (
-          lowerCaseName.includes(term.toLowerCase()) ||
-          lowerCaseType.includes(term.toLowerCase()) ||
-          lowerCaseDescription.includes(term.toLowerCase()) ||
-          (topicSearchResults && topicSearchResults.includes(term.toLowerCase())) ||
-          (languageSearchResults && languageSearchResults.includes(term.toLowerCase()))
-        );
-      }
+      return (
+        // Check if exist and change the search term into lowercase
+        lowerCaseName.includes(term.toLowerCase()) ||
+        lowerCaseType.includes(term.toLowerCase()) ||
+        lowerCaseDescription.includes(term.toLowerCase()) ||
+        (topicSearchResults &&
+          topicSearchResults.includes(term.toLowerCase())) ||
+        (languageSearchResults &&
+          languageSearchResults.includes(term.toLowerCase()))
+      );
     });
 
-    console.log("*filteredResults*", filteredResults);
+    console.log("FILTERED RESULTS:", filteredResults);
 
     tempResults.push(filteredResults);
 
@@ -66,21 +74,12 @@ function Resources({ resources }) {
     return removeDuplicateResources;
   };
 
-  searchResults("coding");
+  searchResults("w3");
 
   const handleSelectChange = () => {
     handleSelectAll();
     handleClickOption();
   };
-
-  // let filteredCards = resources.filter((item) => {
-  //   if (item.fields.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  //   console.log("FILTER CARDS:", filteredCards)
-  // });
 
   return (
     <Grid
@@ -104,16 +103,12 @@ function Resources({ resources }) {
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
       </Grid>
+
       {/* 
         If the condition is true, the element right after && will be rendered. 
         If it is false, the program will ignore and skip it. 
       */}
 
-      {/* {filterResources &&
-        filterResources.map((resource) => {
-          return <ResourceCard key={resource.id} resource={resource} />;
-        })
-      } */}
       {resources &&
         resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
