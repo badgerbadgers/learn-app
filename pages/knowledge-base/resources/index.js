@@ -14,79 +14,48 @@ function Resources({ resources }) {
   //   setFilterResources(searchResults(searchTerm))
   // }, [searchTerm])
 
-  console.log("RESOURCES:", resources);
+  console.log("***RESOURCES***", resources);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
   // The input will be a string which is "search term"
+  // initialize the variable before to use and loop the array
   // The results by topic and language should be "looped" through the array
+  // changing that string values into lowercase using the toLowerCase method
   // Remove duplicates before pushing to tempResults
   // The return will be the filtered array
 
   const searchResults = (term) => {
     const tempResults = [];
-    const filteredResultByName = resources.filter((item) => {
-      return item.fields.Name.toLowerCase().includes(term.toLowerCase());
-    });
-    console.log("*filteredResultByName*", filteredResultByName);
+    let filteredResults = resources.filter((item) => {
+      if (
+        item.fields.Name ||
+        item.fields.Type ||
+        item.fields.Description ||
+        item.fields["Name (from topic)"] ||
+        item.fields["Name (from language)"]
+      ) {
+        // check if this term exist if not return empty array
+        const lowerCaseName = item.fields.Name ? item.fields.Name.toLowerCase() : [];
+        const lowerCaseType = item.fields.Type ? item.fields.Type.toLowerCase() : [];
+        const lowerCaseDescription = item.fields.Description ? item.fields.Description.toLowerCase() : [];
+        let topicSearchResults = item.fields['Name (from topic)'] ? item.fields['Name (from topic)'].map(topic => topic.toLowerCase()) : [];
+        let languageSearchResults = item.fields['Name (from language)'] ? item.fields['Name (from language)'].map(topic => topic.toLowerCase()) : [];
 
-    const filteredResultByType = resources.filter((item) => {
-      if (item.fields.Type) {
-        return item.fields.Type.toLowerCase().includes(term.toLowerCase());
-      }
-    });
-
-    console.log("*filteredResultByType*", filteredResultByType);
-
-    const filteredResultByDescription = resources.filter((item) => {
-      if (item.fields.Description) {
-        return item.fields.Description.toLowerCase().includes(
-          term.toLowerCase()
+        return (
+          lowerCaseName.includes(term.toLowerCase()) ||
+          lowerCaseType.includes(term.toLowerCase()) ||
+          lowerCaseDescription.includes(term.toLowerCase()) ||
+          (topicSearchResults && topicSearchResults.includes(term.toLowerCase())) ||
+          (languageSearchResults && languageSearchResults.includes(term.toLowerCase()))
         );
       }
     });
-    console.log("*filteredResultByDescription*", filteredResultByDescription);
 
-    // remove the map and use for loop
-    // Inside the loop item.fields["Name (from topic)"][i]
-    // each element inside the loop to when is tru return it to tempResults
-    // changing that string values into lowercase using the toLowerCase method.
+    console.log("*filteredResults*", filteredResults);
 
-    const filteredResultByTopic = resources.filter((item) => {
-      if (item.fields["Name (from topic)"]) {
-        // initialize the variable before to use and loop the array
-        let topicResourcesResults = item.fields["Name (from topic)"];
-        for (let i = 0; i < topicResourcesResults.length; i++) {
-          // console.log("topicResourcesResults", topicResourcesResults[i]);
-          return topicResourcesResults[i]
-            .toLowerCase()
-            .includes(term.toLowerCase());
-        }
-      }
-    });
-    console.log("*filteredResultByTopic*", filteredResultByTopic);
+    tempResults.push(filteredResults);
 
-    const filteredResultByLanguage = resources.filter((item) => {
-      if (item.fields["Name (from language)"]) {
-        // initialize the variable before to use and loop the array
-        let languageResourcesResults = item.fields["Name (from language)"];
-        for (let i = 0; i < languageResourcesResults.length; i++) {
-          // console.log("languageResourcesResults", languageResourcesResults[i]);
-          return languageResourcesResults[i]
-            .toLowerCase()
-            .includes(term.toLowerCase());
-        }
-      }
-    });
-    console.log("*filteredResultByLanguage*", filteredResultByLanguage);
-
-    tempResults.push(
-      ...filteredResultByName,
-      ...filteredResultByType,
-      ...filteredResultByDescription,
-      ...filteredResultByTopic,
-      ...filteredResultByLanguage
-    );
     // Remove duplicates resources before pushing to tempResults
     // Will push all to the temporary result array and return it
     const removeDuplicateResources = tempResults.filter((item, id) => {
@@ -97,7 +66,7 @@ function Resources({ resources }) {
     return removeDuplicateResources;
   };
 
-  searchResults("javaScript");
+  searchResults("coding");
 
   const handleSelectChange = () => {
     handleSelectAll();
@@ -139,18 +108,16 @@ function Resources({ resources }) {
         If the condition is true, the element right after && will be rendered. 
         If it is false, the program will ignore and skip it. 
       */}
-      
+
       {/* {filterResources &&
         filterResources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })
       } */}
-
       {resources &&
         resources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
-        })
-      }
+        })}
     </Grid>
   );
 }
