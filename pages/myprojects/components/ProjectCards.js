@@ -35,6 +35,7 @@ const ProjectCards = ({ project }) => {
             }}
             variant="h5"
             title={project['Project Name']}
+            //title={project.projectName}
           />
           <CardContent
             sx={{
@@ -44,43 +45,47 @@ const ProjectCards = ({ project }) => {
             }}
           >
             {/* Container for Logo and Description */}
-            <Grid container>
+            <Grid item container>
               <Grid item xs={2}>
-                {/* {(project.photo && project.photo.length > 0) && project.photo[0]} */}
+                {(project.photo && project.photo.length > 0) && project.photo[0].url}
               </Grid>
               <Grid item xs={10}>
                 {project.Project_Description && project.Project_Description}
                 </Grid>
             </Grid>
+            <Grid item container >
             {/* Container for MeetingTime */}
-            <Grid container>
+            <Grid item container flex-direction="column">
               <Grid item xs={12}>
-              <Typography>Daily Standup Time ET</Typography>
-                <Typography>{project['Daily Standup Time (ET)'] && project['Daily Standup Time (ET)']}</Typography>
+              <Typography>Daily Standup Time ET: {""}
+              {project['Daily Standup Time (ET)'] && project['Daily Standup Time (ET)']}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography>Planning Meet Time ET</Typography>
-                <Typography>{project['Monday Planning Meeting (ET)'] && project['Monday Planning Meeting (ET)']}</Typography>
+                <Typography>Planning Meet Time ET: {""}
+                {project['Monday Planning Meeting (ET)'] && project['Monday Planning Meeting (ET)']}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography>Daily Scrum Time ET</Typography>{""}
-                <Typography>{project['daily scrum'] && project['daily scrum'] }</Typography>
-
+                <Typography>Daily Scrum Time ET: {""}
+                {project['daily scrum'] && project['daily scrum'] }</Typography>
                 </Grid>
             </Grid>
+
             {/* Container for Repo & calendar Links */}
-            <Grid container>
+            <Grid item container flex-direction="column">
               <Grid item xs={6}></Grid>
               <Grid item xs={6}></Grid>
             </Grid>
+
             {/* Container for Team Members */}
-            <Grid container>
+            <Grid item container flex-direction="column">
               <Grid item xs={12}>{project['Project Manager'] && project['Project Manager']}</Grid>
-              <Grid item xs={12}></Grid>
+              <Grid item xs={12}>{project.Developers}</Grid>
             </Grid>
             {/* Container for Project Types */}
-            <Grid container>
-              <Grid item xs={12}></Grid>
+
+            <Grid item container flex-direction="column">
+              <Grid item xs={12}>{project.Type}</Grid>
+            </Grid>
             </Grid>
           </CardContent>
         </Card>
