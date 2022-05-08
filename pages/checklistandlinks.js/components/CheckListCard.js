@@ -38,6 +38,7 @@ const CheckListCard = () => {
       <CardHeader
         title="Check list for new Apprentices"
         sx={{
+          minHeight: "80px",
           backgroundColor: "secondary.main",
           //opacity: 0.9,
           color: "primary.contrastText",

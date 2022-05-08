@@ -9,15 +9,18 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const qnaInfo = [
-  
+const questionsInfo = [
+  "Question about your project or code? Ask a teammate, your team’s project manager, or your lead mentor.",
+  "Sick or need to request time off? Communicate with Alex Rodriguez, <a href='https://app.slack.com/client/T07EHJ738/D01R8M1S02V/user_profile/U65NVG78F' target=_blank> @Arod </a> on Slack, or <a href='mailto:alex@codethedream.org'>alex@codethedream.org</a>.",
+  "Question about the apprenticeship in general, or other issues related to Code the Dream’s programs? Communicate with Lori, <a href='https://app.slack.com/client/T07EHJ738/D024S9SK3CG/user_profile/ULAJMU5CJ' target=_blank> @Lori </a> on Slack, or <a href='mailto:lori@codethedream.org'>lori@codethedream.org</a>.",
+  "Address change or stipend/pay/tax question? Communicate with Lucy, <a href='https://app.slack.com/client/T07EHJ738/D037R1LSTTM/user_profile/U01GKHRAN78' target=_blank> @Lucy Martinez </a> on Slack, or <a href='mailto:lucy@codethedream.org'>lucy@codethedream.org</a>."
 ];
 
 const directoryInfo = [
-  "Team Directory – List view",
-  "Team Directory – Gallery view",
-  "Need to fill out the Team Directory? Here`&apsf;`s the form.",
-  "Need to make a change to your entry? Please contact Lucy, @Lucy Martinez, lucy@codethedream.org."
+  "Team Directory – <a href='https://airtable.com/shr0myah6gY1NTbQ3/tbl6BlIjU9xtYPc3h' target=_blank >List view</a>",
+  "Team Directory – <a href='https://airtable.com/shrz73FjB1dL0G96b/tbl6BlIjU9xtYPc3h' target=_blank >Gallery view</a>",
+  "Need to fill out the Team Directory? <a href='https://airtable.com/shrzddLFtiSBXRE70' target=_blank >Here&apos;s the form</a>.",
+  "Need to make a change to your entry? Please contact Lucy, <a href='https://app.slack.com/client/T07EHJ738/D037R1LSTTM/user_profile/U01GKHRAN78' target=_blank> @Lucy Martinez </a>, <a href='mailto:lucy@codethedream.org'>lucy@codethedream.org</a>."
 
 ]
 
@@ -47,10 +50,10 @@ const CTDAdminCard = () => {
           ></CardHeader>
 
           <Grid container item>
-            <Grid sx={{ width: "500px" }} item sm={6} xs={12}>
+            <Grid  item sm={6} xs={12}>
               <CardContent>
                 <List>
-                  {/* {weeklymeetingInfo.map((item) => (
+                  {questionsInfo.map((item) => (
                     <ListItem key={item}>
                       <ListItemText
                         primary={
@@ -60,17 +63,17 @@ const CTDAdminCard = () => {
                             }}
                           ></div>
                         }
-                      /> */}
-            {/*         </ListItem>
-                  ))} */}
+                      />
+                     </ListItem>
+                  ))}
                 </List>
               </CardContent>
             </Grid>
 
-            <Grid sx={{ width: "500px" }} item sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <CardContent>
                 <List>
-                  {/* {weeklymeetingInfo.map((item) => (
+                  {directoryInfo.map((item) => (
                     <ListItem key={item}>
                       <ListItemText
                         primary={
@@ -82,7 +85,7 @@ const CTDAdminCard = () => {
                         }
                       />
                     </ListItem>
-                  ))} */}
+                  ))}
                 </List>
               </CardContent>
             </Grid>
@@ -92,4 +95,5 @@ const CTDAdminCard = () => {
     </Grid>
   );
 };
+
 export default CTDAdminCard;
