@@ -11,7 +11,6 @@ import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 
 const Dashboard = () => {
-  const { data: session } = useSession();
 
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
