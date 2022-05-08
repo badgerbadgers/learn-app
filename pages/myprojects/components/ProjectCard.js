@@ -30,7 +30,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
       >
         <CardHeader
           sx={{
-            backgroundColor: {headerColor},
+            backgroundColor: headerColor[0],
             padding: "10px",
             textAlign: "center",
             color: "primary.contrastText",

@@ -12,7 +12,7 @@ const colorArray = ["primary.main", "secondary.main"];
 
 const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
-  const [headerColor, setHeaderColor] = useState(null);
+  const [headerColor, setHeaderColor] = useState([]);
   const currentUserID = user.gh.toLowerCase();
 
   useEffect(() => {
@@ -39,11 +39,11 @@ const MyProjects = ({ projectsData, developersData, user }) => {
         console.log(currentUserProjects, "CUP**");
 
         // Creating a temp Array to store multiple projects data and then set that into the state.
-        const multiProjectsData = [];
+        const tempMultiProjectsData = [];
 
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
         currentUserProjects.map((project) => {
-          multiProjectsData.push({
+          tempMultiProjectsData.push({
             id: project.id,
             projectName: project.fields["Project Name"] || "",
             website: project.fields.Website | "",
@@ -67,27 +67,29 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             type: project.fields.Type || "",
           });
         });
-        setMyProjectsData(multiProjectsData);
+        setMyProjectsData(tempMultiProjectsData);
       } catch (error) {
         console.log(error, "error from projectsData in /api/myprojects");
       }
     }
   }, [currentUserID, projectsData, developersData]);
 
-  console.log(myProjectsData, "*** MyPRD**");
+  useEffect(() => {
+    const tempColorArray = [];
+    if (myProjectsData) {
+      for (const i = 0; i < myProjectsData.length; i++) {
+        let colorIndex = i % 2;
+        // console.log(colorIndex, "******CI****");
+        tempColorArray.push(colorArray[colorIndex]);
+        // console.log(colorArray[colorIndex]);
+      }
+      setHeaderColor(tempColorArray);
+    }
+  }, [myProjectsData]);
 
+  console.log(myProjectsData, "*** MyPRD**");
   //console.log(projectsData, "**********PRD****");
   //console.log(developersData, "**Dev**");
-
-  const handleColor = () => {
-    console.log("Hello");
-    for (const i = 0; i < myProjectsData.length; i++) {
-      let colorIndex = i % 2;
-      console.log(colorIndex, "******CI****");
-      JSON.stringify(colorArray[colorIndex]);
-      console.log(JSON.stringify(colorArray[colorIndex]));
-    }
-  };
 
   return (
     <Grid
@@ -101,7 +103,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           <ProjectCard
             key={project.id}
             projectData={project}
-            headerColor={handleColor()}
+            headerColor={headerColor}
           />
         ))}
     </Grid>
