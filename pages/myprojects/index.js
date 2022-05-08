@@ -7,8 +7,12 @@ import { privateLayout } from "../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
 import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
 
+const colorArray = ["primary.main", "secondary.main"];
+//console.log(colorArray[0])
+
 const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
+  const [headerColor, setHeaderColor] = useState(null);
   const currentUserID = user.gh.toLowerCase();
 
   useEffect(() => {
@@ -36,7 +40,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
 
         // Creating a temp Array to store multiple projects data and then set that into the state.
         const multiProjectsData = [];
-        
+
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
         currentUserProjects.map((project) => {
           multiProjectsData.push({
@@ -75,6 +79,16 @@ const MyProjects = ({ projectsData, developersData, user }) => {
   //console.log(projectsData, "**********PRD****");
   //console.log(developersData, "**Dev**");
 
+  const handleColor = () => {
+    console.log("Hello");
+    for (const i = 0; i < myProjectsData.length; i++) {
+      let colorIndex = i % 2;
+      console.log(colorIndex, "******CI****");
+      JSON.stringify(colorArray[colorIndex]);
+      console.log(JSON.stringify(colorArray[colorIndex]));
+    }
+  };
+
   return (
     <Grid
       container
@@ -82,9 +96,14 @@ const MyProjects = ({ projectsData, developersData, user }) => {
       sx={{ maxWidth: "1250px", margin: "auto" }}
     >
       <ProjectHeader />
-      {myProjectsData && myProjectsData.map((project) => 
-            <ProjectCard key={project.id} projectData={project} /> )
-      }
+      {myProjectsData &&
+        myProjectsData.map((project) => (
+          <ProjectCard
+            key={project.id}
+            projectData={project}
+            headerColor={handleColor()}
+          />
+        ))}
     </Grid>
   );
 };
@@ -120,3 +139,5 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries

@@ -1,6 +1,8 @@
 import { Grid, Card, CardHeader, CardContent, Typography } from "@mui/material";
 
-const ProjectCard = ({ projectData }) => {
+
+const ProjectCard = ({ projectData, headerColor }) => {
+  console.log(headerColor)
   return (
     <Grid
       item
@@ -28,13 +30,12 @@ const ProjectCard = ({ projectData }) => {
       >
         <CardHeader
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: {headerColor},
             padding: "10px",
             textAlign: "center",
             color: "primary.contrastText",
           }}
           variant="h5"
-          //title={project['Project Name']}
           title={projectData.projectName}
         />
         <CardContent
