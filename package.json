@@ -14,12 +14,8 @@
     "@mui/material": "^5.4.1",
     "@mui/styles": "^5.4.2",
     "@next-auth/mongodb-adapter": "^1.0.1",
-<<<<<<< HEAD
     "airtable": "^0.11.3",
-=======
     "@octokit/core": "^3.6.0",
-    "airtable": "^0.11.2",
->>>>>>> dev
     "axios": "^0.26.1",
     "clsx": "^1.1.1",
     "dompurify": "^2.3.6",
