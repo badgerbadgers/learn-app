@@ -35,6 +35,7 @@ function ResourceCard({ resource }) {
   const topic = resource ? resource.fields["Name (from topic)"] : [] ;
   const language = resource ? resource.fields["Name (from language)"] : [];
 
+  console.log("RESOURCE:", resource)
   const resourcesNavBarColor = () => {
     // The function will change color based on resource type
     const elColor = resourcesColorIcon.find(

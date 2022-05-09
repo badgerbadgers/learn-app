@@ -7,7 +7,7 @@ import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterResources, setFilterResources] = useState([]);
+  const [filterResources, setFilterResources] = useState(resources);
   const [filterType, setFilterType] = useState("Type");
 
   // useEffect(() => {
@@ -74,11 +74,15 @@ function Resources({ resources }) {
     return removeDuplicateResources;
   };
 
-  searchResults("w3");
+  // searchResults("javascript");
 
-  const handleSelectChange = () => {
-    handleSelectAll();
-    handleClickOption();
+  const handleSelectChange = (term) => {
+    console.log("tem", term)
+    // handleSelectAll();
+    // handleClickOption();
+    const filteredList = searchResults(term)
+    setFilterResources(filteredList)
+    console.log("filterResources", filterResources)
   };
 
   return (
@@ -109,8 +113,8 @@ function Resources({ resources }) {
         If it is false, the program will ignore and skip it. 
       */}
 
-      {resources &&
-        resources.map((resource) => {
+      {filterResources &&
+        filterResources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })}
     </Grid>

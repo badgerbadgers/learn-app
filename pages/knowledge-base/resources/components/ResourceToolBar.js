@@ -26,6 +26,7 @@ function ResourceToolBar({
   searchTerm,
   setSearchTerm,
   setFilterType,
+  onChange,
   // id,
   // name,
   // handleClickOption,
@@ -74,7 +75,10 @@ function ResourceToolBar({
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={searchTerm}
-              onChange={(e) => handleSearchChange(e)}
+              onChange={(e) => {
+                onChange(searchTerm)
+                handleSearchChange(e)
+              }}
             />
           </Search>
           <Stack
