@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UserForm from "../components/UserForm";
-import { PublicLayout, publicLayout } from "../components/PublicLayout";
+import { PublicLayout } from "../components/PublicLayout";
 import Footer from "../components/Footer";
 
 const SignUp = () => {
