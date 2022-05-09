@@ -8,7 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import WifiCalling3Icon from "@mui/icons-material/WifiCalling3";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import DOMPurify from "isomorphic-dompurify";
 
 const weeklymeetingInfo = [
   "Weekly Café- Tuesdays at 12:00pm ET. Time occasionally varies depending on the speaker. <a href='https://zoom.us/' target=_blank >Zoom link here</a>.",
@@ -18,7 +18,9 @@ const weeklymeetingInfo = [
 ];
 
 const WeeklyMeetingsCard = () => {
-  const matches = useMediaQuery("(min-width:600px)");
+
+  const sanitize = DOMPurify.sanitize;
+
   return (
     <Grid item xs={12} md={6} pb={1} mt={-1}>
       <Card
@@ -32,7 +34,7 @@ const WeeklyMeetingsCard = () => {
       >
         <CardHeader
           action={<WifiCalling3Icon />}
-          title="Don’t Forget! Weekly meetings"
+          title="Don&apos;t Forget! Weekly meetings"
           sx={{
             minHeight: "80px",
             backgroundColor: "primary.greenCard",
@@ -48,7 +50,7 @@ const WeeklyMeetingsCard = () => {
                   primary={
                     <div
                       dangerouslySetInnerHTML={{
-                        __html: item,
+                        __html: sanitize(item),
                       }}
                     ></div>
                   }

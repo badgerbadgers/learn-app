@@ -1,13 +1,12 @@
 import styles from "../../../styles/Knowledge.module.css";
 import { Container, Paper, Grid } from "@mui/material";
 
-const CheckListLayout = ({matches, children}) => {
-  
+const CheckListLayout = ({ matches, children }) => {
   return (
     <Container
-    role="container"
+      role="container"
       className={styles.checklistLink}
-      sx={{ textAlign: "center", p: !matches && 1 }}
+      sx={{ textAlign: "center", p: !matches && 1 , mb: 4}}
     >
       <Paper
         sx={{
@@ -22,7 +21,7 @@ const CheckListLayout = ({matches, children}) => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{ justifyContent: "center" }}
         >
-        {children}
+          {children}
         </Grid>
       </Paper>
     </Container>

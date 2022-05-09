@@ -8,7 +8,6 @@ import {
   Box,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 import DOMPurify from "isomorphic-dompurify";
 import { useState, useEffect } from "react";
@@ -34,7 +33,7 @@ const checkItemsInfo = [
   },
   {
     label:
-      "Tech Stipend:<a href='https://docs.google.com/document/d/1IBj-5i_p7uEGZoe-BBUfwyGsggEok39VGik_uunWHro/edit' target=_blank>Tech Stipend Policy</a> // <a href='https://docs.google.com/forms/d/e/1FAIpQLSeEJOAWCmqQy2syuUw4RHphSX01KgtNmrGHbVvn7DIquOyFeg/viewform' target=_blank>Tech Stipend Request Form</a>",
+      "Tech Stipend: <a href='https://docs.google.com/document/d/1IBj-5i_p7uEGZoe-BBUfwyGsggEok39VGik_uunWHro/edit' target=_blank> Tech Stipend Policy</a> // <a href='https://docs.google.com/forms/d/e/1FAIpQLSeEJOAWCmqQy2syuUw4RHphSX01KgtNmrGHbVvn7DIquOyFeg/viewform' target=_blank>Tech Stipend Request Form</a>",
     name: "Tech Stipend",
     checked: false,
   },
@@ -49,16 +48,15 @@ const checkItemsInfo = [
 const CheckListCard = () => {
   const [checkListItems, setCheckListItems] = useState(checkItemsInfo);
   const sanitize = DOMPurify.sanitize;
-  const matches = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
-    const checklistfromstorage = localStorage.getItem("checklist");
+    const checklistfromstorage = localStorage.getItem("checklist"); //retrive data from local storage if exists
 
-    if(checklistfromstorage) {
-      setCheckListItems(JSON.parse(checklistfromstorage))
+    if (checklistfromstorage) {
+      setCheckListItems(JSON.parse(checklistfromstorage));
     } else {
-      setCheckListItems(checkItemsInfo)
-      localStorage.setItem("checklist", JSON.stringify(checkListItems));
+      setCheckListItems(checkItemsInfo); //if no data in localstorage initiate the state with initial value
+      localStorage.setItem("checklist", JSON.stringify(checkListItems)); //and save to local storage
     }
   }, []);
 
@@ -71,7 +69,7 @@ const CheckListCard = () => {
     });
 
     setCheckListItems(updatedCheckList);
-    localStorage.setItem("checklist", JSON.stringify(updatedCheckList))
+    localStorage.setItem("checklist", JSON.stringify(updatedCheckList));
   };
 
   return (
@@ -82,7 +80,7 @@ const CheckListCard = () => {
           width: "100%",
           position: "relative",
           margin: "0 auto",
-          backgroundColor: "background.ctdcard"
+          backgroundColor: "background.ctdcard",
         }}
       >
         <CardHeader
@@ -104,25 +102,26 @@ const CheckListCard = () => {
               textAlign: "left",
             }}
           >
-            {checkListItems && checkListItems.map((item) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name={item.name}
-                    checked={item.checked}
-                    onChange={(e) => handleCheckboxChange(e)}
-                  />
-                }
-                key={item.name}
-                label={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: sanitize(item.label),
-                    }}
-                  ></div>
-                }
-              />
-            ))}
+            {checkListItems &&
+              checkListItems.map((item) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name={item.name}
+                      checked={item.checked}
+                      onChange={(e) => handleCheckboxChange(e)}
+                    />
+                  }
+                  key={item.name}
+                  label={
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: sanitize(item.label),
+                      }}
+                    ></div>
+                  }
+                />
+              ))}
           </Box>
         </CardContent>
       </Card>
