@@ -55,9 +55,10 @@ const ProjectCard = ({ projectData, headerColor }) => {
             height: "100%",
           }}
         >
-          {/* <Grid container > */}
+        
           {/* Container for Logo and Description */}
           <Grid item container>
+            
             <Grid item xs={12} md={1}>
               <Avatar
                 alt="App Logo"
@@ -86,9 +87,12 @@ const ProjectCard = ({ projectData, headerColor }) => {
           </Grid>
 
           {/* container for all the bottom details */}
+
           <Grid container flex-direction="column" mt={2}>
-            {/* Container for MeetingTime */}
+
+            {/* Container for Meetings Time */}
             <Grid item container xs={12} sm={4}>
+
               <Grid item xs={12} display="flex">
                 <Typography variant="h6">Daily Standup Time ET:</Typography>
 
@@ -96,22 +100,27 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   11:30 am
                   {projectData.dailyStandupTime}
                 </Typography>
+
               </Grid>
+                          {/* -------------- */}
               <Grid item xs={12}>
                 <Typography>
                   Planning Meet Time ET: {""}
                   {projectData.planningMeetTime}
                 </Typography>
               </Grid>
+                          {/* -------------- */}
               <Grid item xs={12}>
                 <Typography>
                   Daily Scrum Time ET: {""}
                   {projectData.dailyScrumTime}
                 </Typography>
               </Grid>
+
             </Grid>
 
             {/* Container for Repo & calendar Links */}
+            
             <Grid item container flex-direction="column" xs={12} sm={4}>
               {/* Repo */}
               <Grid item xs={6} sm={12}>
@@ -123,6 +132,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 </Typography>
                 
               </Grid>
+
               {/* Calendar */}
               <Grid item xs={6} sm={12}>
                 <Typography>
@@ -130,32 +140,40 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   {projectData.calendarLink}
                 </Typography>
               </Grid>
-            </Grid>
 
+            </Grid>
+                    {/* -------------- */}
             {/* Container for Team Members */}
             <Grid item container flex-direction="column" xs={12} sm={4}>
+
               <Grid item xs={12}>
                 <Typography>
                   PM: {""}
                   {projectData.projectManager}
                 </Typography>
               </Grid>
+
               <Grid item xs={12}>
                 <Typography>
                   Team: {""}
                   {projectData.team}
                 </Typography>
               </Grid>
+
             </Grid>
+
           </Grid>
+                      {/* -------------- */}
 
           {/* Container for Project Types */}
           <Grid container flex-direction="column" mt={2}>
+
             <Grid item xs={12}>
               {projectData.type} React, React Native, Rails
             </Grid>
+
           </Grid>
-          {/* </Grid> */}
+          
         </CardContent>
       </Card>
     </Grid>
