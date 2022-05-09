@@ -20,15 +20,13 @@ export default function ChecklistPage() {
   return (
     //layout
     <Container
+    role="container"
       className={styles.checklistLink}
       sx={{ textAlign: "center", p: !matches && 1 }}
     >
       <Paper
         sx={{
-          //minWidth: 330,
           backgroundColor: "background.dbpaper",
-          my: 2,
-          mx: "auto",
           p: matches ? 8 : 2,
         }}
       >
