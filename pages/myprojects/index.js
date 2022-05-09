@@ -44,7 +44,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
         const tempMultiProjectsData = [];
 
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
-        currentUserProjects.map((project) => {
+        currentUserProjects && currentUserProjects.map((project) => {
           tempMultiProjectsData.push({
             id: project.id,
             projectName: project.fields["Project Name"] || "",
@@ -52,15 +52,12 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             logo:
               (project.fields.photo &&
                 project.fields.photo.length > 0 &&
-                project.fields.photo[0].url) ||
-              "",
+                project.fields.photo[0].url) || "",
             description: project.fields.Project_Description || "",
             dailyStandupTime: project.fields["Daily Standup Time (ET)"] || "",
-            planningMeetTime:
-              project.fields["Monday Planning Meeting (ET)"] || "",
+            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] || "",
             dailyScrumTime: project.fields["daily scrum"] || "",
-            // repo: project.fields.Repo || "",
-            repo: project.fields.Repo || "",
+            repo: `<a href= ${project.fields.Repo}> Repo Link </a>` || "",
             calendarLink: project.fields.calendarLinks || "",
             projectManager: project.fields["Project Manager"] || "",
             team:
@@ -98,7 +95,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
     <Grid
       container
       alignItems="center"
-      sx={{ maxWidth: "1250px", margin: "auto" }}
+      sx={{ maxWidth: "1250px", margin: "30px auto" }}
     >
       <ProjectHeader />
       {myProjectsData &&

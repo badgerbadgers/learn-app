@@ -1,4 +1,3 @@
-import FolderSharedRoundedIcon from '@mui/icons-material/FolderSharedRounded';
 import { Typography, Grid } from "@mui/material";
 
 const ProjectHeader = () => {
@@ -13,14 +12,6 @@ const ProjectHeader = () => {
     }}
     >
     <Typography variant="h3" gutterBottom color="secondary" textAlign="center">
-      <FolderSharedRoundedIcon
-        color="secondary"
-        style={{
-          fontSize: "54px",
-          position: "relative",
-          top: "8px",
-        }}
-      />{" "}
       My Projects
     </Typography>
     </Grid>

@@ -11,8 +11,8 @@ import DOMPurify from "isomorphic-dompurify";
 
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
-  const sanitize = DOMPurify.sanitize;
-  const htmlTarget = '_blank';
+  const sanitize = DOMPurify.sanitize();
+  const htmlTarget = "target='_blank'";
 
   return (
     <Grid
@@ -126,7 +126,10 @@ const ProjectCard = ({ projectData, headerColor }) => {
               <Grid item xs={6} sm={12}>
                 <Typography variant="h6"
                   dangerouslySetInnerHTML={{
-                    __html: sanitize(`<a href= ${projectData.repo} target=_blank> Repo Link </a>`),
+                    __html: sanitize(projectData.repo, {
+                      transformTags: {
+                      'a': sanitize.simpleTransform('a', {target: '_blank'})
+                    }}),
                   }}
                 >
                 </Typography>
