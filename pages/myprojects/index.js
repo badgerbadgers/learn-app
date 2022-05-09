@@ -8,7 +8,6 @@ import { getSession } from "next-auth/react";
 import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
 
 const colorArray = ["primary.main", "primary.greenCard", "secondary.main"];
-//console.log(colorArray[0])
 
 const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
@@ -60,6 +59,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             planningMeetTime:
               project.fields["Monday Planning Meeting (ET)"] || "",
             dailyScrumTime: project.fields["daily scrum"] || "",
+            // repo: project.fields.Repo || "",
             repo: project.fields.Repo || "",
             calendarLink: project.fields.calendarLinks || "",
             projectManager: project.fields["Project Manager"] || "",

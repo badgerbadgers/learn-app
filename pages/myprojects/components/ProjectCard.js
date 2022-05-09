@@ -5,10 +5,15 @@ import {
   CardContent,
   Typography,
   Avatar,
+  Link,
 } from "@mui/material";
+import DOMPurify from "isomorphic-dompurify";
 
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
+  const sanitize = DOMPurify.sanitize;
+  const htmlTarget = '_blank';
+
   return (
     <Grid
       item
@@ -27,7 +32,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
         elevation={10}
         sx={{
           border: "1px solid",
-          borderColor: "primary.main",
+          borderColor: headerColor,
           borderRadius: "0.25rem",
           height: "100%",
           width: "100%",
@@ -48,30 +53,47 @@ const ProjectCard = ({ projectData, headerColor }) => {
           sx={{
             margin: "0 auto",
             height: "100%",
-            paddingTop: "0",
           }}
         >
+          {/* <Grid container > */}
           {/* Container for Logo and Description */}
           <Grid item container>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} md={1}>
               <Avatar
                 alt="App Logo"
                 src={projectData.logo}
                 variant="square"
-                sx={{ height: "100%", width: "auto" }}
+                sx={{ height: "auto" }}
               />
             </Grid>
-            <Grid item xs={12} sm={10}>
-              {projectData.description}
+            <Grid item xs={12} md={11}>
+              <Typography variant="body1">
+                {projectData.description}
+                Upstate is a web-app that tracks legislation in the North
+                Carolina General Assembly. Advocates, legislators, and lobbyists
+                have subscriptions to keep track of bills but there is also a
+                free subscription for non-profits; as well as a free version
+                that has limited features. It allows the user to pick the
+                different bills that you want to follow and also look for them
+                specifically for what you would like to look for, also, manage
+                your bills and be able to add tags for easy following. There are
+                also committee meetings that are scheduled so you are able to
+                track when the committee meeting will be happening. It is an
+                easy way and an organized way to track the pending legislation
+                in NC.
+              </Typography>
             </Grid>
           </Grid>
 
-          <Grid item container flex-direction="column">
+          {/* container for all the bottom details */}
+          <Grid container flex-direction="column" mt={2}>
             {/* Container for MeetingTime */}
             <Grid item container xs={12} sm={4}>
-              <Grid item xs={12}>
-                <Typography>
-                  Daily Standup Time ET: {""}
+              <Grid item xs={12} display="flex">
+                <Typography variant="h6">Daily Standup Time ET:</Typography>
+
+                <Typography variant="body1">
+                  11:30 am
                   {projectData.dailyStandupTime}
                 </Typography>
               </Grid>
@@ -91,12 +113,17 @@ const ProjectCard = ({ projectData, headerColor }) => {
 
             {/* Container for Repo & calendar Links */}
             <Grid item container flex-direction="column" xs={12} sm={4}>
+              {/* Repo */}
               <Grid item xs={6} sm={12}>
-                <Typography>
-                  Repo Link: {""}
-                  {projectData.repo}
+                <Typography variant="h6"
+                  dangerouslySetInnerHTML={{
+                    __html: sanitize(`<a href= ${projectData.repo} target=_blank> Repo Link </a>`),
+                  }}
+                >
                 </Typography>
+                
               </Grid>
+              {/* Calendar */}
               <Grid item xs={6} sm={12}>
                 <Typography>
                   Calendar Links: {""}
@@ -123,11 +150,12 @@ const ProjectCard = ({ projectData, headerColor }) => {
           </Grid>
 
           {/* Container for Project Types */}
-          <Grid item container flex-direction="column" xs={12}>
+          <Grid container flex-direction="column" mt={2}>
             <Grid item xs={12}>
-              {projectData.type}
+              {projectData.type} React, React Native, Rails
             </Grid>
           </Grid>
+          {/* </Grid> */}
         </CardContent>
       </Card>
     </Grid>
