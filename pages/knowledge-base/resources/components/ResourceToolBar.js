@@ -26,16 +26,9 @@ function ResourceToolBar({
   searchTerm,
   setSearchTerm,
   setFilterType,
-  onChange,
-  // id,
-  // name,
-  // handleClickOption,
-  // setIsCheck,
-  // isCheck,
   isCheckedAll,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [filterByType, setFilterByType] = useState("");
   const open = Boolean(anchorEl);
 
   // Events handlers to anchor the menu
@@ -53,15 +46,7 @@ function ResourceToolBar({
 
   // *** FILTERS SECTION START HERE ***
   // destructuring the state filter by type and filter response
-  const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
-
-  // const handleFilterByTypeChange = (e) => {
-  //   setFilterByType({
-  //     ...filterByType,
-  //     setFilterType,
-  //     [e.target.name]: e.target.checked,
-  //   });
-  // };
+  // const { cheatsheet, coding, concepts, docs, exercises, other } = filterByType;
 
   return (
     <Grid item xs={12} sx={{ flexGrow: 1 }}>
@@ -75,10 +60,7 @@ function ResourceToolBar({
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={searchTerm}
-              onChange={(e) => {
-                onChange(searchTerm)
-                handleSearchChange(e)
-              }}
+              onChange={(e) => handleSearchChange(e)}
             />
           </Search>
           <Stack

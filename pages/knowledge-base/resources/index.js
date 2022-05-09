@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Card } from "@mui/material";
+import React, { useState } from "react";
+import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ResourceToolBar from "./components/ResourceToolBar";
@@ -7,14 +7,6 @@ import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterResources, setFilterResources] = useState(resources);
-  const [filterType, setFilterType] = useState("Type");
-
-  // useEffect(() => {
-  //   setFilterResources(searchResults(searchTerm))
-  // }, [searchTerm])
-
-  console.log("***RESOURCES***", resources);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -60,30 +52,17 @@ function Resources({ resources }) {
       );
     });
 
-    console.log("FILTERED RESULTS:", filteredResults);
-
-    tempResults.push(filteredResults);
+    tempResults.push(...filteredResults);
 
     // Remove duplicates resources before pushing to tempResults
     // Will push all to the temporary result array and return it
     const removeDuplicateResources = tempResults.filter((item, id) => {
       return tempResults.indexOf(item) === id;
     });
-
-    console.log("**REMOVE DUPLICATE**", removeDuplicateResources);
     return removeDuplicateResources;
   };
 
-  // searchResults("javascript");
-
-  const handleSelectChange = (term) => {
-    console.log("tem", term)
-    // handleSelectAll();
-    // handleClickOption();
-    const filteredList = searchResults(term)
-    setFilterResources(filteredList)
-    console.log("filterResources", filterResources)
-  };
+  const filteredList = searchResults(searchTerm)
 
   return (
     <Grid
@@ -101,8 +80,6 @@ function Resources({ resources }) {
         resources={resources}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        setFilterType={setFilterType}
-        onChange={handleSelectChange}
       />
       <Grid item xs={12} marginLeft="25px" color="blue">
         Available Resources
@@ -113,8 +90,8 @@ function Resources({ resources }) {
         If it is false, the program will ignore and skip it. 
       */}
 
-      {filterResources &&
-        filterResources.map((resource) => {
+      {filteredList &&
+        filteredList.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
         })}
     </Grid>
