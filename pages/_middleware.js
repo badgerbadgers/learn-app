@@ -9,8 +9,6 @@ export async function middleware(req) {
   };
   const session = await getSession({ req: requestForNextAuth });
 
-  // console.log(req.nextUrl.pathname, 'path name')
-
   if (
     req.nextUrl.pathname === "/dashboard" ||
     /*TODO: would like to refactor 
