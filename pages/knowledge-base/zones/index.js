@@ -2,6 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
+import { privateLayout } from "../../../components/PrivateLayout";
 import { getZoneData } from "../../../lib/airtable";
 
 function Skillszoning({ data }) {
@@ -67,6 +68,8 @@ function Skillszoning({ data }) {
 }
 
 export default Skillszoning;
+
+Skillszoning.getLayout = privateLayout
 
 export async function getStaticProps() {
   const data = await getZoneData();

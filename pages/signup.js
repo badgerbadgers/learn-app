@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserForm from "../components/UserForm";
-
+import { PublicLayout } from "../components/PublicLayout";
+import Footer from "../components/Footer";
 
 const SignUp = () => {
   const [userInfoData, setUserInfoData] = useState({
@@ -23,3 +24,13 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+//to custome a layout for sighup page used function
+SignUp.getLayout = function getLayout(pages) {
+  return (
+    <>
+      <PublicLayout>{pages}</PublicLayout>
+      <Footer />
+    </>
+  );
+};
