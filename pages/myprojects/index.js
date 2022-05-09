@@ -7,7 +7,7 @@ import { privateLayout } from "../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
 import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
 
-const colorArray = ["primary.main", "secondary.main"];
+const colorArray = ["primary.main", "primary.greenCard", "secondary.main"];
 //console.log(colorArray[0])
 
 const MyProjects = ({ projectsData, developersData, user }) => {
@@ -38,7 +38,10 @@ const MyProjects = ({ projectsData, developersData, user }) => {
 
         console.log(currentUserProjects, "CUP**");
 
-        // Creating a temp Array to store multiple projects data and then set that into the state.
+        // Creating a temp Array to store multiple projects data and then set each project into the state with correct fields.
+        //cant store directly into to sate as it will overwrite the privious data and can't spread the state else it adds a 
+        //dependency to the array and goes in infinite loop.
+
         const tempMultiProjectsData = [];
 
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
@@ -78,7 +81,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
     const tempColorArray = [];
     if (myProjectsData) {
       for (const i = 0; i < myProjectsData.length; i++) {
-        let colorIndex = i % 2;
+        let colorIndex = i % 3;
         // console.log(colorIndex, "******CI****");
         tempColorArray.push(colorArray[colorIndex]);
         // console.log(colorArray[colorIndex]);
@@ -103,7 +106,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           <ProjectCard
             key={project.id}
             projectData={project}
-            headerColor={headerColor}
+            headerColor={headerColor.map(color => color)}
           />
         ))}
     </Grid>

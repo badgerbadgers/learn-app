@@ -1,8 +1,14 @@
-import { Grid, Card, CardHeader, CardContent, Typography } from "@mui/material";
-
+import {
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  Avatar,
+} from "@mui/material";
 
 const ProjectCard = ({ projectData, headerColor }) => {
-  console.log(headerColor)
+  console.log(headerColor);
   return (
     <Grid
       item
@@ -30,7 +36,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
       >
         <CardHeader
           sx={{
-            backgroundColor: headerColor[0],
+            backgroundColor: headerColor,
             padding: "10px",
             textAlign: "center",
             color: "primary.contrastText",
@@ -47,16 +53,22 @@ const ProjectCard = ({ projectData, headerColor }) => {
         >
           {/* Container for Logo and Description */}
           <Grid item container>
-            <Grid item xs={2}>
-              {projectData.logo}
+            <Grid item xs={12} sm={2}>
+              <Avatar
+                alt="App Logo"
+                src={projectData.logo}
+                variant="square"
+                sx={{ height: "100%", width: "auto" }}
+              />
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={10}>
               {projectData.description}
             </Grid>
           </Grid>
-          <Grid item container>
+
+          <Grid item container flex-direction="column">
             {/* Container for MeetingTime */}
-            <Grid item container flex-direction="column">
+            <Grid item container xs={12} sm={4}>
               <Grid item xs={12}>
                 <Typography>
                   Daily Standup Time ET: {""}
@@ -78,14 +90,14 @@ const ProjectCard = ({ projectData, headerColor }) => {
             </Grid>
 
             {/* Container for Repo & calendar Links */}
-            <Grid item container flex-direction="column">
-              <Grid item xs={6}>
+            <Grid item container flex-direction="column" xs={12} sm={4}>
+              <Grid item xs={6} sm={12}>
                 <Typography>
                   Repo Link: {""}
                   {projectData.repo}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} sm={12}>
                 <Typography>
                   Calendar Links: {""}
                   {projectData.calendarLink}
@@ -94,7 +106,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
             </Grid>
 
             {/* Container for Team Members */}
-            <Grid item container flex-direction="column">
+            <Grid item container flex-direction="column" xs={12} sm={4}>
               <Grid item xs={12}>
                 <Typography>
                   PM: {""}
@@ -102,18 +114,18 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-              <Typography>
+                <Typography>
                   Team: {""}
                   {projectData.team}
                 </Typography>
               </Grid>
             </Grid>
-            {/* Container for Project Types */}
+          </Grid>
 
-            <Grid item container flex-direction="column">
-              <Grid item xs={12}>
-                {projectData.type}
-              </Grid>
+          {/* Container for Project Types */}
+          <Grid item container flex-direction="column" xs={12}>
+            <Grid item xs={12}>
+              {projectData.type}
             </Grid>
           </Grid>
         </CardContent>
