@@ -21,6 +21,7 @@ export default function InputForm() {
     techStackArray: [],
     skillsArray:[],
     previousIndustryArray: [],
+    bio: ""
   });
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +40,7 @@ export default function InputForm() {
       try{      
             (async () => {
             await getData(params, url).then((data) => {
-        
+        if(data){
         // Add input default values and initialize the state values
               setUserInfoData({
                 firstName: data.firstName,
@@ -56,9 +57,11 @@ export default function InputForm() {
                 techStackInput: "",
                 skillInput: "",
                 previousIndustryInput: "",
-              });
+                bio: 'data.bio'
+              })}
                 setLoading(false);         
               });
+            
             })();
           }catch (error){
             console.log(error, "error from getData in /api/usersprofile");

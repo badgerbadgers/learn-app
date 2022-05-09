@@ -10,6 +10,7 @@ import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "../styles/Portfolio.module.css";
+import BioTextField from "../pages/userform/components/BioTextField";
 
 
 
@@ -185,7 +186,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                   name="firstName"
                   placeholder="Type your first name"
                   label="First Name"
-                  variant="outlined"
+                  
                   fullWidth
                   required
                   size="small"
@@ -346,6 +347,9 @@ function UserForm({userInfoData, setUserInfoData}) {
               </Grid>
             </Grid>
             <br />
+
+            <BioTextField bio={userInfoData.bio} />
+
             <Typography variant="body1" mt={2} gutterBottom>
               <strong>Personal Contact: </strong>
             </Typography>
@@ -419,10 +423,11 @@ function UserForm({userInfoData, setUserInfoData}) {
                 <div>
                   <Button
                     variant="contained"
-                    disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email) &&
+                    disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email ||  userInfoData.bio) &&
                       !userInfoData.firstName?.length > 0 ||
                       !userInfoData.lastName?.length > 0 ||
                       userInfoData.email.length === 0 ||
+                      userInfoData.bio.length === 0 ||
                       !!errors.email
                     }
                     onClick={(e) => handleSubmitForm(e)} 
