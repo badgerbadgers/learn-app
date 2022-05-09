@@ -14,6 +14,7 @@ import clientPromise from "../../../lib/mongodb";
 function Portfolio({user}) {
   // const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  console.user(user, 'user');
   
   const url = "/api/users";
   const router = useRouter();
