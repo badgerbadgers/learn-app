@@ -11,7 +11,7 @@ import DOMPurify from "isomorphic-dompurify";
 
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
-  const sanitize = DOMPurify.sanitize();
+  const sanitize = DOMPurify.sanitize;
   const htmlTarget = "target='_blank'";
 
   return (
@@ -129,7 +129,8 @@ const ProjectCard = ({ projectData, headerColor }) => {
                     __html: sanitize(projectData.repo, {
                       transformTags: {
                       'a': sanitize.simpleTransform('a', {target: '_blank'})
-                    }}),
+                      }
+                    }),
                   }}
                 >
                 </Typography>

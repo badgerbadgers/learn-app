@@ -13,7 +13,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
   const [headerColor, setHeaderColor] = useState([]);
   const currentUserID = user.gh.toLowerCase();
-
+//console.log(user)
   useEffect(() => {
     if (currentUserID) {
       try {
