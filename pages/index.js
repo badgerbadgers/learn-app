@@ -29,10 +29,17 @@ Home.displayName = "Home";
 
 Home.getLayout = publicLayout;
 
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+  if (session) { //if session exists - redirect to dashboard
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+  return { //nothing happens if no session 
+    props: {},
   };
 }
