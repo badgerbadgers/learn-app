@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodb";
 import GitHubProvider from "next-auth/providers/github";
+import { getGitHubMembers } from "../../../lib/github";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -24,38 +25,45 @@ export default NextAuth({
     updateAge: 24 * 60 * 60, // 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
+  events: {
+    signIn: ({ profile, isNewUser }) => {
+      // refactor
+      if (isNewUser) {
+        console.log(isNewUser, "isNewUser");
+        (async () => {
+          const isAllowedToSignInArray = await getGitHubMembers();
+          // console.log(isAllowedToSignInArray, "is allowed to signInArray");
+          if (isAllowedToSignInArray.includes(profile.gh)) {
+            console.log("allowed to login");
+            return true;
+          } else {
+            console.log("not allowed to login");
+            return false;
+          }
+        })();
+      }
+    },
+  },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       return { ...session, user };
     },
-  //   async signIn(user, account, profile) { 
-  //     console.log(user, 'user in auth');
-
-
-  //   //   const isAllowedToSignIn = true
-  //   //   if (isAllowedToSignIn) {
-  //   //     return true
-  //   //   } else {
-  //   //     // Return false to display a default error message
-  //   //     return false
-  //   //     // Or you can return a URL to redirect to:
-  //   //     // return '/unauthorized'
-  //   //   }
-  // }
-
   },
-
+  pages: {
+    signIn: "/dashboard",
+    newUser: "/signup", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       id: "github",
-      // name: "GitHub",
-      // type: "oauth",
-      // authorization:
-      //   "https://github.com/login/oauth/authorize?scope=read:user+user:email",
-      // token: "https://github.com/login/oauth/access_token",
+      name: "GitHub",
+      type: "oauth",
+      authorization:
+        "https://github.com/login/oauth/authorize?scope=read:user+user:email",
+      token: "https://github.com/login/oauth/access_token",
       userinfo: {
         url: "https://api.github.com/user",
         async request({ client, tokens }) {
@@ -69,8 +77,6 @@ export default NextAuth({
                 headers: { Authorization: `token ${tokens.access_token}` },
               })
             ).json();
-
-            console.log(emails, 'emails');
 
             if (emails?.length > 0) {
               // Get primary email
@@ -95,22 +101,9 @@ export default NextAuth({
       },
     }),
   ],
-  //TODO: add theme colors to sign in
-  //   theme: {
-  //     colorScheme: "light", // "auto" | "dark" | "light"
-  //     brandColor: "", // Hex color code
-  //     logo: "" // Absolute URL to image
-  // },
-  // debug: true,
-  // logger: {
-  //   error(code, metadata) {
-  //     console.error(code, metadata);
-  //   },
-  //   warn(code) {
-  //     console.warn(code);
-  //   },
-  //   debug(code, metadata) {
-  //     console.debug(code, metadata);
-  //   },
-  // },
+  theme: {
+    colorScheme: "light", // "auto" | "dark" | "light"
+    brandColor: "#FF5C35",
+    logo: "https://github.com/CodeTheDream/minfolio/blob/8efbb8e711008d4681d434b6b493788461575349/public/img/CTD-Labs_Primary%5B1%5D.png", // Absolute URL to image
+  },
 });
