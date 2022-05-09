@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
+import { privateLayout } from "../../../components/PrivateLayout";
 import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
@@ -26,6 +27,14 @@ function Resources({ resources }) {
 }
 
 export default Resources;
+
+Resources.getLayout = privateLayout
+
+// Resources.auth = {
+//   role: "admin",
+//   // loading: <AdminLoadingSkeleton />,
+//   unauthorized: "/", // redirect to this url
+// }
 
 export async function getServerSideProps() {
  const data = await getResourceData();
