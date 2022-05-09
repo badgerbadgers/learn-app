@@ -19,7 +19,7 @@ export default function LogIn () {
       title: "Sign-Up",
       onClick: () => {
         signIn("github", {
-          callbackUrl: "/signup", 
+          callbackUrl: "/dashboard",
         });
       },
       icon: <GitHubIcon style={{fontSize:'28px'}}/>
