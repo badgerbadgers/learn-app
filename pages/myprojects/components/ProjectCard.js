@@ -7,12 +7,9 @@ import {
   Avatar,
   Link,
 } from "@mui/material";
-import DOMPurify from "isomorphic-dompurify";
 
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
-  // const sanitize = DOMPurify.sanitize;
-  // const htmlTarget = "target='_blank'";
 
   return (
     <Grid
@@ -57,12 +54,12 @@ const ProjectCard = ({ projectData, headerColor }) => {
         >
           {/* Container for Logo and Description */}
           <Grid item container>
-            <Grid item xs={12} sm={3} md={2}>
+            <Grid item xs={12} sm={3} md={2} sx={{height: '100px', display: 'flex', justifyContent: "center" }}>
               <Avatar
                 alt="App Logo"
                 src={projectData.logo}
                 variant="square"
-                sx={{ height: "auto", width: 'auto' }}
+               sx={{ height: '90px', width: 'fit-content'}}
                 component={Link}
                 href={projectData.website}
                 target='_blank'
@@ -128,14 +125,6 @@ const ProjectCard = ({ projectData, headerColor }) => {
               <Grid item xs={6} md={12}>
                 <Typography variant="h6" >{projectData.repo}</Typography>
               </Grid>
-              {/*  // dangerouslySetInnerHTML={{
-                  //   __html: sanitize(projectData.repo),
-                  // }}
-                  // {
-                  //   transformTags: {
-                  //   'a': sanitize.simpleTransform('a', {target: '_blank'})
-                  //   }
-                  // } */}
 
               {/* Calendar */}
               <Grid item xs={6} md={12}>
@@ -156,7 +145,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
               <Grid item xs={12} display="flex">
               <Typography variant="h6" width="40%">Team:</Typography>
                 <Typography variant="body1">
-                {projectData.team.join(",  ")}
+                {projectData.team.join(",  ")}, Alezandra, Mohammad Razi Rizvi, 
                 </Typography>
               </Grid>
 
