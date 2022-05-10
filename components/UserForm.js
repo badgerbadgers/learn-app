@@ -20,6 +20,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 function UserForm({userInfoData, setUserInfoData}) {
+
   const [open, setOpen] = useState(false);
   const [techStackArray, setTechStackArray] = useState(userInfoData.techStackArray || []);
   const [skillsArray, setSkillsArray] = useState(userInfoData.skillsArray || []);
@@ -43,7 +44,7 @@ function UserForm({userInfoData, setUserInfoData}) {
     const { name, value } = e.target;
 
     setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
-
+console.log(userInfoData)
     const message = "This skill is already in your list.";
 
     if (name === 'skillInput') { // checks the name of Input element
@@ -110,7 +111,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   const handleSubmitForm = (e) => {
     e.preventDefault();
  
-    handleDialogChange(); // To pass it in onClick event as multiple functions 
+    handleDialogChange(); // To pass it an onClick event as multiple functions 
 
     // POST data to API route using fetch API
     // Remove key object from user form when is posted to the users route
@@ -122,6 +123,7 @@ function UserForm({userInfoData, setUserInfoData}) {
       techStackArray,
       previousIndustryArray,
     };
+    console.log(data)
     axios
       .post(
         "/api/users",
@@ -348,7 +350,7 @@ function UserForm({userInfoData, setUserInfoData}) {
             </Grid>
             <br />
 
-            <BioTextField bio={userInfoData.bio} />
+            <BioTextField bio={userInfoData.bio} handleInputChange={handleInputChange} />
 
             <Typography variant="body1" mt={2} gutterBottom>
               <strong>Personal Contact: </strong>

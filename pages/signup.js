@@ -16,8 +16,9 @@ const SignUp = () => {
     techStackInput: "",
     skillInput: "",
     previousIndustryInput: "",
+    bio: ""
   });
-
+console.log(userInfoData)
   return (
     <UserForm userInfoData={userInfoData} setUserInfoData={setUserInfoData} />
   );

@@ -41,6 +41,7 @@ export default function InputForm() {
             (async () => {
             await getData(params, url).then((data) => {
         if(data){
+          console.log(data, "data")
         // Add input default values and initialize the state values
               setUserInfoData({
                 firstName: data.firstName,
@@ -57,7 +58,7 @@ export default function InputForm() {
                 techStackInput: "",
                 skillInput: "",
                 previousIndustryInput: "",
-                bio: 'data.bio'
+                bio: data.bio
               })}
                 setLoading(false);         
               });
