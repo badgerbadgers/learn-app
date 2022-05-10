@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
-
+import { publicLayout } from "../components/PublicLayout";
 export default function Home() {
   return (
     <>
@@ -26,6 +26,8 @@ export default function Home() {
 }
 
 Home.displayName = "Home";
+
+Home.getLayout = publicLayout;
 
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
