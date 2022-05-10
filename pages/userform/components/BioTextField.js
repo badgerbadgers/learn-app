@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import { Typography, Grid, TextField } from "@mui/material";
 
 const BioTextField = ({bio, handleInputChange}) => {
-console.log(bio)
-    //const [bioInput, setBioInput] = useState(bio)
 
   return (
     <Grid item xs={12}>
@@ -17,7 +15,7 @@ console.log(bio)
         multiline
         required
         //rows={2}
-        maxRows={2}
+        maxRows={3}
         aria-label="bio text field"
         label='Tell us about yourself...'
         inputProps={{ maxLength: 220 }}

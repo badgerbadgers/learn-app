@@ -41,7 +41,7 @@ export default function InputForm() {
             (async () => {
             await getData(params, url).then((data) => {
         if(data){
-          console.log(data, "data")
+
         // Add input default values and initialize the state values
               setUserInfoData({
                 firstName: data.firstName,

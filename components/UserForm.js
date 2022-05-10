@@ -44,7 +44,7 @@ function UserForm({userInfoData, setUserInfoData}) {
     const { name, value } = e.target;
 
     setUserInfoData({ ...userInfoData, [name]: value.replace(/^\s+/g, "") }); // removes all the spaces in the front of the string.
-console.log(userInfoData)
+
     const message = "This skill is already in your list.";
 
     if (name === 'skillInput') { // checks the name of Input element

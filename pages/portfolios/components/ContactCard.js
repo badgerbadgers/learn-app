@@ -11,18 +11,18 @@ import Twitter from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import styles from "../../../styles/Portfolio.module.css";
-
+import { useMediaQuery } from "@mui/material";
 
 function ContactCard({ user }) {
-
-
+  const matches = useMediaQuery("(max-width:900px)" );
+console.log(matches)
   if (!user) {
     return <div>Loading...</div>;
   }
-  
+  console.log(styles.innerCard, styles.contactMedia)
   return (
-    <Grid item sx={{ textAlign: "center", height: '100%' }}>
-      <Card variant="outlined" sx={{ height: "100%" }}>
+    //<Grid item sx={{ textAlign: "center", height: '100%' }}>
+      <Card variant="outlined" sx={{ height: "100%", textAlign: "center" }}>
         <div className={styles.innerCard}>
           <Avatar
             sx={{ height: "150px", width: "150px", margin: "10px" }}
@@ -163,7 +163,7 @@ function ContactCard({ user }) {
           </div>
         </div>
       </Card>
-    </Grid>
+    //</Grid>
   );
 }
 
