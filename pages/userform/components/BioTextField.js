@@ -15,9 +15,11 @@ const BioTextField = ({bio}) => {
         name="bio"
         multiline
         required
-        rows={2}
+        //rows={2}
+        maxRows={2}
         aria-label="bio text field"
         label='Tell us about yourself...'
+        inputProps={{ maxLength: 220 }}
         value={bioInput}
         onChange={(e)=>setBioInput(e.target.value)}
       ></TextField>
