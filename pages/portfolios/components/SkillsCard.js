@@ -19,13 +19,12 @@ export default function SkillsCard({ skills }) {
   return (
     <Card sx={card}>
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h6" component="div">
           Skills
         </Typography>
         <Paper
           sx={{
             display: "flex",
-            justifyContent: "center",
             flexWrap: "wrap",
             listStyle: "none",
             p: 0.5,

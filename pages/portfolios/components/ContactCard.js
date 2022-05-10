@@ -21,7 +21,7 @@ function ContactCard({ user }) {
   }
   
   return (
-    <Grid item sx={{ textAlign: "center" }}>
+    <Grid item sx={{ textAlign: "center", height: '100%' }}>
       <Card variant="outlined" sx={{ height: "100%" }}>
         <div className={styles.innerCard}>
           <Avatar
@@ -37,13 +37,15 @@ function ContactCard({ user }) {
             <Typography sx={{ mb: 1.0 }} color="text.secondary">
               {user.pronouns}
             </Typography>
-            <Typography variant="h5" component="div">
+            <Typography variant="h6" component="div">
               Tech Stack: <br />
               {user.techStackArray.map((data) => {
                 return (
                   // Styling tech stack listing
                   <Typography
+                  variant="body1"
                     sx={{
+                      textTransform: 'none',
                       display: "inline",
                       justifyContent: "center",
                       listStyle: "none",

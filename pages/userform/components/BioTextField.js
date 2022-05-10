@@ -7,7 +7,7 @@ const BioTextField = ({bio}) => {
   return (
     <Grid item xs={12}>
       <Typography variant="body1" mt={2} gutterBottom>
-        <strong>Bio: </strong>
+        <strong>Summary: </strong>
       </Typography>
       <TextField
         placeholder="Tell us about yourself, why you are a software developer, and what your goals are in the next 3-5 years"
