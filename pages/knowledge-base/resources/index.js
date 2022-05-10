@@ -10,14 +10,12 @@ function Resources({ resources }) {
   const [activeResources, setActiveResources] = useState(resources);
   const [filterTerm, setFilterTerm] = useState("")
 
-
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
   // The input will be a string which is "search term"
   // initialize the variable before to use and loop the array
   // The results by topic and language should be "looped" through the array
   // changing that string values into lowercase using the toLowerCase method
-  // Remove duplicates before pushing to tempResults
   // The return will be the filtered array
   const searchResults = (term, isFilter) => {
     const array = isFilter ? activeResources : resources
@@ -41,8 +39,6 @@ function Resources({ resources }) {
       setActiveResources(newList)
     }
   }, [searchTerm])
-
-  // const filteredList = searchResults(searchTerm)
 
   return (
     <Grid
