@@ -78,3 +78,18 @@ export default function InputForm() {
     </>
 )};
 
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+  //if no session exists - redirect to login 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  return { //nothing happens if no session 
+    props: { session },
+  };
+}
