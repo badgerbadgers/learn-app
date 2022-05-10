@@ -18,6 +18,7 @@ export async function middleware(req) {
     req.nextUrl.pathname === "/knowledge-base/resources" ||
     req.nextUrl.pathname === "/knowledge-base/pair-pgr-page" ||
     req.nextUrl.pathname === "/signup" ||
+    req.nextUrl.pathname === "/checklistandlinks" ||
     req.page.name === "/userform/[id]"
   ) {
     if (session) {
