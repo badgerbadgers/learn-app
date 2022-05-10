@@ -59,9 +59,6 @@ function Resources({ resources }) {
         setFilterTerm={setFilterTerm}
         setSearchTerm={setSearchTerm}
       />
-      <Grid item xs={12} marginLeft="25px" color="blue">
-        Available Resources
-      </Grid>
 
       {/* 
         If the condition is true, the element right after && will be rendered. 
