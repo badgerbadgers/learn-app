@@ -78,7 +78,6 @@ export default function InputForm() {
     </>
 )};
 
-<<<<<<< HEAD
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
   //if no session exists - redirect to login 
@@ -94,6 +93,4 @@ export async function getServerSideProps(ctx) {
     props: { session },
   };
 }
-=======
 InputForm.getLayout = privateLayout
->>>>>>> dev
