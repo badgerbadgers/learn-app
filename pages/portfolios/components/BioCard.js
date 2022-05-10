@@ -11,21 +11,19 @@ const card = {
 function BioCard({ bio }) {
   return (
     <Card sx={card}>
-      <CardContent sx={{height: '100%'}}>
+      <CardContent sx={{ height: "100%" }}>
         <Typography variant="h6" gutterBottom>
           Summary
         </Typography>
         <Paper
           sx={{
-            height: '90%',
-            //p: 0.5,
-            //m: 0,
+            height: "90%",
           }}
         >
           <Typography variant="body1" sx={{ fontStyle: "italic", px: 1 }}>
             {bio}
           </Typography>
-         </Paper> 
+        </Paper>
       </CardContent>
     </Card>
   );
