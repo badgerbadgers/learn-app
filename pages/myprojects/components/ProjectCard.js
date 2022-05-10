@@ -11,8 +11,8 @@ import DOMPurify from "isomorphic-dompurify";
 
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
-  const sanitize = DOMPurify.sanitize;
-  const htmlTarget = "target='_blank'";
+  // const sanitize = DOMPurify.sanitize;
+  // const htmlTarget = "target='_blank'";
 
   return (
     <Grid
@@ -31,7 +31,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
       <Card
         elevation={10}
         sx={{
-          border: "1px solid",
+          border: "3px solid",
           borderColor: headerColor,
           borderRadius: "0.25rem",
           height: "100%",
@@ -55,19 +55,21 @@ const ProjectCard = ({ projectData, headerColor }) => {
             height: "100%",
           }}
         >
-        
           {/* Container for Logo and Description */}
           <Grid item container>
-            
-            <Grid item xs={12} md={1}>
+            <Grid item xs={12} sm={3} md={2}>
               <Avatar
                 alt="App Logo"
                 src={projectData.logo}
                 variant="square"
-                sx={{ height: "auto" }}
+                sx={{ height: "auto", width: 'auto' }}
+                component={Link}
+                href={projectData.website}
+                target='_blank'
+                rel="noopener noreferrer"
               />
             </Grid>
-            <Grid item xs={12} md={11}>
+            <Grid item xs={12} sm={9} md={10} pl={2}>
               <Typography variant="body1">
                 {projectData.description}
                 Upstate is a web-app that tracks legislation in the North
@@ -89,95 +91,85 @@ const ProjectCard = ({ projectData, headerColor }) => {
           {/* container for all the bottom details */}
 
           <Grid container flex-direction="column" mt={2}>
-
             {/* Container for Meetings Time */}
-            <Grid item container xs={12} sm={4}>
-
+            <Grid item container xs={12} md={4} mb={2}>
               <Grid item xs={12} display="flex">
-                <Typography variant="h6">Daily Standup Time ET:</Typography>
-
-                <Typography variant="body1">
+                <Typography variant="h6" width="60%">Daily Standup Time ET:</Typography>
+                <Typography variant="body1" textAlign="center">
                   11:30 am
                   {projectData.dailyStandupTime}
                 </Typography>
-
               </Grid>
-                          {/* -------------- */}
-              <Grid item xs={12}>
-                <Typography>
-                  Planning Meet Time ET: {""}
+
+              {/* -------------- */}
+
+              <Grid item xs={12} display="flex">
+                <Typography variant="h6" width="60%">Planning Meet Time ET:</Typography>
+                <Typography variant="body1" textAlign="center" >
+                  11:30 am
                   {projectData.planningMeetTime}
                 </Typography>
               </Grid>
-                          {/* -------------- */}
-              <Grid item xs={12}>
-                <Typography>
-                  Daily Scrum Time ET: {""}
+
+              {/* -------------- */}
+
+              <Grid item xs={12} display="flex">
+                <Typography variant="h6" width="60%">Daily Scrum Time ET:</Typography>
+                <Typography variant="body1" textAlign="center" >
+                  11:30 am
                   {projectData.dailyScrumTime}
                 </Typography>
               </Grid>
-
             </Grid>
 
             {/* Container for Repo & calendar Links */}
-            
-            <Grid item container flex-direction="column" xs={12} sm={4}>
+            <Grid item container flex-direction="column" xs={12} md={2}>
               {/* Repo */}
-              <Grid item xs={6} sm={12}>
-                <Typography variant="h6"
-                  dangerouslySetInnerHTML={{
-                    __html: sanitize(projectData.repo, {
-                      transformTags: {
-                      'a': sanitize.simpleTransform('a', {target: '_blank'})
-                      }
-                    }),
-                  }}
-                >
-                </Typography>
-                
+              <Grid item xs={6} md={12}>
+                <Typography variant="h6" >{projectData.repo}</Typography>
               </Grid>
+              {/*  // dangerouslySetInnerHTML={{
+                  //   __html: sanitize(projectData.repo),
+                  // }}
+                  // {
+                  //   transformTags: {
+                  //   'a': sanitize.simpleTransform('a', {target: '_blank'})
+                  //   }
+                  // } */}
 
               {/* Calendar */}
-              <Grid item xs={6} sm={12}>
-                <Typography>
-                  Calendar Links: {""}
-                  {projectData.calendarLink}
-                </Typography>
+              <Grid item xs={6} md={12}>
+                <Typography variant="h6" >{projectData.calendarLink} Calendar Link</Typography>
               </Grid>
-
             </Grid>
-                    {/* -------------- */}
-            {/* Container for Team Members */}
-            <Grid item container flex-direction="column" xs={12} sm={4}>
 
-              <Grid item xs={12}>
-                <Typography>
-                  PM: {""}
+            {/* Container for Team Members */}
+            <Grid item container flex-direction="column" xs={12} md={6} mt={2}>
+              <Grid item xs={12} display="flex">
+              <Typography variant="h6" width="40%">PM:</Typography>
+                <Typography variant="body1" >
+                  Rachel
                   {projectData.projectManager}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
-                <Typography>
-                  Team: {""}
-                  {projectData.team}
+              <Grid item xs={12} display="flex">
+              <Typography variant="h6" width="40%">Team:</Typography>
+                <Typography variant="body1">
+                {projectData.team.join(",  ")}
                 </Typography>
               </Grid>
 
             </Grid>
-
           </Grid>
-                      {/* -------------- */}
+          {/* -------------- */}
 
           {/* Container for Project Types */}
           <Grid container flex-direction="column" mt={2}>
-
             <Grid item xs={12}>
               {projectData.type} React, React Native, Rails
             </Grid>
-
           </Grid>
-          
         </CardContent>
       </Card>
     </Grid>

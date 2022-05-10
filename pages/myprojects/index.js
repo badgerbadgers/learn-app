@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProjectHeader from "./components/ProjectHeader";
 import ProjectCard from "./components/ProjectCard";
-import { Grid } from "@mui/material";
+import { Grid, Link } from "@mui/material";
 import { getDevelopersData, getProjectsData } from "../../lib/airtable";
 import { privateLayout } from "../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
@@ -48,7 +48,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           tempMultiProjectsData.push({
             id: project.id,
             projectName: project.fields["Project Name"] || "",
-            website: project.fields.Website | "",
+            website: project.fields.Website && project.fields.Website || "https://labs.codethedream.org/",
             logo:
               (project.fields.photo &&
                 project.fields.photo.length > 0 &&
@@ -57,8 +57,8 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             dailyStandupTime: project.fields["Daily Standup Time (ET)"] || "",
             planningMeetTime: project.fields["Monday Planning Meeting (ET)"] || "",
             dailyScrumTime: project.fields["daily scrum"] || "",
-            repo: `<a href= ${project.fields.Repo}> Repo Link </a>` || "",
-            calendarLink: project.fields.calendarLinks || "",
+            repo: project.fields.Repo && (<Link href= {project.fields.Repo} target='_blank' color='secondary'> Repo Link </Link>) || "",
+            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks} target='_blank' > Calendar Link </Link>) || "",
             projectManager: project.fields["Project Manager"] || "",
             team:
               project.fields.Developers.map(
@@ -73,6 +73,9 @@ const MyProjects = ({ projectsData, developersData, user }) => {
       }
     }
   }, [currentUserID, projectsData, developersData]);
+
+  //Now that the data is set inside the myProjectsData we can now loop over the 3 colors to pass to the Header
+  //moving the setHeaderColor inside above useEffect would result in infinite loop since we are dependent on the myprojectsData.
 
   useEffect(() => {
     const tempColorArray = [];
