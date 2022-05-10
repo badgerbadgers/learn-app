@@ -19,8 +19,9 @@ function Resources({ resources }) {
   // changing that string values into lowercase using the toLowerCase method
   // Remove duplicates before pushing to tempResults
   // The return will be the filtered array
-  const searchResults = (term) => {
-    return resources.filter(item => {
+  const searchResults = (term, isFilter) => {
+    const array = isFilter ? activeResources : resources
+    return array.filter(item => {
       const itemName = item.fields.Name ? item.fields.Name.toLowerCase() : ""
       const itemDescription = item.fields.Description ? item.fields.Description.toLowerCase() : ""
       const itemType = item.fields.Type ? item.fields.Type.toLowerCase() : ""
