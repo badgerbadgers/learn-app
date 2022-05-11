@@ -48,7 +48,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           const projectTypeArray = project.fields.Type && project.fields.Type.map(
             element => {
               if (element === 'React') {
-                element = 'public\img\myProjectsIcon\React icon.svg';
+                element = 'public\img\myProjectsIcon\react.svg';
               } else if (element === "React Native") {
                 element = '../img/myProjectsIcon/react-native.png';
               } else if (element === "Rails") {
@@ -79,7 +79,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
               project.fields.Developers.map(
                 (developerID) => developersData[developerID]["Person Name"].replace(/^\s+|\s+$/g, "")
               ) || "",
-            type: projectTypeArray || ['../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/react-native.png', ],
+            type: projectTypeArray || ['../img/myProjectsIcon/react.svg', '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/react-native.png', ],
           });
         });
         setMyProjectsData(tempMultiProjectsData);
