@@ -8,7 +8,7 @@ import { getResourceData } from "../../../lib/airtable";
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeResources, setActiveResources] = useState(resources);
-  const [filterTerm, setFilterTerm] = useState("")
+  const [filterTerm, setFilterTerm] = useState("");
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -18,27 +18,37 @@ function Resources({ resources }) {
   // changing that string values into lowercase using the toLowerCase method
   // The return will be the filtered array
   const searchResults = (term, isFilter) => {
-    const array = isFilter ? activeResources : resources
-    return array.filter(item => {
-      const itemName = item.fields.Name ? item.fields.Name.toLowerCase() : ""
-      const itemDescription = item.fields.Description ? item.fields.Description.toLowerCase() : ""
-      const itemType = item.fields.Type ? item.fields.Type.toLowerCase() : ""
+    const array = isFilter ? activeResources : resources;
+    return array.filter((item) => {
+      const itemName = item.fields.Name ? item.fields.Name.toLowerCase() : "";
+      const itemDescription = item.fields.Description
+        ? item.fields.Description.toLowerCase()
+        : "";
+      const itemType = item.fields.Type ? item.fields.Type.toLowerCase() : "";
       const topicSearchResults = item.fields["Name (from topic)"]
-      ? item.fields["Name (from topic)"].map((topic) => topic.toLowerCase())
-      : [];
+        ? item.fields["Name (from topic)"].map((topic) => topic.toLowerCase())
+        : [];
       const languageSearchResults = item.fields["Name (from language)"]
-      ? item.fields["Name (from language)"].map((topic) =>
-          topic.toLowerCase()) : [];
-        return languageSearchResults.includes(term.toLowerCase()) || topicSearchResults.includes(term.toLowerCase()) || itemName.includes(term.toLowerCase()) || itemDescription.includes(term.toLowerCase()) || itemType.includes(term.toLowerCase())
-    })
+        ? item.fields["Name (from language)"].map((language) =>
+            language.toLowerCase()
+          )
+        : [];
+      return (
+        languageSearchResults.includes(term.toLowerCase()) ||
+        topicSearchResults.includes(term.toLowerCase()) ||
+        itemName.includes(term.toLowerCase()) ||
+        itemDescription.includes(term.toLowerCase()) ||
+        itemType.includes(term.toLowerCase())
+      );
+    });
   };
 
   useEffect(() => {
     if (searchTerm) {
-      const newList = searchResults(searchTerm)
-      setActiveResources(newList)
+      const newList = searchResults(searchTerm);
+      setActiveResources(newList);
     }
-  }, [searchTerm])
+  }, [searchTerm]);
 
   return (
     <Grid
