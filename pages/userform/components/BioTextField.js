@@ -15,7 +15,7 @@ const BioTextField = ({ bio, handleInputChange }) => {
         rows={3}
         aria-label="bio text field"
         label="Tell us about yourself..."
-        inputProps={{ maxLength: 220 }}
+        inputProps={{ maxLength: 300 }}
         value={bio}
         onChange={(e) => handleInputChange(e)}
       ></TextField>
