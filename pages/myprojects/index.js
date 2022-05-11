@@ -13,7 +13,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
   const [headerColor, setHeaderColor] = useState([]);
   const currentUserID = (user.gh).toLowerCase();
-
+        // console.log(currentUserID);
   useEffect(() => {
     if (currentUserID) {
       try {
@@ -25,8 +25,6 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           Object.entries(developersData)
             .filter(([key, value]) => value.github === currentUserID)
             .map(([key, value]) => key);
-        // console.log(currentUserID);
-        // console.log(currentUserDataID, "****CUID***");
 
         //filter projectsData to get projects where the current user is the developer.
         const currentUserProjects =
@@ -44,17 +42,17 @@ const MyProjects = ({ projectsData, developersData, user }) => {
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
         currentUserProjects && currentUserProjects.map((project) => {
 
-              //mapping the Types array to replace the text with Icons.
-          const projectTypeArray = project.fields.Type && project.fields.Type.map(
+              //Remove React Native and Rails API from the Types array and then mapping the it to replace the text with Icons. 
+          const projectTypeArray = project.fields.Type && project.fields.Type
+          .filter((element) => element === "React" || element === "Rails" || element === "NodeJS")
+          .map(
             element => {
               if (element === 'React') {
-                element = 'public\img\myProjectsIcon\react.svg';
-              } else if (element === "React Native") {
-                element = '../img/myProjectsIcon/react-native.png';
+                element = '../img/myProjectsIcon/react.svg';
               } else if (element === "Rails") {
                 element = '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg';
-              } else if (element === "Rails API") {
-                element = '../img/myProjectsIcon/rubyAPI-svgrepo-com.svg';
+              } else if (element === "NodeJS") {
+                element = '../img/myProjectsIcon/NodeJS_logo.png';
               }
               return element;
             }
@@ -76,10 +74,10 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks.replace(/^\s+|\s+$/g, "")} target='_blank' > Calendar Link </Link>) || "",
             projectManager: project.fields["Project Manager"] && project.fields["Project Manager"].replace(/^\s+|\s+$/g, "") || "",
             team:
-              project.fields.Developers.map(
-                (developerID) => developersData[developerID]["Person Name"].replace(/^\s+|\s+$/g, "")
+            project.fields.Developers && project.fields.Developers.map(
+                (developerID) => developersData[developerID]["Person Name"]
               ) || "",
-            type: projectTypeArray || ['../img/myProjectsIcon/react.svg', '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/react-native.png', ],
+            type: project.fields.Type && projectTypeArray || "",
           });
         });
         setMyProjectsData(tempMultiProjectsData);
@@ -97,17 +95,13 @@ const MyProjects = ({ projectsData, developersData, user }) => {
     if (myProjectsData) {
       for (const i = 0; i < myProjectsData.length; i++) {
         let colorIndex = i % 3;
-        // console.log(colorIndex, "******CI****");
         tempColorArray.push(colorArray[colorIndex]);
-        // console.log(colorArray[colorIndex]);
       }
       setHeaderColor(tempColorArray);
     }
   }, [myProjectsData]);
 
-  console.log(myProjectsData, "*** MyPRD**");
-  // console.log(projectsData, "**********PRD****");
-  //console.log(developersData, "**Dev**");
+  // console.log(myProjectsData, "*** MyPRD**");
 
   return (
     <Grid
@@ -117,11 +111,11 @@ const MyProjects = ({ projectsData, developersData, user }) => {
     >
       <ProjectHeader />
       {myProjectsData &&
-        myProjectsData.map((project) => (
+        myProjectsData.map((project, i) => (
           <ProjectCard
             key={project.id}
             projectData={project}
-            headerColor={headerColor.map(color => color)}
+            headerColor={headerColor[i]}
           />
         ))}
     </Grid>

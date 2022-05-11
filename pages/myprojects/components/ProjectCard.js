@@ -9,8 +9,7 @@ import {
   Link,
 } from "@mui/material";
 const ProjectCard = ({ projectData, headerColor }) => {
-  console.log(headerColor);
-  console.log(projectData.type)
+
   return (
     <Grid
       item
@@ -31,7 +30,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
           border: "3px solid",
           borderColor: headerColor,
           borderRadius: "0.25rem",
-          height: "100%",
+          height: "fit-content",
           width: "100%",
           marginBottom: "20px",
         }}
@@ -158,7 +157,6 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   PM:
                 </Typography>
                 <Typography variant="body1">
-                  Rachel Fishcoff
                   {projectData.projectManager}
                 </Typography>
               </Grid>
@@ -173,10 +171,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Team:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.team.join(",  ")}, Alezandra, Mohammad Razi,
-                  Marianna Demenko, Andrea Hernandez Guzman, Andrea Hernandez
-                  Guzman, Andrea Hernandez Guzman, Andrea Hernandez Guzman, Andrea
-                  Hernandez Guzman Rizvi,
+                  {projectData.team.join(",  ")}
                 </Typography>
               </Grid>
             </Grid>
@@ -185,7 +180,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
 
           {/* Container for Project Types */}
           <Grid item container flex-direction="column" mt={2} xs={12}>
-            <Grid item 
+            <Grid item
             sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -198,7 +193,8 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 component="img"
                 image={type}
                 alt="Project Type"
-                sx={{height: '50px', width: 'fit-content'}}
+                sx={{height: '50px', width: 'fit-content', padding: "2px"}}
+                
               />
               )})}
               
