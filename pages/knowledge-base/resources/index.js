@@ -9,7 +9,6 @@ import { getResourceData } from "../../../lib/airtable";
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeResources, setActiveResources] = useState(resources);
-  const [filterTerm, setFilterTerm] = useState("");
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -66,8 +65,6 @@ function Resources({ resources }) {
       <ResourceToolBar
         resources={resources}
         searchTerm={searchTerm}
-        filterTerm={filterTerm}
-        setFilterTerm={setFilterTerm}
         setSearchTerm={setSearchTerm}
       />
 
@@ -75,7 +72,6 @@ function Resources({ resources }) {
         If the condition is true, the element right after && will be rendered. 
         If it is false, the program will ignore and skip it. 
       */}
-
       {activeResources &&
         activeResources.map((resource) => {
           return <ResourceCard key={resource.id} resource={resource} />;
