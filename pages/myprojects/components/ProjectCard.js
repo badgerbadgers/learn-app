@@ -3,14 +3,14 @@ import {
   Card,
   CardHeader,
   CardContent,
+  CardMedia,
   Typography,
   Avatar,
   Link,
 } from "@mui/material";
-
 const ProjectCard = ({ projectData, headerColor }) => {
   console.log(headerColor);
-
+  console.log(projectData.type)
   return (
     <Grid
       item
@@ -54,109 +54,154 @@ const ProjectCard = ({ projectData, headerColor }) => {
         >
           {/* Container for Logo and Description */}
           <Grid item container>
-            <Grid item xs={12} sm={3} md={2} sx={{height: '100px', display: 'flex', justifyContent: "center" }}>
+            <Grid
+              item
+              xs={12}
+              sm={3}
+              md={2}
+              sx={{
+                height: "100px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <Avatar
                 alt="App Logo"
                 src={projectData.logo}
                 variant="square"
-               sx={{ height: '90px', width: 'fit-content'}}
+                sx={{ height: "90px", width: "fit-content" }}
                 component={Link}
                 href={projectData.website}
-                target='_blank'
+                target="_blank"
                 rel="noopener noreferrer"
               />
             </Grid>
             <Grid item xs={12} sm={9} md={10} pl={2}>
-              <Typography variant="body1">
-                {projectData.description}
-                Upstate is a web-app that tracks legislation in the North
-                Carolina General Assembly. Advocates, legislators, and lobbyists
-                have subscriptions to keep track of bills but there is also a
-                free subscription for non-profits; as well as a free version
-                that has limited features. It allows the user to pick the
-                different bills that you want to follow and also look for them
-                specifically for what you would like to look for, also, manage
-                your bills and be able to add tags for easy following. There are
-                also committee meetings that are scheduled so you are able to
-                track when the committee meeting will be happening. It is an
-                easy way and an organized way to track the pending legislation
-                in NC.
-              </Typography>
+              <Typography variant="body1">{projectData.description}</Typography>
             </Grid>
           </Grid>
 
           {/* container for all the bottom details */}
 
           <Grid container flex-direction="column" mt={2}>
-            {/* Container for Meetings Time */}
+            {/* Container for Meetings Time CT#1*/}
             <Grid item container xs={12} md={4} mb={2}>
-              <Grid item xs={12} display="flex">
-                <Typography variant="h6" width="60%">Daily Standup Time ET:</Typography>
-                <Typography variant="body1" textAlign="center">
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                sx={{ flexDirection: { xs: "column", sm: "row" } }}
+              >
+                <Typography variant="h6" width="215px">
+                  Daily Standup Time ET:
+                </Typography>
+                <Typography variant="body1">
                   11:30 am
-                  {projectData.dailyStandupTime}
+                  {/* {projectData.dailyStandupTime} */}
                 </Typography>
               </Grid>
 
-              {/* -------------- */}
-
-              <Grid item xs={12} display="flex">
-                <Typography variant="h6" width="60%">Planning Meet Time ET:</Typography>
-                <Typography variant="body1" textAlign="center" >
-                  11:30 am
-                  {projectData.planningMeetTime}
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                sx={{ flexDirection: { xs: "column", sm: "row" } }}
+              >
+                <Typography variant="h6" width="215px">
+                  Planning Meet Time ET:
+                </Typography>
+                <Typography variant="body1">
+                  Wed 11:30 am
+                  {/* {projectData.planningMeetTime} */}
                 </Typography>
               </Grid>
 
-              {/* -------------- */}
-
-              <Grid item xs={12} display="flex">
-                <Typography variant="h6" width="60%">Daily Scrum Time ET:</Typography>
-                <Typography variant="body1" textAlign="center" >
-                  11:30 am
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                sx={{ flexDirection: { xs: "column", sm: "row" } }}
+              >
+                <Typography variant="h6" width="215px">
+                  Daily Scrum Time ET:
+                </Typography>
+                <Typography variant="body1">
+                  11:00am
                   {projectData.dailyScrumTime}
                 </Typography>
               </Grid>
             </Grid>
+            {/* -------------- */}
 
-            {/* Container for Repo & calendar Links */}
-            <Grid item container flex-direction="column" xs={12} md={2}>
+            {/* Container for Repo & calendar Links CT#2*/}
+            <Grid item container flex-direction="column" xs={12} md={2} mb={2}>
               {/* Repo */}
               <Grid item xs={6} md={12}>
-                <Typography variant="h6" >{projectData.repo}</Typography>
+                <Typography variant="h6">{projectData.repo}</Typography>
               </Grid>
 
               {/* Calendar */}
               <Grid item xs={6} md={12}>
-                <Typography variant="h6" >{projectData.calendarLink} Calendar Link</Typography>
+                <Typography variant="h6">{projectData.calendarLink}</Typography>
               </Grid>
             </Grid>
 
-            {/* Container for Team Members */}
-            <Grid item container flex-direction="column" xs={12} md={6} mt={2}>
-              <Grid item xs={12} display="flex">
-              <Typography variant="h6" width="40%">PM:</Typography>
-                <Typography variant="body1" >
-                  Rachel
+            {/* Container for Team Members CT#3*/}
+            <Grid item container flex-direction="column" xs={12} md={6}>
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                sx={{ flexDirection: { xs: "column", sm: "row" } }}
+              >
+                <Typography variant="h6" minWidth="60px">
+                  PM:
+                </Typography>
+                <Typography variant="body1">
+                  Rachel Fishcoff
                   {projectData.projectManager}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} display="flex">
-              <Typography variant="h6" width="40%">Team:</Typography>
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                sx={{ flexDirection: { xs: "column", sm: "row" } }}
+              >
+                <Typography variant="h6" minWidth="60px">
+                  Team:
+                </Typography>
                 <Typography variant="body1">
-                {projectData.team.join(",  ")}, Alezandra, Mohammad Razi Rizvi, 
+                  {projectData.team.join(",  ")}, Alezandra, Mohammad Razi,
+                  Marianna Demenko, Andrea Hernandez Guzman, Andrea Hernandez
+                  Guzman, Andrea Hernandez Guzman, Andrea Hernandez Guzman, Andrea
+                  Hernandez Guzman Rizvi,
                 </Typography>
               </Grid>
-
             </Grid>
           </Grid>
           {/* -------------- */}
 
           {/* Container for Project Types */}
-          <Grid container flex-direction="column" mt={2}>
-            <Grid item xs={12}>
-              {projectData.type} React, React Native, Rails
+          <Grid item container flex-direction="column" mt={2} xs={12}>
+            <Grid item 
+            sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}>
+
+              {projectData.type && projectData.type.map((type, i) =>  {
+              return (            
+                <CardMedia
+                key={type + i}
+                component="img"
+                image={type}
+                alt="Project Type"
+                sx={{height: '50px', width: 'fit-content'}}
+              />
+              )})}
+              
             </Grid>
           </Grid>
         </CardContent>

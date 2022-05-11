@@ -13,7 +13,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
   const [headerColor, setHeaderColor] = useState([]);
   const currentUserID = (user.gh).toLowerCase();
-//console.log(user)
+
   useEffect(() => {
     if (currentUserID) {
       try {
@@ -35,8 +35,6 @@ const MyProjects = ({ projectsData, developersData, user }) => {
             project.fields.Developers.includes(currentUserDataID[0])
           );
 
-        console.log(currentUserProjects, "CUP**");
-
         // Creating a temp Array to store multiple projects data and then set each project into the state with correct fields.
         //cant store directly into to sate as it will overwrite the privious data and can't spread the state else it adds a 
         //dependency to the array and goes in infinite loop.
@@ -45,26 +43,43 @@ const MyProjects = ({ projectsData, developersData, user }) => {
 
         // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
         currentUserProjects && currentUserProjects.map((project) => {
+
+              //mapping the Types array to replace the text with Icons.
+          const projectTypeArray = project.fields.Type && project.fields.Type.map(
+            element => {
+              if (element === 'React') {
+                element = 'public\img\myProjectsIcon\React icon.svg';
+              } else if (element === "React Native") {
+                element = '../img/myProjectsIcon/react-native.png';
+              } else if (element === "Rails") {
+                element = '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg';
+              } else if (element === "Rails API") {
+                element = '../img/myProjectsIcon/rubyAPI-svgrepo-com.svg';
+              }
+              return element;
+            }
+          )
+//verify if the field exisit and remove any spaces before and after the content
           tempMultiProjectsData.push({
             id: project.id,
-            projectName: project.fields["Project Name"] || "",
-            website: project.fields.Website && project.fields.Website || "https://labs.codethedream.org/",
+            projectName: project.fields["Project Name"] && project.fields["Project Name"].replace(/^\s+|\s+$/g, "") || "",
+            website: project.fields.Website && project.fields.Website.replace(/^\s+|\s+$/g, "") || "https://labs.codethedream.org/",
             logo:
               (project.fields.photo &&
                 project.fields.photo.length > 0 &&
                 project.fields.photo[0].url) || "",
-            description: project.fields.Project_Description || "",
-            dailyStandupTime: project.fields["Daily Standup Time (ET)"] || "",
-            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] || "",
-            dailyScrumTime: project.fields["daily scrum"] || "",
-            repo: project.fields.Repo && (<Link href= {project.fields.Repo} target='_blank' color='secondary'> Repo Link </Link>) || "",
-            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks} target='_blank' > Calendar Link </Link>) || "",
-            projectManager: project.fields["Project Manager"] || "",
+            description: project.fields.Project_Description && project.fields.Project_Description.replace(/^\s+|\s+$/g, "") || "",
+            dailyStandupTime: project.fields["Daily Standup Time (ET)"] && project.fields["Daily Standup Time (ET)"].replace(/^\s+|\s+$/g, "") || "",
+            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] && project.fields["Monday Planning Meeting (ET)"].replace(/^\s+|\s+$/g, "") || "",
+            dailyScrumTime: project.fields["daily scrum"] && project.fields["daily scrum"].replace(/^\s+|\s+$/g, "") || "",
+            repo: project.fields.Repo && (<Link href= {project.fields.Repo.replace(/^\s+|\s+$/g, "")} target='_blank' color='secondary'> Repo Link </Link>) || "",
+            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks.replace(/^\s+|\s+$/g, "")} target='_blank' > Calendar Link </Link>) || "",
+            projectManager: project.fields["Project Manager"] && project.fields["Project Manager"].replace(/^\s+|\s+$/g, "") || "",
             team:
               project.fields.Developers.map(
-                (developerID) => developersData[developerID]["Person Name"]
+                (developerID) => developersData[developerID]["Person Name"].replace(/^\s+|\s+$/g, "")
               ) || "",
-            type: project.fields.Type || "",
+            type: projectTypeArray || ['../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg', '../img/myProjectsIcon/react-native.png', ],
           });
         });
         setMyProjectsData(tempMultiProjectsData);
@@ -91,7 +106,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
   }, [myProjectsData]);
 
   console.log(myProjectsData, "*** MyPRD**");
-  //console.log(projectsData, "**********PRD****");
+  // console.log(projectsData, "**********PRD****");
   //console.log(developersData, "**Dev**");
 
   return (
