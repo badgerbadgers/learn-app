@@ -12,7 +12,7 @@ const BioTextField = ({ bio, handleInputChange }) => {
         name="bio"
         multiline
         required
-        maxRows={3}
+        rows={3}
         aria-label="bio text field"
         label="Tell us about yourself..."
         inputProps={{ maxLength: 220 }}
