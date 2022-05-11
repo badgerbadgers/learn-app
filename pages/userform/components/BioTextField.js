@@ -1,8 +1,6 @@
-import React, {useState} from "react";
 import { Typography, Grid, TextField } from "@mui/material";
 
-const BioTextField = ({bio, handleInputChange}) => {
-
+const BioTextField = ({ bio, handleInputChange }) => {
   return (
     <Grid item xs={12}>
       <Typography variant="body1" mt={2} gutterBottom>
@@ -14,13 +12,12 @@ const BioTextField = ({bio, handleInputChange}) => {
         name="bio"
         multiline
         required
-        //rows={2}
         maxRows={3}
         aria-label="bio text field"
-        label='Tell us about yourself...'
+        label="Tell us about yourself..."
         inputProps={{ maxLength: 220 }}
         value={bio}
-        onChange={(e)=>handleInputChange(e)}
+        onChange={(e) => handleInputChange(e)}
       ></TextField>
     </Grid>
   );

@@ -123,7 +123,7 @@ function UserForm({userInfoData, setUserInfoData}) {
       techStackArray,
       previousIndustryArray,
     };
-    console.log(data)
+
     axios
       .post(
         "/api/users",

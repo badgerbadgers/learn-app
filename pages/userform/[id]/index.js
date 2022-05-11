@@ -19,30 +19,24 @@ export default function InputForm() {
     skillInput: "",
     previousIndustryInput: "",
     techStackArray: [],
-    skillsArray:[],
+    skillsArray: [],
     previousIndustryArray: [],
-    bio: ""
+    bio: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const url = "/api/users";
   const router = useRouter();
   const id = router.query.id;
- 
-
-  useEffect(()=>{
-    setLoading(true);
-  }, [])
 
   useEffect(() => {
     const params = { params: { id: id } };
     if (id) {
-      try{      
-            (async () => {
-            await getData(params, url).then((data) => {
-        if(data){
-
-        // Add input default values and initialize the state values
+      try {
+        (async () => {
+          await getData(params, url).then((data) => {
+            if (data) {
+              // Add input default values and initialize the state values
               setUserInfoData({
                 firstName: data.firstName,
                 lastName: data.lastName,
@@ -58,18 +52,17 @@ export default function InputForm() {
                 techStackInput: "",
                 skillInput: "",
                 previousIndustryInput: "",
-                bio: data.bio
-              })}
-                setLoading(false);         
+                bio: data.bio,
               });
-            
-            })();
-          }catch (error){
-            console.log(error, "error from getData in /api/usersprofile");
-        };
+            }
+            setLoading(false);
+          });
+        })();
+      } catch (error) {
+        console.log(error, "error from getData in /api/usersprofile");
       }
+    }
   }, [id]);
-
 
   return (
     <>
@@ -77,9 +70,13 @@ export default function InputForm() {
         <Image width={240} height={240} src="/img/loading.gif" alt="loading" />
       )}
       {!loading && (
-          <UserForm userInfoData={userInfoData} setUserInfoData={setUserInfoData}/>
-       )}
+        <UserForm
+          userInfoData={userInfoData}
+          setUserInfoData={setUserInfoData}
+        />
+      )}
     </>
-)};
+  );
+}
 
-InputForm.getLayout = privateLayout
+InputForm.getLayout = privateLayout;
