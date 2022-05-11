@@ -65,7 +65,7 @@ export default function CTDToolsCard({style}) {
         <CardHeader title={"CTD Tools"}></CardHeader>
         <CardContent>
           <Typography variant="body1">
-            Don&apos;t forget to update your portfolio
+            Don&apos;t forget to update and share your portfolio. 
           </Typography>
         </CardContent>
         <CardActions

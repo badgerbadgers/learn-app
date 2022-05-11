@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ResourceToolBar from "./components/ResourceToolBar";
+import { privateLayout } from "../../../components/PrivateLayout";
 import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
@@ -84,6 +85,8 @@ function Resources({ resources }) {
 }
 
 export default Resources;
+
+Resources.getLayout = privateLayout
 
 export async function getServerSideProps() {
   const data = await getResourceData();

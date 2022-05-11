@@ -9,8 +9,6 @@ export async function middleware(req) {
   };
   const session = await getSession({ req: requestForNextAuth });
 
-  console.log(req.nextUrl.pathname, 'path name')
-
   if (
     req.nextUrl.pathname === "/dashboard" ||
     /*TODO: would like to refactor 
@@ -20,6 +18,7 @@ export async function middleware(req) {
     req.nextUrl.pathname === "/knowledge-base/resources" ||
     req.nextUrl.pathname === "/knowledge-base/pair-pgr-page" ||
     req.nextUrl.pathname === "/signup" ||
+    req.nextUrl.pathname === "/checklistandlinks" ||
     req.page.name === "/userform/[id]"
   ) {
     if (session) {
