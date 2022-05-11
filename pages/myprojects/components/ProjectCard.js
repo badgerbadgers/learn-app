@@ -9,7 +9,6 @@ import {
   Link,
 } from "@mui/material";
 const ProjectCard = ({ projectData, headerColor }) => {
-
   return (
     <Grid
       item
@@ -75,7 +74,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 rel="noopener noreferrer"
               />
             </Grid>
-            <Grid item xs={12} sm={9} md={10} pl={2}>
+            <Grid item xs={12} sm={9} md={10} pl={{ xs: "0px", sm: "16px" }}>
               <Typography variant="body1">{projectData.description}</Typography>
             </Grid>
           </Grid>
@@ -95,8 +94,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Daily Standup Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  11:30 am
-                  {/* {projectData.dailyStandupTime} */}
+                  {projectData.dailyStandupTime}
                 </Typography>
               </Grid>
 
@@ -110,8 +108,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Planning Meet Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  Wed 11:30 am
-                  {/* {projectData.planningMeetTime} */}
+                  {projectData.planningMeetTime}
                 </Typography>
               </Grid>
 
@@ -125,7 +122,6 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Daily Scrum Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  11:00am
                   {projectData.dailyScrumTime}
                 </Typography>
               </Grid>
@@ -180,24 +176,29 @@ const ProjectCard = ({ projectData, headerColor }) => {
 
           {/* Container for Project Types */}
           <Grid item container flex-direction="column" mt={2} xs={12}>
-            <Grid item
-            sx={{
+            <Grid
+              item
+              sx={{
                 display: "flex",
                 justifyContent: "center",
-              }}>
-
-              {projectData.type && projectData.type.map((type, i) =>  {
-              return (            
-                <CardMedia
-                key={type + i}
-                component="img"
-                image={type}
-                alt="Project Type"
-                sx={{height: '50px', width: 'fit-content', padding: "2px"}}
-                
-              />
-              )})}
-              
+              }}
+            >
+              {projectData.type &&
+                projectData.type.map((type, i) => {
+                  return (
+                    <CardMedia
+                      key={type + i}
+                      component="img"
+                      image={type}
+                      alt="Project Type"
+                      sx={{
+                        height: "50px",
+                        width: "fit-content",
+                        padding: "2px",
+                      }}
+                    />
+                  );
+                })}
             </Grid>
           </Grid>
         </CardContent>

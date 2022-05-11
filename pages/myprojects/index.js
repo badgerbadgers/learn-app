@@ -61,7 +61,7 @@ const MyProjects = ({ projectsData, developersData, user }) => {
           tempMultiProjectsData.push({
             id: project.id,
             projectName: project.fields["Project Name"] && project.fields["Project Name"].replace(/^\s+|\s+$/g, "") || "",
-            website: project.fields.Website && project.fields.Website.replace(/^\s+|\s+$/g, "") || "https://labs.codethedream.org/",
+            website: project.fields.Website && project.fields.Website.replace(/^\s+|\s+$/g, "") || "",
             logo:
               (project.fields.photo &&
                 project.fields.photo.length > 0 &&
@@ -154,4 +154,3 @@ export async function getServerSideProps(context) {
   }
 }
 
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
