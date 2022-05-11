@@ -18,7 +18,7 @@ const SignUp = () => {
     previousIndustryInput: "",
     bio: ""
   });
-console.log(userInfoData)
+
   return (
     <UserForm userInfoData={userInfoData} setUserInfoData={setUserInfoData} />
   );
