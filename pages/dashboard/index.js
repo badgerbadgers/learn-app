@@ -11,8 +11,7 @@ import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 import { privateLayout } from "../../components/PrivateLayout";
 
-const Dashboard = () => {
-
+const Dashboard = ({ session }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
@@ -34,8 +33,6 @@ const Dashboard = () => {
             />
           );
         })}
-
-        
       </DashBoardCardsLayout>
     </Container>
   );
@@ -43,12 +40,11 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-Dashboard.getLayout = privateLayout
+Dashboard.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
   return {
-    props: {
-      session: await getSession(context),
-    },
+    props: session,
   };
 }

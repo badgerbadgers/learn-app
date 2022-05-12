@@ -5,7 +5,9 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
 import { publicLayout } from "../components/PublicLayout";
-export default function Home() {
+export default function Home({session}) {
+  console.log(session, 'session - homge page');
+
   return (
     <>
       {/* <ImageWall />  */}
@@ -31,16 +33,19 @@ Home.getLayout = publicLayout;
 
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
-  //if no session exists - redirect to login 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
+  // const { user } = session;
+
+  //  //if no session exists - redirect to login 
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   }
+  // }
   if (session) { //if session exists - redirect to dashboard
+    // console.log(session, 'session')
     return {
       redirect: {
         destination: "/dashboard",
@@ -49,6 +54,6 @@ export async function getServerSideProps(ctx) {
     };
   }
   return { 
-    props: { session },
+    props: session,
   };
 }

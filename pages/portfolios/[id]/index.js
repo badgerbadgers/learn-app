@@ -12,30 +12,14 @@ import styles from "../../../styles/Portfolio.module.css";
 import clientPromise from "../../../lib/mongodb";
 import { publicLayout } from "../../../components/PublicLayout";
 
-function Portfolio({user}) {
-  // const [user, setUser] = useState(null);
+function Portfolio({user, session}) {
   const [isLoading, setLoading] = useState(false);
-  console.user(user, 'user');
+  console.log(user, 'user');
+
+  console.log(session, 'session');
   
-  const url = "/api/users";
-  const router = useRouter();
 
-  const id = router.query.id;
-
-  const { data: session, status } = useSession();
-
-  // useEffect(() => {
-  //   // const params = { params: { id: id } };
-  //   // if (id) {
-      
-  //   //   (async () => {
-  //   //     await getData(params, url).then((data) => {
-  //   //       setUser(data);
-  //   //       setLoading(false);
-  //   //     });
-  //   //   })();
-  //   // }
-  // }, [id]);
+  // const { data: session, status } = useSession();
 
   return (
     <>
@@ -65,7 +49,7 @@ function Portfolio({user}) {
               </div>
             </div>
           </Container>
-          {status === "authenticated" && (
+          {(user && 
             <Container>
               <Button
                 onClick={() => router.push("/dashboard")}
@@ -96,11 +80,46 @@ export default Portfolio;
 
 Portfolio.getLayout = publicLayout
 
+
+// export async function getServerSideProps(ctx) {
+//   // remove users api call from the component into here
+
+//   const session = await getSession(ctx);
+//   const { user } = session;
+//   //if no session exists - redirect to login 
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     }
+//   }
+//   return { //nothing happens if no session 
+//     props: { user },
+//   };
+// }
+
+
+
 export async function getServerSideProps(context) {
-  if (context) {
-    // console.log("Setting callbackWaitsForEmptyEventLoop: false");
-    context.callbackWaitsForEmptyEventLoop = false;
+
+  // get session
+  const session = await getSession(context);
+
+console.log(session, 'sessio')
+  //redirect for protected content
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
   }
+
+
+  // data base calls 
   const id = context.query.id
   const client = await clientPromise;
   const database = client.db(process.env.MONGODB_DB);
@@ -113,8 +132,8 @@ export async function getServerSideProps(context) {
     user = JSON.parse(JSON.stringify(doc))
     return {
       props: {
-        session: await getSession(context),
-        user: user
+        user: user,
+        session 
       },
     }
   } catch (error) {

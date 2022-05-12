@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import getData from "../../../lib/getData";
 import UserForm from "../../../components/UserForm";
 import Image from "next/image";
 import { privateLayout } from "../../../components/PrivateLayout";
 
-export default function InputForm() {
+export default function InputForm({user}) {
+
+  console.log(user, 'user session - user form index')
   const [userInfoData, setUserInfoData] = useState({
     firstName: "",
     lastName: "",
@@ -78,8 +81,13 @@ export default function InputForm() {
     </>
 )};
 
+InputForm.getLayout = privateLayout
+
 export async function getServerSideProps(ctx) {
+  // remove users api call from the component into here
+
   const session = await getSession(ctx);
+  const { user } = session;
   //if no session exists - redirect to login 
   if (!session) {
     return {
@@ -90,7 +98,7 @@ export async function getServerSideProps(ctx) {
     }
   }
   return { //nothing happens if no session 
-    props: { session },
+    props: { user },
   };
 }
-InputForm.getLayout = privateLayout
+
