@@ -60,19 +60,19 @@ const MyProjects = ({ projectsData, developersData, user }) => {
 //verify if the field exisit and remove any spaces before and after the content
           tempMultiProjectsData.push({
             id: project.id,
-            projectName: project.fields["Project Name"] && project.fields["Project Name"].replace(/^\s+|\s+$/g, "") || "",
-            website: project.fields.Website && project.fields.Website.replace(/^\s+|\s+$/g, "") || "",
+            projectName: project.fields["Project Name"] && project.fields["Project Name"].trim() || "",
+            website: project.fields.Website && project.fields.Website.trim() || "",
             logo:
               (project.fields.photo &&
                 project.fields.photo.length > 0 &&
                 project.fields.photo[0].url) || "",
-            description: project.fields.Project_Description && project.fields.Project_Description.replace(/^\s+|\s+$/g, "") || "",
-            dailyStandupTime: project.fields["Daily Standup Time (ET)"] && project.fields["Daily Standup Time (ET)"].replace(/^\s+|\s+$/g, "") || "",
-            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] && project.fields["Monday Planning Meeting (ET)"].replace(/^\s+|\s+$/g, "") || "",
-            dailyScrumTime: project.fields["daily scrum"] && project.fields["daily scrum"].replace(/^\s+|\s+$/g, "") || "",
-            repo: project.fields.Repo && (<Link href= {project.fields.Repo.replace(/^\s+|\s+$/g, "")} target='_blank' color='secondary'> Repo Link </Link>) || "",
-            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks.replace(/^\s+|\s+$/g, "")} target='_blank' > Calendar Link </Link>) || "",
-            projectManager: project.fields["Project Manager"] && project.fields["Project Manager"].replace(/^\s+|\s+$/g, "") || "",
+            description: project.fields.Project_Description && project.fields.Project_Description.trim() || "",
+            dailyStandupTime: project.fields["Daily Standup Time (ET)"] && project.fields["Daily Standup Time (ET)"].trim() || "",
+            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] && project.fields["Monday Planning Meeting (ET)"].trim(),
+            dailyScrumTime: project.fields["daily scrum"] && project.fields["daily scrum"].trim() || "",
+            repo: project.fields.Repo && (<Link href= {project.fields.Repo.trim()} target='_blank' color='secondary'> Repo Link </Link>) || "",
+            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks.trim()} target='_blank' > Calendar Link </Link>) || "",
+            projectManager: project.fields["Project Manager"] && project.fields["Project Manager"].trim() || "",
             team:
             project.fields.Developers && project.fields.Developers.map(
                 (developerID) => developersData[developerID]["Person Name"]
