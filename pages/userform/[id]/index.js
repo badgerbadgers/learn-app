@@ -23,11 +23,15 @@ export default function InputForm() {
     previousIndustryArray: [],
     bio: "",
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const url = "/api/users";
   const router = useRouter();
   const id = router.query.id;
+  
+  useEffect(()=>{
+    setLoading(true);
+  }, [])
 
   useEffect(() => {
     const params = { params: { id: id } };

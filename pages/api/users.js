@@ -57,7 +57,7 @@ const createAndUpdateUser = async (req, res) => {
   } else {
     data["createdAt"] = new Date();
   }
-console.log('form users update user')
+
   try {
     await database
       .collection("usersprofile")
