@@ -9,8 +9,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
-import styles from "../styles/Portfolio.module.css";
-import BioTextField from "../pages/userform/components/BioTextField";
+import styles from "../../styles/Portfolio.module.css";
+import BioTextField from "./BioTextField";
 
 
 

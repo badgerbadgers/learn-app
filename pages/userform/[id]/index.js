@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import getData from "../../../lib/getData";
-import UserForm from "../../../components/UserForm";
+import UserForm from "../../../components/userform/UserForm";
 import Image from "next/image";
 import { privateLayout } from "../../../components/PrivateLayout";
 
