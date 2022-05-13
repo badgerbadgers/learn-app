@@ -40,9 +40,3 @@ export default PairProgrammingPage;
 
 PairProgrammingPage.getLayout = privateLayout;
 
-
-PairProgrammingPage.auth = {
-  role: "admin",
-  // loading: <AdminLoadingSkeleton />,
-  unauthorized: "/", // redirect to this url
-}

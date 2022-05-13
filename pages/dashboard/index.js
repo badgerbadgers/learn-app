@@ -11,7 +11,7 @@ import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 import { privateLayout } from "../../components/PrivateLayout";
 
-const Dashboard = ({ session }) => {
+const Dashboard = ({ user }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
@@ -19,7 +19,7 @@ const Dashboard = ({ session }) => {
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       <DashBoardHeader />
       <DashBoardCardsLayout matches={matches}>
-        <CTDToolsCard style={cardStyles} />
+        <CTDToolsCard style={cardStyles} user={user} />
 
         {dashBoardInfo.map((info) => {
           return (
@@ -44,7 +44,8 @@ Dashboard.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  const { user } = session;
   return {
-    props: session,
+    props: { user },
   };
 }

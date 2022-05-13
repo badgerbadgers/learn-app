@@ -33,17 +33,7 @@ Home.getLayout = publicLayout;
 
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
-  // const { user } = session;
 
-  //  //if no session exists - redirect to login 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
   if (session) { //if session exists - redirect to dashboard
     // console.log(session, 'session')
     return {
@@ -54,6 +44,6 @@ export async function getServerSideProps(ctx) {
     };
   }
   return { 
-    props: session,
+    props: {session: session.user}
   };
 }
