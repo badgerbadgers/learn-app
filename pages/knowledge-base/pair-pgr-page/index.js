@@ -39,4 +39,3 @@ const PairProgrammingPage = () => {
 export default PairProgrammingPage;
 
 PairProgrammingPage.getLayout = privateLayout;
-
