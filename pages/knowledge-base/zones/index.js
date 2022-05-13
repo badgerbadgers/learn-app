@@ -84,7 +84,7 @@ export async function getServerSideProps(context) {
     };
   }
   if (session) {
-    const data = await getResourceData();
+    const data = await getZoneData();
     return {
       props: {
         data,
