@@ -9,7 +9,7 @@ import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeResources, setActiveResources] = useState(resources);
+  const [activeResources, setActiveResources] = useState([]);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -45,6 +45,12 @@ function Resources({ resources }) {
   };
 
   useEffect(() => {
+    if (resources) {
+      setActiveResources(resources)
+    }
+  }, [])
+
+  useEffect(() => {
     if (searchTerm) {
       const newList = searchResults(searchTerm);
       setActiveResources(newList);
@@ -75,7 +81,9 @@ function Resources({ resources }) {
       */}
       {activeResources &&
         activeResources.map((resource) => {
-          return <ResourceCard key={resource.id} resource={resource} />;
+          if (resource) {
+            return <ResourceCard key={resource.id} resource={resource} />;
+          }
         })}
     </Grid>
   );
