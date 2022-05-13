@@ -1,6 +1,6 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { getSession } from "next-auth/react";
 import {privateLayout} from "../../components/PrivateLayout";
-
 import CheckListCard from "./components/CheckListCard";
 import WeeklyMeetingsCard from "./components/WeeklyMeetingsCard";
 import CTDAdminCard from "./components/CTDAdminCard";
@@ -21,3 +21,20 @@ export default function ChecklistPage() {
 }
 
 ChecklistPage.getLayout = privateLayout
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  if (session) {
+    return {
+      props: {},
+    };
+  }
+}
