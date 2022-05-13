@@ -1,11 +1,12 @@
 import React, {useState} from "react";
+import { getSession } from "next-auth/react";
 import PairPrgBody from "./components/PairPrgBody";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import PairPrgNav from "./components/PairPrgNav";
 import PairPrgTitle from "./components/PairPrgTitle";
 import { pairProgrammingInfo } from "../../../lib/pairPrgInfo";
 import { privateLayout } from "../../../components/PrivateLayout";
-import { getSession } from "next-auth/react";
+
 
 const PairProgrammingPage = () => {
   const [activeTab, setActiveTab] = useState(0);
