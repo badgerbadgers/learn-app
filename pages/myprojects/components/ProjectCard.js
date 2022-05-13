@@ -40,6 +40,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
             padding: "10px",
             textAlign: "center",
             color: "primary.contrastText",
+            height: "70px",
           }}
           variant="h5"
           title={projectData.projectName}

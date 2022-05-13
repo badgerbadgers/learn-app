@@ -9,85 +9,105 @@ import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
 
 const colorArray = ["primary.main", "primary.greenCard", "secondary.main"];
 
-const MyProjects = ({ projectsData, developersData, user }) => {
+const MyProjects = ({ projectsData, developersData }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
   const [headerColor, setHeaderColor] = useState([]);
-  //const currentUserID = (user.gh).toLowerCase();
-        // console.log(currentUserID);
+
   useEffect(() => {
-    //if (currentUserID) {
-      try {
-        // filter developersData to get the current user data based on their githubId which is same as the currentUserID from session.
-        //Then we will map the data and return the key which is the developers ID from the Peoples table.
-        // Next step this key will be mapped against the developers ID in the developers array in the Projects table to find all the projects related to the current user only.
-      
-       // const currentUserDataID =*****
-        //   developersData &&
-        //   Object.entries(developersData)
-        //     .filter(([key, value]) => value.github === currentUserID)
-        //     .map(([key, value]) => key);
+    try {
+      // Creating a temp Array to store multiple projects data and then set each project into the state with correct fields.
+      //cant store directly into to sate as it will overwrite the privious data and can't spread the state else it adds a
+      //dependency to the array and goes in infinite loop.
 
-        //filter projectsData to get projects where the current user is the developer.
-        // const currentUserProjects =
-        //   projectsData &&
-        //   projectsData.filter((project) =>
-        //     project.fields.Developers.includes(currentUserDataID[0])
-        //   );****
+      const tempMultiProjectsData = [];
 
-        // Creating a temp Array to store multiple projects data and then set each project into the state with correct fields.
-        //cant store directly into to sate as it will overwrite the privious data and can't spread the state else it adds a 
-        //dependency to the array and goes in infinite loop.
-
-        const tempMultiProjectsData = [];
-
-        // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
-        // currentUserProjects && currentUserProjects.map((project) => {****
-          projectsData.map((project)=> {
-              //Remove React Native and Rails API from the Types array and then mapping the it to replace the text with Icons. 
-          const projectTypeArray = project.fields.Type && project.fields.Type
-          .filter((element) => element === "React" || element === "Rails" || element === "NodeJS")
-          .map(
-            element => {
-              if (element === 'React') {
-                element = '../img/myProjectsIcon/react.svg';
-              } else if (element === "Rails") {
-                element = '../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg';
-              } else if (element === "NodeJS") {
-                element = '../img/myProjectsIcon/NodeJS_logo.png';
-              }
-              return element;
+      // mapping the current user projects to create a new object for each doc into myProjectsData to check if the field exist and change the developers ID to Name.
+      // currentUserProjects && currentUserProjects.map((project) => {****
+      projectsData.map((project) => {
+        //Remove React Native and Rails API from the Types array and then mapping the it to replace the text with Icons.
+        const projectTypeArray =
+          project.fields.Type &&
+          project.fields.Type.filter(
+            (element) =>
+              element === "React" || element === "Rails" || element === "NodeJS"
+          ).map((element) => {
+            if (element === "React") {
+              element = "../img/myProjectsIcon/react.svg";
+            } else if (element === "Rails") {
+              element = "../img/myProjectsIcon/Ruby_on_Rails-Logo.wine.svg";
+            } else if (element === "NodeJS") {
+              element = "../img/myProjectsIcon/NodeJS_logo.png";
             }
-          )
-//verify if the field exisit and remove any spaces before and after the content
-          tempMultiProjectsData.push({
-            id: project.id,
-            projectName: project.fields["Project Name"] && project.fields["Project Name"].trim() || "",
-            website: project.fields.Website && project.fields.Website.trim() || "",
-            logo:
-              (project.fields.photo &&
-                project.fields.photo.length > 0 &&
-                project.fields.photo[0].url) || "",
-            description: project.fields.Project_Description && project.fields.Project_Description.trim() || "",
-            dailyStandupTime: project.fields["Daily Standup Time (ET)"] && project.fields["Daily Standup Time (ET)"].trim() || "",
-            planningMeetTime: project.fields["Monday Planning Meeting (ET)"] && project.fields["Monday Planning Meeting (ET)"].trim(),
-            dailyScrumTime: project.fields["daily scrum"] && project.fields["daily scrum"].trim() || "",
-            repo: project.fields.Repo && (<Link href= {project.fields.Repo.trim()} target='_blank' color='secondary'> Repo Link </Link>) || "",
-            calendarLink: project.fields.calendarLinks && (<Link href= {project.fields.calendarLinks.trim()} target='_blank' > Calendar Link </Link>) || "",
-            projectManager: project.fields["Project Manager"] && project.fields["Project Manager"].trim() || "",
-            team:
-            project.fields.Developers && project.fields.Developers.map(
-                (developerID) => developersData[developerID]["Person Name"]
-              ) || "",
-            type: project.fields.Type && projectTypeArray || "",
+            return element;
           });
+        //verify if the field exisit and remove any spaces before and after the content
+        tempMultiProjectsData.push({
+          id: project.id,
+          projectName:
+            (project.fields["Project Name"] &&
+              project.fields["Project Name"].trim()) ||
+            "",
+          website:
+            (project.fields.Website && project.fields.Website.trim()) || "",
+          logo:
+            (project.fields.photo &&
+              project.fields.photo.length > 0 &&
+              project.fields.photo[0].url) ||
+            "",
+          description:
+            (project.fields.Project_Description &&
+              project.fields.Project_Description.trim()) ||
+            "",
+          dailyStandupTime:
+            (project.fields["Daily Standup Time (ET)"] &&
+              project.fields["Daily Standup Time (ET)"].trim()) ||
+            "",
+          planningMeetTime:
+            project.fields["Monday Planning Meeting (ET)"] &&
+            project.fields["Monday Planning Meeting (ET)"].trim(),
+          dailyScrumTime:
+            (project.fields["daily scrum"] &&
+              project.fields["daily scrum"].trim()) ||
+            "",
+          repo:
+            (project.fields.Repo && (
+              <Link
+                href={project.fields.Repo.trim()}
+                target="_blank"
+                color="secondary"
+              >
+                {" "}
+                Repo Link{" "}
+              </Link>
+            )) ||
+            "",
+          calendarLink:
+            (project.fields.calendarLinks && (
+              <Link href={project.fields.calendarLinks.trim()} target="_blank">
+                {" "}
+                Calendar Link{" "}
+              </Link>
+            )) ||
+            "",
+          projectManager:
+            (project.fields["Project Manager"] &&
+              project.fields["Project Manager"].trim()) ||
+            "",
+          team:
+            (project.fields.Developers &&
+              project.fields.Developers.map(
+                (developerID) => developersData[developerID]["Person Name"]
+              )) ||
+            "",
+          type: (project.fields.Type && projectTypeArray) || "",
         });
-        setMyProjectsData(tempMultiProjectsData);
-      } catch (error) {
-        console.log(error, "error from projectsData in /api/myprojects");
-      }
-    //}
-  }, [ projectsData, developersData]);
-// console.log(developersData)
+      });
+      setMyProjectsData(tempMultiProjectsData);
+    } catch (error) {
+      console.log(error, "error from projectsData in /api/myprojects");
+    }
+  }, [projectsData, developersData]);
+
   //Now that the data is set inside the myProjectsData we can now loop over the 3 colors to pass to the Header
   //moving the setHeaderColor inside above useEffect would result in infinite loop since we are dependent on the myprojectsData.
 
@@ -101,10 +121,6 @@ const MyProjects = ({ projectsData, developersData, user }) => {
       setHeaderColor(tempColorArray);
     }
   }, [myProjectsData]);
-
-console.log(myProjectsData, "*** MyPRD**");
-console.log(projectsData, "PRD")
-//console.log(developersData, "DEV")
 
   return (
     <Grid
@@ -137,7 +153,7 @@ export async function getServerSideProps(context) {
       const { user } = session;
       const projectsData = await getProjectsData(user);
       const developersData = await getDevelopersData();
-      
+
       return {
         props: {
           projectsData,
@@ -149,7 +165,7 @@ export async function getServerSideProps(context) {
     return {
       props: {},
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
@@ -161,4 +177,3 @@ export async function getServerSideProps(context) {
     };
   }
 }
-
