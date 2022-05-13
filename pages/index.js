@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import ImageWall from "../components/ImageWall";
 import { publicLayout } from "../components/PublicLayout";
-export default function Home({user}) {
+export default function Home({ user }) {
   return (
     <>
       {/* <ImageWall />  */}
@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
     //if session exists - redirect to dashboard
     const { user } = session;
     // console.log(user, 'user in homepage');
-    // you have to take out the redirect to use the user on client side 
+    // you have to take out the redirect to use the user on client side
     //bc it happens before the props are passed
     return {
       redirect: {
@@ -41,6 +41,12 @@ export async function getServerSideProps(context) {
         permanent: false,
       },
       props: { user },
+    };
+  }
+
+  if (!session) {
+    return {
+      props: {},
     };
   }
 }
