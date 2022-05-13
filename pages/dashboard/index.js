@@ -1,6 +1,5 @@
 import React from "react";
 import { getSession } from "next-auth/react";
-
 import DashBoardCard from "./components/DashBoardCard";
 import CTDToolsCard from "./components/CTDToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";

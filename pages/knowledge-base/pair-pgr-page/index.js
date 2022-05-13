@@ -5,6 +5,7 @@ import PairPrgNav from "./components/PairPrgNav";
 import PairPrgTitle from "./components/PairPrgTitle";
 import { pairProgrammingInfo } from "../../../lib/pairPrgInfo";
 import { privateLayout } from "../../../components/PrivateLayout";
+import { getSession } from "next-auth/react";
 
 const PairProgrammingPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -39,3 +40,15 @@ const PairProgrammingPage = () => {
 export default PairProgrammingPage;
 
 PairProgrammingPage.getLayout = privateLayout;
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+}

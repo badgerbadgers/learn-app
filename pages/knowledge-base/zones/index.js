@@ -1,4 +1,5 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
+import { getSession } from "next-auth/react";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import SideNav from "./components/SideNav";
 import DisplayZones from "./components/DisplayZones";
@@ -69,13 +70,25 @@ function Skillszoning({ data }) {
 
 export default Skillszoning;
 
-Skillszoning.getLayout = privateLayout
+Skillszoning.getLayout = privateLayout;
 
-export async function getStaticProps() {
-  const data = await getZoneData();
-  return {
-    props: {
-      data
-    }
-  };
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  if (session) {
+    const data = await getResourceData();
+    return {
+      props: {
+        data,
+      },
+    };
+  }
 }
