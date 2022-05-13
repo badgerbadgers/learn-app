@@ -25,7 +25,7 @@ const SignUp = () => {
 
 export default SignUp;
 
-//to custome a layout for sighup page used function
+//to custom a layout for sighup page used function
 SignUp.getLayout = function getLayout(pages) {
   return (
     <>
@@ -34,3 +34,8 @@ SignUp.getLayout = function getLayout(pages) {
     </>
   );
 };
+
+// getServerSideProps 
+// limit the access of other routes until you fill out the profile
+// call the DB to see if you have a profile doc (not create it & if you don't)
+// if it doesn't exist - then you have to stay on this route until it does 

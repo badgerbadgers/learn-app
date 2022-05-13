@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getSession } from "next-auth/react";
 import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
@@ -8,7 +9,7 @@ import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeResources, setActiveResources] = useState(resources);
+  const [activeResources, setActiveResources] = useState([]);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -44,6 +45,12 @@ function Resources({ resources }) {
   };
 
   useEffect(() => {
+    if (resources) {
+      setActiveResources(resources)
+    }
+  }, [])
+
+  useEffect(() => {
     if (searchTerm) {
       const newList = searchResults(searchTerm);
       setActiveResources(newList);
@@ -74,7 +81,9 @@ function Resources({ resources }) {
       */}
       {activeResources &&
         activeResources.map((resource) => {
-          return <ResourceCard key={resource.id} resource={resource} />;
+          if (resource) {
+            return <ResourceCard key={resource.id} resource={resource} />;
+          }
         })}
     </Grid>
   );
@@ -82,14 +91,26 @@ function Resources({ resources }) {
 
 export default Resources;
 
-Resources.getLayout = privateLayout
+Resources.getLayout = privateLayout;
 
-export async function getServerSideProps() {
-  const data = await getResourceData();
-  // Send the data as resources by minify data.
-  return {
-    props: {
-      resources: minifyItems(data),
-    },
-  };
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  if (session) {
+    const data = await getResourceData();
+    // Send the data as resources by minify data.
+    return {
+      props: {
+        resources: minifyItems(data),
+      },
+    };
+  }
 }

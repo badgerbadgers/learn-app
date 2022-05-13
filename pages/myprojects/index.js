@@ -158,7 +158,6 @@ export async function getServerSideProps(context) {
         props: {
           projectsData,
           developersData: MinifyDevelopersRecords(developersData),
-          user,
         },
       };
     } // if session doesnt exist.
