@@ -44,8 +44,17 @@ Dashboard.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
   const { user } = session;
   return {
     props: { user },
-  };
+  }
 }
