@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSession, getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
@@ -12,6 +13,9 @@ import { publicLayout } from "../../../components/PublicLayout";
 
 function Portfolio({ user }) {
   const [isLoading, setLoading] = useState(false);
+
+  const router = useRouter();
+  const id = router.query.id;
 
   const { data: session, status } = useSession();
 
