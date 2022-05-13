@@ -4,7 +4,7 @@ const baseTheme = responsiveFontSizes(
   createTheme({
     typography: {
       root: {
-        fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
+        fontFamily: ['gothamRoundedBold', 'gothamRoundedMedium', "Montserrat"].join(','),
         fontFamilySecondary: "Montserrat",
       },
       h3: {

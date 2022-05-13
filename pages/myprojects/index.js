@@ -12,26 +12,26 @@ const colorArray = ["primary.main", "primary.greenCard", "secondary.main"];
 const MyProjects = ({ projectsData, developersData, user }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
   const [headerColor, setHeaderColor] = useState([]);
-  const currentUserID = (user.gh).toLowerCase();
+  //const currentUserID = (user.gh).toLowerCase();
         // console.log(currentUserID);
   useEffect(() => {
-    if (currentUserID) {
+    //if (currentUserID) {
       try {
         // filter developersData to get the current user data based on their githubId which is same as the currentUserID from session.
         //Then we will map the data and return the key which is the developers ID from the Peoples table.
         // Next step this key will be mapped against the developers ID in the developers array in the Projects table to find all the projects related to the current user only.
-        const currentUserDataID =
-          developersData &&
-          Object.entries(developersData)
-            .filter(([key, value]) => value.github === currentUserID)
-            .map(([key, value]) => key);
+        // const currentUserDataID =
+        //   developersData &&
+        //   Object.entries(developersData)
+        //     .filter(([key, value]) => value.github === currentUserID)
+        //     .map(([key, value]) => key);
 
         //filter projectsData to get projects where the current user is the developer.
-        const currentUserProjects =
-          projectsData &&
-          projectsData.filter((project) =>
-            project.fields.Developers.includes(currentUserDataID[0])
-          );
+        // const currentUserProjects =
+        //   projectsData &&
+        //   projectsData.filter((project) =>
+        //     project.fields.Developers.includes(currentUserDataID[0])
+        //   );
 
         // Creating a temp Array to store multiple projects data and then set each project into the state with correct fields.
         //cant store directly into to sate as it will overwrite the privious data and can't spread the state else it adds a 
@@ -84,9 +84,9 @@ const MyProjects = ({ projectsData, developersData, user }) => {
       } catch (error) {
         console.log(error, "error from projectsData in /api/myprojects");
       }
-    }
-  }, [currentUserID, projectsData, developersData]);
-
+    //}
+  }, [ projectsData, developersData]);
+console.log(developersData)
   //Now that the data is set inside the myProjectsData we can now loop over the 3 colors to pass to the Header
   //moving the setHeaderColor inside above useEffect would result in infinite loop since we are dependent on the myprojectsData.
 
@@ -101,7 +101,9 @@ const MyProjects = ({ projectsData, developersData, user }) => {
     }
   }, [myProjectsData]);
 
-  // console.log(myProjectsData, "*** MyPRD**");
+console.log(myProjectsData, "*** MyPRD**");
+console.log(projectsData, "PRD")
+console.log(developersData, "DEV")
 
   return (
     <Grid
@@ -131,9 +133,10 @@ export async function getServerSideProps(context) {
   try {
     if (session) {
       //if session exists returnsession,
-      const projectsData = await getProjectsData();
-      const developersData = await getDevelopersData();
       const { user } = session;
+      const projectsData = await getProjectsData(user);
+      const developersData = await getDevelopersData();
+      
       return {
         props: {
           projectsData,
@@ -144,6 +147,10 @@ export async function getServerSideProps(context) {
     } // if session doesnt exist.
     return {
       props: {},
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
     };
   } catch (error) {
     return {
