@@ -86,6 +86,7 @@ const darkTheme = createTheme({
     },
     secondary: {
       main: "#F3C300", //original yellow from ctd pallete
+      light: "#8BC34A", // light green
       contrastText: "#000",
     },
     zone1: {
@@ -138,6 +139,7 @@ const lightTheme = createTheme({
     },
     secondary: {
       main: "#12284C", //original blue from CTD
+      light: "#F3C300", //original yellow from ctd pallete
       contrastText: "#fff",
     },
     text: {

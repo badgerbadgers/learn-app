@@ -7,7 +7,7 @@ import { privateLayout } from "../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
 import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
 
-const colorArray = ["primary.main", "primary.greenCard", "secondary.main"];
+const colorArray = ["primary.main", "secondary.main", "secondary.light"];
 
 const MyProjects = ({ projectsData, developersData }) => {
   const [myProjectsData, setMyProjectsData] = useState([]);
