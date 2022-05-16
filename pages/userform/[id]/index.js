@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import getData from "../../../lib/getData";
 import UserForm from "../../../components/userform/UserForm";
@@ -6,6 +7,7 @@ import Image from "next/image";
 import { privateLayout } from "../../../components/PrivateLayout";
 
 export default function InputForm() {
+
   const [userInfoData, setUserInfoData] = useState({
     firstName: "",
     lastName: "",
@@ -28,10 +30,10 @@ export default function InputForm() {
   const url = "/api/users";
   const router = useRouter();
   const id = router.query.id;
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     setLoading(true);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const params = { params: { id: id } };
@@ -84,3 +86,26 @@ export default function InputForm() {
 }
 
 InputForm.getLayout = privateLayout;
+
+export async function getServerSideProps(context) {
+
+  // should we call the DB directly here when session exists 
+  // as opposed to the api/users route as we do in portfolio currently?
+
+  const session = await getSession(context);
+  //if no session exists - redirect to login
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  if (session) {
+    const { user } = session;
+    return {
+      props: { user },
+    };
+  }
+}

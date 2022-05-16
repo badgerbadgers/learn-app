@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import { getSession } from "next-auth/react";
 import PairPrgBody from "./components/PairPrgBody";
 import KnowledgePageLayout from "../../../components/knowledgeBase/KnowledgePageLayout";
 import PairPrgNav from "./components/PairPrgNav";
 import PairPrgTitle from "./components/PairPrgTitle";
 import { pairProgrammingInfo } from "../../../lib/pairPrgInfo";
 import { privateLayout } from "../../../components/PrivateLayout";
+
 
 const PairProgrammingPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -40,9 +42,19 @@ export default PairProgrammingPage;
 
 PairProgrammingPage.getLayout = privateLayout;
 
-
-PairProgrammingPage.auth = {
-  role: "admin",
-  // loading: <AdminLoadingSkeleton />,
-  unauthorized: "/", // redirect to this url
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  if (session) {
+    return {
+      props: {},
+    };
+  }
 }

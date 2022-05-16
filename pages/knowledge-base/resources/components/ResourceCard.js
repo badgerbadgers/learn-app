@@ -32,13 +32,14 @@ const resourcesColorIcon = [
 ];
 
 function ResourceCard({ resource }) {
-  const topic = resource ? resource.fields["Name (from topic)"] : [] ;
-  const language = resource ? resource.fields["Name (from language)"] : [];
+  const topic = resource?.fields["Name (from topic)"] ? resource.fields["Name (from topic)"] : null;
+  const language = resource?.fields["Name (from language)"] ? resource.fields["Name (from language)"] : null;
+  const resourceType = resource?.fields.Type ? resource.fields.Type : ""
 
   const resourcesNavBarColor = () => {
     // The function will change color based on resource type
     const elColor = resourcesColorIcon.find(
-      (elColor) => elColor.key === resource.fields.Type
+      (elColor) => elColor.key === resourceType
     );
     if (elColor) {
       return elColor.color;
@@ -49,7 +50,7 @@ function ResourceCard({ resource }) {
   // The function will display the resources type icon
   const resourcesTypeIcon = () => {
     const elIcon = resourcesColorIcon.find(
-      (elIcon) => elIcon.key === resource.fields.Type
+      (elIcon) => elIcon.key === resourceType
     );
     if (elIcon) {
       return elIcon.icon;
@@ -89,12 +90,12 @@ function ResourceCard({ resource }) {
                 {resourcesTypeIcon()}
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                {resource.fields.Type}
+                {resourceType}
               </Typography>
             </Toolbar>
           </AppBar>
           <Typography sx={{ m: 3 }} variant="h6" component="div">
-            {resource.fields.Name}
+            {resource.fields.Name && resource.fields.Name}
           </Typography>
           <Grid
             size="small"
@@ -168,7 +169,7 @@ function ResourceCard({ resource }) {
               size="small"
               color="secondary"
               sx={{ borderRadius: "30px" }}
-              href={resource.fields.URL}
+              href={resource.fields?.URL}
               target="_blank"
             >
               Link

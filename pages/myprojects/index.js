@@ -21,11 +21,23 @@ const MyProjects = ({data}) => {
 
 export default MyProjects;
 
-export async function getServerSideProps() { 
-  const data = await getProjectsData();
-  return {
-    props: {
-      data
+export async function getServerSideProps(context) { 
+  // vaidehi's current branch cards-myProject-dev is refactoring this code to current state
+    const session = await getSession(context);
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
     }
-  } 
+    if(session){
+    const data = await getProjectsData();
+    return {
+      props: {
+        data
+      }
+    } 
+  }
 }

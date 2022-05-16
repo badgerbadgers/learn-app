@@ -1,6 +1,5 @@
 import React from "react";
-import { useSession, getSession } from "next-auth/react";
-
+import { getSession } from "next-auth/react";
 import DashBoardCard from "./components/DashBoardCard";
 import CTDToolsCard from "./components/CTDToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -11,8 +10,7 @@ import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 import { privateLayout } from "../../components/PrivateLayout";
 
-const Dashboard = () => {
-
+const Dashboard = ({ user }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
@@ -20,7 +18,7 @@ const Dashboard = () => {
     <Container sx={{ textAlign: "center", p: !matches && 1 }}>
       <DashBoardHeader />
       <DashBoardCardsLayout matches={matches}>
-        <CTDToolsCard style={cardStyles} />
+        <CTDToolsCard style={cardStyles} user={user} />
 
         {dashBoardInfo.map((info) => {
           return (
@@ -34,8 +32,6 @@ const Dashboard = () => {
             />
           );
         })}
-
-        
       </DashBoardCardsLayout>
     </Container>
   );
@@ -43,12 +39,21 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-Dashboard.getLayout = privateLayout
+Dashboard.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  const { user } = session;
   return {
-    props: {
-      session: await getSession(context),
-    },
-  };
+    props: { user },
+  }
 }

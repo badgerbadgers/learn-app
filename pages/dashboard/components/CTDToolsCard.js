@@ -4,8 +4,6 @@ import MuiAlert from "@mui/material/Alert";
 import HandymanIcon from "@mui/icons-material/Handyman";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-
-import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import {
@@ -24,19 +22,18 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CTDToolsCard({style}) {
+export default function CTDToolsCard({ style, user }) {
   //a state to managev a pop up alert window
   const [open, setOpen] = useState(false);
-
-  const { data: session } = useSession();
-
   const router = useRouter();
 
   const handleShare = () => {
-    const url = `https://labs.codethedream.org/portfolios/${session.user.gh}`;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(url);
-      setOpen(true);
+    if (user) {
+      const url = `https://labs.codethedream.org/portfolios/${user.gh}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+        setOpen(true);
+      }
     }
   };
 
@@ -47,10 +44,11 @@ export default function CTDToolsCard({style}) {
 
   return (
     <Grid item xs={12} md={6}>
+      {user && 
       <Card
         sx={{
           backgroundColor: "background.ctdcard",
-          ...style
+          ...style,
         }}
       >
         <HandymanIcon
@@ -65,7 +63,7 @@ export default function CTDToolsCard({style}) {
         <CardHeader title={"CTD Tools"}></CardHeader>
         <CardContent>
           <Typography variant="body1">
-            Don&apos;t forget to update and share your portfolio. 
+            Don&apos;t forget to update and share your portfolio.
           </Typography>
         </CardContent>
         <CardActions
@@ -74,7 +72,7 @@ export default function CTDToolsCard({style}) {
           <Link
             aria-label="link to portfolio page"
             sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
-            href={`/portfolios/${encodeURIComponent(session.user.gh)}`}
+            href={`/portfolios/${user.gh}`}
           >
             Visit your Portfolio page
           </Link>
@@ -82,9 +80,7 @@ export default function CTDToolsCard({style}) {
           <IconButton
             title="edit user form"
             aria-label="edit user form icon"
-            onClick={() =>
-              router.push(`/userform/${encodeURIComponent(session.user.gh)}`)
-            }
+            onClick={() => router.push(`/userform/${user.gh}`)}
           >
             <ModeEditOutlineIcon />
           </IconButton>
@@ -97,6 +93,7 @@ export default function CTDToolsCard({style}) {
           </IconButton>
         </CardActions>
       </Card>
+      }
       {open ? (
         <Snackbar
           aria-label="alert window"
@@ -117,12 +114,4 @@ export default function CTDToolsCard({style}) {
       ) : null}
     </Grid>
   );
-}
-//as session is used inside this component so moved a getserversideprops here too..??
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
-  };
 }
