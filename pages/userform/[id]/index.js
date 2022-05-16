@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import getData from "../../../lib/getData";
-import UserForm from "../../../components/UserForm";
+import UserForm from "../../../components/userform/UserForm";
 import Image from "next/image";
 import { privateLayout } from "../../../components/PrivateLayout";
 
@@ -23,6 +23,7 @@ export default function InputForm() {
     techStackArray: [],
     skillsArray: [],
     previousIndustryArray: [],
+    bio: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -40,23 +41,26 @@ export default function InputForm() {
       try {
         (async () => {
           await getData(params, url).then((data) => {
-            // Add input default values and initialize the state values
-            setUserInfoData({
-              firstName: data.firstName,
-              lastName: data.lastName,
-              pronouns: data.pronouns,
-              email: data.email,
-              github: data.gh,
-              linkedin: data.linkedin,
-              twitter: data.twitter,
-              videoUrl: data.videoUrl,
-              techStackArray: data.techStackArray,
-              skillsArray: data.skillsArray,
-              previousIndustryArray: data.previousIndustryArray,
-              techStackInput: "",
-              skillInput: "",
-              previousIndustryInput: "",
-            });
+            if (data) {
+              // Add input default values and initialize the state values
+              setUserInfoData({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                pronouns: data.pronouns,
+                email: data.email,
+                github: data.gh,
+                linkedin: data.linkedin,
+                twitter: data.twitter,
+                videoUrl: data.videoUrl,
+                techStackArray: data.techStackArray,
+                skillsArray: data.skillsArray,
+                previousIndustryArray: data.previousIndustryArray,
+                techStackInput: "",
+                skillInput: "",
+                previousIndustryInput: "",
+                bio: data.bio,
+              });
+            }
             setLoading(false);
           });
         })();

@@ -12,79 +12,58 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import styles from "../../../styles/Portfolio.module.css";
 
-
 function ContactCard({ user }) {
-
-
   if (!user) {
     return <div>Loading...</div>;
   }
-  
+
   return (
-    <Grid item sx={{ textAlign: "center" }}>
-      <Card variant="outlined" sx={{ height: "100%" }}>
-        <div className={styles.innerCard}>
-          <Avatar
-            sx={{ height: "150px", width: "150px", margin: "10px" }}
-            style={{ alignItems: "center" }}
-            alt="User Picture"
-            src={user.image}
-          />
-          <div>
-            <Typography variant="h4" component="div" marginTop="15px">
-              {user.firstName} {user.lastName}
-            </Typography>
-            <Typography sx={{ mb: 1.0 }} color="text.secondary">
-              {user.pronouns}
-            </Typography>
-            <Typography variant="h5" component="div">
-              Tech Stack: <br />
-              {user.techStackArray.map((data) => {
-                return (
-                  // Styling tech stack listing
-                  <Typography
-                    sx={{
-                      display: "inline",
-                      justifyContent: "center",
-                      listStyle: "none",
-                      flexWrap: "wrap",
-                      p: 0.5,
-                    }}
-                    key={data}
-                  >
-                    <strong>{data}</strong>
-                  </Typography>
-                );
-              })}
-            </Typography>
-            <ButtonGroup
-              sx={{
-                "& .MuiButtonGroup-grouped": {
-                  minWidth: "0px",
-                },
-              }}
-            >
-              <Stack direction="row" spacing={0.5} m={2}>
-                {user.linkedin && (
-                  <Box>
-                    <Button
-                    sx={{
-                      backgroundColor: "background.contactIcon",
-                      color: "#FFFFFF",
-                      borderRadius: "5px",
-                      maxWidth: "26px",
-                      minWidth: "26px",
-                      paddingRight: 0,
-                    }}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      startIcon={<LinkedIn />}
-                      href={`https://www.linkedin.com/in/${user.linkedin}`}
-                      target="_blank"
-                    />
-                  </Box>
-                )}
+    <Card variant="outlined" sx={{ height: "100%", textAlign: "center" }}>
+      <div className={styles.innerCard}>
+        <Avatar
+          sx={{ height: "150px", width: "150px", margin: "10px" }}
+          style={{ alignItems: "center" }}
+          alt="User Picture"
+          src={user.image}
+        />
+        <div>
+          <Typography variant="h4" component="div" marginTop="15px">
+            {user.firstName} {user.lastName}
+          </Typography>
+          <Typography sx={{ mb: 1.0 }} color="text.secondary">
+            {user.pronouns}
+          </Typography>
+          <Typography variant="h6" component="div">
+            Tech Stack: <br />
+            {user.techStackArray.map((data) => {
+              return (
+                // Styling tech stack listing
+                <Typography
+                  variant="body1"
+                  sx={{
+                    textTransform: "none",
+                    display: "inline",
+                    justifyContent: "center",
+                    listStyle: "none",
+                    flexWrap: "wrap",
+                    p: 0.5,
+                  }}
+                  key={data}
+                >
+                  <strong>{data}</strong>
+                </Typography>
+              );
+            })}
+          </Typography>
+          <ButtonGroup
+            sx={{
+              "& .MuiButtonGroup-grouped": {
+                minWidth: "0px",
+              },
+            }}
+          >
+            <Stack direction="row" spacing={0.5} m={2}>
+              {user.linkedin && (
                 <Box>
                   <Button
                     sx={{
@@ -98,15 +77,34 @@ function ContactCard({ user }) {
                     size="small"
                     variant="contained"
                     color="primary"
-                    startIcon={<GitHubIcon />}
-                    href={`https://github.com/${user.gh}`}
+                    startIcon={<LinkedIn />}
+                    href={`https://www.linkedin.com/in/${user.linkedin}`}
                     target="_blank"
                   />
                 </Box>
-                {user.email && (
-                  <Box>
-                    <Button
-                      sx={{
+              )}
+              <Box>
+                <Button
+                  sx={{
+                    backgroundColor: "background.contactIcon",
+                    color: "#FFFFFF",
+                    borderRadius: "5px",
+                    maxWidth: "26px",
+                    minWidth: "26px",
+                    paddingRight: 0,
+                  }}
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  startIcon={<GitHubIcon />}
+                  href={`https://github.com/${user.gh}`}
+                  target="_blank"
+                />
+              </Box>
+              {user.email && (
+                <Box>
+                  <Button
+                    sx={{
                       backgroundColor: "background.contactIcon",
                       color: "#FFFFFF",
                       borderRadius: "5px",
@@ -114,19 +112,19 @@ function ContactCard({ user }) {
                       minWidth: "26px",
                       paddingRight: 0,
                     }}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      startIcon={<EmailIcon />}
-                      href={`mailto:${user.email}`}
-                      target="_blank"
-                    />
-                  </Box>
-                )}
-                {user.twitter && (
-                  <Box>
-                    <Button
-                      sx={{
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EmailIcon />}
+                    href={`mailto:${user.email}`}
+                    target="_blank"
+                  />
+                </Box>
+              )}
+              {user.twitter && (
+                <Box>
+                  <Button
+                    sx={{
                       backgroundColor: "background.contactIcon",
                       color: "#FFFFFF",
                       borderRadius: "5px",
@@ -134,17 +132,17 @@ function ContactCard({ user }) {
                       minWidth: "26px",
                       paddingRight: 0,
                     }}
-                      size="small"
-                      variant="contained"
-                      startIcon={<Twitter />}
-                      href={`https://twitter.com/${user.twitter}`}
-                      target="_blank"
-                    />
-                  </Box>
-                )}
-              </Stack>
-            </ButtonGroup>
-            {/* <Grid item m={1}>
+                    size="small"
+                    variant="contained"
+                    startIcon={<Twitter />}
+                    href={`https://twitter.com/${user.twitter}`}
+                    target="_blank"
+                  />
+                </Box>
+              )}
+            </Stack>
+          </ButtonGroup>
+          {/* <Grid item m={1}>
               <Button
                 className={classes.button}
                 variant="outlined"
@@ -158,10 +156,9 @@ function ContactCard({ user }) {
                 Download Resume
               </Button>
             </Grid> */}
-          </div>
         </div>
-      </Card>
-    </Grid>
+      </div>
+    </Card>
   );
 }
 

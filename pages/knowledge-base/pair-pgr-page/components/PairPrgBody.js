@@ -83,7 +83,6 @@ const PairPrgBody = ({ pairProgrammingInfo, value }) => {
                   <ul className={styles.pptoolspage}>
                     {item.html &&
                       item.html.map((html) => {
-                        
                         return (
                           <li
                             key={html}

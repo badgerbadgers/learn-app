@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserForm from "../components/UserForm";
+import UserForm from "../components/userform/UserForm";
 import { PublicLayout } from "../components/PublicLayout";
 import Footer from "../components/Footer";
 
@@ -16,6 +16,7 @@ const SignUp = () => {
     techStackInput: "",
     skillInput: "",
     previousIndustryInput: "",
+    bio: ""
   });
 
   return (

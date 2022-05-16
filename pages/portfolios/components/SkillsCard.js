@@ -2,7 +2,10 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
-import { Card, CardContent, Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+
 
 const card = {
   height: "100%",
@@ -19,13 +22,12 @@ export default function SkillsCard({ skills }) {
   return (
     <Card sx={card}>
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h6" component="div">
           Skills
         </Typography>
         <Paper
           sx={{
             display: "flex",
-            justifyContent: "center",
             flexWrap: "wrap",
             listStyle: "none",
             p: 0.5,

@@ -4,7 +4,7 @@ const baseTheme = responsiveFontSizes(
   createTheme({
     typography: {
       root: {
-        fontFamily: "'gothamRoundedBold', 'gothamRoundedMedium'",
+        fontFamily: ['gothamRoundedBold', 'gothamRoundedMedium', "Montserrat"].join(','),
         fontFamilySecondary: "Montserrat",
       },
       h3: {
@@ -86,6 +86,7 @@ const darkTheme = createTheme({
     },
     secondary: {
       main: "#F3C300", //original yellow from ctd pallete
+      light: "#8BC34A", // light green
       contrastText: "#000",
     },
     zone1: {
@@ -138,6 +139,7 @@ const lightTheme = createTheme({
     },
     secondary: {
       main: "#12284C", //original blue from CTD
+      light: "#F3C300", //original yellow from ctd pallete
       contrastText: "#fff",
     },
     text: {
@@ -150,7 +152,7 @@ const lightTheme = createTheme({
       ctdcard: "#FFF",
       button: "#FF5C35",
       chip: "#FF5C35",
-      contactIcon: "#FF5C35",
+      contactIcon: "#12284C",
       skillsChip: "#12284C"
     },
     zone1: {
