@@ -17,13 +17,7 @@ body {
 
 @font-face {
   font-family: 'gothamRoundedMedium';
-  src: url('/fonts/GothamRounded/GothamRounded-Medium[2].otf');
-}
-
-@font-face {
-  font-family: 'gothamRoundedLight';
-  src: url('/fonts/GothamRounded/GothamRounded-Light[2].otf');
-  
+  src: url('/fonts/GothamRounded/GothamRounded-Medium[2].otf') format("opentype");
 }
 
 a {
