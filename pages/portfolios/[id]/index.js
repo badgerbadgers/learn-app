@@ -27,7 +27,7 @@ function Portfolio({ user }) {
       )}
       {!isLoading && (
         <>
-          <Container sx={{marginTop:'70px', p: 2}}>
+          <Container sx={{ p: 2}}>
             <div className={styles.portfolioGrid}>
               <div className={styles.portfolioItem}>
                 {user && <ContactCard user={user} />}

@@ -6,7 +6,7 @@ const CheckListLayout = ({ matches, children }) => {
     <Container
       role="container"
       className={styles.checklistLink}
-      sx={{ textAlign: "center", p: !matches && 1 , mb: 4, mt: "70px"}}
+      sx={{ textAlign: "center", p: !matches && 1 , mb: 4}}
     >
       <Paper
         sx={{
