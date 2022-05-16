@@ -43,7 +43,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
             height: "70px",
           }}
           variant="h5"
-          title={projectData.projectName}
+          title={projectData?.projectName}
         />
         <CardContent
           sx={{
@@ -64,20 +64,21 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 justifyContent: "center",
               }}
             >
-              <Avatar
+            {projectData?.logo &&  <Avatar
                 alt="App Logo"
                 src={projectData.logo}
                 variant="square"
                 sx={{ height: "90px", width: "fit-content" }}
                 component={Link}
-                href={projectData.website}
+                href={projectData?.website}
                 target="_blank"
                 rel="noopener noreferrer"
-              />
+              /> }
             </Grid>
+            {projectData?.description &&
             <Grid item xs={12} sm={9} md={10} pl={{ xs: "0px", sm: "16px" }}>
-              <Typography variant="body1">{projectData.description}</Typography>
-            </Grid>
+              <Typography variant="body1">{projectData?.description}</Typography>
+            </Grid> }
           </Grid>
 
           {/* container for all the bottom details */}
@@ -95,7 +96,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Daily Standup Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.dailyStandupTime}
+                  {projectData?.dailyStandupTime}
                 </Typography>
               </Grid>
 
@@ -109,7 +110,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Planning Meet Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.planningMeetTime}
+                  {projectData?.planningMeetTime}
                 </Typography>
               </Grid>
 
@@ -123,7 +124,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Daily Scrum Time ET:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.dailyScrumTime}
+                  {projectData?.dailyScrumTime}
                 </Typography>
               </Grid>
             </Grid>
@@ -133,12 +134,12 @@ const ProjectCard = ({ projectData, headerColor }) => {
             <Grid item container flex-direction="column" xs={12} md={2} mb={2}>
               {/* Repo */}
               <Grid item xs={6} md={12}>
-                <Typography variant="h6">{projectData.repo}</Typography>
+                <Typography variant="h6">{projectData?.repo}</Typography>
               </Grid>
 
               {/* Calendar */}
               <Grid item xs={6} md={12}>
-                <Typography variant="h6">{projectData.calendarLink}</Typography>
+                <Typography variant="h6">{projectData?.calendarLink}</Typography>
               </Grid>
             </Grid>
 
@@ -154,7 +155,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   PM:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.projectManager}
+                  {projectData?.projectManager}
                 </Typography>
               </Grid>
 
@@ -168,7 +169,7 @@ const ProjectCard = ({ projectData, headerColor }) => {
                   Team:
                 </Typography>
                 <Typography variant="body1">
-                  {projectData.team.join(",  ")}
+                  {projectData?.team.join(",  ")}
                 </Typography>
               </Grid>
             </Grid>
@@ -184,8 +185,8 @@ const ProjectCard = ({ projectData, headerColor }) => {
                 justifyContent: "center",
               }}
             >
-              {projectData.type &&
-                projectData.type.map((type, i) => {
+              {projectData?.type &&
+                projectData?.type.map((type, i) => {
                   return (
                     <CardMedia
                       key={type + i}

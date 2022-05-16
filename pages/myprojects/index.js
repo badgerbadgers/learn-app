@@ -5,7 +5,7 @@ import { Grid, Link } from "@mui/material";
 import { getDevelopersData, getProjectsData } from "../../lib/airtable";
 import { privateLayout } from "../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
-import { MinifyDevelopersRecords } from "./components/MinifyDevelopersRecords";
+import { MinifyDevelopersRecords } from "../../lib/MinifyDevelopersRecords";
 
 const colorArray = ["primary.main", "secondary.main", "secondary.light"];
 
@@ -60,7 +60,7 @@ const MyProjects = ({ projectsData, developersData }) => {
             "",
           dailyStandupTime:
             (project.fields["Daily Standup Time (ET)"] &&
-              project.fields["Daily Standup Time (ET)"].trim()) ||
+              project?.fields["Daily Standup Time (ET)"].trim()) ||
             "",
           planningMeetTime:
             project.fields["Monday Planning Meeting (ET)"] &&
