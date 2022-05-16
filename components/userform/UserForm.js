@@ -9,7 +9,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useRouter } from "next/router";
 import axios from "axios";
-import styles from "../styles/Portfolio.module.css";
+import styles from "../../styles/Portfolio.module.css";
+import BioTextField from "./BioTextField";
 
 
 
@@ -19,6 +20,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 function UserForm({userInfoData, setUserInfoData}) {
+
   const [open, setOpen] = useState(false);
   const [techStackArray, setTechStackArray] = useState(userInfoData.techStackArray || []);
   const [skillsArray, setSkillsArray] = useState(userInfoData.skillsArray || []);
@@ -109,7 +111,7 @@ function UserForm({userInfoData, setUserInfoData}) {
   const handleSubmitForm = (e) => {
     e.preventDefault();
  
-    handleDialogChange(); // To pass it in onClick event as multiple functions 
+    handleDialogChange(); // To pass it an onClick event as multiple functions 
 
     // POST data to API route using fetch API
     // Remove key object from user form when is posted to the users route
@@ -121,6 +123,7 @@ function UserForm({userInfoData, setUserInfoData}) {
       techStackArray,
       previousIndustryArray,
     };
+
     axios
       .post(
         "/api/users",
@@ -185,7 +188,7 @@ function UserForm({userInfoData, setUserInfoData}) {
                   name="firstName"
                   placeholder="Type your first name"
                   label="First Name"
-                  variant="outlined"
+                  
                   fullWidth
                   required
                   size="small"
@@ -346,6 +349,9 @@ function UserForm({userInfoData, setUserInfoData}) {
               </Grid>
             </Grid>
             <br />
+
+            <BioTextField bio={userInfoData.bio} handleInputChange={handleInputChange} />
+
             <Typography variant="body1" mt={2} gutterBottom>
               <strong>Personal Contact: </strong>
             </Typography>
@@ -419,10 +425,11 @@ function UserForm({userInfoData, setUserInfoData}) {
                 <div>
                   <Button
                     variant="contained"
-                    disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email) &&
+                    disabled={(userInfoData.firstName || userInfoData.lastName || userInfoData.email ||  userInfoData.bio) &&
                       !userInfoData.firstName?.length > 0 ||
                       !userInfoData.lastName?.length > 0 ||
                       userInfoData.email.length === 0 ||
+                      userInfoData.bio.length === 0 ||
                       !!errors.email
                     }
                     onClick={(e) => handleSubmitForm(e)} 

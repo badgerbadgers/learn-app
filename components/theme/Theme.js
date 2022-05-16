@@ -150,7 +150,7 @@ const lightTheme = createTheme({
       ctdcard: "#FFF",
       button: "#FF5C35",
       chip: "#FF5C35",
-      contactIcon: "#FF5C35",
+      contactIcon: "#12284C",
       skillsChip: "#12284C"
     },
     zone1: {

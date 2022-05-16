@@ -5,6 +5,7 @@ import Image from "next/image";
 import ContactCard from "../components/ContactCard";
 import MediaCard from "../components/MediaCard";
 import SkillsCard from "../components/SkillsCard";
+import BioCard from "../components/BioCard";
 import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
@@ -26,13 +27,13 @@ function Portfolio({ user }) {
       )}
       {!isLoading && (
         <>
-          <Container>
+          <Container sx={{marginTop:'70px', p: 2}}>
             <div className={styles.portfolioGrid}>
               <div className={styles.portfolioItem}>
                 {user && <ContactCard user={user} />}
               </div>
               <div className={styles.portfolioItem}>
-                {user && <MediaCard videoUrl={user.videoUrl} />}
+                {user && <BioCard bio={user.bio} />}
               </div>
 
               <div className={styles.portfolioItem}>
@@ -44,6 +45,9 @@ function Portfolio({ user }) {
                     previousIndustry={user.previousIndustryArray}
                   />
                 )}
+              </div>
+              <div className={styles.portfolioVideoItem}>
+                {user && <MediaCard videoUrl={user.videoUrl} />}
               </div>
             </div>
           </Container>
