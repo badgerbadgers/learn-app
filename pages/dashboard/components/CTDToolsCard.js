@@ -44,55 +44,55 @@ export default function CTDToolsCard({ style, user }) {
 
   return (
     <Grid item xs={12} md={6}>
-      {user && 
-      <Card
-        sx={{
-          backgroundColor: "background.ctdcard",
-          ...style,
-        }}
-      >
-        <HandymanIcon
-          color="secondary"
-          style={{
-            fontSize: "38px",
-            top: "15px",
-            position: "relative",
+      {user &&
+        <Card
+          sx={{
+            backgroundColor: "background.ctdcard",
+            ...style,
           }}
-        />
-
-        <CardHeader title={"CTD Tools"}></CardHeader>
-        <CardContent>
-          <Typography variant="body1">
-            Don&apos;t forget to update and share your portfolio.
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{ marginTop: "auto", alignSelf: "flex-start", width: "100%" }}
         >
-          <Link
-            aria-label="link to portfolio page"
-            sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
-            href={`/portfolios/${user.gh}`}
-          >
-            Visit your Portfolio page
-          </Link>
+          <HandymanIcon
+            color="secondary"
+            style={{
+              fontSize: "38px",
+              top: "15px",
+              position: "relative",
+            }}
+          />
 
-          <IconButton
-            title="edit user form"
-            aria-label="edit user form icon"
-            onClick={() => router.push(`/userform/${user.gh}`)}
+          <CardHeader title={"CTD Tools"}></CardHeader>
+          <CardContent>
+            <Typography variant="body1">
+              Don&apos;t forget to update and share your student profile.
+            </Typography>
+          </CardContent>
+          <CardActions
+            sx={{ marginTop: "auto", alignSelf: "flex-start", width: "100%" }}
           >
-            <ModeEditOutlineIcon />
-          </IconButton>
-          <IconButton
-            onClick={handleShare}
-            title="copy the link to your portfolio"
-            aria-label="copy the portfolio link icon"
-          >
-            <ContentCopyIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
+            <Link
+              aria-label="link to portfolio page"
+              sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
+              href={`/portfolios/${user.gh}`}
+            >
+              Visit your Student profile
+            </Link>
+
+            <IconButton
+              title="edit user form"
+              aria-label="edit user form icon"
+              onClick={() => router.push(`/userform/${user.gh}`)}
+            >
+              <ModeEditOutlineIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleShare}
+              title="copy the link to your portfolio"
+              aria-label="copy the portfolio link icon"
+            >
+              <ContentCopyIcon />
+            </IconButton>
+          </CardActions>
+        </Card>
       }
       {open ? (
         <Snackbar

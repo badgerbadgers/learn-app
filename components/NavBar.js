@@ -29,7 +29,7 @@ const NavBar = () => {
     {
       href: status === "authenticated" ? `/portfolios/${session.user.gh}` : "/",
       target: "_blank",
-      title: "Portfolio",
+      title: "Student profile",
     },
 
     {
