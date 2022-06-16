@@ -77,9 +77,10 @@ const NavBar = () => {
       color="transparent"
       sx={{
         boxShadow: mode === "dark" ? "0 2px 4px -1px #C8C8CC" : "",
+        width: '100%',
       }}
     >
-      <Container maxWidth={false} sx={{ mx: 0 }}>
+      <Container maxWidth={false} sx={{ mx: 0, maxWidth: '2000px', margin: 'auto' }}>
         <Toolbar disableGutters>
           {/* code for Logo */}
           <Avatar
