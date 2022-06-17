@@ -27,7 +27,7 @@ export default function InputForm() {
   });
   const [loading, setLoading] = useState(false);
 
-  const url = "/api/users";
+  const url = "/api/usersprofile";
   const router = useRouter();
   const id = router.query.id;
 
@@ -104,6 +104,14 @@ export async function getServerSideProps(context) {
   }
   if (session) {
     const { user } = session;
+    if(!user.hasProfile) {
+      return {
+        redirect: {
+          destination: '/signup',
+          permanent: false,
+        }
+      }
+    }
     return {
       props: { user },
     };
