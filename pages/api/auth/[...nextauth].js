@@ -35,7 +35,6 @@ export default NextAuth({
       //console.log(isAllowedToSignInArray, "isAllowedToSignInArray")
       //console.log(user.gh, "user gh")
       if (isAllowedToSignInArray.includes(user.gh)) {
-        //console.log("allowed to login");
         return true;
       } else {
         console.log("not allowed to login");

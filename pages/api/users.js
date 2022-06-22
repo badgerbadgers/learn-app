@@ -21,7 +21,6 @@ const updateUser = async (req, res) => {
     //get user ObjectId and image from session
     const session = await getSession({ req });
     const userGh = session.user.gh;
-    //const image = session.user.image;
   
     //data object from submit form
     let data = req.body;
@@ -30,7 +29,7 @@ const updateUser = async (req, res) => {
       await database
         .collection("users")
         .findOneAndUpdate({ gh: userGh }, { $set: data }, { upsert: true });
-      res.status(200).json({ message: `create and update User ${req.query.id}` });
+      res.status(200).json({ message: `create and update User ${userGh}` });
     } catch (error) {
       console.log(error, "error from createAndUpdateUser in api/users");
     }

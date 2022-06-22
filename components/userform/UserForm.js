@@ -150,7 +150,6 @@ function UserForm({userInfoData, setUserInfoData}) {
             profile,
             {headers: { "Content-Type": "application/json" },
             },
-            { params: { id: id } }
           )
           .then((res) => {
             console.log(res.data.message, "response message");
