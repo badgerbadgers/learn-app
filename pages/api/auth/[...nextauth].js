@@ -25,29 +25,22 @@ export default NextAuth({
     updateAge: 24 * 60 * 60, // 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
-  events: {
-    signIn: ({ profile, isNewUser }) => {
-      // refactor
-      if (isNewUser) {
-        console.log(isNewUser, "isNewUser");
-        (async () => {
-          const isAllowedToSignInArray = await getGitHubMembers();
-          // console.log(isAllowedToSignInArray, "is allowed to signInArray");
-          if (isAllowedToSignInArray.includes(profile.gh)) {
-            console.log("allowed to login");
-            return true;
-          } else {
-            console.log("not allowed to login");
-            return false;
-          }
-        })();
-      }
-    },
-  },
   callbacks: {
     async session({ session, user }) {
       return { ...session, user };
     },
+    async signIn({ user }) {
+
+      const isAllowedToSignInArray = await getGitHubMembers();
+      //console.log(isAllowedToSignInArray, "isAllowedToSignInArray")
+      //console.log(user.gh, "user gh")
+      if (isAllowedToSignInArray.includes(user.gh)) {
+        return true;
+      } else {
+        console.log("not allowed to login");
+        return false;
+      }
+    }
   },
   pages: {
     signIn: "/dashboard",
@@ -97,13 +90,9 @@ export default NextAuth({
           image: profile.avatar_url,
           gh: profile.login,
           url: profile.html_url,
+          hasProfile: false,
         };
       },
     }),
   ],
-  theme: {
-    colorScheme: "light", // "auto" | "dark" | "light"
-    brandColor: "#FF5C35",
-    logo: "https://github.com/CodeTheDream/minfolio/blob/8efbb8e711008d4681d434b6b493788461575349/public/img/CTD-Labs_Primary%5B1%5D.png", // Absolute URL to image
-  },
 });

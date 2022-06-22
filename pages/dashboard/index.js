@@ -3,7 +3,6 @@ import { getSession } from "next-auth/react";
 import DashBoardCard from "./components/DashBoardCard";
 import CTDToolsCard from "./components/CTDToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
 import { Container } from "@mui/material";
 import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
@@ -53,6 +52,14 @@ export async function getServerSideProps(context) {
     }
   }
   const { user } = session;
+  if(!user.hasProfile) {
+    return {
+      redirect: {
+        destination: '/signup',
+        permanent: false,
+      }
+    }
+  }
   return {
     props: { user },
   }

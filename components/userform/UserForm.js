@@ -108,7 +108,7 @@ function UserForm({userInfoData, setUserInfoData}) {
     } 
   }
 
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
  
     handleDialogChange(); // To pass it an onClick event as multiple functions 
@@ -126,7 +126,7 @@ function UserForm({userInfoData, setUserInfoData}) {
 
     axios
       .post(
-        "/api/users",
+        "/api/usersprofile",
         {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -139,7 +139,26 @@ function UserForm({userInfoData, setUserInfoData}) {
       .catch((error) => {
         console.error("Error:", error);
       });
-  };    
+
+      if (router.pathname === "/signup") {
+        const profile = {
+          hasProfile: true,
+        }
+        await axios
+          .post(
+            "/api/users",
+            profile,
+            {headers: { "Content-Type": "application/json" },
+            },
+          )
+          .then((res) => {
+            console.log(res.data.message, "response message");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    };
 
   // Handle delete functions to cancel input into array of
   // Do not remove the param skill, tech and previousIndust. If there are 2 skills with same name and we want to delete only 1 then we we need to delete them by index and not the skill 
