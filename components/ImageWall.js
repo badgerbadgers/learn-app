@@ -7,7 +7,7 @@ const Sketch = dynamic(() => import("react-p5"),
  
 const ImageWall = () => {
  
-  // const { height, width } = useWindowDimensions();
+//const { height, width } = useWindowDimensions();
   let cnv;
   let images =[];
   let imageSelectorArray;
