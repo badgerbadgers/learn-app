@@ -32,8 +32,6 @@ export default NextAuth({
     async signIn({ user }) {
 
       const isAllowedToSignInArray = await getGitHubMembers();
-      //console.log(isAllowedToSignInArray, "isAllowedToSignInArray")
-      //console.log(user.gh, "user gh")
       if (isAllowedToSignInArray.includes(user.gh)) {
         return true;
       } else {
