@@ -8,11 +8,20 @@ import {
   SearchIconWrapper,
   StyledInputBase,
 } from "../../../../lib/searchUtils";
+import { MultipleSelect } from "./ResourceFilter";
 
 // The code starts here
 function ResourceToolBar({
   searchTerm,
   setSearchTerm,
+  languages,
+  selectedLanguages,
+  setSelectedLanguages,
+  // activeTopics,
+  // setActiveTopics,
+  // activeTypes, 
+  // setActiveTypes,
+  label
 }) {
 
   // *** SEARCH SECTION START HERE ***
@@ -35,6 +44,13 @@ function ResourceToolBar({
               onChange={(e) => handleSearchChange(e)}
             />
           </Search>
+          <MultipleSelect items={languages} 
+            selectedItems={selectedLanguages} 
+            setSelectedItems={setSelectedLanguages} 
+            label="Languages"
+          />
+          {/* <MultipleSelect items={activeTopics}  label="Topics" />
+          <MultipleSelect items={activeTypes} label="Types" /> */}
           <Stack
             spacing={1}
             size="small"

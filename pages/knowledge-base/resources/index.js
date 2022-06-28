@@ -10,6 +10,13 @@ import { getResourceData } from "../../../lib/airtable";
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeResources, setActiveResources] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  //TODO: complete below
+  // const [activeTopics, setActiveTopics] = useState([]);
+  // const [activeTypes, setActiveTypes] = useState([])
+
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -31,8 +38,8 @@ function Resources({ resources }) {
         : [];
       const languageSearchResults = item.fields["Name (from language)"]
         ? item.fields["Name (from language)"].map((language) =>
-            language.toLowerCase()
-          )
+          language.toLowerCase()
+        )
         : [];
       return (
         languageSearchResults.includes(term.toLowerCase()) ||
@@ -44,18 +51,54 @@ function Resources({ resources }) {
     });
   };
 
+
+  const filterSelected = (selectedLanguages) => {
+    // Filter resourses using selected languages, types and topics.
+    console.log('sel lang', selectedLanguages)
+    const filteredResources = resources.filter(
+      (resource) =>  {
+        if (selectedLanguages.length == 0) {
+          return true; 
+        }
+        const common = selectedLanguages.filter(
+          value => resource.fields["Name (from language)"].includes(value)
+        );
+        return common.length > 0;
+      }
+    );
+    console.log('filtered' ,filteredResources)
+    return filteredResources;
+  }
+
+
   useEffect(() => {
     if (resources) {
-      setActiveResources(resources)
+      setActiveResources(resources);
+      const allLanguages = new Set(resources.map(resource => {
+        return resource.fields["Name (from language)"] || []
+      }).flat());
+      const topics = new Set(resources.map(resource => {
+        return resource.fields["Name (from topic)"] || []
+      }).flat());
+      // console.log('res',resources[0])
+      const types = new Set(resources.map(resource => {
+        return resource.fields['Type'] || ''
+      }));
+      setLanguages([...allLanguages]);
+      // setActiveTopics([...topics]);
+      // setActiveTypes([...types])
     }
   }, [])
 
   useEffect(() => {
+    let newList;
     if (searchTerm) {
-      const newList = searchResults(searchTerm);
-      setActiveResources(newList);
+      newList = searchResults(searchTerm);
+    } else {
+      newList = filterSelected(selectedLanguages);
     }
-  }, [searchTerm]);
+    setActiveResources(newList);
+  }, [searchTerm, selectedLanguages]);
 
   return (
     <Grid
@@ -73,6 +116,14 @@ function Resources({ resources }) {
         resources={resources}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        languages={languages}
+        selectedLanguages={selectedLanguages}
+        setSelectedLanguages={setSelectedLanguages}
+        
+        // activeTopics={activeTopics}
+        // setActiveTopics={setActiveTopics}
+        // activeTypes={activeTypes}
+        // setActiveTypes={setActiveTypes}
       />
 
       {/* 
