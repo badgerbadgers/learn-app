@@ -12,11 +12,10 @@ function Resources({ resources }) {
   const [activeResources, setActiveResources] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
-
-  //TODO: complete below
-  // const [activeTopics, setActiveTopics] = useState([]);
-  // const [activeTypes, setActiveTypes] = useState([])
-
+  const [topics, setTopics] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -52,9 +51,9 @@ function Resources({ resources }) {
   };
 
 
-  const filterSelected = (selectedLanguages) => {
+  const filterSelected = (selectedLanguages, selectedTopics, selectedTypes) => {
+    
     // Filter resourses using selected languages, types and topics.
-    console.log('sel lang', selectedLanguages)
     const filteredResources = resources.filter(
       (resource) =>  {
         if (selectedLanguages.length == 0) {
@@ -65,8 +64,17 @@ function Resources({ resources }) {
         );
         return common.length > 0;
       }
+    ).filter(
+      (resource) =>  {
+        if (selectedTopics.length == 0) {
+          return true; 
+        }
+        const common = selectedTopics.filter(
+          value => resource.fields["Name (from topic)"]?.includes(value) || false
+        );
+        return common.length > 0;
+      }
     );
-    console.log('filtered' ,filteredResources)
     return filteredResources;
   }
 
@@ -77,16 +85,15 @@ function Resources({ resources }) {
       const allLanguages = new Set(resources.map(resource => {
         return resource.fields["Name (from language)"] || []
       }).flat());
-      const topics = new Set(resources.map(resource => {
+      const allTopics = new Set(resources.map(resource => {
         return resource.fields["Name (from topic)"] || []
       }).flat());
-      // console.log('res',resources[0])
-      const types = new Set(resources.map(resource => {
+      const allTypes = new Set(resources.map(resource => {
         return resource.fields['Type'] || ''
       }));
       setLanguages([...allLanguages]);
-      // setActiveTopics([...topics]);
-      // setActiveTypes([...types])
+      setTopics([...allTopics]);
+      setTypes([...allTypes]);
     }
   }, [])
 
@@ -95,11 +102,10 @@ function Resources({ resources }) {
     if (searchTerm) {
       newList = searchResults(searchTerm);
     } else {
-      newList = filterSelected(selectedLanguages);
+      newList = filterSelected(selectedLanguages, selectedTopics, selectedTypes);
     }
     setActiveResources(newList);
-  }, [searchTerm, selectedLanguages]);
-
+  }, [searchTerm, selectedLanguages, selectedTopics, selectedTypes]);
   return (
     <Grid
       container
@@ -119,11 +125,12 @@ function Resources({ resources }) {
         languages={languages}
         selectedLanguages={selectedLanguages}
         setSelectedLanguages={setSelectedLanguages}
-        
-        // activeTopics={activeTopics}
-        // setActiveTopics={setActiveTopics}
-        // activeTypes={activeTypes}
-        // setActiveTypes={setActiveTypes}
+        topics={topics}
+        selectedTopics={selectedTopics}
+        setSelectedTopics={setSelectedTopics}
+        types={types}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
       />
 
       {/* 

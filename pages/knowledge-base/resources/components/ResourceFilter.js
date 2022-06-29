@@ -20,7 +20,6 @@ export const MultipleSelect = ({ items, selectedItems, setSelectedItems, label }
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
   return (
       <div>
       <FormControl sx={{ m: 1, width: 200, minWidth: 100 }} size="small">
@@ -33,6 +32,7 @@ export const MultipleSelect = ({ items, selectedItems, setSelectedItems, label }
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) => label}
         >
+          
           {items.map((name) => (
             <MenuItem key={name} value={name} name={name}>
               <Checkbox checked={selectedItems.indexOf(name) > -1} />
