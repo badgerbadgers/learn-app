@@ -17,10 +17,12 @@ function ResourceToolBar({
   languages,
   selectedLanguages,
   setSelectedLanguages,
-  // activeTopics,
-  // setActiveTopics,
-  // activeTypes, 
-  // setActiveTypes,
+  topics,
+  selectedTopics,
+  setSelectedTopics,
+  types,
+  selectedTypes,
+  setSelectedTypes,
   label
 }) {
 
@@ -47,10 +49,20 @@ function ResourceToolBar({
           <MultipleSelect items={languages} 
             selectedItems={selectedLanguages} 
             setSelectedItems={setSelectedLanguages} 
-            label="Languages"
+            label="Language"
           />
-          {/* <MultipleSelect items={activeTopics}  label="Topics" />
-          <MultipleSelect items={activeTypes} label="Types" /> */}
+          
+          <MultipleSelect items={topics} 
+            selectedItems={selectedTopics} 
+            setSelectedItems={setSelectedTopics} 
+            label="Topic"
+          />
+          <MultipleSelect items={types} 
+            selectedItems={selectedTypes} 
+            setSelectedItems={setSelectedTypes} 
+            label="Type"
+          />
+
           <Stack
             spacing={1}
             size="small"
