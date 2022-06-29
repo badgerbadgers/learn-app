@@ -51,30 +51,40 @@ function Resources({ resources }) {
   };
 
 
-  const filterSelected = (selectedLanguages, selectedTopics, selectedTypes) => {
-    
+  const getFilteredResources = () => {
     // Filter resourses using selected languages, types and topics.
-    const filteredResources = resources.filter(
-      (resource) =>  {
-        if (selectedLanguages.length == 0) {
-          return true; 
+    const filteredResources = [...resources]
+    if (selectedLanguages.length) {
+      filteredResources = resources.filter(
+        (resource) =>  {
+          const common = selectedLanguages.filter(
+            value => resource.fields["Name (from language)"].includes(value)
+          );
+          return common.length > 0;
         }
-        const common = selectedLanguages.filter(
-          value => resource.fields["Name (from language)"].includes(value)
-        );
-        return common.length > 0;
-      }
-    ).filter(
-      (resource) =>  {
-        if (selectedTopics.length == 0) {
-          return true; 
+      )
+    };
+    if (selectedTopics.length) {
+      filteredResources = resources.filter(
+        (resource) =>  {
+          const common = selectedTopics.filter(
+            value => resource.fields["Name (from topic)"]?.includes(value) || false
+          );
+          return common.length > 0;
         }
-        const common = selectedTopics.filter(
-          value => resource.fields["Name (from topic)"]?.includes(value) || false
-        );
-        return common.length > 0;
-      }
-    );
+      )
+    };
+    if (selectedTypes.length) {
+      filteredResources = resources.filter(
+        (resource) =>  {
+          const common = selectedTypes.filter(
+            value => resource.fields["Type"]?.includes(value)
+          );
+          return common.length > 0;
+        }
+      )
+
+    }
     return filteredResources;
   }
 
@@ -89,7 +99,7 @@ function Resources({ resources }) {
         return resource.fields["Name (from topic)"] || []
       }).flat());
       const allTypes = new Set(resources.map(resource => {
-        return resource.fields['Type'] || ''
+        return resource.fields["Type"] || ''
       }));
       setLanguages([...allLanguages]);
       setTopics([...allTopics]);
@@ -102,7 +112,7 @@ function Resources({ resources }) {
     if (searchTerm) {
       newList = searchResults(searchTerm);
     } else {
-      newList = filterSelected(selectedLanguages, selectedTopics, selectedTypes);
+      newList = getFilteredResources();
     }
     setActiveResources(newList);
   }, [searchTerm, selectedLanguages, selectedTopics, selectedTypes]);
