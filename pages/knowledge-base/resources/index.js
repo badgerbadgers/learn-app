@@ -55,7 +55,7 @@ function Resources({ resources }) {
     // Filter resourses using selected languages, types and topics.
     const filteredResources = [...resources]
     if (selectedLanguages.length) {
-      filteredResources = resources.filter(
+      filteredResources = filteredResources.filter(
         (resource) =>  {
           const common = selectedLanguages.filter(
             value => resource.fields["Name (from language)"].includes(value)
@@ -64,8 +64,9 @@ function Resources({ resources }) {
         }
       )
     };
+    console.log('after lang', filteredResources), filteredResources.length
     if (selectedTopics.length) {
-      filteredResources = resources.filter(
+      filteredResources = filteredResources.filter(
         (resource) =>  {
           const common = selectedTopics.filter(
             value => resource.fields["Name (from topic)"]?.includes(value) || false
@@ -74,8 +75,10 @@ function Resources({ resources }) {
         }
       )
     };
+    console.log('after Topic', filteredResources,filteredResources.length)
+
     if (selectedTypes.length) {
-      filteredResources = resources.filter(
+      filteredResources = filteredResources.filter(
         (resource) =>  {
           const common = selectedTypes.filter(
             value => resource.fields["Type"]?.includes(value)
@@ -85,6 +88,7 @@ function Resources({ resources }) {
       )
 
     }
+    console.log('after type', filteredResources, filteredResources.length )
     return filteredResources;
   }
 
