@@ -128,7 +128,7 @@ function Resources({ resources }) {
       sx={{
         paddingLeft: "20px",
         paddingRight: "20px",
-        marginTop: "5px",
+        marginTop: "-60px",
         marginBottom: "25px",
       }}
     >
