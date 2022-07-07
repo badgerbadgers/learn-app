@@ -1,8 +1,9 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
-import { Grid, Stack } from "@mui/material";
+import { Button, Divider, Grid, Stack } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import SearchIcon from "@mui/icons-material/Search";
+import TuneIcon from '@mui/icons-material/Tune';
 import {
   Search,
   SearchIconWrapper,
@@ -10,7 +11,7 @@ import {
 } from "../../../../lib/searchUtils";
 import { MultipleSelect } from "./ResourceFilter";
 
-// The code starts here
+
 function ResourceToolBar({
   searchTerm,
   setSearchTerm,
@@ -35,34 +36,6 @@ function ResourceToolBar({
     <Grid item xs={12} sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              value={searchTerm}
-              onChange={(e) => handleSearchChange(e)}
-            />
-          </Search>
-          <MultipleSelect items={languages} 
-            selectedItems={selectedLanguages} 
-            setSelectedItems={setSelectedLanguages} 
-            label="Language"
-          />
-          
-          <MultipleSelect items={topics} 
-            selectedItems={selectedTopics} 
-            setSelectedItems={setSelectedTopics} 
-            label="Topic"
-          />
-          <MultipleSelect items={types} 
-            selectedItems={selectedTypes} 
-            setSelectedItems={setSelectedTypes} 
-            label="Type"
-          />
-
           <Stack
             spacing={1}
             size="small"
@@ -70,11 +43,51 @@ function ResourceToolBar({
               display: "flex",
               flexDirection: "row",
               width: "100%",
-              alignItems: "end",
+              alignItems: "center",
               justifyContent: "space-between",
               flexWrap: "nowrap",
-            }}
-          />
+            }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e)}
+              />
+            </Search>
+            {/* TODO: change color of the dividers to comply with light/dark themes */}
+            <Divider orientation="vertical" flexItem sx={{ bgcolor: "#ff9b82" }} />
+
+            <TuneIcon />
+
+            <MultipleSelect items={languages}
+              selectedItems={selectedLanguages}
+              setSelectedItems={setSelectedLanguages}
+              label="Language"
+            />
+
+            <MultipleSelect items={topics}
+              selectedItems={selectedTopics}
+              setSelectedItems={setSelectedTopics}
+              label="Topic"
+            />
+            <MultipleSelect items={types}
+              selectedItems={selectedTypes}
+              setSelectedItems={setSelectedTypes}
+              label="Type"
+            />
+
+            <Divider orientation="vertical" flexItem sx={{ bgcolor: "#ff9b82" }} />
+            
+            <Button variant="outlined" size="medium"
+              sx={{ color: "white", borderColor: "white" }}
+            >
+              Add Resource
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
     </Grid>
