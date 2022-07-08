@@ -89,6 +89,7 @@ export default NextAuth({
           gh: profile.login,
           url: profile.html_url,
           hasProfile: false,
+          roleIds: ["2"],
         };
       },
     }),
