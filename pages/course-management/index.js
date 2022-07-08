@@ -1,14 +1,26 @@
 import React from "react";
 import { getSession } from "next-auth/react";
-import { Container, Typography } from "@mui/material";
+import { AppBar, Container, Toolbar, Typography } from "@mui/material";
 import { privateLayout } from "../../components/PrivateLayout";
+import CoursesTable from "./components/CoursesTable";
 
 const CourseManagement = ({ user }) => {
 
 
   return (
-    <Container sx={{ textAlign: "center" }}>
-      <Typography>Test</Typography>
+    <Container 
+    // sx={{backgroundColor: "silver"}}
+    >
+      <Typography variant="h5" gutterBottom component="h2">CTD Courses</Typography>
+{/* 
+        <Toolbar   sx={{ justifyContent: "space-between" }}>
+            <Typography variant="h6"> Filters.</Typography>
+            <Typography variant="h6"> Search. </Typography>
+            <Typography variant="h6"> Add btn.</Typography>
+        </Toolbar> */}
+        <CoursesTable/>
+
+
     </Container>
   );
 };
