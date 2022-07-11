@@ -64,7 +64,7 @@ function Resources({ resources }) {
         }
       )
     };
-    console.log('after lang', filteredResources), filteredResources.length
+
     if (selectedTopics.length) {
       filteredResources = filteredResources.filter(
         (resource) =>  {
@@ -75,7 +75,6 @@ function Resources({ resources }) {
         }
       )
     };
-    console.log('after Topic', filteredResources,filteredResources.length)
 
     if (selectedTypes.length) {
       filteredResources = filteredResources.filter(
@@ -88,7 +87,7 @@ function Resources({ resources }) {
       )
 
     }
-    console.log('after type', filteredResources, filteredResources.length )
+
     return filteredResources;
   }
 
