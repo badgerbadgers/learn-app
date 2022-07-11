@@ -19,7 +19,7 @@ const ClassesManagement = ({ user }) => {
     <Container 
     // sx={{backgroundColor: "silver"}}
     >
-      <Typography variant="h5" gutterBottom component="h2">CTD Classes</Typography> 
+      <Typography variant="h5" gutterBottom component="h2">CTD Cohorts</Typography> 
         <ClassesTable/>
     </Container>
   );
