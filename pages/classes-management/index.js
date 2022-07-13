@@ -2,18 +2,12 @@ import React, { useEffect } from "react";
 import { getSession } from "next-auth/react";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../components/PrivateLayout";
-import testTry from "../../lib/airtableToMongoMigration"
 import ClassesTable from "./components/ClassesTable";
 
 
 
 const ClassesManagement = ({ user }) => {
   
-  //tmp! 
-  useEffect(()=> {
-    testTry(process.env.NEXT_PUBLIC_AIRTABLE_TEST)
-  },[])
-    
   
   return (
     <Container 
