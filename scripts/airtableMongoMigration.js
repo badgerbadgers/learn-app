@@ -71,6 +71,47 @@ const getDataFromAirtable = async () => {
     }, function done(err) {
         if (err) { console.error(err); return; }
     });
+
+    // const getHumanReadebleitem =(table, field, item) => {
+    //     AtBase(table).select({
+    //     for record that = []
+    //     if (field.id == item){ 
+    //          return record.get(field)
+    //     }
+    // });
+    // }
+
+    // using ^^ helper func to give record name instead of record id
+
+    AtBase('Lessons').select({
+        // view: “Grid View”, Is mine default?
+    }).eachPage(function page(records, fetchNextPage) {
+        records.forEach(function (record) {
+            console.log(record)
+            if (record.get('Title')  ) {  {} // in case if there is an empty row in the airtable
+                let lessons = {
+                    lesson_label: record.get('Label'),
+                    order: record.get('Order'),
+                    submission_link: record.get('Submit Link'),
+                    id: record.get('id'),
+                    learning_objectives: record.get('Learning Objectives'),
+                    mindset_content:record.get('Mindset Content')
+                    // assignment: getHumanReadebleitem(‘Assignment’,‘Name’, record.get(‘assignment’)),
+                    // materials: record.get(‘Materials’).map(item => getHumanReadebleitem(‘Materials’, ‘Name’, item  ))
+                }
+                console.log(lessons)
+                insertToMongo(lessons, 'lessons')
+                // first param is obj second is the name we want the collection to be called
+            }
+        });
+        fetchNextPage();
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
+
+
+
+
 }
 
 getDataFromAirtable();
