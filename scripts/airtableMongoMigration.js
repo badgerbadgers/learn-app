@@ -1,3 +1,6 @@
+const Airtable = require("airtable");
+const { MongoClient } = require("mongodb");
+
 getConfigParam = async (key) => {
     let param;
     const fs = require('fs');
@@ -12,106 +15,90 @@ getConfigParam = async (key) => {
 
 
 const insertToMongo = async (doc, coll) => {
-    const { MongoClient } = require("mongodb");
     // @param {<Object>} data 
     // @param {string} collection in Mongo
 
-    const uri = await getConfigParam(/^MONGODB_URI=(.+)/);
-    const client = new MongoClient(uri);
-    async function run() {
-        try {
-            await client.connect();
-            const database = client.db('myFirstDatabase');
-            const mongoCollectionName = database.collection(coll);
-            const result = await mongoCollectionName.insertOne(doc); // TODO: filter + maybe pass filter to the func + upsert
-            console.log(
-                `A document was inserted with the _id: ${result.insertedId} `, //${result.insertedId}
-            );
-        } finally {
-            // Ensures that the client will close when finish/error
-            await client.close();
-        }
-    }
-    run().catch(console.dir);
+    // const uri = await getConfigParam(/^MONGODB_URI=(.+)/);
+    // const client = new MongoClient(uri);
+    // async function run() {
+    //     try {
+    //         await client.connect();
+    //         const database = client.db('myFirstDatabase');
+    //         const mongoCollectionName = database.collection(coll);
+    //         const result = await mongoCollectionName.insertOne(doc); // TODO: filter + maybe pass filter to the func + upsert
+    //         console.log(
+    //             `A document was inserted with the _id: ${result.insertedId} `, //${result.insertedId}
+    //         );
+    //     } finally {
+    //         // Ensures that the client will close when finish/error
+    //         await client.close();
+    //     }
+    // }
+    // run().catch(console.dir);
+    console.log(doc)
 
 }
-const getDataFromAirtable = async () => {
-    const Airtable = require("airtable");
+
+
+const getLessons = async () => {
     const param = await getConfigParam(/AT_KEY=(.+)/);
-
-    const AtBase = new Airtable({ apiKey: param }).base('appN9Hf8KluRDBAN4'); //The ID of Class Mangement base
-
-    // let classesInfo = {}; //Cohorts cache
-    // AtBase('Cohorts').select({
-    //     // view: "Grid view"
-    // }).eachPage(function page(records, fetchNextPage) {
-    //     records.forEach(function (record) {
-    //         classesInfo[record.id] = record.fields;
-    //     });
-    //     fetchNextPage();
-    // }, function done(err) {
-    //     if (err) { console.error(err); return; }
-    // });
-
-
-    AtBase('Courses').select({
+    const AtBase = new Airtable({ apiKey: param }).base("appN9Hf8KluRDBAN4"); //The ID of Class Mangement base
+    const lessonTitles = {};
+    await AtBase("Lessons").select({
         // view: "Grid View",
     }).eachPage(function page(records, fetchNextPage) {
+        
+        records.forEach((item) => {
+            lessonTitles[item.id] = item.get("Title")
+        });
+        fetchNextPage();
+    }).catch(err => {
+        console.error(err);
+    });
+    // return new Promise((resolve, reject) => {
+    //     resolve(lessonTitles);
+    // });
+    return lessonTitles;
+}
+
+
+const getDataFromAirtable = async (lessonsCache) => {
+
+    const dataToMongo = []
+    const Airtable = require("airtable");
+    const param = await getConfigParam(/AT_KEY=(.+)/);
+    const AtBase = new Airtable({ apiKey: param }).base('appN9Hf8KluRDBAN4'); //The ID of Class Mangement base
+
+    await AtBase('Courses').select({
+        // view: "Grid View",
+    }).eachPage(function page(records, fetchNextPage) {
+        console.log("Records #", records.length);
         records.forEach(function (record) {
-            if (record.get('Name')) { // in case if there is an empty row in the airtable
+            if (record.get('Name')) {  // in case if there is an empty row in the airtable              
+                console.log('lessonsCache', lessonsCache,record.get("Lessons"))
                 let course = {
                     course_name: record.get('Name'),
                     airtable_id: record.id,
+                    lessons: record.get("Lessons")?.map(lesson => lessonsCache[lesson]) || [],
                 }
-                insertToMongo(course, 'courses')
+
+                console.log("Course goes to mongo", course);
+                dataToMongo.push(course)
             }
         });
         fetchNextPage();
+    }, 
 
-    }, function done(err) {
-        if (err) { console.error(err); return; }
+    ).catch(err => {
+        console.error(err);
     });
-
-    // const getHumanReadebleitem =(table, field, item) => {
-    //     AtBase(table).select({
-    //     for record that = []
-    //     if (field.id == item){ 
-    //          return record.get(field)
-    //     }
-    // });
-    // }
-
-    // using ^^ helper func to give record name instead of record id
-
-    AtBase('Lessons').select({
-        // view: “Grid View”, Is mine default?
-    }).eachPage(function page(records, fetchNextPage) {
-        records.forEach(function (record) {
-            console.log(record)
-            if (record.get('Title')  ) {  {} // in case if there is an empty row in the airtable
-                let lessons = {
-                    lesson_label: record.get('Label'),
-                    order: record.get('Order'),
-                    submission_link: record.get('Submit Link'),
-                    id: record.get('id'),
-                    learning_objectives: record.get('Learning Objectives'),
-                    mindset_content:record.get('Mindset Content')
-                    // assignment: getHumanReadebleitem(‘Assignment’,‘Name’, record.get(‘assignment’)),
-                    // materials: record.get(‘Materials’).map(item => getHumanReadebleitem(‘Materials’, ‘Name’, item  ))
-                }
-                console.log(lessons)
-                insertToMongo(lessons, 'lessons')
-                // first param is obj second is the name we want the collection to be called
-            }
-        });
-        fetchNextPage();
-    }, function done(err) {
-        if (err) { console.error(err); return; }
-    });
-
-
-
-
+    return dataToMongo;
 }
 
-getDataFromAirtable();
+const main =async () => {
+    const lessons = await getLessons();
+    const toMongo = await getDataFromAirtable(lessons);
+    console.log('toMongo', toMongo);
+}
+
+main();
