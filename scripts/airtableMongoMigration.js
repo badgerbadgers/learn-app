@@ -87,21 +87,20 @@ const getDataFromAirtable = async () => {
         // view: “Grid View”, Is mine default?
     }).eachPage(function page(records, fetchNextPage) {
         records.forEach(function (record) {
-            console.log(record)
+            // console.log(record)
             if (record.get('Title')  ) {  {} // in case if there is an empty row in the airtable
                 let lessons = {
                     lesson_label: record.get('Label'),
                     order: record.get('Order'),
                     submission_link: record.get('Submit Link'),
-                    id: record.get('id'),
+                    // id: record.get('id'),
                     learning_objectives: record.get('Learning Objectives'),
                     mindset_content:record.get('Mindset Content')
-                    // assignment: getHumanReadebleitem(‘Assignment’,‘Name’, record.get(‘assignment’)),
-                    // materials: record.get(‘Materials’).map(item => getHumanReadebleitem(‘Materials’, ‘Name’, item  ))
+                   
                 }
                 console.log(lessons)
                 insertToMongo(lessons, 'lessons')
-                // first param is obj second is the name we want the collection to be called
+                // first param is obj name second is the name we want the collection to be called
             }
         });
         fetchNextPage();
