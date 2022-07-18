@@ -14,30 +14,28 @@ getConfigParam = async (key) => {
 }
 
 
-const insertToMongo = async (doc, coll) => {
+const insertToMongo = async (data, coll) => {
     // @param {<Object>} data 
     // @param {string} collection in Mongo
 
-    // const uri = await getConfigParam(/^MONGODB_URI=(.+)/);
-    // const client = new MongoClient(uri);
-    // async function run() {
-    //     try {
-    //         await client.connect();
-    //         const database = client.db('myFirstDatabase');
-    //         const mongoCollectionName = database.collection(coll);
-    //         const result = await mongoCollectionName.insertOne(doc); // TODO: filter + maybe pass filter to the func + upsert
-    //         console.log(
-    //             `A document was inserted with the _id: ${result.insertedId} `, //${result.insertedId}
-    //         );
-    //     } finally {
-    //         // Ensures that the client will close when finish/error
-    //         await client.close();
-    //     }
-    // }
-    // run().catch(console.dir);
-    console.log(doc)
-
-}
+    const uri = await getConfigParam(/^MONGODB_URI=(.+)/);
+    const client = new MongoClient(uri);
+    async function run() {
+        try {
+            await client.connect();
+            const database = client.db('myFirstDatabase');
+            const mongoCollectionName = database.collection(coll);
+            data.forEach(doc => mongoCollectionName.insertOne(doc)); // TODO: filter + maybe pass filter to the func + upsert
+            console.log(
+                `A document was inserted with the _id: ${result.insertedId} `, //${result.insertedId}
+            );
+        } finally {
+            // Ensures that the client will close when finish/error
+            // await client.close();
+        }
+    }
+    run().catch(console.dir);
+ }
 
 
 const getLessons = async () => {
@@ -55,9 +53,6 @@ const getLessons = async () => {
     }).catch(err => {
         console.error(err);
     });
-    // return new Promise((resolve, reject) => {
-    //     resolve(lessonTitles);
-    // });
     return lessonTitles;
 }
 
@@ -89,7 +84,7 @@ const getDataFromAirtable = async (lessonsCache) => {
         fetchNextPage();
     }, 
 
-    ).catch(err => {
+    ).catch(err => { //instead of done(err)
         console.error(err);
     });
     return dataToMongo;
@@ -98,6 +93,7 @@ const getDataFromAirtable = async (lessonsCache) => {
 const main =async () => {
     const lessons = await getLessons();
     const toMongo = await getDataFromAirtable(lessons);
+    insertToMongo(toMongo, 'courses');
     console.log('toMongo', toMongo);
 }
 
