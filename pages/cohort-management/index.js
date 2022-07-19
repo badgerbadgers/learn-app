@@ -11,7 +11,7 @@ const CourseManagement = ({ user }) => {
     <Container 
     // sx={{backgroundColor: "silver"}}
     >
-      <Typography variant="h5" gutterBottom component="h2">CTD Courses</Typography>
+      <Typography variant="h5" gutterBottom component="h2">CTD Cohorts</Typography>
 {/* 
         <Toolbar   sx={{ justifyContent: "space-between" }}>
             <Typography variant="h6"> Filters.</Typography>
