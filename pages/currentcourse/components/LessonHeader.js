@@ -42,7 +42,7 @@ export default function LessonHeader() {
           }}
         />
         <Typography variant="h6" sx={{textAlign:"center"}}>Week Date</Typography>
-        <Typography   variant="body1" sx={{textAlign:"center"}}> Date</Typography>
+        <Typography variant="body1" sx={{textAlign:"center"}}> Date</Typography>
       </Card>
     </>
   );
