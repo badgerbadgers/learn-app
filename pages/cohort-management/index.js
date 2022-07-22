@@ -1,33 +1,45 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { getSession } from "next-auth/react";
-import { AppBar, Container, Toolbar, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../components/PrivateLayout";
-import CoursesTable from "./components/CoursesTable";
+import getData from "../../lib/getData";
 
-const CourseManagement = ({ user }) => {
+const CohortManagement = ({ user }) => {
+
+    const url = "/api/cohorts";
+    const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        setLoading(true);
+        const params = {}
+        try {
+            (async () => {
+              await getData(params, url).then((data) => {
+                if (data) {
+               
+                 console.log('data recieved from API', data)
+                }
+                setLoading(false);
+              });
+            })();
+          } catch (error) {
+            console.log(error, "error from getData in /api/usersprofile");
+          }
+    },[])
+
 
 
   return (
-    <Container 
-    // sx={{backgroundColor: "silver"}}
-    >
-      <Typography variant="h5" gutterBottom component="h2">CTD Cohorts</Typography>
-{/* 
-        <Toolbar   sx={{ justifyContent: "space-between" }}>
-            <Typography variant="h6"> Filters.</Typography>
-            <Typography variant="h6"> Search. </Typography>
-            <Typography variant="h6"> Add btn.</Typography>
-        </Toolbar> */}
-        <CoursesTable/>
-
-
+    <Container sx={{ textAlign: "center" }}>
+      <Typography>Test</Typography>
     </Container>
   );
 };
 
-export default CourseManagement;
 
-CourseManagement.getLayout = privateLayout;
+export default CohortManagement;
+
+CohortManagement.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
