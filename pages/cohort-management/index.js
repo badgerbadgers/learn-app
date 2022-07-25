@@ -1,37 +1,77 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
+import CohortsTable from "./components/CohortsTable";
 
-const CohortManagement = ({ user }) => {
+const CohortManagement = () => { // TODO: check if user is Admin? 
 
-    const url = "/api/cohorts";
-    const [loading, setLoading] = useState(false);
+  const urlCohorts = "/api/cohorts";
+  const urlCourses = "/api/courses";
+  const [loading, setLoading] = useState(false);
+  const [cohorts, setCohorts] = useState([]);
+  const [courseNames, setCoursenames] = useState({});
+  const [tableRows, setTableRows] = useState([])
 
-    useEffect(()=>{
-        setLoading(true);
-        const params = {}
-        try {
-            (async () => {
-              await getData(params, url).then((data) => {
-                if (data) {
-               
-                 console.log('data recieved from API', data)
-                }
-                setLoading(false);
-              });
-            })();
-          } catch (error) {
-            console.log(error, "error from getData in /api/usersprofile");
+
+  const makeRowfromDbCohort = (i, dbItem, courseName) => {
+    console.log('dbItem ====>', dbItem)
+    return {
+      id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
+      cohortName: dbItem.cohort_name,
+      courseName: courseName,
+      startDate: new Date(dbItem.start_date),
+      endDate: new Date(dbItem.end_date),
+      week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
+      status: 'in progress',
+      students: `${dbItem.students.length} / ${dbItem.seats}`, //
+      mentors: `${dbItem.mentors[0].length} / ${dbItem.mentors[1].length}`, // Assignment reviewers / traditional mentors
+      archive:'archive' }
+
+  } 
+
+  useEffect(() => {
+    setLoading(true);
+    const params = {}
+    try {
+      (async () => {
+        await getData(params, urlCohorts).then((cohorts) => {
+          
+          const courseIds = cohorts.map(cohort => cohort.course_id);
+          
+          
+          
+          let localTableRows = []
+          if (cohorts) {
+            setCohorts(cohorts)
+            console.log(cohorts, 'cohorts before loop')
+            for (let i=0; i<cohorts.length; i++) {
+              const courseName = 'React';
+              console.log(cohorts[i], 'inside for loop')
+              localTableRows.push(makeRowfromDbCohort(i, cohorts[i], courseName));
+            }
           }
-    },[])
+
+          setTableRows(localTableRows);
+          console.info("localTableRows", localTableRows);
+
+          console.log('data recieved from API', cohorts)
 
 
+          setLoading(false);
+        });
+      })();
+    ;
+    } catch (error) {
+      console.log(error, "error from getData in /api/usersprofile");
+    }
+  }, [])
 
   return (
     <Container sx={{ textAlign: "center" }}>
       <Typography>Test</Typography>
+      <CohortsTable tableRows={tableRows} />
     </Container>
   );
 };
@@ -53,7 +93,7 @@ export async function getServerSideProps(context) {
     }
   }
   const { user } = session;
-  if(!user.hasProfile) {
+  if (!user.hasProfile) {
     return {
       redirect: {
         destination: '/signup',

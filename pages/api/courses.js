@@ -5,14 +5,14 @@ export default async function handler(req, res) {
 
     switch (method) {
         case "GET":
-            return getCohorts(req, res);
+            return getCourses(req, res);
         default:
             res.setHeader("Allow", ["GET"]);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
 }
 
-const getCohorts = async (req, res) => {
+const getCourses = async (req, res) => {
     // return res.status(200).json({db:process.env.MONGODB_DB});
     const client = await clientPromise;
     const database = client.db(process.env.MONGODB_DB);
@@ -22,17 +22,18 @@ const getCohorts = async (req, res) => {
         projection: { _id: 0},
     };
     const query = {};
-    const cohorts = [];
+    console.log(query)
+    const courses = [];
     try {
         let cursor = await database
-            .collection("cohorts")
+            .collection("courses")
             .find(query, options);
             if ((await cursor.count()) === 0) {
                 console.log("No documents found!");    
                 
             }
-            await cursor.forEach(cohort => cohorts.push(cohort));
-            return res.status(200).json(cohorts);
+            await cursor.forEach(course => courses.push(course));
+            return res.status(200).json(courses);
     } catch (error) {
         console.error(error);
     }
