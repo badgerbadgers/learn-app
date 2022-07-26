@@ -65,8 +65,6 @@ const columns = [
 
 
 export default function CohortsTable({loading, tableRows}) {
-  console.log(tableRows, loading, '<====tableRows inside component')
-
 
   return (
     <Box sx={{ height: 400, width: '100%' }}>
@@ -98,15 +96,3 @@ export default function CohortsTable({loading, tableRows}) {
     </Box>
   );
 }
-
-
-
-
-
-
-
-  // createData('Alpaca', 'Rails', '01/26/2022','11/12/2022','8/30','in progress', '45/44', '0/0', 'archive'),
-  // createData('Albatross', 'React', '01/26/2022','11/12/2022','0/30','upcoming', '30/30', '0/0', 'archive'),
-  // createData('Borr', 'Intro to Programming', '01/26/2022','11/12/2022','29/30','rescheduled', '12/10', '0/0', 'archive'),
-  // createData('Sparrow', 'React', '01/26/1704','11/12/1704','8/15','completed', '115/44', '0/0', 'archive'),
-

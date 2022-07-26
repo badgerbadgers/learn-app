@@ -15,6 +15,16 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
   const [tableRows, setTableRows] = useState([])
 
 
+const setStatus = (start, end) => {
+  if (new Date(start) <= new Date() && new Date() <= new Date(end)) {
+    return "in progress"
+  }
+  else if (new Date () < new Date(start)) return 'upcoming'
+  else if (new Date () > new Date(end)) return 'completed'
+  else return "Fix your code" // Testing process, delete this before PR
+}
+
+
   const makeRowfromDbCohort = (i, dbItem, courseName) => {
     console.log('dbItem ====>', dbItem)
     return {
@@ -24,7 +34,7 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
       startDate: new Date(dbItem.start_date),
       endDate: new Date(dbItem.end_date),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
-      status: 'in progress',
+      status: setStatus( dbItem.start_date, dbItem.end_date),
       students: `${dbItem.students.length} / ${dbItem.seats}`, //
       mentors: `${dbItem.mentors[0].length} / ${dbItem.mentors[1].length}`, // Assignment reviewers / traditional mentors
       archive:'archive' }
@@ -39,25 +49,14 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
         await getData(params, urlCohorts).then((cohorts) => {
           
           const courseIds = cohorts.map(cohort => cohort.course_id);
-          
-          
-          
           let localTableRows = []
           if (cohorts) {
-            setCohorts(cohorts)
-            console.log(cohorts, 'cohorts before loop')
             for (let i=0; i<cohorts.length; i++) {
               const courseName = 'React';
-              console.log(cohorts[i], 'inside for loop')
               localTableRows.push(makeRowfromDbCohort(i, cohorts[i], courseName));
             }
           }
-
           setTableRows(localTableRows);
-          console.info("localTableRows", localTableRows);
-
-          console.log('data recieved from API', cohorts)
-
 
           setLoading(false);
         });
