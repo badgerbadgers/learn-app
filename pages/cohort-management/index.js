@@ -5,11 +5,11 @@ import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
 
-const CohortManagement = () => { // TODO: check if user is Admin? 
+const CohortManagement = () => { // do we need addtional check if user is Admin? 
 
   const urlCohorts = "/api/cohorts";
   const urlCourses = "/api/courses";
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [cohorts, setCohorts] = useState([]);
   const [courseNames, setCoursenames] = useState({});
   const [tableRows, setTableRows] = useState([])
@@ -70,8 +70,8 @@ const CohortManagement = () => { // TODO: check if user is Admin?
 
   return (
     <Container sx={{ textAlign: "center" }}>
-      <Typography>Test</Typography>
-      <CohortsTable tableRows={tableRows} />
+      <Typography  pb={4} sx={{fontWeight: 100, fontSize: '3rem',}} >Cohort Management</Typography>
+      <CohortsTable loading={loading} tableRows={tableRows} />
     </Container>
   );
 };
