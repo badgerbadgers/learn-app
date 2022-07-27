@@ -4,6 +4,8 @@ import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
+import { format } from "date-fns";
+
 
 const CohortManagement = () => { // do we need addtional check if user is Admin? 
 
@@ -31,8 +33,8 @@ const setStatus = (start, end) => {
       id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
       cohortName: dbItem.cohort_name,
       courseName: courseName,
-      startDate: new Date(dbItem.start_date),
-      endDate: new Date(dbItem.end_date),
+      startDate: format(new Date(dbItem.start_date), 'iii, MMM dd, yyyy'),
+      endDate: format(new Date(dbItem.end_date), 'iii, MMM dd, yyyy'),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus( dbItem.start_date, dbItem.end_date),
       students: `${dbItem.students.length} / ${dbItem.seats}`, //
