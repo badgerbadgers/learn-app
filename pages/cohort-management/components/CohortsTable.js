@@ -8,30 +8,31 @@ import LinearProgress from '@mui/material/LinearProgress';
 const columns = [
   { field: 'cohortName',
    headerName: 'Cohort',
-   width: 100 },
+   width: 100,
+   },
   {
     field: 'courseName',
     headerName: 'Course',
-    width: 100,
+    width: 160,
     editable: true,
   },
   {
     field: 'startDate',
     headerName: 'Start Date',
-    width: 150,
+    width: 125,
     editable: true,
   },
   {
     field: 'endDate',
     headerName: 'End Date',
-    width: 150,
+    width: 125,
     editable: true,
   },
   {
     field: 'week',
     headerName: 'Week',
     type: 'number',
-    width: 110,
+    width: 100,
     editable: true,
   },
   {
@@ -40,26 +41,30 @@ const columns = [
     type: 'number',
     width: 110,
     editable: true,
+    headerAlign: 'center',
+    align: 'center'
   },
   {
     field: 'students',
     headerName: 'Students',
     type: 'number',
-    width: 110,
+    width: 100,
     editable: true,
   },
   {
     field: 'mentors',
     headerName: 'Mentors',
     type: 'number',
-    width: 110,
+    width: 100,
     editable: true,
   },
   {
     field: 'archive',
     headerName: 'Archive',
     sortable: false,
-    width: 90,
+    width: 80,
+    headerAlign: 'right',
+    align: 'right',
   },
 ];
 

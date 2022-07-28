@@ -23,7 +23,8 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
   const getCourses = async (courseIds) => {
 
     const coursesCache = {};
-    await getData({}, urlCourses).then((courses) => {
+    const params = {params: {ids: courseIds}};
+    await getData(params, urlCourses).then((courses) => {
       courses.map(async course => coursesCache[course._id] = course.course_name)
     })
     return coursesCache
@@ -35,8 +36,8 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
       id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
       cohortName: dbItem.cohort_name,
       courseName: courses[dbItem.course_id],
-      startDate: format(new Date(dbItem.start_date), 'iii, MMM dd, yyyy'),
-      endDate: format(new Date(dbItem.end_date), 'iii, MMM dd, yyyy'),
+      startDate: format(new Date(dbItem.start_date), 'MMM dd, yyyy'),
+      endDate: format(new Date(dbItem.end_date), 'MMM dd, yyyy'),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus(dbItem.start_date, dbItem.end_date),
       students: `${dbItem.students.length} / ${dbItem.seats}`, //

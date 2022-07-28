@@ -13,6 +13,7 @@ export default async function handler(req, res) {
 }
 
 const getCourses = async (req, res) => {
+   
     const client = await clientPromise;
     const database = client.db(process.env.MONGODB_DB);
     const options = {
