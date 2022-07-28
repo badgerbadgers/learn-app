@@ -3,6 +3,8 @@ import clientPromise from "../../lib/mongodb";
 export default async function handler(req, res) {
     const { method } = req;
 
+    console.log("\n\n***", req.query);
+
     switch (method) {
         case "GET":
             return getCourses(req, res);

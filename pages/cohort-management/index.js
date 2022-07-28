@@ -23,7 +23,8 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
   const getCourses = async (courseIds) => {
 
     const coursesCache = {};
-    const params = {params: {ids: courseIds}};
+    console.info("courseIds=>", courseIds);
+    const params = {params: JSON.stringify({ids: [...courseIds]})};
     await getData(params, urlCourses).then((courses) => {
       courses.map(async course => coursesCache[course._id] = course.course_name)
     })
