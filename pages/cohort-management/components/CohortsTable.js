@@ -67,20 +67,17 @@ const columns = [
 export default function CohortsTable({loading, tableRows}) {
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx={{ height: '500px', width: '100%' }}>
       <DataGrid
         loading={loading}
         rows={tableRows}
         columns={columns}
-        pageSize={5}
+        pageSize={10}
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableSelectionOnClick
         components={{
-
           LoadingOverlay: LinearProgress,
-          
-      
           NoRowsOverlay: () => (
             <Stack height="100%" alignItems="center" justifyContent="center">
               So far, there are no cohorts here. Would you like to create one?

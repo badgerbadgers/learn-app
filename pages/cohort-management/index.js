@@ -12,36 +12,39 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
   const urlCohorts = "/api/cohorts";
   const urlCourses = "/api/courses";
   const [loading, setLoading] = useState(true);
-  const [cohorts, setCohorts] = useState([]);
-  const [courseNames, setCoursenames] = useState({});
   const [tableRows, setTableRows] = useState([])
 
-
-const setStatus = (start, end) => {
-  if (new Date(start) <= new Date() && new Date() <= new Date(end)) {
-    return "in progress"
+  const setStatus = (start, end) => {
+    if (new Date(start) <= new Date() && new Date() <= new Date(end)) return "in progress";
+    else if (new Date() < new Date(start)) return 'upcoming';
+    else if (new Date() > new Date(end)) return 'completed';
   }
-  else if (new Date () < new Date(start)) return 'upcoming'
-  else if (new Date () > new Date(end)) return 'completed'
-  else return "Fix your code" // Testing process, delete this before PR
-}
+
+  const getCourses = async (courseIds) => {
+
+    const coursesCache = {};
+    await getData({}, urlCourses).then((courses) => {
+      courses.map(async course => coursesCache[course._id] = course.course_name)
+    })
+    return coursesCache
+  }
 
 
-  const makeRowfromDbCohort = (i, dbItem, courseName) => {
-    console.log('dbItem ====>', dbItem)
+  const makeRowfromDbCohort = (i, dbItem, courses) => {
     return {
       id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
       cohortName: dbItem.cohort_name,
-      courseName: courseName,
+      courseName: courses[dbItem.course_id],
       startDate: format(new Date(dbItem.start_date), 'iii, MMM dd, yyyy'),
       endDate: format(new Date(dbItem.end_date), 'iii, MMM dd, yyyy'),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
-      status: setStatus( dbItem.start_date, dbItem.end_date),
+      status: setStatus(dbItem.start_date, dbItem.end_date),
       students: `${dbItem.students.length} / ${dbItem.seats}`, //
       mentors: `${dbItem.mentors[0].length} / ${dbItem.mentors[1].length}`, // Assignment reviewers / traditional mentors
-      archive:'archive' }
+      archive: 'archive', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
+    }
 
-  } 
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -49,21 +52,20 @@ const setStatus = (start, end) => {
     try {
       (async () => {
         await getData(params, urlCohorts).then((cohorts) => {
-          
           const courseIds = cohorts.map(cohort => cohort.course_id);
+          getCourses(new Set(courseIds)).then( (courses) => {
           let localTableRows = []
           if (cohorts) {
-            for (let i=0; i<cohorts.length; i++) {
-              const courseName = 'React';
-              localTableRows.push(makeRowfromDbCohort(i, cohorts[i], courseName));
-            }
+            cohorts.map(async (cohort, i) => {
+              const item = makeRowfromDbCohort(i, cohort, courses)
+              localTableRows.push(item)
+            })
           }
           setTableRows(localTableRows);
-
           setLoading(false);
+          });
         });
       })();
-    ;
     } catch (error) {
       console.log(error, "error from getData in /api/usersprofile");
     }
@@ -71,7 +73,7 @@ const setStatus = (start, end) => {
 
   return (
     <Container sx={{ textAlign: "center" }}>
-      <Typography  pb={4} sx={{fontWeight: 100, fontSize: '3rem',}} >Cohort Management</Typography>
+      <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
       <CohortsTable loading={loading} tableRows={tableRows} />
     </Container>
   );
