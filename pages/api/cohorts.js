@@ -26,23 +26,18 @@ const getCohorts = async (req, res) => {
         let cursorCohorts = await database
             .collection("cohorts")
             .find(query, options);
-        if ((await cursorCohorts.count()) === 0) {   //TODO: replace count
+        if ((await cursorCohorts.count()) === 0) {   //TODO: replace count, use `collection.estimatedDocumentCount` or `collection.countDocuments` instead
             console.log("No cohorts found!");
         }
         cohorts = await cursorCohorts.toArray();
-        console.log("cohorts 1st", cohorts);
         const ids = cohorts.map(cohort => ObjectId(cohort.course_id));
-        console.log("ids", ids);
-
         const cohortCache = {}
         const coursesCursor = await database
             .collection("courses")
             .find({ "_id": { "$in": ids } })
             .toArray();
         coursesCursor.map(async course => {
-            console.log( '<======cohort cache')
             cohortCache[course._id] = course.course_name
-            console.log(cohortCache, '<======cohort cache')
         });
         for (let cohort of cohorts) {
             cohort.course_name = cohortCache[cohort.course_id]
@@ -51,7 +46,7 @@ const getCohorts = async (req, res) => {
     } catch (error) {
         console.error(error);
     } 
-    // finally {
+    // finally {  // TBD: Why does it interfere with a session? Why does it close everything?
     //     await client.close();
     // }
     return res.status(200).json(cohorts);
