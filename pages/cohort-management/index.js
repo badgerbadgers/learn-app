@@ -24,7 +24,7 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
 
     const coursesCache = {};
     console.info("courseIds=>", courseIds);
-    const params = {params: JSON.stringify({ids: [...courseIds]})};
+    const params = {params: JSON.stringify( [...courseIds] )};
     await getData(params, urlCourses).then((courses) => {
       courses.map(async course => coursesCache[course._id] = course.course_name)
     })
@@ -36,7 +36,7 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
     return {
       id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
       cohortName: dbItem.cohort_name,
-      courseName: courses[dbItem.course_id],
+      courseName: db.dbItem.course_name,
       startDate: format(new Date(dbItem.start_date), 'MMM dd, yyyy'),
       endDate: format(new Date(dbItem.end_date), 'MMM dd, yyyy'),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
@@ -54,18 +54,19 @@ const CohortManagement = () => { // do we need addtional check if user is Admin?
     try {
       (async () => {
         await getData(params, urlCohorts).then((cohorts) => {
-          const courseIds = cohorts.map(cohort => cohort.course_id);
-          getCourses(new Set(courseIds)).then( (courses) => {
+          // const courseIds = cohorts.map(cohort => cohort.course_id);
+          // getCourses(new Set(courseIds)).then( (courses) => {
           let localTableRows = []
           if (cohorts) {
             cohorts.map(async (cohort, i) => {
-              const item = makeRowfromDbCohort(i, cohort, courses)
-              localTableRows.push(item)
+              // const item = makeRowfromDbCohort(i, cohort)
+              // localTableRows.push(item)
+              console.log(cohort, i, 'cohort inside index')
             })
           }
-          setTableRows(localTableRows);
+          // setTableRows(localTableRows);
           setLoading(false);
-          });
+          // });
         });
       })();
     } catch (error) {
