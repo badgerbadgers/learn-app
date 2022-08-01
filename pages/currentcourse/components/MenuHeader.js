@@ -1,5 +1,8 @@
 import React from "react";
-import { Typography, Box, Button, Stack } from "@mui/material";
+import  Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import  Button from "@mui/material/Button";
+import Stack  from "@mui/material/Stack";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import CommentIcon from "@mui/icons-material/Comment";
 

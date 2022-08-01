@@ -1,17 +1,15 @@
 import * as React from "react";
 import CircleIcon from "@mui/icons-material/Circle";
-import {
-  CardHeader,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  CardContent,
-  Card,
-  Typography
-} from "@mui/material";
+import CardHeader from "@mui/material/CardHeader";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import  Card from "@mui/material/Card";
+import  CardContent from "@mui/material/CardContent";
 
-export default function LearningObjectivesCard() {
+
+export default function LearningObjectivesCard({objectives}) {
   return (
     <>
       <Card
@@ -24,13 +22,12 @@ export default function LearningObjectivesCard() {
       >
         <CardHeader sx={{ mb: -3 }} title="Learning Objectives" />
         <CardContent sx={{ my: -2 }}>
-          <Typography variant="body2"></Typography>
           <List>
             <ListItem>
               <ListItemIcon sx={{ minWidth: "36px" }}>
                 <CircleIcon sx={{ width: "8px" }} />
               </ListItemIcon>
-              <ListItemText primary="Lesson bullet points" />
+              <ListItemText sx={{display:"block"}} >{objectives}</ListItemText>
             </ListItem>
           </List>
         </CardContent>

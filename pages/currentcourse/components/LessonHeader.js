@@ -1,11 +1,14 @@
 import React from "react";
-import { Card, CardHeader, Button,CardActions,  Typography } from "@mui/material";
+import CardHeader from "@mui/material/CardHeader";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import Typography from "@mui/material/Typography";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
-export default function LessonHeader() {
- 
+export default function LessonHeader( {title}) {
   return (
   
     <>
@@ -30,7 +33,8 @@ export default function LessonHeader() {
 
         <CardHeader
           // key={key}
-          title="Title"
+         
+           title={title}
           titleTypographyProps={{
             variant: "h4",
             align: "center",
