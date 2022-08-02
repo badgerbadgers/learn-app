@@ -1,30 +1,38 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { Stack } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 
+
+export default function CohortsTable({loading, tableRows, courses}) {
+
 // TODO: responsive width
-const columns = [
+const columns  = [
   { field: 'cohortName',
    headerName: 'Cohort',
    width: 100,
+   editable: true,
    },
   {
     field: 'courseName',
     headerName: 'Course',
     width: 160,
+    type: "singleSelect",
     editable: true,
+    valueOptions: courses,
   },
   {
     field: 'startDate',
     headerName: 'Start Date',
+    type: 'date',
     width: 125,
     editable: true,
   },
   {
     field: 'endDate',
     headerName: 'End Date',
+    type: 'date',
     width: 125,
     editable: true,
   },
@@ -67,9 +75,6 @@ const columns = [
     align: 'right',
   },
 ];
-
-
-export default function CohortsTable({loading, tableRows}) {
 
   return (
     <Box sx={{ height: '500px', width: '100%' }}>

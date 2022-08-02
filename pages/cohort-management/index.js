@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
-import { Container, Typography } from "@mui/material";
+import Button from '@mui/material/Button';
+import { Container, Grid, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
-
+import AddIcon from '@mui/icons-material/Add';
 
 const CohortManagement = () => {
 
   const url = "/api/cohorts";
   const [loading, setLoading] = useState(true);
-  const [tableRows, setTableRows] = useState([])
+  const [tableRows, setTableRows] = useState([]);
+  const [id, setId] = useState(1);
+  const [courses, setCourses] = useState([]);
 
   const setStatus = (start, end) => {
     if (new Date(start) <= new Date() && new Date() <= new Date(end)) return "in progress";
@@ -19,9 +22,32 @@ const CohortManagement = () => {
     else if (new Date() > new Date(end)) return 'completed';
   }
 
+  useEffect(() => {
+    const url = "/api/courses";
+    const params = {}
+    try {
+      (async () => {
+        await getData(params, url).then((courses) => {
+          let localCourses = []
+          if (courses) {
+            courses.map(course => {
+              localCourses.push(course.course_name)
+            })
+          }
+          setCourses(localCourses)
+        });
+      })();
+    } catch (error) {
+      console.log(error, "an error from getData in /api/courses");
+    }
+  }, [])
+
+
+
   const makeRowfromCohort = (i, cohort) => {
+    setId(++id);
     return {
-      id: i, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
+      id: id, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
       cohortName: cohort.cohort_name,
       courseName: cohort.course_name,
       startDate: format(new Date(cohort.start_date), 'MMM dd, yyyy'),
@@ -33,6 +59,37 @@ const CohortManagement = () => {
       archive: 'archive', // TODO: do we actually need an archive btn?
     }
   }
+
+  const createCohort = () => {
+    setId(++id);
+    console.log(id);
+    return {
+      id: id,
+      cohortName: 'Cohort Name',
+      courseName: 'Choose a course',
+      startDate: format(new Date(), 'MMM dd, yyyy'),
+      endDate: format(new Date(), 'MMM dd, yyyy'),
+      week: '',
+      status: `${id}`,
+      students: '0/0',
+      mentors: `0/0`,
+      archive: 'archive',
+    };
+  };
+
+  // const computeMutation = (newRow, oldRow) => {
+  //   if (newRow.name !== oldRow.name) {
+  //     return `Name from '${oldRow.name}' to '${newRow.name}'`;
+  //   }
+  //   if (newRow.age !== oldRow.age) {
+  //     return `Age from '${oldRow.age || ''}' to '${newRow.age || ''}'`;
+  //   }
+  //   return null;
+  // }
+
+  const handleAddRow = () => {
+    setTableRows((tableRows) => [...tableRows, createCohort()]);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -59,7 +116,17 @@ const CohortManagement = () => {
   return (
     <Container sx={{ textAlign: "center" }}>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
-      <CohortsTable loading={loading} tableRows={tableRows} />
+      <Grid container justifyContent="flex-end">
+        <Button size="small" align="rigth" startIcon={<AddIcon />}  onClick={handleAddRow}>
+          Add cohort
+        </Button>
+      </Grid>
+
+      <CohortsTable 
+      loading={loading} 
+      tableRows={tableRows}
+      courses={courses.sort()}
+       />
     </Container>
   );
 };
