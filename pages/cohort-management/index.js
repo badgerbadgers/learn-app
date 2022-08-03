@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types"
 import { getSession } from "next-auth/react";
 import Button from '@mui/material/Button';
 import { Container, Grid, Typography } from "@mui/material";
@@ -7,6 +8,7 @@ import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
 import AddIcon from '@mui/icons-material/Add';
+
 
 const CohortManagement = () => {
 
@@ -41,7 +43,7 @@ const CohortManagement = () => {
       console.log(error, "an error from getData in /api/courses");
     }
   }, [])
-
+ 
 
 
   const makeRowfromCohort = (i, cohort) => {
@@ -56,37 +58,10 @@ const CohortManagement = () => {
       status: setStatus(cohort.start_date, cohort.end_date),
       students: `${cohort.students.length} / ${cohort.seats}`, //
       mentors: `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`, // Assignment reviewers / traditional mentors
-      archive: 'archive', // TODO: do we actually need an archive btn?
     }
   }
 
-  const createCohort = () => {
-    setId(++id);
-    console.log(id);
-    return {
-      id: id,
-      cohortName: 'Cohort Name',
-      courseName: 'Choose a course',
-      startDate: format(new Date(), 'MMM dd, yyyy'),
-      endDate: format(new Date(), 'MMM dd, yyyy'),
-      week: '',
-      status: `${id}`,
-      students: '0/0',
-      mentors: `0/0`,
-      archive: 'archive',
-    };
-  };
-
-  // const computeMutation = (newRow, oldRow) => {
-  //   if (newRow.name !== oldRow.name) {
-  //     return `Name from '${oldRow.name}' to '${newRow.name}'`;
-  //   }
-  //   if (newRow.age !== oldRow.age) {
-  //     return `Age from '${oldRow.age || ''}' to '${newRow.age || ''}'`;
-  //   }
-  //   return null;
-  // }
-
+  
   const handleAddRow = () => {
     setTableRows((tableRows) => [...tableRows, createCohort()]);
   };
@@ -126,7 +101,7 @@ const CohortManagement = () => {
       loading={loading} 
       tableRows={tableRows}
       courses={courses.sort()}
-       />
+        />
     </Container>
   );
 };
