@@ -5,11 +5,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import  Card from "@mui/material/Card";
-import  CardContent from "@mui/material/CardContent";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
-
-export default function LearningObjectivesCard({objectives}) {
+export default function LearningObjectivesCard({ objectives, key }) {
   return (
     <>
       <Card
@@ -23,12 +22,18 @@ export default function LearningObjectivesCard({objectives}) {
         <CardHeader sx={{ mb: -3 }} title="Learning Objectives" />
         <CardContent sx={{ my: -2 }}>
           <List>
-            <ListItem>
-              <ListItemIcon sx={{ minWidth: "36px" }}>
-                <CircleIcon sx={{ width: "8px" }} />
-              </ListItemIcon>
-              <ListItemText sx={{display:"block"}} >{objectives}</ListItemText>
-            </ListItem>
+            {objectives.map((objective) => {
+              return (
+                <ListItem key={key} sx={{py:"0"}}>
+                  <ListItemIcon sx={{ minWidth: "36px" }}>
+                    <CircleIcon sx={{ width: "8px" }} />
+                  </ListItemIcon>
+                  <ListItemText sx={{ display: "block" }}>
+                    {objective}
+                  </ListItemText>
+                </ListItem>
+              );
+            })}
           </List>
         </CardContent>
       </Card>

@@ -37,7 +37,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
                   size="small"
                   sx={{ textDecoration: "none", color: "#338AAF" }}
                 >
-                  {assignment.assignment_title}
+                  <Typography sx={{textTransform:"capitalize"}}>{assignment.assignment_title}</Typography>
                 </Link>
               </Box>
             );

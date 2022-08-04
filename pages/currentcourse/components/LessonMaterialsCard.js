@@ -24,20 +24,20 @@ export default function LessonMaterialsCard({materials}) {
       <CardHeader title="Lesson Materials" sx={{ mb: -2 }} />
       <CardContent sx={{ my: -2 }}>
         <Typography variant="body1" component="div" sx={{}}>
-          lesson materials intro text
-          {/* should links go under actions? */}
+        Go to each link in this list and read through the content on that page. If there are links you are redirected to as you read/work through the content, follow those links as well and read the content there also.
         </Typography>
         <List>
           <ListItem>
-            <ListItemIcon sx={{ minWidth: "36px" }}>
+            {/* <ListItemIcon sx={{ minWidth: "36px" }}>
               <CircleIcon sx={{ width: "8px" }} />
-            </ListItemIcon>
+            </ListItemIcon> */}
             <div>
+              {/* check to see if we need div/ key is in the right location */}
               {materials.map((material) => {
                 return (
                   <div key={material.url}>
                     <Link href={material.url} sx={{textDecoration:"none", color: "#338AAF" }}>
-                      <ListItemText>{material.materials_title}</ListItemText>
+                      <ListItemText sx={{textTransform:"capitalize"}} >{material.materials_title}</ListItemText>
                     </Link>
                   </div>
                 );
