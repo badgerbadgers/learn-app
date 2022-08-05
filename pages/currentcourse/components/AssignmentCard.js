@@ -9,26 +9,22 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 
 export default function AssignmentCard({ mindset, assignments, submit }) {
-  console.log(assignments);
   return (
     <Card
       elevation={1}
       square
       sx={{
         backgroundColor: "#F4F5F7",
+        padding: "1em",
+        boxShadow: "none" 
       }}
     >
       <CardHeader title="Assignments" subheader={<div>Due Date:</div>} />
 
       <CardContent>
-        <Typography
-          variant="h6"
-          // sx={{ fontWeight: "500", fontfamily: "gothamRoundedMedium" }}
-        >
-          Coding Assignment
-        </Typography>
+        <Typography variant="h6">Coding Assignment</Typography>
 
-        <CardActions>
+        <CardActions sx={{ paddingLeft: "0" }}>
           {assignments.map((assignment) => {
             return (
               <Box key={assignments.assignment_title}>
@@ -37,14 +33,18 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
                   size="small"
                   sx={{ textDecoration: "none", color: "#338AAF" }}
                 >
-                  <Typography sx={{textTransform:"capitalize"}}>{assignment.assignment_title}</Typography>
+                  <Typography sx={{ textTransform: "capitalize" }}>
+                    {assignment.assignment_title}
+                  </Typography>
                 </Link>
               </Box>
             );
           })}
         </CardActions>
 
-        <Typography variant="h6">Mindset Assignment</Typography>
+        <Typography variant="h6" sx={{ pt: "1em", pb: "8px" }}>
+          Mindset Assignment
+        </Typography>
         <Typography variant="body1">{mindset}</Typography>
       </CardContent>
       <CardActions>

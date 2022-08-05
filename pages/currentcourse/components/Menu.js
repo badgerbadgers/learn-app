@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MenuHeader from "./MenuHeader";
 import  Typography from "@mui/material/Typography";
 import  Grid from "@mui/material/Grid";
@@ -7,13 +7,11 @@ import MenuItem from "@mui/material/MenuItem";
 import  Divider from "@mui/material/Divider";
 import  Paper from "@mui/material/Paper";
 
-
-export default function Menu({ lessonData }) {
-  const [selected, setSelected]=useState(lessonData[0].order);
-  // have selected be initially order 1 
+export default function Menu({ lessonData,setSelectedLabel }) {
   
   return (
-    <Grid item md={3}>
+    <Grid item md={3}
+    sx={{maxWidth:"100%"}}>
       <Paper
         variant="outlined"
         square
@@ -22,7 +20,7 @@ export default function Menu({ lessonData }) {
           backgroundColor: "#F4F5F7",
         }}
       >
-        <MenuList dense>
+        <MenuList dense sx={{}}>
           <MenuHeader />
           {/* ^^ component */}
           <MenuItem>
@@ -30,11 +28,11 @@ export default function Menu({ lessonData }) {
           </MenuItem>
           {lessonData.map((lessons) => {
             return (
-              <div key={lessons.order}>
+              <div key={lessons._id}>
                 <MenuItem
                   onClick={() => {
-                    console.log(lessons.order);
-                    setSelected(lessons.order);
+                    console.log(lessons.lesson_label);
+                    {setSelectedLabel(lessons.lesson_label)};
                   }}
                 >
                   <Typography variant="body1" noWrap={true}>

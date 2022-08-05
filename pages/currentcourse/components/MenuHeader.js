@@ -35,6 +35,7 @@ export default function MenuHeader() {
             color: "#338AAF",
             textTransform: "lowercase",
             whiteSpace: "no-wrap",
+            my:"1em"
           }}
         >
           slack announcements

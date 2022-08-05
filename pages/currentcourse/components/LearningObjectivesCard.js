@@ -16,7 +16,9 @@ export default function LearningObjectivesCard({ objectives, key }) {
         square
         sx={{
           backgroundColor: "#F4F5F7",
-          mb: "1em",
+          mb: "2em",
+          padding:"1em",
+          boxShadow: "none" 
         }}
       >
         <CardHeader sx={{ mb: -3 }} title="Learning Objectives" />
