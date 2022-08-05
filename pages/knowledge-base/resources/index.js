@@ -10,6 +10,12 @@ import { getResourceData } from "../../../lib/airtable";
 function Resources({ resources }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeResources, setActiveResources] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [topics, setTopics] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   // We want a function that we can search by: name, type, topic, language, and description
   // Create a function that save in array the results temporary the element
@@ -31,8 +37,8 @@ function Resources({ resources }) {
         : [];
       const languageSearchResults = item.fields["Name (from language)"]
         ? item.fields["Name (from language)"].map((language) =>
-            language.toLowerCase()
-          )
+          language.toLowerCase()
+        )
         : [];
       return (
         languageSearchResults.includes(term.toLowerCase()) ||
@@ -44,19 +50,76 @@ function Resources({ resources }) {
     });
   };
 
+
+  const getFilteredResources = () => {
+    // Filter resourses using selected languages, types and topics.
+    const filteredResources = [...resources]
+    if (selectedLanguages.length) {
+      filteredResources = filteredResources.filter(
+        (resource) =>  {
+          const common = selectedLanguages.filter(
+            value => resource.fields["Name (from language)"].includes(value)
+          );
+          return common.length > 0;
+        }
+      )
+    };
+    console.log('after lang', filteredResources), filteredResources.length
+    if (selectedTopics.length) {
+      filteredResources = filteredResources.filter(
+        (resource) =>  {
+          const common = selectedTopics.filter(
+            value => resource.fields["Name (from topic)"]?.includes(value) || false
+          );
+          return common.length > 0;
+        }
+      )
+    };
+    console.log('after Topic', filteredResources,filteredResources.length)
+
+    if (selectedTypes.length) {
+      filteredResources = filteredResources.filter(
+        (resource) =>  {
+          const common = selectedTypes.filter(
+            value => resource.fields["Type"]?.includes(value)
+          );
+          return common.length > 0;
+        }
+      )
+
+    }
+    console.log('after type', filteredResources, filteredResources.length )
+    return filteredResources;
+  }
+
+
   useEffect(() => {
     if (resources) {
-      setActiveResources(resources)
+      setActiveResources(resources);
+      const allLanguages = new Set(resources.map(resource => {
+        return resource.fields["Name (from language)"] || []
+      }).flat());
+      const allTopics = new Set(resources.map(resource => {
+        return resource.fields["Name (from topic)"] || []
+      }).flat());
+      const allTypes = new Set(resources.map(resource => {
+        return resource.fields["Type"] || ''
+      }));
+      setLanguages([...allLanguages]);
+      setTopics([...allTopics]);
+      setTypes([...allTypes]);
     }
   }, [])
 
   useEffect(() => {
+    let newList;
     if (searchTerm) {
-      const newList = searchResults(searchTerm);
-      setActiveResources(newList);
+      newList = searchResults(searchTerm);
+    } else {
+      newList = getFilteredResources();
     }
-  }, [searchTerm]);
-
+    setActiveResources(newList);
+  }, [searchTerm, selectedLanguages, selectedTopics, selectedTypes]);
   return (
     <Grid
       container
@@ -65,7 +128,7 @@ function Resources({ resources }) {
       sx={{
         paddingLeft: "20px",
         paddingRight: "20px",
-        marginTop: "5px",
+        marginTop: "-60px",
         marginBottom: "25px",
       }}
     >
@@ -73,6 +136,15 @@ function Resources({ resources }) {
         resources={resources}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        languages={languages}
+        selectedLanguages={selectedLanguages}
+        setSelectedLanguages={setSelectedLanguages}
+        topics={topics}
+        selectedTopics={selectedTopics}
+        setSelectedTopics={setSelectedTopics}
+        types={types}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
       />
 
       {/* 
