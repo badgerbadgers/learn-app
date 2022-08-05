@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes, } from "@mui/x-data-grid";
-
 import { Stack } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,12 +11,41 @@ import CancelIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 
+ 
+const EditToolbar = (props) => {
+  const { setRows, setRowModesModel, rows } = props;
+
+  const handleClick = () => {
+    const id = rows.length;
+    setRows((oldRows) => [...oldRows, { id, cohortName: '', courseName: [""], isNew: true }]);
+    setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohortName" },
+      }));
+  };
+
+  return (
+    <GridToolbarContainer>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        Add Cohort
+      </Button>
+    </GridToolbarContainer>
+  );
+}
+
+EditToolbar.propTypes = {
+  setRowModesModel: PropTypes.func.isRequired,
+  setRows: PropTypes.func.isRequired
+};
 
 
 export default function CohortsTable({loading, tableRows, courses}) {
-  const [rows, setRows] = React.useState(tableRows);
-  const [rowModesModel, setRowModesModel] = React.useState({});
+  const [rows, setRows] = useState([]);
+  const [rowModesModel, setRowModesModel] = useState({});
 
+  useEffect(() => {
+    setRows(tableRows)
+  }, [tableRows]);
 
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
@@ -61,42 +89,52 @@ export default function CohortsTable({loading, tableRows, courses}) {
 const columns  = [
   { field: 'cohortName',
    headerName: 'Cohort',
-   width: 100,
+   flex: 1,
+   minWidth: 100,
    editable: true,
+   headerAlign: 'center',
    },
   {
     field: 'courseName',
     headerName: 'Course',
-    width: 160,
+    flex: 1, 
+    minWidth: 100,
     type: "singleSelect",
     editable: true,
-    valueOptions: courses,
+    headerAlign: 'center',
+    valueOptions: [...courses, ""],
   },
   {
     field: 'startDate',
     headerName: 'Start Date',
     type: 'date',
+    flex: 1,
     width: 125,
+    headerAlign: 'center',
     editable: true,
   },
   {
     field: 'endDate',
     headerName: 'End Date',
+    flex: 1,
     type: 'date',
     width: 125,
+    headerAlign: 'center',
     editable: true,
   },
   {
     field: 'week',
     headerName: 'Week',
+    flex: 1,
     type: 'number',
     width: 100,
+    headerAlign: 'center',
     editable: false,
   },
   {
     field: 'status',
     headerName: 'Status',
-    type: 'number',
+    flex: 1,
     width: 110,
     editable: false,
     headerAlign: 'center',
@@ -107,6 +145,7 @@ const columns  = [
     headerName: 'Students',
     type: 'number',
     width: 100,
+    headerAlign: 'center',
     editable: false,
   },
   {
@@ -114,6 +153,7 @@ const columns  = [
     headerName: 'Mentors',
     type: 'number',
     width: 100,
+    headerAlign: 'center',
     editable: false,
   },
   {
@@ -122,21 +162,18 @@ const columns  = [
     headerName: 'Actions',
     sortable: false,
     width: 80,
-    headerAlign: 'right',
+    headerAlign: 'center',
     align: 'right',
-
-
     cellClassName: 'actions',
     getActions: ({ id }) => {
       const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
       if (isInEditMode) {
         return [
           <GridActionsCellItem
             icon={<SaveIcon />}
             label="Save"
             onClick={handleSaveClick(id)}
-            // key="1111111"
+            key={id}
           />,
           <GridActionsCellItem
             icon={<CancelIcon />}
@@ -144,7 +181,7 @@ const columns  = [
             className="textPrimary"
             onClick={handleCancelClick(id)}
             color="inherit"
-            // key="2222222"
+            key={id}
           />,
         ];
       }
@@ -156,14 +193,14 @@ const columns  = [
           className="textPrimary"
           onClick={handleEditClick(id)}
           color="inherit"
-          // key="3333333"
+          key={id}
         />,
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
           onClick={handleDeleteClick(id)}
           color="inherit"
-          // key="4444444"
+          key={id}
         />,
       ];
     },
@@ -171,41 +208,13 @@ const columns  = [
     
   }];
 
-  const EditToolbar = (props) => {
-    const { setRows, setRowModesModel } = props;
   
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" }
-      }));
-    };
-  
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
-  }
-  
-  EditToolbar.propTypes = {
-    setRowModesModel: PropTypes.func.isRequired,
-    setRows: PropTypes.func.isRequired
-  };
-  
-  
-
-
 
   return (
     <Box sx={{ height: '500px', width: '100%' }}>
       <DataGrid
         loading={loading}
-        rows={tableRows}
+        rows={rows}
         columns={columns}
         rowsPerPageOptions={[5]}
         checkboxSelection
@@ -231,7 +240,7 @@ const columns  = [
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         componentsProps={{
-          toolbar: { setRows, setRowModesModel }
+          toolbar: { setRows, setRowModesModel, rows }
         }}
         experimentalFeatures={{ newEditingApi: true }}
       />

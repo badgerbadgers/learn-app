@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types"
 import { getSession } from "next-auth/react";
-import Button from '@mui/material/Button';
-import { Container, Grid, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
-import AddIcon from '@mui/icons-material/Add';
+import { Container, Typography } from "@mui/material";
 
 
 const CohortManagement = () => {
@@ -15,7 +12,7 @@ const CohortManagement = () => {
   const url = "/api/cohorts";
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(0);
   const [courses, setCourses] = useState([]);
 
   const setStatus = (start, end) => {
@@ -47,9 +44,8 @@ const CohortManagement = () => {
 
 
   const makeRowfromCohort = (i, cohort) => {
-    setId(++id);
     return {
-      id: id, // Tmp solution for MUI data grid. We need to come up with a format for ID that works best for Mary Alice 
+      id: i, 
       cohortName: cohort.cohort_name,
       courseName: cohort.course_name,
       startDate: format(new Date(cohort.start_date), 'MMM dd, yyyy'),
@@ -60,11 +56,6 @@ const CohortManagement = () => {
       mentors: `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`, // Assignment reviewers / traditional mentors
     }
   }
-
-  
-  const handleAddRow = () => {
-    setTableRows((tableRows) => [...tableRows, createCohort()]);
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -91,16 +82,13 @@ const CohortManagement = () => {
   return (
     <Container sx={{ textAlign: "center" }}>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
-      <Grid container justifyContent="flex-end">
-        <Button size="small" align="rigth" startIcon={<AddIcon />}  onClick={handleAddRow}>
-          Add cohort
-        </Button>
-      </Grid>
 
       <CohortsTable 
       loading={loading} 
       tableRows={tableRows}
       courses={courses.sort()}
+      id={id}
+      setId={setId}
         />
     </Container>
   );
