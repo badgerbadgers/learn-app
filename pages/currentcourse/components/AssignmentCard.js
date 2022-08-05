@@ -6,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
 
 export default function AssignmentCard({ mindset, assignments, submit }) {
   return (
@@ -16,7 +15,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
       sx={{
         backgroundColor: "#F4F5F7",
         padding: "1em",
-        boxShadow: "none" 
+        boxShadow: "none",
       }}
     >
       <CardHeader title="Assignments" subheader={<div>Due Date:</div>} />
@@ -24,20 +23,20 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
       <CardContent>
         <Typography variant="h6">Coding Assignment</Typography>
 
-        <CardActions sx={{ paddingLeft: "0" }}>
+        <CardActions sx={{ pl: "0" }}>
           {assignments.map((assignment) => {
             return (
-              <Box key={assignments.assignment_title}>
-                <Link
-                  href={assignment.link.url}
-                  size="small"
-                  sx={{ textDecoration: "none", color: "#338AAF" }}
-                >
-                  <Typography sx={{ textTransform: "capitalize" }}>
-                    {assignment.assignment_title}
-                  </Typography>
-                </Link>
-              </Box>
+              <Link
+                key={assignment.assignment_title}
+                target="_blank"
+                href={assignment.link.url}
+                size="small"
+                sx={{ textDecoration: "none", color: "#338AAF" }}
+              >
+                <Typography sx={{ textTransform: "capitalize" }}>
+                  {assignment.assignment_title}
+                </Typography>
+              </Link>
             );
           })}
         </CardActions>
@@ -47,8 +46,10 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
         </Typography>
         <Typography variant="body1">{mindset}</Typography>
       </CardContent>
-      <CardActions>
+      
+      <CardActions sx={{ padding: "16px" }}>
         <Button
+          target="_blank"
           variant="contained"
           size="small"
           sx={{ backgroundColor: "#6BDF77" }}

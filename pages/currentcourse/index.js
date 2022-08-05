@@ -16,7 +16,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
     <Grid
       container
       spacing={3}
-      sx={{ maxWidth: "100%", mt: "-118px", marginRigh:"-600px",  backgroundColor:"orange"}}
+      sx={{ maxWidth: "100%", mt: "-118px"}}
       // need help with right and left margin
     >
       <Menu

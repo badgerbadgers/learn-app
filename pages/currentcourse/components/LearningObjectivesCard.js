@@ -24,7 +24,7 @@ export default function LearningObjectivesCard({ objectives, key }) {
         <CardHeader sx={{ mb: -3 }} title="Learning Objectives" />
         <CardContent sx={{ my: -2 }}>
           <List>
-            {objectives.map((objective) => {
+            {objectives.map((objective, key) => {
               return (
                 <ListItem key={key} sx={{py:"0"}}>
                   <ListItemIcon sx={{ minWidth: "36px" }}>

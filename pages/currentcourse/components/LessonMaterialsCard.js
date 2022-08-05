@@ -32,13 +32,14 @@ export default function LessonMaterialsCard({ materials, key }) {
           there also.
         </Typography>
         <List>
-          {materials.map((material) => {
+          {materials.map((material, key) => {
             return (
               <ListItem key={key} sx={{py:"0"}}>
-                <ListItemIcon sx={{ minWidth: "36px" }}>
+                <ListItemIcon  sx={{ minWidth: "36px" }}>
                   <CircleIcon sx={{ width: "8px" }} />
                 </ListItemIcon>
                 <Link
+                  target="_blank"
                   href={material.url}
                   sx={{ textDecoration: "none", color: "#338AAF" }}
                 >

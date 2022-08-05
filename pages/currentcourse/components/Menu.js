@@ -1,17 +1,16 @@
 import React from "react";
 import MenuHeader from "./MenuHeader";
-import  Typography from "@mui/material/Typography";
-import  Grid from "@mui/material/Grid";
-import  MenuList from "@mui/material/MenuList";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
-import  Divider from "@mui/material/Divider";
-import  Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 
-export default function Menu({ lessonData,setSelectedLabel }) {
-  
+export default function Menu({ lessonData, setSelectedLabel }) {
   return (
-    <Grid item md={3}
-    sx={{maxWidth:"100%"}}>
+    <Grid item md={3} sx={{ maxWidth: "100%" }}>
       <Paper
         variant="outlined"
         square
@@ -20,19 +19,24 @@ export default function Menu({ lessonData,setSelectedLabel }) {
           backgroundColor: "#F4F5F7",
         }}
       >
-        <MenuList dense sx={{}}>
+        <MenuList dense>
           <MenuHeader />
           {/* ^^ component */}
+          <Divider sx={{ mb: "5px" }} />
+
           <MenuItem>
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
           {lessonData.map((lessons) => {
             return (
-              <div key={lessons._id}>
-                <MenuItem
+              <Stack key={lessons.order}>
+                <MenuItem 
+                key={lessons.order}
                   onClick={() => {
                     console.log(lessons.lesson_label);
-                    {setSelectedLabel(lessons.lesson_label)};
+                    {
+                      setSelectedLabel(lessons.lesson_label);
+                    }
                   }}
                 >
                   <Typography variant="body1" noWrap={true}>
@@ -40,7 +44,7 @@ export default function Menu({ lessonData,setSelectedLabel }) {
                   </Typography>
                 </MenuItem>
                 <Divider />
-              </div>
+              </Stack>
             );
           })}
         </MenuList>
