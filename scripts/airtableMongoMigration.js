@@ -35,54 +35,13 @@ const insertToMongo = async (doc, coll) => {
     run().catch(console.dir);
 
 }
-const getDataFromAirtable = async () => {
+const getLessonsFromAirtable = async () => {
     const Airtable = require("airtable");
     const param = await getConfigParam(/AT_KEY=(.+)/);
 
     const AtBase = new Airtable({ apiKey: param }).base('appN9Hf8KluRDBAN4'); //The ID of Class Mangement base
 
-    // let classesInfo = {}; //Cohorts cache
-    // AtBase('Cohorts').select({
-    //     // view: "Grid view"
-    // }).eachPage(function page(records, fetchNextPage) {
-    //     records.forEach(function (record) {
-    //         classesInfo[record.id] = record.fields;
-    //     });
-    //     fetchNextPage();
-    // }, function done(err) {
-    //     if (err) { console.error(err); return; }
-    // });
-
-
-    AtBase('Courses').select({
-        // view: "Grid View",
-    }).eachPage(function page(records, fetchNextPage) {
-        records.forEach(function (record) {
-            if (record.get('Name')) { // in case if there is an empty row in the airtable
-                let course = {
-                    course_name: record.get('Name'),
-                    airtable_id: record.id,
-                }
-                insertToMongo(course, 'courses')
-            }
-        });
-        fetchNextPage();
-
-    }, function done(err) {
-        if (err) { console.error(err); return; }
-    });
-
-    // const getHumanReadebleitem =(table, field, item) => {
-    //     AtBase(table).select({
-    //     for record that = []
-    //     if (field.id == item){ 
-    //          return record.get(field)
-    //     }
-    // });
-    // }
-
-    // using ^^ helper func to give record name instead of record id
-
+    
     AtBase('Lessons').select({
         // view: “Grid View”, Is mine default?
     }).eachPage(function page(records, fetchNextPage) {
@@ -113,4 +72,4 @@ const getDataFromAirtable = async () => {
 
 }
 
-getDataFromAirtable();
+getLessonsFromAirtable();
