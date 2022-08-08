@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { privateLayout } from "../../components/PrivateLayout";
+import { privateLayout } from "../../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
-import { getMongoLessons } from "../../lib/courseData";
+import { getMongoLessons } from "../../../lib/courseData";
 import Grid from "@mui/material/Grid";
-import Menu from "./components/Menu";
-import Display from "./components/Display";
+import Menu from "../components/Menu";
+import Display from "../components/Display";
 
 export default function CurrentCoursePage({ user, lessonData }) {
   const [selectedLabel, setSelectedLabel] = useState(
@@ -37,8 +37,11 @@ export default function CurrentCoursePage({ user, lessonData }) {
   );
 }
 
+
+
 CurrentCoursePage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
+    console.log("hello",context.params)
   const session = await getSession(context);
 
   if (!session) {
