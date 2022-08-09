@@ -20,28 +20,29 @@ const getCohorts = async (req, res) => {
         sort: { start_date: 1 },
         projection: { _id: 0 },
     };
-    const query = {};
+    const query = [
+        // {
+        //     courseId: { $toObjectId: "$course_id" }
+        // },
+        {
+            $lookup: {
+                from: "courses",
+                localField: "course_id",
+                foreignField: "_id",
+                as: "course"
+            }
+        }
+        // {
+        //     course_title: {"$first": "$course.course_name"}
+        // }
+    ];
     let cohorts = [];
     try {
         let cursorCohorts = await database
             .collection("cohorts")
-            .find(query, options);
-        if ((await cursorCohorts.count()) === 0) {   //TODO: replace count, use `collection.estimatedDocumentCount` or `collection.countDocuments` instead
-            console.log("No cohorts found!");
-        }
+            .aggregate(query);
         cohorts = await cursorCohorts.toArray();
-        const ids = cohorts.map(cohort => ObjectId(cohort.course_id));
-        const cohortCache = {}
-        const coursesCursor = await database
-            .collection("courses")
-            .find({ "_id": { "$in": ids } })
-            .toArray();
-        coursesCursor.map(async course => {
-            cohortCache[course._id] = course.course_name
-        });
-        for (let cohort of cohorts) {
-            cohort.course_name = cohortCache[cohort.course_id]
-        }
+        
         
     } catch (error) {
         console.error(error);

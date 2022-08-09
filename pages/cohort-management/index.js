@@ -4,7 +4,9 @@ import { format } from "date-fns";
 import { privateLayout } from "../../components/PrivateLayout";
 import getData from "../../lib/getData";
 import CohortsTable from "./components/CohortsTable";
-import { Container, Typography } from "@mui/material";
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+
 
 
 const CohortManagement = () => {
@@ -44,10 +46,11 @@ const CohortManagement = () => {
 
 
   const makeRowfromCohort = (i, cohort) => {
+    console.log(cohort, '<=in making Row')
     return {
       id: i, 
       cohortName: cohort.cohort_name,
-      courseName: cohort.course_name,
+      courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
       startDate: format(new Date(cohort.start_date), 'MMM dd, yyyy'),
       endDate: format(new Date(cohort.end_date), 'MMM dd, yyyy'),
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)

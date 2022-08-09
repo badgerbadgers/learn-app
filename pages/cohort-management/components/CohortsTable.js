@@ -17,7 +17,8 @@ const EditToolbar = (props) => {
 
   const handleClick = () => {
     const id = rows.length;
-    setRows((oldRows) => [...oldRows, { id, cohortName: '', courseName: [""], isNew: true }]);
+    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: [""], students: "", isNew: true }]);
+    
     setRowModesModel((oldModel) => ({
         ...oldModel,
         [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohortName" },
