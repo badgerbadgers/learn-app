@@ -45,10 +45,9 @@ const CohortManagement = () => {
  
 
 
-  const makeRowfromCohort = (i, cohort) => {
-    console.log(cohort, '<=in making Row')
+  const makeRowfromCohort = (cohort) => {
     return {
-      id: i, 
+      id: cohort._id, 
       cohortName: cohort.cohort_name,
       courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
       startDate: format(new Date(cohort.start_date), 'MMM dd, yyyy'),
@@ -60,6 +59,7 @@ const CohortManagement = () => {
     }
   }
 
+
   useEffect(() => {
     setLoading(true);
     const params = {}
@@ -68,8 +68,8 @@ const CohortManagement = () => {
         await getData(params, url).then((cohorts) => {
           let localTableRows = []
           if (cohorts) {
-            cohorts.map(async (cohort, i) => {
-              const item = makeRowfromCohort(i, cohort)
+            cohorts.map(async (cohort) => {
+              const item = makeRowfromCohort(cohort)
               localTableRows.push(item)
             })
           }
@@ -87,9 +87,10 @@ const CohortManagement = () => {
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
 
       <CohortsTable 
+      // getRowId={(r) => r.id}
       loading={loading} 
-      tableRows={tableRows}
-      courses={courses.sort()}
+      tableRows={tableRows} 
+      courses={courses.sort()} // sort to het in in alphabetical order in the dropdown
       id={id}
       setId={setId}
         />

@@ -7,6 +7,9 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET":
             return getCohorts(req, res);
+        case "POST":
+            console.log("POSTING!");
+            return updateCohorts(req, res);
         default:
             res.setHeader("Allow", ["GET"]);
             res.status(405).end(`Method ${method} Not Allowed`);
@@ -41,9 +44,7 @@ const getCohorts = async (req, res) => {
         let cursorCohorts = await database
             .collection("cohorts")
             .aggregate(query);
-        cohorts = await cursorCohorts.toArray();
-        
-        
+        cohorts = await cursorCohorts.toArray();        
     } catch (error) {
         console.error(error);
     } 
@@ -51,4 +52,21 @@ const getCohorts = async (req, res) => {
     //     await client.close();
     // }
     return res.status(200).json(cohorts);
+}
+
+
+const updateCohorts = async (req, res) => { // rename? insertUpdateCohort
+    // console.log(req);
+    const cohort = JSON.parse(req.body.body);
+    const client = await clientPromise;
+    const database = client.db(process.env.MONGODB_DB);
+    const collection = database.collection("cohorts"); 
+    const updatedCohort = {
+        cohort_name: cohort.cohortName,
+    };
+    const filter = {_id: ObjectId(cohort.isNew? null : cohort.id)};
+
+    await collection.updateOne(filter, {$set: updatedCohort}, {upsert: true}).then(res => console.log(res));
+
+    return res.status(200).end();
 }
