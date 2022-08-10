@@ -50,12 +50,12 @@ const CohortManagement = () => {
       id: cohort._id, 
       cohortName: cohort.cohort_name,
       courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
-      startDate: format(new Date(cohort.start_date), 'MMM dd, yyyy'),
-      endDate: format(new Date(cohort.end_date), 'MMM dd, yyyy'),
+      startDate: cohort.start_date? format(new Date(cohort.start_date), 'MMM dd, yyyy'): "",
+      endDate:  cohort.end_date?  format(new Date(cohort.end_date), 'MMM dd, yyyy'): "",
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus(cohort.start_date, cohort.end_date),
-      students: `${cohort.students.length} / ${cohort.seats}`, //
-      mentors: `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`, // Assignment reviewers / traditional mentors
+      students: cohort.students.length && cohort.seats ? `${cohort.students.length} / ${cohort.seats}`: "TBD", // TODO: make it more readeble
+      mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1]? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`: 'TBD', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
     }
   }
 

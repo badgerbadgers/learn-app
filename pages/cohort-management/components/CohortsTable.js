@@ -17,8 +17,9 @@ const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
 
   const handleClick = () => {
-    const id = '';
-    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: [""], students: "", isNew: true }]);
+    const id =  Math.floor(Math.random()*100);
+    console.log(id, 'id in new');
+    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: [""], students: [], mentors: [], isNew: true }]);
 
     setRowModesModel((oldModel) => ({
       ...oldModel,

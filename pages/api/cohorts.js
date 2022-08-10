@@ -63,6 +63,14 @@ const updateCohorts = async (req, res) => { // rename? insertUpdateCohort
     const collection = database.collection("cohorts"); 
     const updatedCohort = {
         cohort_name: cohort.cohortName,
+        start_date: cohort.startDate? cohort.startDate : null,
+        end_date: cohort.endtDate? cohort.endDate : null,
+        slug: cohort.cohortName.replaceAll(' ', '-').toLowerCase(),
+        seats: cohort.seats? cohort.seats: 0,
+        created_at: cohort.created_at? cohort.created_at: new Date(),
+        students: cohort.students? cohort.students: [] ,
+        mentors : cohort.mentors? cohort.mentors: [],
+
     };
     const filter = {_id: ObjectId(cohort.isNew? null : cohort.id)};
 
