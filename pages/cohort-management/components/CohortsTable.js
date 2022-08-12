@@ -60,8 +60,8 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     event.defaultMuiPrevented = true;
   };
 
-  const handleEditClick = (id, row) => () => {
-    console.log(id, row, 'id in  handleEditClick')
+  const handleEditClick = (id) => () => {
+    console.log(id, 'id in  handleEditClick')
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
@@ -125,11 +125,15 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       field: 'courseName',
       headerName: 'Course',
       flex: 1,
-      minWidth: 100,
+      minWidth: 250,
       type: "singleSelect",
       editable: true,
       headerAlign: 'center',
-      valueOptions: [...courses, ""],
+      valueOptions: courses,
+      valueGetter: (params) => {
+        const id = params.id;
+        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.courseId : params.row.courseName;
+      },
     },
     {
       field: 'startDate',
@@ -241,7 +245,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         loading={loading}
         rows={rows}
         columns={columns}
-        rowsPerPageOptions={[5]}
+        rowsPerPageOptions={[5, 15,100]}
         checkboxSelection
         disableSelectionOnClick
         components={{

@@ -32,7 +32,10 @@ const CohortManagement = () => {
           let localCourses = []
           if (courses) {
             courses.map(course => {
-              localCourses.push(course.course_name)
+              localCourses.push({
+                value: course._id,
+                label: course.course_name,
+              })
             })
           }
           setCourses(localCourses)
@@ -50,6 +53,7 @@ const CohortManagement = () => {
       id: cohort._id, 
       cohortName: cohort.cohort_name,
       courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
+      courseId: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]._id : "",
       startDate: cohort.start_date? format(new Date(cohort.start_date), 'MMM dd, yyyy'): "",
       endDate:  cohort.end_date?  format(new Date(cohort.end_date), 'MMM dd, yyyy'): "",
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
