@@ -19,7 +19,7 @@ const EditToolbar = (props) => {
   const handleClick = () => {
     const id =  Math.floor(Math.random()*100);
     console.log(id, 'id in new');
-    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: [""], students: [], mentors: [], isNew: true }]);
+    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: "", students: [], mentors: [], isNew: true }]);
 
     setRowModesModel((oldModel) => ({
       ...oldModel,
@@ -131,9 +131,18 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       headerAlign: 'center',
       valueOptions: courses,
       valueGetter: (params) => {
+        if (params.row.courseName === "") {
+          return "";
+        }
         const id = params.id;
         return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.courseId : params.row.courseName;
       },
+      // valueSetter: (params) => {
+      //   console.log("****valueSetter", params);
+      //   const newVal = params.row.courseName;
+      //   console.log('newVal', newVal)
+      //   return { ...params.row, newVal};
+      // },
     },
     {
       field: 'startDate',
