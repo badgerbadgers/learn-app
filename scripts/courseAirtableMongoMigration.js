@@ -1,7 +1,7 @@
 const Airtable = require("airtable");
 const { MongoClient } = require("mongodb");
 
-getConfigParam = async (key) => { // prevent exposing keys
+const getConfigParam = async (key) => { // prevent exposing keys
     let param;
     const fs = require("fs");
     try {
@@ -11,7 +11,8 @@ getConfigParam = async (key) => { // prevent exposing keys
         console.error(err);
     }
     return param;
-}
+}  
+
 
 const collectionFilterField = { // Filters mapping  for reusing func insertToMongo with different collections
     "course": "course_name",
@@ -101,3 +102,4 @@ const main =async () => {
 }
 
 main();
+// export { getConfigParam}
