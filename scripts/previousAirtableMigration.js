@@ -23,7 +23,7 @@ const insertToMongo = async (doc, coll) => {
             await client.connect();
             const database = client.db('myFirstDatabase');
             const mongoCollectionName = database.collection(coll);
-            const result = await mongoCollectionName.insertOne(doc); // TODO: filter + maybe pass filter to the func + upsert
+           // const result = await mongoCollectionName.insertOne(doc); // TODO: filter + maybe pass filter to the func + upsert
             console.log(
                 `A document was inserted with the _id: ${result.insertedId} `, //${result.insertedId}
             );
@@ -58,7 +58,7 @@ const getLessonsFromAirtable = async () => {
                    
                 }
                 console.log(lessons)
-                insertToMongo(lessons, 'lessons')
+                //insertToMongo(lessons, 'lessons')
                 // first param is obj name second is the name we want the collection to be called
             }
         });

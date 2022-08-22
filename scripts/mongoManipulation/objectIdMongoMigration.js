@@ -3,7 +3,8 @@ const { MongoClient, ObjectId } = require("mongodb");
 
 //This script is getting the assignment and materials object Ids string from their collecttion  
 // turning the hexadecimal string back into the object Id and updating into the lesson collection
-
+ 
+////////////TO DO: import db variables///////////
 const getObjectIDs = async (from, localField, foreignField, as) => {
   const uri = await utils.getConfigParam(/^MONGODB_URI=(.+)/);
   const client = new MongoClient(uri);
