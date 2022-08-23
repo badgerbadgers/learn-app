@@ -8,8 +8,6 @@ const minifyAssignments = async()=> {
     const client = new MongoClient(uri);
     await client.connect();
     const db = client.db("myFirstDatabase");
-    const Airtable = require("airtable");
-    const param = await utils.getConfigParam(/AT_KEY=(.+)/); 
 
     try{  
         const assignmentsArray = await db
