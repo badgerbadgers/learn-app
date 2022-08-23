@@ -50,6 +50,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     setRows(tableRows)
   }, [tableRows]);
 
+  const createBasicSchedule = async () => {
+    console.log("creating a new schedule")
+
+  }
+
   const handleRowEditStart = (params, event) => {
     console.log("handleRowEditStart", params);
     event.defaultMuiPrevented = true;
@@ -66,9 +71,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const handleSaveClick = (id, row) => () => {
-    const updatedRow = rows.find(element => element.id == id);
-    console.log(id, row, updatedRow, "ID in handleSaveClick");
+    // const updatedRow = rows.find(element => element.id == id);
+    console.log(id, row, "ID in handleSaveClick");
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    setRows([...rows, ])
   };
 
   const handleDeleteClick = (id) => () => {
@@ -97,7 +103,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newRow),
         }
-        // { params: { id: id } }
       )
       .then((res) => {
         console.log("response message");
@@ -105,7 +110,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       .catch((error) => {
         console.error("Error:", error);
       });
-    const updatedRow = { ...newRow, isNew: false };
+    const course = courses.find(item => item.value === newRow.courseName);
+    console.log("COURSE:", course, courses);
+    const updatedRow = { ...newRow, isNew: false, courseName: course.label };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };

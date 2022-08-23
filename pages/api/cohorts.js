@@ -62,11 +62,11 @@ const updateCohorts = async (req, res) => { // rename? insertUpdateCohort
     const database = client.db(process.env.MONGODB_DB);
     const collection = database.collection("cohorts"); 
     const updatedCohort = {
-        cohort_name: cohort.cohortName,
+        cohort_name: cohort.cohortName.trim(), // do we actually need this? 
         course_id: ObjectId(cohort.courseName),
         start_date: cohort.startDate? new Date(cohort.startDate) : null,
         end_date: cohort.endtDate? new Date(cohort.endDate) : null,
-        slug: cohort.cohortName.replaceAll(' ', '-').toLowerCase(),
+        slug: cohort.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
         seats: cohort.seats? cohort.seats: 0,
         created_at: cohort.created_at? cohort.created_at: new Date(),
         students: cohort.students? cohort.students: [] ,
