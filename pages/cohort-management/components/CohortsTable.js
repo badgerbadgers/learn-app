@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes, } from "@mui/x-data-grid";
 import { Stack } from '@mui/material';
+import { format } from "date-fns";
 import LinearProgress from '@mui/material/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,7 +12,6 @@ import CancelIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 import axios from "axios";
-
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -111,14 +111,18 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         console.error("Error:", error);
       });
     const course = courses.find(item => item.value === newRow.courseName);
-    console.log("COURSE:", course, courses);
-    const updatedRow = { ...newRow, isNew: false, courseName: course.label };
+    const stDate = format(new Date(newRow.startDate),  "MMM dd, yyyy");
+    const updatedRow = { 
+      ...newRow, 
+      isNew: false, 
+      courseName: course.label,  
+      startDate: newRow.startDate? format(new Date(newRow.startDate),  "MMM dd, yyyy"): "",
+      endDate: newRow.endDate? format(new Date(newRow.endDate),  "MMM dd, yyyy"): "XXX",
+    };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
-
-  // TODO: responsive width
   const columns = [
     {
       field: 'cohortName',
@@ -144,12 +148,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         const id = params.id;
         return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.courseId : params.row.courseName;
       },
-      // valueSetter: (params) => {
-      //   console.log("****valueSetter", params);
-      //   const newVal = params.row.courseName;
-      //   console.log('newVal', newVal)
-      //   return { ...params.row, newVal};
-      // },
     },
     {
       field: 'startDate',
