@@ -1,12 +1,9 @@
-const utils = require("./utils.js");
-const { MongoClient } = require("mongodb");
+const { mongoConnection } = require("../utils.js");
 
 //this script is to flatten the link object in the assignment collection 
 
 const minifyAssignments = async () => {
-  const uri = await utils.getConfigParam(/^MONGODB_URI=(.+)/);
-  const client = new MongoClient(uri);
-  await client.connect();
+  const client = await mongoConnection()
   const db = client.db("myFirstDatabase");
   try {
 

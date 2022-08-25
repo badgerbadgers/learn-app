@@ -1,18 +1,14 @@
-const utils = require("./utils.js");
-const { MongoClient } = require("mongodb");
+const { getConfigParam, mongoConnection, } = require("../utils.js");
 
 //This script is fetching the learning objectives from airtable and turning the objectives field in the lessons collection from a string to an array
 
 const getLearningObjectives = async () => {
   //connecting to mongo db
-  const uri = await utils.getConfigParam(/^MONGODB_URI=(.+)/);
-  const client = new MongoClient(uri);
-  await client.connect();
+  const client = await mongoConnection()
   const db = client.db("myFirstDatabase");
-
   //connecting to airtable
   const Airtable = require("airtable");
-  const param = await utils.getConfigParam(/AT_KEY=(.+)/);
+  const param = await getConfigParam(/AT_KEY=(.+)/);
   const AtBase = new Airtable({ apiKey: param }).base("appN9Hf8KluRDBAN4");
 
   try {
@@ -57,9 +53,8 @@ const getLearningObjectives = async () => {
         .split("-")
         .map((element) => element.trim());
       objectivesArray.shift();
-
-      console.log(objectivesArray, typeof objectivesArray);
-
+      console.log(objectivesArray)
+      
       //update the mongo record
       await db.collection("lessons").updateOne(
         { _id: MongoLesson._id },
@@ -75,42 +70,3 @@ const getLearningObjectives = async () => {
   }
 };
 getLearningObjectives();
-
-//-------objectives to array----
-// const string2array = async () => {
-//   const uri = await utils.getConfigParam(/^MONGODB_URI=(.+)/);
-//   const client = new MongoClient(uri);
-//   let results = [];
-//   await client.connect();
-//   const db = client.db("myFirstDatabase");
-//   try {
-//     const lessonsArray = await db.collection("lessons").find().toArray();
-
-//     //source = lessons coll, lessonsArray = []
-
-//     for (let i = 0; i < lessonsArray.length; i++) {
-//       let lesson = lessonsArray[i];
-
-//       let objectives = lesson.learning_objectives;
-
-//       if (typeof objectives === "string") {
-//         objectivesArray = objectives
-//           .split("-")
-//           .map((element) => element.trim());
-//         objectivesArray.shift();
-//         results = objectivesArray;
-//       }
-//       //     await db.collection("lessons").updateOne(
-//       //     { _id: lesson._id },
-//       //     {
-//       //       $set: {
-//       //         learning_objectives: results
-//       //       },
-//       //     }//inside the for since we want for every lesson
-//       //   );
-//     }
-//   } catch (e) {
-//     console.log("ERROR", e.message);
-//   }
-// };
-// string2array();
