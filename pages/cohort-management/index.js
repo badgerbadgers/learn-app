@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getSession } from "next-auth/react";
-import { format } from "date-fns";
-import { privateLayout } from "../../components/PrivateLayout";
-import getData from "../../lib/getData";
+
 import CohortsTable from "./components/CohortsTable";
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
-
+import { format } from "date-fns";
+import getData from "../../lib/getData";
+import { getSession } from "next-auth/react";
+import { privateLayout } from "../../components/PrivateLayout";
 
 const CohortManagement = () => {
 
@@ -58,8 +57,9 @@ const CohortManagement = () => {
       endDate:  cohort.end_date?  format(new Date(cohort.end_date), 'MMM dd, yyyy'): "",
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus(cohort.start_date, cohort.end_date),
-      students: cohort.students.length && cohort.seats ? `${cohort.students.length} / ${cohort.seats}`: "TBD", // TODO: make it more readeble
-      mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1]? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`: 'TBD', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+      students: cohort.students && cohort.students.length ? cohort.students.length : 0,
+      seats: cohort.seats,
+      mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1]? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`: '', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
     }
   }
 

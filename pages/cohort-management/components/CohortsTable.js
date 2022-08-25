@@ -1,25 +1,26 @@
+import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes, } from "@mui/x-data-grid";
-import { Stack } from '@mui/material';
-import { format } from "date-fns";
-import LinearProgress from '@mui/material/LinearProgress';
+
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
+import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import LinearProgress from '@mui/material/LinearProgress';
 import PropTypes from "prop-types";
+import SaveIcon from '@mui/icons-material/Save';
+import { Stack } from '@mui/material';
 import axios from "axios";
+import { format } from "date-fns";
+import { v4 as uuidv4 } from 'uuid'
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
 
   const handleClick = () => {
-    const id =  Math.floor(Math.random()*100);
-    console.log(id, 'id in new');
-    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: "", students: [], mentors: [], isNew: true }]);
+    const id = uuidv4();
+    setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: "", students: "", isNew: true }]);
 
     setRowModesModel((oldModel) => ({
       ...oldModel,
@@ -50,35 +51,24 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     setRows(tableRows)
   }, [tableRows]);
 
-  const createBasicSchedule = async () => {
-    console.log("creating a new schedule")
-
-  }
-
   const handleRowEditStart = (params, event) => {
-    console.log("handleRowEditStart", params);
     event.defaultMuiPrevented = true;
   };
 
   const handleRowEditStop = (params, event) => {
-    console.log(params, 'params in handleRowEditStop')
     event.defaultMuiPrevented = true;
   };
 
   const handleEditClick = (id) => () => {
-    console.log(id, 'id in  handleEditClick')
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id, row) => () => {
-    // const updatedRow = rows.find(element => element.id == id);
-    console.log(id, row, "ID in handleSaveClick");
+  const handleSaveClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    setRows([...rows, ])
+    setRows([...rows,])
   };
 
   const handleDeleteClick = (id) => () => {
-
     setRows(rows.filter((row) => row.id !== id));
   };
 
@@ -95,7 +85,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const processRowUpdate = (newRow) => {
-    console.log("NEW ROW", JSON.stringify(newRow));
     axios
       .post(
         "/api/cohorts",
@@ -104,20 +93,17 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           body: JSON.stringify(newRow),
         }
       )
-      .then((res) => {
-        console.log("response message");
-      })
       .catch((error) => {
         console.error("Error:", error);
       });
     const course = courses.find(item => item.value === newRow.courseName);
-    const stDate = format(new Date(newRow.startDate),  "MMM dd, yyyy");
-    const updatedRow = { 
-      ...newRow, 
-      isNew: false, 
-      courseName: course.label,  
-      startDate: newRow.startDate? format(new Date(newRow.startDate),  "MMM dd, yyyy"): "",
-      endDate: newRow.endDate? format(new Date(newRow.endDate),  "MMM dd, yyyy"): "XXX",
+    const updatedRow = {
+      ...newRow,
+      isNew: false,
+      courseName: course.label,
+      startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
+      endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
+      
     };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
@@ -186,13 +172,17 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       align: 'center'
     },
     {
-      field: 'students',
+      field: 'seats',
       headerName: 'Students',
-      type: 'number',
+      type: 'text',
       width: 100,
       headerAlign: 'center',
-      editable: false,
-    },
+      editable: true,
+      valueGetter: (params) => {
+        const id = params.id;
+        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.seats : `${params.row.students}/${params.row.seats}`;
+      },
+    },    
     {
       field: 'mentors',
       headerName: 'Mentors',
@@ -259,7 +249,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         loading={loading}
         rows={rows}
         columns={columns}
-        rowsPerPageOptions={[5, 15,100]}
+        rowsPerPageOptions={[5, 15, 100]}
         checkboxSelection
         disableSelectionOnClick
         components={{
