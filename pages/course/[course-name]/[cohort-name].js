@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { privateLayout } from "../../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
 import { getMongoLessons } from "../../../lib/courseData";
+// import {getMongoCourses} from "../../../lib/courseData";
 import Grid from "@mui/material/Grid";
 import Menu from "../components/Menu";
 import Display from "../components/Display";
@@ -61,10 +62,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const lessonData = (await getMongoLessons()) || null;
+  const lessonData = (await getMongoLessons()) || null; 
+  //const newlessonData = (await getMongoCourses()) || null
 
   return {
-    props: { user, lessonData: lessonData },
+    props: { user, lessonData: lessonData},
   };
   // returning LessonData as props in index
   // lessonData is object that you can name whatever you want
