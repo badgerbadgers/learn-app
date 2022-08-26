@@ -174,7 +174,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     {
       field: 'seats',
       headerName: 'Students',
-      type: 'text',
+      type: 'string',
       width: 100,
       headerAlign: 'center',
       editable: true,
