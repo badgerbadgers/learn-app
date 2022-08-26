@@ -103,7 +103,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       courseName: course.label,
       startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
       endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
-      
+      courseId: course.value,
     };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
@@ -180,7 +180,8 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       editable: true,
       valueGetter: (params) => {
         const id = params.id;
-        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.seats : `${params.row.students}/${params.row.seats}`;
+        const students = params.row.students || "0"
+        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.seats : `${students}/${params.row.seats}`;
       },
     },    
     {
