@@ -24,7 +24,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
         <Typography variant="h6">Coding Assignment</Typography>
 
         <CardActions sx={{ pl: "0" }}>
-          {assignments.map((assignment) => {
+          {/* {assignments.map((assignment) => {
             return (
               <Link
                 key={assignment.assignment_title}
@@ -38,7 +38,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
                 </Typography>
               </Link>
             );
-          })}
+          })} */}
         </CardActions>
 
         <Typography variant="h6" sx={{ pt: "1em", pb: "8px" }}>

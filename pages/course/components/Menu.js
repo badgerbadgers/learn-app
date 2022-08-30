@@ -27,6 +27,7 @@ export default function Menu({ lessonData, setSelectedLabel }) {
           <MenuItem>
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
+       
           {lessonData.map((lessons) => {
             return (
               <Stack key={lessons.order}>

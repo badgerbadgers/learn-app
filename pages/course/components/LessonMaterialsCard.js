@@ -32,7 +32,7 @@ export default function LessonMaterialsCard({ materials, key }) {
           there also.
         </Typography>
         <List>
-          {materials.map((material, key) => {
+          {/* {materials.map((material, key) => {
             return (
               <ListItem key={key} sx={{py:"0"}}>
                 <ListItemIcon  sx={{ minWidth: "36px" }}>
@@ -49,7 +49,7 @@ export default function LessonMaterialsCard({ materials, key }) {
                 </Link>
               </ListItem>
             );
-          })}
+          })} */}
         </List>
       </CardContent>
     </Card>

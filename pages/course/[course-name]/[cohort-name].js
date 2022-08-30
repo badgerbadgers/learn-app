@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { privateLayout } from "../../../components/PrivateLayout";
-import { getSession } from "next-auth/react";
-import { getMongoLessons } from "../../../lib/courseData";
-// import {getMongoCourses} from "../../../lib/courseData";
+import { getSession} from "next-auth/react";
+import {mongoLessonsAfterPipeline} from "../../../lib/courseData";
 import Grid from "@mui/material/Grid";
 import Menu from "../components/Menu";
 import Display from "../components/Display";
 
 export default function CurrentCoursePage({ user, lessonData }) {
+  //console.log(lessonData);
   const [selectedLabel, setSelectedLabel] = useState(
     "Lesson 1.1: JavaScript Basics"
   );
@@ -62,11 +62,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const lessonData = (await getMongoLessons()) || null; 
-  //const newlessonData = (await getMongoCourses()) || null
-
+ 
+  const lessonData = (await mongoLessonsAfterPipeline()) || null;
+console.log(lessonData);
   return {
-    props: { user, lessonData: lessonData},
+    props: { user, lessonData: JSON.parse(JSON.stringify(lessonData))},
   };
   // returning LessonData as props in index
   // lessonData is object that you can name whatever you want
