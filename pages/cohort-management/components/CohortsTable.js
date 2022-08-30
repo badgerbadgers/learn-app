@@ -60,16 +60,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         }
       )
       .then((res) => {
-        console.log("delete message");
+        console.log(res, "delete message");
       })
       .catch((error) => {
         console.error("Error:", error);
       })
-  }
-
-  const createBasicSchedule = async () => {
-    console.log("creating a new schedule")
-
   }
 
   const handleRowEditStart = (params, event) => {
