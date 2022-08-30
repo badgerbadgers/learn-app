@@ -51,6 +51,27 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     setRows(tableRows)
   }, [tableRows]);
 
+  const deleteCohort = async(cohortId) => {
+    axios
+      .delete(
+        `/api/cohorts/${cohortId}`,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+      .then((res) => {
+        console.log("delete message");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+  }
+
+  const createBasicSchedule = async () => {
+    console.log("creating a new schedule")
+
+  }
+
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
   };
@@ -69,6 +90,8 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const handleDeleteClick = (id) => () => {
+    deleteCohort(id)
+
     setRows(rows.filter((row) => row.id !== id));
   };
 
