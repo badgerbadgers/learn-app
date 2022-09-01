@@ -103,9 +103,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const processRowUpdate = (newRow) => {
+    console.log(newRow, "NEW ROWWWWW")
+      const url = "/api/cohorts" + newRow.isNew ? "" : `/${newRow.id}`;
     axios
       .post(
-        "/api/cohorts",
+        url,
         {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newRow),
@@ -122,6 +124,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
       endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
       courseId: course.value,
+     
     };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
@@ -198,9 +201,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       editable: true,
       valueGetter: (params) => {
         const id = params.id;
-        const students = params.row.students || "0"
-        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? params.row.seats : `${students}/${params.row.seats}`;
-      },
+        const students = params.row.students || 0;
+        const seats = params.row.seats || 0;
+        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ?  seats : `${students}/${seats}`;   
+      }      
     },    
     {
       field: 'mentors',
