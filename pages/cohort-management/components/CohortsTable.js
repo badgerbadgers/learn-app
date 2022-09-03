@@ -104,7 +104,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
 
   const processRowUpdate = (newRow) => {
     console.log(newRow, "NEW ROWWWWW")
-      const url = "/api/cohorts" + newRow.isNew ? "" : `/${newRow.id}`;
+      const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     axios
       .post(
         url,
