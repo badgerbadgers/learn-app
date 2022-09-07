@@ -1,4 +1,4 @@
-const { getConfigParam, mongoConnection, } = require("../utils.js");
+const { airtableConnection, mongoConnection, } = require("../utils.js");
 
 //This script is fetching the learning objectives from airtable and turning the objectives field in the lessons collection from a string to an array
 
@@ -7,9 +7,7 @@ const getLearningObjectives = async () => {
   const client = await mongoConnection()
   const db = client.db("myFirstDatabase");
   //connecting to airtable
-  const Airtable = require("airtable");
-  const param = await getConfigParam(/AT_KEY=(.+)/);
-  const AtBase = new Airtable({ apiKey: param }).base("appN9Hf8KluRDBAN4");
+  const AtBase = await airtableConnection();
 
   try {
     //get all lessons from mongo, ordered by "order" field, asc
