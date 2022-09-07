@@ -55,9 +55,7 @@ const getCohorts = async (req, res) => {
     return res.status(200).json(cohorts);
 }
 
-
 const sanitize = async (obj) => {
-    console.log('obj', obj);
     return {
         cohort_name: obj.cohortName,
         course_id: ObjectId(obj.courseName),

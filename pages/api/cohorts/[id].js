@@ -16,14 +16,12 @@ export default async function handler(req, res) {
                 res.status(400).json({ success: false })
             }
             break
-        case "POST": // PUT? edit model by id
+        case "POST": 
         try {
             const cohortToDb = await sanitize(JSON.parse(req.body.body));
-            console.log("cohortToDb ===>", cohortToDb);
-
             const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb, {
             //   new: true,
-            //   runValidators: true,
+            //   runValidators: true, // TODO 
             })
             if (!cohort) {
               return res.status(400).json({ success: false })

@@ -86,7 +86,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
 
   const handleDeleteClick = (id) => () => {
     deleteCohort(id)
-
     setRows(rows.filter((row) => row.id !== id));
   };
 
@@ -106,7 +105,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try{
-      let response = await axios
+      await axios
       .post(
         url,
         {
@@ -124,7 +123,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
           endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
           courseId: course.value,
-
         };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
