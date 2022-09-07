@@ -91,10 +91,9 @@ const CohortManagement = () => {
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
 
       <CohortsTable 
-      // getRowId={(r) => r.id}
       loading={loading} 
       tableRows={tableRows} 
-      courses={courses.sort()} // sort to het in in alphabetical order in the dropdown
+      courses={courses.sort()} // sort to get it in alphabetical order in the dropdown
       id={id}
       setId={setId}
         />

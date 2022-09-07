@@ -55,7 +55,6 @@ export default async function handler(req, res) {
 }
 
 const sanitize = async (obj) => {
-    console.log("obj to sanitize", obj)
     return {
         cohort_name: obj.cohortName,
         course_id: obj.courseName,

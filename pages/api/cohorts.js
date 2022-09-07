@@ -14,7 +14,7 @@ export default async function handler(req, res) {
                 if (!cohort) {
                   return res.status(400).json({ success: false })
                 }
-                res.status(200).json({ success: true, data: cohortToDb })
+                res.status(200).json({ success: true,  _id: cohort._id, data: cohortToDb })
               } catch (error) {
                 console.log(error);
                 res.status(400).json({ success: false })
@@ -67,24 +67,3 @@ const sanitize = async (obj) => {
         created_at: obj.created_at ? obj.created_at : new Date(),
     }
 }
-
-// const updateCohorts = async (req, res) => { 
-    
-//     const cohort = JSON.parse(req.body.body);
-//     const client = await clientPromise;
-//     const database = client.db(process.env.MONGODB_DB);
-//     const collection = database.collection("cohorts"); 
-//     const updatedCohort = {
-//         cohort_name: cohort.cohortName.trim(), // do we actually need to remove whitespace from the title? 
-//         course_id: ObjectId(cohort.courseName),
-//         start_date: cohort.startDate ? new Date(cohort.startDate) : null,
-//         slug: cohort.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
-//         seats: cohort.seats ? cohort.seats: 0,
-//         created_at: cohort.created_at? cohort.created_at: new Date(),
-//     };
-//     const filter = {_id: ObjectId(cohort.isNew? null : cohort.id)};
-
-//     await collection.updateOne(filter, {$set: updatedCohort}, {upsert: true}).then(res => console.log(res));
-
-//     return res.status(200).end();
-// }

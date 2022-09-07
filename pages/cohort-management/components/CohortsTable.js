@@ -51,7 +51,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     setRows(tableRows)
   }, [tableRows]);
 
-  const deleteCohort = async(cohortId) => {
+  const deleteCohort = async (cohortId) => {
     axios
       .delete(
         `/api/cohorts/${cohortId}`,
@@ -60,7 +60,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         }
       )
       .then((res) => {
-        console.log(res, "delete message");
+        console.log(res, "Deleted cohort");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -102,10 +102,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     }
   };
 
-  const processRowUpdate = (newRow) => {
-    console.log(newRow, "NEW ROWWWWW")
-      const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
-    axios
+  const processRowUpdate = async (newRow) => {
+    const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
+    const updatedRow = {};
+    try{
+      let response = await axios
       .post(
         url,
         {
@@ -113,20 +114,23 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           body: JSON.stringify(newRow),
         }
       )
-      .catch((error) => {
-        console.error("Error:", error);
+      .then((response) => {
+        const course = courses.find(item => item.value === newRow.courseName);
+        updatedRow = {
+          ...newRow,
+          id: response.data._id,
+          isNew: false,
+          courseName: course.label,
+          startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
+          endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
+          courseId: course.value,
+
+        };
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
-    const course = courses.find(item => item.value === newRow.courseName);
-    const updatedRow = {
-      ...newRow,
-      isNew: false,
-      courseName: course.label,
-      startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
-      endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
-      courseId: course.value,
-     
+    }catch(error){
+      console.error("Error:", error);
     };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
@@ -203,9 +207,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         const id = params.id;
         const students = params.row.students || 0;
         const seats = params.row.seats || 0;
-        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ?  seats : `${students}/${seats}`;   
-      }      
-    },    
+        return (rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit) ? seats : `${students}/${seats}`;
+      }
+    },
     {
       field: 'mentors',
       headerName: 'Mentors',
