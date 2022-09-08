@@ -1,127 +1,82 @@
-import React from 'react';
-import { Grid, Fragment, Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import React, { useContext } from 'react';
+import { FormControl, FormLabel, FormControlLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox, Select, MenuItem } from '@mui/material';
+import { store } from "../../../store";
 
-// const cities = [
-//     {
-//         value: undefined,
-//         label: 'None'
-//     },
-//     {
-//         value: '1',
-//         label: 'New York'
-//     },
-//     {
-//         value: '2',
-//         label: 'Chicago'
-//     },
-//     {
-//         value: '3',
-//         label: 'Saigon'
-//     }
-// ];
-
-// const states = [
-//     {
-//         value: undefined,
-//         label: 'None'
-//     },
-//     {
-//         value: '11',
-//         label: 'Florida'
-//     },
-//     {
-//         value: '22',
-//         label: 'Michigan'
-//     },
-//     {
-//         value: '33',
-//         label: 'Texas'
-//     }
-// ];
-
-// const countries = [
-//     {
-//         value: null,
-//         label: 'None'
-//     },
-//     {
-//         value: '111',
-//         label: 'United States'
-//     },
-//     {
-//         value: '222',
-//         label: 'Italy'
-//     },
-//     {
-//         value: '333',
-//         label: 'Vietnam'
-//     }
-// ];
 
 function LearningBackground() {
-    // const {
-    //     formField: {
-    //         firstName,
-    //         lastName,
-    //         email,
-    //         github,
-    //         phone,
-    //     }
-    // } = props;
+    const { state, dispatch } = useContext(store);
+    const { userInfoData } = state;
+    function updateUserInfoData(key, value) {
+        dispatch({ type: 'UPDATE_PERSONAL_DETAILS', payload: { ...userInfoData, [key]: value } })
+
+    }
     return (
-        // <Fragment>
-        <Typography variant="h6" gutterBottom>
-            The future home of Learning Background step
-        </Typography>
-        // <Grid container spacing={3}>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextField name={firstName.name} label={firstName.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextField name={lastName.name} label={lastName.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12}>
-        //         <TextField name={email.name} label={email.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12}>
-        //         <TextField name={github.name} label={github.label} fullWidth />
-        //     </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={city.name}
-        //                     label={city.label}
-        //                     data={cities}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        //             <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={state.name}
-        //                     label={state.label}
-        //                     data={states}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <TextField name={phone.name} label={phone.label} fullWidth />
-        //             </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={country.name}
-        //                     label={country.label}
-        //                     data={countries}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        //             <Grid item xs={12}>
-        //                 <CheckboxField
-        //                     name={useAddressForPaymentDetails.name}
-        //                     label={useAddressForPaymentDetails.label}
-        //                 />
-        //             </Grid>
-        // </Grid>
-        // </Fragment >
+        <FormControl>
+            <FormLabel>
+                <strong>LEARNING BACKGROUND:</strong>
+            </FormLabel>
+            <Grid container p={3} justify="space-between">
+                <Grid container spacing={2} justify="space-between">
+
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Learning Style"
+                            value={userInfoData.learning_style}
+                            onChange={(e) => updateUserInfoData('learning_style', e.target.value)}
+                        >
+                            <MenuItem value={10}>Visual (watch videos)</MenuItem>
+                            <MenuItem value={20}>Listening (hear a lecture/discussion)</MenuItem>
+                            <MenuItem value={30}>Reading (read text)</MenuItem>
+                            <MenuItem value={40}>Not sure</MenuItem>
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Prior Coding Education"
+                            value={userInfoData.prior_coding_education}
+                            onChange={(e) => updateUserInfoData('prior_coding_education', e.target.value)}
+                        >
+                            <MenuItem value={10}>None</MenuItem>
+                            <MenuItem value={20}>A few hours</MenuItem>
+                            <MenuItem value={30}>A few days</MenuItem>
+                            <MenuItem value={40}>A few weeks</MenuItem>
+                            <MenuItem value={50}>A few months</MenuItem>
+                            <MenuItem value={60}>A year or two</MenuItem>
+                            <MenuItem value={70}>Several years</MenuItem>
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Prior Coding Languages/Frameworks"
+                            value={userInfoData.prior_coding_languages}
+                            onChange={(e) => updateUserInfoData('prior_coding_languages', e.target.value)}
+                        >
+                            <MenuItem value={10}>HTML</MenuItem>
+                            <MenuItem value={20}>CSS</MenuItem>
+                            <MenuItem value={30}>JavaScript (different from Java)</MenuItem>
+                            <MenuItem value={40}>Ruby</MenuItem>
+                            <MenuItem value={10}>Rails</MenuItem>
+                            <MenuItem value={20}>React</MenuItem>
+                            <MenuItem value={30}>Node</MenuItem>
+                            <MenuItem value={40}>Express</MenuItem>
+                            <MenuItem value={40}>Other</MenuItem>
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <FormControlLabel control={<Checkbox required />} label="I agree that I am accepting my seat in a class I was offered and understand that the work commitment for each class is expected to be about 15-20 hours per week." />
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <FormControlLabel control={<Checkbox required />} label="I commit to trying my best throughout the course and agree to contact Code the Dream if I can no longer participate in this class so I can be made aware of future opportunities available." />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </FormControl>
     );
 }
 

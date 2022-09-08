@@ -1,127 +1,123 @@
-import React from 'react';
-import { Grid, Fragment, Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import React, { useContext } from 'react';
+import { FormControl, FormLabel, FormControlLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox, Select, MenuItem } from '@mui/material';
+import { store } from "../../../store";
 
-// const cities = [
-//     {
-//         value: undefined,
-//         label: 'None'
-//     },
-//     {
-//         value: '1',
-//         label: 'New York'
-//     },
-//     {
-//         value: '2',
-//         label: 'Chicago'
-//     },
-//     {
-//         value: '3',
-//         label: 'Saigon'
-//     }
-// ];
 
-// const states = [
-//     {
-//         value: undefined,
-//         label: 'None'
-//     },
-//     {
-//         value: '11',
-//         label: 'Florida'
-//     },
-//     {
-//         value: '22',
-//         label: 'Michigan'
-//     },
-//     {
-//         value: '33',
-//         label: 'Texas'
-//     }
-// ];
-
-// const countries = [
-//     {
-//         value: null,
-//         label: 'None'
-//     },
-//     {
-//         value: '111',
-//         label: 'United States'
-//     },
-//     {
-//         value: '222',
-//         label: 'Italy'
-//     },
-//     {
-//         value: '333',
-//         label: 'Vietnam'
-//     }
-// ];
 
 function EmergencyContacts() {
-    // const {
-    //     formField: {
-    //         firstName,
-    //         lastName,
-    //         email,
-    //         github,
-    //         phone,
-    //     }
-    // } = props;
+    const { state, dispatch } = useContext(store);
+    const { userInfoData } = state;
+    function updateUserInfoData(key, value) {
+        dispatch({ type: 'UPDATE_PERSONAL_DETAILS', payload: { ...userInfoData, [key]: value } })
+
+    }
     return (
-        // <Fragment>
-        <Typography variant="h6" gutterBottom>
-            The future home of Emergency Contacts step
-        </Typography>
-        // <Grid container spacing={3}>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextField name={firstName.name} label={firstName.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextField name={lastName.name} label={lastName.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12}>
-        //         <TextField name={email.name} label={email.label} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12}>
-        //         <TextField name={github.name} label={github.label} fullWidth />
-        //     </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={city.name}
-        //                     label={city.label}
-        //                     data={cities}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        //             <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={state.name}
-        //                     label={state.label}
-        //                     data={states}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <TextField name={phone.name} label={phone.label} fullWidth />
-        //             </Grid>
-        // <Grid item xs={12} sm={6}>
-        //                 <SelectField
-        //                     name={country.name}
-        //                     label={country.label}
-        //                     data={countries}
-        //                     fullWidth
-        //                 />
-        //             </Grid>
-        //             <Grid item xs={12}>
-        //                 <CheckboxField
-        //                     name={useAddressForPaymentDetails.name}
-        //                     label={useAddressForPaymentDetails.label}
-        //                 />
-        //             </Grid>
-        // </Grid>
-        // </Fragment >
+        <FormControl>
+            <FormLabel>
+                <strong>EMERGENCY CONTACTS:</strong>
+            </FormLabel>
+            <Grid container p={3} justify="space-between">
+                <Grid container spacing={2} justify="space-between">
+
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Typography variant="body1" gutterBottom>
+                            <strong>Person 1: </strong>
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} width="100%">
+                        <TextField
+                            name="emergency_contact_1_name"
+                            placeholder="Type your person's 1 full name"
+                            label="Full Name"
+
+                            fullWidth
+                            required
+                            size="small"
+                            InputLabelProps={{ shrink: true }}
+                            value={userInfoData.emergency_contact_1_name}
+                            onChange={(e) => updateUserInfoData('emergency_contact_1_name', e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} width="100%">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            required
+                            label="Relationship"
+                            value={userInfoData.emergency_contact_1_relationship}
+                            onChange={(e) => updateUserInfoData('emergency_contact_1_relationship', e.target.value)}
+                        >
+                            <MenuItem value={10}>Parent/Mother/Father</MenuItem>
+                            <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
+                            <MenuItem value={30}>Spouse/Partner</MenuItem>
+                            <MenuItem value={40}>Friend</MenuItem>
+                            <MenuItem value={50}>Other</MenuItem>
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <TextField
+                            name="emergency_contact_1_phone"
+                            placeholder="Type person's 1 phone number including country code"
+                            label="Phone"
+                            fullWidth
+                            required
+                            size="small"
+                            InputLabelProps={{ shrink: true }}
+                            value={userInfoData.emergency_contact_1_phone}
+                            onChange={(e) => updateUserInfoData('emergency_contact_1_phone', e.target.value)}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Typography variant="body1" gutterBottom>
+                            <strong>Person 2: </strong>
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} width="100%">
+                        <TextField
+                            name="emergency_contact_2_name"
+                            placeholder="Type person's 2 full name"
+                            label="Full Name"
+                            fullWidth
+                            required
+                            size="small"
+                            InputLabelProps={{ shrink: true }}
+                            value={userInfoData.emergency_contact_2_name}
+                            onChange={(e) => updateUserInfoData('emergency_contact_2_name', e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} width="100%">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            required
+                            label="Relationship"
+                            value={userInfoData.emergency_contact_2_relationship}
+                            onChange={(e) => updateUserInfoData('emergency_contact_2_relationship', e.target.value)}
+                        >
+                            <MenuItem value={10}>Parent/Mother/Father</MenuItem>
+                            <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
+                            <MenuItem value={30}>Spouse/Partner</MenuItem>
+                            <MenuItem value={40}>Friend</MenuItem>
+                            <MenuItem value={50}>Other</MenuItem>
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} sm={12} width="100%">
+                        <TextField
+                            name="emergency_contact_2_phone"
+                            placeholder="Type person's 2 phone number including country code"
+                            label="Phone"
+                            fullWidth
+                            required
+                            size="small"
+                            InputLabelProps={{ shrink: true }}
+                            value={userInfoData.emergency_contact_2_phone}
+                            onChange={(e) => updateUserInfoData('emergency_contact_2_phone', e.target.value)}
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </FormControl>
     );
 }
 
