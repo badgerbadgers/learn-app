@@ -60,7 +60,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         }
       )
       .then((res) => {
-        console.log(res, "Deleted cohort");
+        console.log("Deleted Cohort:", res);
       })
       .catch((error) => {
         console.error("Error:", error);

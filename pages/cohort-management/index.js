@@ -46,25 +46,24 @@ const CohortManagement = () => {
       (async () => {
         let response = await getData(params, url);
         const cohorts = JSON.parse(response.data)
-        console.log(cohorts)
-        let localTableRows = [];
+        let localRows = [];
           if (cohorts) {
             cohorts.map(async (cohort) => {
               const item = makeRowfromCohort(cohort)
-              localTableRows.push(item)
+              localRows.push(item)
             })
           }
-          setTableRows(localTableRows);
+          setTableRows(localRows);
           setLoading(false);
         })();
     } catch (error) {
-      console.log(error, "an error from getData in /api/cohorts");
+      console.log("An error from getData in /api/cohorts:", error);
     }
   }, [])
 
   return (
     <Container sx={{ textAlign: "center" }}>
-      <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
+      <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }}>Cohort Management</Typography>
 
       <CohortsTable 
       loading={loading} 

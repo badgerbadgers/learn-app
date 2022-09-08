@@ -8,75 +8,43 @@ export default async function handler(req, res) {
     await dbConnect()
     switch (method) {
         case "GET":
-
-            const response = await getCohorts(req, res);
-            console.log(response, "RESPONSE IN GET");
-            return response;
-         
-
+            return await getCohorts(req, res);
         case "POST":
-            try {
-                const cohortToDb = await sanitize(JSON.parse(req.body.body));  
-                const cohort = await Cohort.create(cohortToDb)
-                if (!cohort) {
-                  return res.status(400).json({ success: false })
-                }
-                res.status(200).json({ success: true,  _id: cohort._id, data: cohortToDb })
-              } catch (error) {
-                console.log(error);
-                res.status(400).json({ success: false })
-              }
-              break
+            return await createCohort(req, res);
         default:
             res.setHeader("Allow", ["GET", "POST"]);
-            res.status(405).end(`Method ${method} Not Allowed`);
+            res.status(405).end(`Method ${ method } Not Allowed`);
     }
-}
+};
 
 
 const getCohorts = async (req, res) => {
     let cohorts = [];
     try {
-        cohorts = await Cohort.find({}).populate("course_id", "_id course_name").exec();
-        console.log(cohorts, "cohorts in try")
-                 
+        cohorts = await Cohort.find({}).populate("course_id", "_id course_name").exec();                 
         res.status(200).json({ success: true, data: JSON.stringify(cohorts) })
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false })
-
       }
       return res
  
-}
-// const getCohorts = async (req, res) => {
-//     const client = await clientPromise;
-//     const database = client.db(process.env.MONGODB_DB);
-//     const options = {
-//         sort: { start_date: 1 },
-//         projection: { _id: 0 },
-//     };
-//     const query = [
-//         {
-//             $lookup: {
-//                 from: "courses",
-//                 localField: "course_id",
-//                 foreignField: "_id",
-//                 as: "course"
-//             }
-//         }
-//     ];
-//     let cohorts = [];
-//     try {
-//         let cursorCohorts = await database
-//             .collection("cohorts")
-//             .aggregate(query);
-//         cohorts = await cursorCohorts.toArray();        
-//     } catch (error) {
-//         console.error(error);
-//     } 
-//     return res.status(200).json(cohorts);
-// }
+};
+
+const createCohort = async (req, res) => {
+    try {
+        const cohortToDb = await sanitize(JSON.parse(req.body.body));  
+        const cohort = await Cohort.create(cohortToDb)
+        if (!cohort) {
+          return res.status(400).json({ success: false })
+        }
+        res.status(200).json({ success: true,  _id: cohort._id, data: cohortToDb })
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({ success: false })
+      }
+      return res
+};
 
 const sanitize = async (obj) => {
     return {
@@ -87,4 +55,4 @@ const sanitize = async (obj) => {
         slug: obj.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
         created_at: obj.created_at ? obj.created_at : new Date(),
     }
-}
+};
