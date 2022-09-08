@@ -22,37 +22,13 @@ const CohortManagement = () => {
     else if (new Date() > new Date(end)) return 'completed';
   }
 
-  useEffect(() => {
-    const url = "/api/courses";
-    const params = {}
-    try {
-      (async () => {
-        await getData(params, url).then((courses) => {
-          let localCourses = []
-          if (courses) {
-            courses.map(course => {
-              localCourses.push({
-                value: course._id,
-                label: course.course_name,
-              })
-            })
-          }
-          setCourses(localCourses)
-        });
-      })();
-    } catch (error) {
-      console.log(error, "an error from getData in /api/courses");
-    }
-  }, [])
- 
-
-
+  
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id, 
       cohortName: cohort.cohort_name,
-      courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
-      courseId: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]._id : "",
+      courseName: (cohort.course_id.course_name.length > 0 ) ? cohort.course_id.course_name : "",
+      courseId: (cohort.course_id._id.length > 0) ? cohort.course_id._id : "",
       startDate: cohort.start_date? format(new Date(cohort.start_date), 'MMM dd, yyyy'): "",
       endDate:  cohort.end_date?  format(new Date(cohort.end_date), 'MMM dd, yyyy'): "",
       week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
@@ -63,14 +39,15 @@ const CohortManagement = () => {
     }
   }
 
-
   useEffect(() => {
     setLoading(true);
     const params = {}
     try {
       (async () => {
-        await getData(params, url).then((cohorts) => {
-          let localTableRows = []
+        let response = await getData(params, url);
+        const cohorts = JSON.parse(response.data)
+        console.log(cohorts)
+        let localTableRows = [];
           if (cohorts) {
             cohorts.map(async (cohort) => {
               const item = makeRowfromCohort(cohort)
@@ -79,8 +56,7 @@ const CohortManagement = () => {
           }
           setTableRows(localTableRows);
           setLoading(false);
-        });
-      })();
+        })();
     } catch (error) {
       console.log(error, "an error from getData in /api/cohorts");
     }

@@ -1,12 +1,19 @@
 const { ObjectId } = require('mongodb');
 import Cohort from "../../lib/models/Cohort";
-import clientPromise from "../../lib/mongodb";
+import Course from "../../lib/models/Course";
+import dbConnect from "../../lib/dbConnect";
 
 export default async function handler(req, res) {
     const { method } = req;
+    await dbConnect()
     switch (method) {
         case "GET":
-            return getCohorts(req, res);
+
+            const response = await getCohorts(req, res);
+            console.log(response, "RESPONSE IN GET");
+            return response;
+         
+
         case "POST":
             try {
                 const cohortToDb = await sanitize(JSON.parse(req.body.body));  
@@ -26,34 +33,50 @@ export default async function handler(req, res) {
     }
 }
 
+
 const getCohorts = async (req, res) => {
-    const client = await clientPromise;
-    const database = client.db(process.env.MONGODB_DB);
-    const options = {
-        sort: { start_date: 1 },
-        projection: { _id: 0 },
-    };
-    const query = [
-        {
-            $lookup: {
-                from: "courses",
-                localField: "course_id",
-                foreignField: "_id",
-                as: "course"
-            }
-        }
-    ];
     let cohorts = [];
     try {
-        let cursorCohorts = await database
-            .collection("cohorts")
-            .aggregate(query);
-        cohorts = await cursorCohorts.toArray();        
-    } catch (error) {
+        cohorts = await Cohort.find({}).populate("course_id", "_id course_name").exec();
+        console.log(cohorts, "cohorts in try")
+                 
+        res.status(200).json({ success: true, data: JSON.stringify(cohorts) })
+      } catch (error) {
         console.error(error);
-    } 
-    return res.status(200).json(cohorts);
+        res.status(400).json({ success: false })
+
+      }
+      return res
+ 
 }
+// const getCohorts = async (req, res) => {
+//     const client = await clientPromise;
+//     const database = client.db(process.env.MONGODB_DB);
+//     const options = {
+//         sort: { start_date: 1 },
+//         projection: { _id: 0 },
+//     };
+//     const query = [
+//         {
+//             $lookup: {
+//                 from: "courses",
+//                 localField: "course_id",
+//                 foreignField: "_id",
+//                 as: "course"
+//             }
+//         }
+//     ];
+//     let cohorts = [];
+//     try {
+//         let cursorCohorts = await database
+//             .collection("cohorts")
+//             .aggregate(query);
+//         cohorts = await cursorCohorts.toArray();        
+//     } catch (error) {
+//         console.error(error);
+//     } 
+//     return res.status(200).json(cohorts);
+// }
 
 const sanitize = async (obj) => {
     return {
