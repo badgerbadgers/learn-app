@@ -102,6 +102,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const processRowUpdate = async (newRow) => {
+    console.log( "new row in processRowUpdt", newRow)
     const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try{
@@ -114,10 +115,16 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         }
       )
       .then((response) => {
+        console.log( 'RESPOSE', response);
+      
+        const newCohort = response.data.data;
+        console.log( 'newCohort', newCohort);
+        console.log( "id in processRowUpdt", newCohort._id);
+
         const course = courses.find(item => item.value === newRow.courseName);
         updatedRow = {
           ...newRow,
-          id: response.data._id,
+          id: newCohort._id,
           isNew: false,
           courseName: course.label,
           startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",

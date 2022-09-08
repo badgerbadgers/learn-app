@@ -20,10 +20,11 @@ export default async function handler(req, res) {
         try {
             const cohortToDb = await sanitize(JSON.parse(req.body.body));
             const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb);
+            console.log("COHORT", cohort)
             if (!cohort) {
               return res.status(400).json({ success: false })
             }
-            res.status(200).json({ success: true, data: cohortToDb })
+            res.status(200).json({ success: true, data: cohort })
           } catch (error) {
             console.log(error);
             throw error

@@ -47,7 +47,6 @@ const CohortManagement = () => {
         let courses = JSON.parse(response.data);
         let localCourses = []
         if (courses) {
-          console.log(courses, "courses")
           courses.map(course => {
             localCourses.push({
               value: course._id,
