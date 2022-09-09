@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 const getCourses = async (req, res) => {
     let courses = [];
     try {
-        courses = await Course.find({}).select({ course_name: 1, _id: 1 });;                 
+        courses = await Course.find({}).select({ course_name: 1, _id: 1 });                
         res.status(200).json({ success: true, data: JSON.stringify(courses) })
       } catch (error) {
         console.error(error);

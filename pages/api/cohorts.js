@@ -38,7 +38,7 @@ const createCohort = async (req, res) => {
         if (!cohort) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true,  _id: cohort._id, data: cohortToDb })
+        res.status(200).json({ success: true, data: cohort })
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false })
