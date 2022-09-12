@@ -1,4 +1,4 @@
-const { mongoConnection } = require("../utils.js");
+const { mongoConnection, getConfigParam } = require("../utils.js");
 
 // This script inserts collection into mongo and is filtered for different collections
 
@@ -15,10 +15,11 @@ exports.insertToMongo = async (data, coll) => {
   // @param {<Object>} data
   // @param {string} collection in Mongo
 
+  const dbName = await getConfigParam("MONGODB_DB");
   const client = await mongoConnection();
   async function run() {
     try {
-      const database = client.db("myFirstDatabase");
+      const database = client.db(dbName);
       const mongoCollectionName = database.collection(coll);
       // data.forEach(doc => mongoCollectionName.insertOne(doc));
       data.forEach((doc) => {
