@@ -1,11 +1,13 @@
-const { mongoConnection } = require("../utils.js");
+const { mongoConnection, getConfigParam } = require("../utils.js");
 
 //This script is inserting the object IDs from assignments and materials to lessons collection
 
 const getObjectIDs = async (from, localField, foreignField, newField) => {
-  let client = await mongoConnection();
-  let db = client.db("myFirstDatabase");
-  let results = [];
+  const dbName = await getConfigParam("MONGODB_DB");
+
+  const client = await mongoConnection();
+  const db = client.db(dbName);
+  const results = [];
 
   try {
     results = await db
