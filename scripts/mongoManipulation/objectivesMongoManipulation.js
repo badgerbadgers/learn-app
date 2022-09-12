@@ -57,8 +57,8 @@ const getLearningObjectives = async () => {
         .split("-")
         .map((element) => element.trim());
       objectivesArray.shift();
-      console.log(objectivesArray)
-      
+      console.log(objectivesArray);
+
       //update the mongo record
       await db.collection("lessons").updateOne(
         { _id: MongoLesson._id },
@@ -73,4 +73,8 @@ const getLearningObjectives = async () => {
     console.log("ERROR", e.message);
   }
 };
-getLearningObjectives();
+getLearningObjectives().then(() => {
+  console.log("all done");
+  process.exit(0);
+});
+
