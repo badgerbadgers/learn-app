@@ -29,7 +29,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
               <Link
                 key={assignment.assignment_title}
                 target="_blank"
-                href={assignment.link.url}
+                href={assignment.link}
                 size="small"
                 sx={{ textDecoration: "none", color: "#338AAF" }}
               >

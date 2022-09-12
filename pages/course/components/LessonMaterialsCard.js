@@ -11,7 +11,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Link from "@mui/material/Link";
 
 export default function LessonMaterialsCard({ materials, key }) {
-  console.log(materials);
   return (
     <Card
       elevation={1}

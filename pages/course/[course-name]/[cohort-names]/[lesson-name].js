@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { privateLayout } from "../../../components/PrivateLayout";
+import { privateLayout } from "../../../../components/PrivateLayout";
 import { getSession} from "next-auth/react";
-import {mongoLessonsAfterPipeline} from "../../../lib/courseData";
+import {mongoLessonsAfterPipeline} from "../../../../lib/courseData";
 import Grid from "@mui/material/Grid";
-import Menu from "../components/Menu";
-import Display from "../components/Display";
+import Menu from "../../components/Menu";
+import Display from "../../components/Display";
 
 export default function CurrentCoursePage({ user, lessonData }) {
   //console.log(lessonData);
@@ -42,7 +42,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
 
 CurrentCoursePage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
-    console.log("hello",context.params)
+    console.log(context.params)
   const session = await getSession(context);
 
   if (!session) {
@@ -64,7 +64,7 @@ export async function getServerSideProps(context) {
   }
  
   const lessonData = (await mongoLessonsAfterPipeline()) || null;
-console.log(lessonData);
+
   return {
     props: { user, lessonData: JSON.parse(JSON.stringify(lessonData))},
   };
