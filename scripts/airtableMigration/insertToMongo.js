@@ -11,7 +11,7 @@ const collectionFilterField = {
   materials: "materials_title",
 };
 
-exports.insertToMongo = async (data, coll) => {
+const insertToMongo = async (data, coll) => {
   // @param {<Object>} data
   // @param {string} collection in Mongo
 
@@ -40,3 +40,6 @@ exports.insertToMongo = async (data, coll) => {
   }
   run().catch(console.dir);
 };
+
+module.exports = insertToMongo;
+
