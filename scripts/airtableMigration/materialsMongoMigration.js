@@ -10,10 +10,8 @@ const getMaterials = async () => {
     .select({})
     .eachPage(function page(records, fetchNextPage) {
       records.forEach(function (record) {
+        //check for name to make sure we don't process empty rows
         if (record.get("Name")) {
-          {
-          } // in case if there is an empty row in the airtable
-
           let materialObj = {
             materials_title: record.get("Name"),
             materials_airtableID: record.id,
@@ -28,7 +26,7 @@ const getMaterials = async () => {
     .catch((err) => {
       console.error(err);
     });
-    //array of material obj
+  //array of material obj
   return materialData;
 };
 
@@ -38,3 +36,4 @@ const main = async () => {
   //first paranm is obj second is coll name
 };
 main();
+

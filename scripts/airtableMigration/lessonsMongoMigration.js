@@ -11,8 +11,7 @@ const getLessons = async () => {
     .eachPage(function page(records, fetchNextPage) {
       records.forEach(function (record) {
         if (record.get("Title")) {
-          {
-          } // in case if there is an empty row in the airtable
+          // in case if there is an empty row in the airtable
           let lessonObj = {
             lesson_label: record.get("Label"),
             order: record.get("Order"),
@@ -31,12 +30,13 @@ const getLessons = async () => {
     .catch((err) => {
       console.error(err);
     });
-    //array of lesson objs
+  //array of lesson objs
   return lessonData;
 };
 const main = async () => {
   const lessons = await getLessons();
   upload(lessons, "lessons");
-   //first paranm is obj second is coll name
+  //first paranm is obj second is coll name
 };
 main();
+

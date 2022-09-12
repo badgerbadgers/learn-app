@@ -26,10 +26,8 @@ const getDataFromAirtable = async (lessonsCache) => {
     }).eachPage(function page(records, fetchNextPage) {
         console.log("Records #", records.length);
         records.forEach(function (record) {
-            if (record.get("Name")) {  // in case if there is an empty row in the airtable              
-                let course = {
-                    course_name: record.get("Name"),
-                    airtable_id: record.id,
+        //check for name to make sure we don't process empty rows
+        if (record.get("Name")) {
                     lessons: record.get("Lessons")?.map(lesson => lessonsCache[lesson]) || [],
                 }
                 console.log("Course goes to mongo", course);

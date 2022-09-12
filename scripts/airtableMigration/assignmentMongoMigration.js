@@ -10,9 +10,8 @@ const getAssignments = async () => {
     .select({})
     .eachPage(function page(records, fetchNextPage) {
       records.forEach(function (record) {
+        //check for name to make sure we don't process empty rows
         if (record.get("Name")) {
-          {
-          }
           let assignmentObj = {
             assignment_title: record.get("Name"),
             link: record.get("Link"),
@@ -32,7 +31,8 @@ const getAssignments = async () => {
 
 const main = async () => {
   const assignments = await getAssignments();
- upload(assignments, "assignments");
+  upload(assignments, "assignments");
   //first paranm is obj second is coll name
 };
 main();
+
