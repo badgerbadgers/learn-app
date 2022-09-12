@@ -19,7 +19,7 @@ const getLessons = async () => {
             submission_link: record.get("Submit Link"),
             learning_objectives: record.get("Learning Objectives"),
             mindset_content: record.get("Mindset Content"),
-            assignment_airtableID: record.get("Assignments"),
+            assignment_airtableID: record.get("Assignment"),
             materials_airtableID: record.get("Materials"),
             section_title: record.get("Label (from Section)"),
           };
