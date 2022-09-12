@@ -18,8 +18,14 @@ const mongoConnection = async () => {
 const airtableConnection = async () => {
   const Airtable = require("airtable");
   const param = await getConfigParam("AT_KEY");
-  const AtBase = new Airtable({ apiKey: param }).base("appN9Hf8KluRDBAN4"); //The ID of Class Mangement base
-  return AtBase;
+  try {
+    const AtBase = new Airtable({ apiKey: param }).base("appN9Hf8KluRDBAN4"); //The ID of Class Mangement base
+    return AtBase;
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 };
 
 module.exports = { getConfigParam, mongoConnection, airtableConnection };
+
