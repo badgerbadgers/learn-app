@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormControl, FormLabel, Grid, Fragment, Typography, TextField } from '@mui/material';
+import { FormControl, Grid, Typography, TextField } from '@mui/material';
 import { store } from "../../../store";
 
 
@@ -13,9 +13,9 @@ function PersonalInfo() {
 
     return (
         <FormControl>
-            <FormLabel>
+            <Typography>
                 <strong>PERSONAL INFORMATION:</strong>
-            </FormLabel>
+            </Typography>
             <Grid container p={3} justify="space-between">
                 {/* <Typography variant="body1" gutterBottom>
                 <strong>Personal Information: </strong>
@@ -30,7 +30,7 @@ function PersonalInfo() {
                             required
                             size="small"
                             InputLabelProps={{ shrink: true }}
-                            value={userInfoData.firstName}
+                            value={userInfoData.first_name}
                             onChange={(e) => updateUserInfoData('first_name', e.target.value)}
                         />
                     </Grid>
@@ -44,7 +44,7 @@ function PersonalInfo() {
                             required
                             size="small"
                             InputLabelProps={{ shrink: true }}
-                            value={userInfoData.lastName}
+                            value={userInfoData.last_name}
                             onChange={(e) => updateUserInfoData('last_name', e.target.value)}
                         />
                     </Grid>

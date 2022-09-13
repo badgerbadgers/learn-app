@@ -19,8 +19,8 @@ const initialState = {
         mailing_state: '',
         mailing_country: '',
         dob: '',
-        pronounce: '',
-        gender_identity: '',
+        pronouns: '',
+        gender_identity: [],
         gender_identity_self: '',
         race_ethnicity: '',
         race_ethnicity_self: '',
@@ -35,9 +35,9 @@ const initialState = {
         emergency_contact_2_name: '',
         emergency_contact_2_relationship: '',
         emergency_contact_2_phone: '',
-        learning_style: '',
+        learning_style: [],
         prior_coding_education: '',
-        prior_coding_languages: '',
+        prior_coding_languages: [],
 
     }
 

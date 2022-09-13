@@ -12,6 +12,7 @@ import DemographicStats from './DemographicStats';
 import EmergencyContacts from './EmergencyContacts';
 import LearningBackground from './LearningBackground';
 
+
 const steps = ['Personal Information', 'Address', 'Demographic Stats', 'Emergency Contacts', 'Learning Background'];
 // const { formId, formField } = checkoutFormModel;
 

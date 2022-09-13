@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormControl, FormLabel, FormControlLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox } from '@mui/material';
+import { FormControl, FormLabel, FormControlLabel, Grid, Typography, TextField, Radio, RadioGroup, Checkbox } from '@mui/material';
 import { store } from "../../../store";
 
 function Address() {
@@ -12,11 +12,16 @@ function Address() {
 
     return (
         <FormControl>
-            <FormLabel>
+            <Typography variant="body1" gutterBottom>
                 <strong>ADDRESS:</strong>
-            </FormLabel>
+            </Typography>
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
+                    <Grid item xs={12} sm={12} width="100%">
+                        <Typography variant="body1" gutterBottom>
+                            <strong>Physical Address: </strong>
+                        </Typography>
+                    </Grid>
                     <Grid item xs={12} sm={6} width="100%">
                         <FormLabel id="demo-radio-buttons-group-label" labelPlacement="start">US/US territory resident:</FormLabel>
                         <RadioGroup
@@ -44,11 +49,6 @@ function Address() {
                             value={userInfoData.physical_zipcode}
                             onChange={(e) => updateUserInfoData('physical_zipcode', e.target.value)}
                         />
-                    </Grid>
-                    <Grid item xs={12} sm={12} width="100%">
-                        <Typography variant="body1" gutterBottom>
-                            <strong>Physical Address: </strong>
-                        </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
                         <TextField

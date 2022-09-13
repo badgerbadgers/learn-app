@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormControl, FormLabel, FormControlLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox, Select, MenuItem } from '@mui/material';
+import { FormControl, FormLabel, FormControlLabel, InputLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox, Select, MenuItem } from '@mui/material';
 import { store } from "../../../store";
 
 
@@ -13,9 +13,9 @@ function EmergencyContacts() {
     }
     return (
         <FormControl>
-            <FormLabel>
+            <Typography>
                 <strong>EMERGENCY CONTACTS:</strong>
-            </FormLabel>
+            </Typography>
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
 
@@ -39,20 +39,25 @@ function EmergencyContacts() {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            required
-                            label="Relationship"
-                            value={userInfoData.emergency_contact_1_relationship}
-                            onChange={(e) => updateUserInfoData('emergency_contact_1_relationship', e.target.value)}
-                        >
-                            <MenuItem value={10}>Parent/Mother/Father</MenuItem>
-                            <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
-                            <MenuItem value={30}>Spouse/Partner</MenuItem>
-                            <MenuItem value={40}>Friend</MenuItem>
-                            <MenuItem value={50}>Other</MenuItem>
-                        </Select>
+                        <FormControl sx={{ width: "100%" }} size="small">
+                            <InputLabel required id="demo-select-small">
+                                Relationship
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                required
+                                label="Relationship"
+                                value={userInfoData.emergency_contact_1_relationship}
+                                onChange={(e) => updateUserInfoData('emergency_contact_1_relationship', e.target.value)}
+                            >
+                                <MenuItem value={10}>Parent/Mother/Father</MenuItem>
+                                <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
+                                <MenuItem value={30}>Spouse/Partner</MenuItem>
+                                <MenuItem value={40}>Friend</MenuItem>
+                                <MenuItem value={50}>Other</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} width="100%">
                         <TextField
@@ -87,20 +92,25 @@ function EmergencyContacts() {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            required
-                            label="Relationship"
-                            value={userInfoData.emergency_contact_2_relationship}
-                            onChange={(e) => updateUserInfoData('emergency_contact_2_relationship', e.target.value)}
-                        >
-                            <MenuItem value={10}>Parent/Mother/Father</MenuItem>
-                            <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
-                            <MenuItem value={30}>Spouse/Partner</MenuItem>
-                            <MenuItem value={40}>Friend</MenuItem>
-                            <MenuItem value={50}>Other</MenuItem>
-                        </Select>
+                        <FormControl sx={{ width: "100%" }} size="small">
+                            <InputLabel required id="demo-select-small">
+                                Relationship
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                required
+                                label="Relationship"
+                                value={userInfoData.emergency_contact_2_relationship}
+                                onChange={(e) => updateUserInfoData('emergency_contact_2_relationship', e.target.value)}
+                            >
+                                <MenuItem value={10}>Parent/Mother/Father</MenuItem>
+                                <MenuItem value={20}>Sibling/Brother/Sister</MenuItem>
+                                <MenuItem value={30}>Spouse/Partner</MenuItem>
+                                <MenuItem value={40}>Friend</MenuItem>
+                                <MenuItem value={50}>Other</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} width="100%">
                         <TextField
