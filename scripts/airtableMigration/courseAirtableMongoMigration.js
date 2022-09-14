@@ -1,5 +1,4 @@
-const { airtableConnection } = require("../utils.js");
-const upload = require("./insertToMongo");
+const { airtableConnection, insertToMongo } = require("../utils.js");
 
 // This script is fetching courses and lessons from Airtable and inserting to mongo collection
 
@@ -53,7 +52,7 @@ const getDataFromAirtable = async (lessonsCache) => {
 const main = async () => {
   const lessons = await getLessons();
   const toMongo = await getDataFromAirtable(lessons);
-  upload(toMongo, "courses"); // change the name of collection manually
+  insertToMongo(toMongo, "courses"); // change the name of collection manually
 };
 
 main();

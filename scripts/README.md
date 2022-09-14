@@ -4,6 +4,8 @@
 
 The folders `airtableMigration` and `mongoManipulation` include scripts that take data regarding cohorts, classes etc. from Airtable and migrates it into Mongo in the proper structure.
 
+The file `utils.js` includes helper functions for Mongo and Airtable.
+
 ## Configuration
 
 The scripts require an **Airtable API key** and a **Mongo connection URI** and **Mongo database name**. They expect to find these parameters in a `.env` file.

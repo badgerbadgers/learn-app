@@ -1,5 +1,4 @@
-const { airtableConnection } = require("../utils.js");
-const upload = require("./insertToMongo");
+const { airtableConnection, insertToMongo } = require("../utils.js");
 
 // This script is fetching materials from Airtable and inserting to mongo collection
 
@@ -32,8 +31,8 @@ const getMaterials = async () => {
 
 const main = async () => {
   const materials = await getMaterials();
-  upload(materials, "materials");
-  //first paranm is obj second is coll name
+  insertToMongo(materials, "materials");
 };
+
 main();
 

@@ -1,6 +1,4 @@
-const { airtableConnection } = require("../utils.js");
-const upload = require("./insertToMongo");
-// cohorts are already being fetched this script is just as a precausion
+const { airtableConnection, insertToMongo } = require("../utils.js");
 // This script is fetching cohorts from Airtable and inserting to mongo collection
 const getCohorts = async () => {
   const cohortData = [];
@@ -31,8 +29,8 @@ const getCohorts = async () => {
 
 const main = async () => {
   const cohorts = await getCohorts();
-  upload(cohorts, "cohorts");
-  //first paranm is obj second is coll name
+  insertToMongo(cohorts, "cohorts");
 };
+
 main();
 
