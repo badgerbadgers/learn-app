@@ -2,7 +2,6 @@ import Cohort from "../../../lib/models/Cohort";
 import dbConnect from "../../../lib/dbConnect";
 import mongoose from "mongoose";
 
-
 export default async function handler(req, res) {
     const { method } = req;
     const id = req.query.id;
@@ -52,7 +51,7 @@ export default async function handler(req, res) {
 const sanitize = async (obj) => {
     return {
         cohort_name: obj.cohortName,
-        course_id: obj.courseName,
+        course: obj.courseName,
         start_date: obj.startDate ? new Date(obj.startDate) : null,
         seats: obj.seats || 0,
         slug: obj.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
