@@ -1,6 +1,7 @@
+/*
+This script is fetching lessons from Airtable and inserting to mongo collection
+*/
 const { airtableConnection, insertToMongo } = require("../utils.js");
-
-// This script is fetching lessons from Airtable and inserting to mongo collection
 
 const getLessons = async () => {
   const lessonData = [];
@@ -20,6 +21,7 @@ const getLessons = async () => {
             assignment_airtableID: record.get("Assignment"),
             materials_airtableID: record.get("Materials"),
             section_title: record.get("Label (from Section)"),
+            airtable_id: record.id,
           };
           lessonData.push(lessonObj);
         }
