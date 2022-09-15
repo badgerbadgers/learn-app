@@ -13,9 +13,9 @@ function PersonalInfo() {
 
     return (
         <FormControl>
-            <Typography>
+            {/* <Typography>
                 <strong>PERSONAL INFORMATION:</strong>
-            </Typography>
+            </Typography> */}
             <Grid container p={3} justify="space-between">
                 {/* <Typography variant="body1" gutterBottom>
                 <strong>Personal Information: </strong>

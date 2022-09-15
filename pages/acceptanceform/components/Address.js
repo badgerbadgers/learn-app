@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { FormControl, FormLabel, FormControlLabel, Grid, Typography, TextField, Radio, RadioGroup, Checkbox } from '@mui/material';
 import { store } from "../../../store";
 
@@ -10,11 +10,31 @@ function Address() {
 
     }
 
+    const [isChecked, setIsChecked] = useState(false);
+
+    function handleCheckboxChange(event) {
+        if (event.target.checked) {
+            userInfoData.mailing_zipcode = userInfoData.physical_zipcode;
+            userInfoData.mailing_address = userInfoData.physical_address;
+            userInfoData.mailing_city = userInfoData.physical_city;
+            userInfoData.mailing_state = userInfoData.physical_state;
+            userInfoData.mailing_country = userInfoData.physical_country;
+            console.log(userInfoData.mailing_zipcode);
+            console.log(userInfoData.mailing_address);
+            console.log(userInfoData.mailing_city);
+            console.log(userInfoData.mailing_state);
+            console.log(userInfoData.mailing_country);
+        } else {
+            console.log('⛔️ Checkbox is NOT checked');
+        }
+        setIsChecked(current => !current);
+    }
+
     return (
         <FormControl>
-            <Typography variant="body1" gutterBottom>
+            {/* <Typography variant="body1" gutterBottom>
                 <strong>ADDRESS:</strong>
-            </Typography>
+            </Typography> */}
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
                     <Grid item xs={12} sm={12} width="100%">
@@ -88,16 +108,19 @@ function Address() {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
-                        <TextField
-                            name="physical_country"
-                            placeholder="Type your country"
-                            label="Country"
-                            fullWidth
-                            size="small"
-                            InputLabelProps={{ shrink: true }}
-                            value={userInfoData.physical_country}
-                            onChange={(e) => updateUserInfoData('physical_country', e.target.value)}
-                        />
+                        {
+                            userInfoData.US_resident === 'no' &&
+                            <TextField
+                                name="physical_country"
+                                placeholder="Type your country"
+                                label="Country"
+                                fullWidth
+                                size="small"
+                                InputLabelProps={{ shrink: true }}
+                                value={userInfoData.physical_country}
+                                onChange={(e) => updateUserInfoData('physical_country', e.target.value)}
+                            />
+                        }
                     </Grid>
 
                     <Grid item xs={12} sm={12} width="100%">
@@ -106,7 +129,7 @@ function Address() {
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
-                        <FormControlLabel control={<Checkbox />} label="Same as physical address" />
+                        <FormControlLabel control={<Checkbox onChange={handleCheckboxChange} />} label="Same as physical address" />
                     </Grid>
                     <Grid item xs={12} sm={6} width="100%">
                         <TextField

@@ -13,9 +13,9 @@ function EmergencyContacts() {
     }
     return (
         <FormControl>
-            <Typography>
+            {/* <Typography>
                 <strong>EMERGENCY CONTACTS:</strong>
-            </Typography>
+            </Typography> */}
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
 

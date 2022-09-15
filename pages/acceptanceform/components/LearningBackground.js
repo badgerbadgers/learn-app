@@ -49,9 +49,9 @@ function LearningBackground() {
 
     return (
         <FormControl>
-            <Typography>
+            {/* <Typography>
                 <strong>LEARNING BACKGROUND:</strong>
-            </Typography>
+            </Typography> */}
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
 

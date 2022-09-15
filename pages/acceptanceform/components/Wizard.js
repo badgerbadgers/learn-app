@@ -11,6 +11,7 @@ import Address from './Address';
 import DemographicStats from './DemographicStats';
 import EmergencyContacts from './EmergencyContacts';
 import LearningBackground from './LearningBackground';
+import { FormControl } from '@mui/material';
 
 
 const steps = ['Personal Information', 'Address', 'Demographic Stats', 'Emergency Contacts', 'Learning Background'];
@@ -79,6 +80,7 @@ export default function Wizard() {
   // };
 
   return (
+
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
@@ -93,6 +95,7 @@ export default function Wizard() {
           //   stepProps.completed = false;
           // }
           return (
+
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
@@ -101,17 +104,17 @@ export default function Wizard() {
       </Stepper>
       {activeStep === steps.length ? (
         <Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+          <Typography sx={{ mt: 2, mb: 1, justifyContent: 'center' }} >
+            Your Acceptance Form has been submitted!
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            {/* <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button> */}
-          </Box>
+          {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleReset}>Reset</Button>
+          </Box> */}
         </Fragment>
       ) : (
         <Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
 
           {/* <Formik
             initialValues={formInitialValues}
