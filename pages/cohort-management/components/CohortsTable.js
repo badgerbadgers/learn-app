@@ -101,7 +101,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     }
   };
 
-  const processRowUpdate = async (newRow) => {
+  const processRowUpdate = async (newRow, oldRow) => {
+    console.log('OLD VAL', oldRow);
+    console.log('NEW', newRow );
+    if (!newRow.courseName) newRow.courseName = null; 
     const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try{
@@ -114,6 +117,12 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         }
       )
       .then((response) => {
+        console.log( "RESPONSE:", response,)
+        if (!response.ok) {
+          console.log("FRONT RESP is !OK", response)
+          // throw new Error(res.json().then((error) => alert(error.message)));
+      }
+        
         const course = courses.find(item => item.value === newRow.courseName);
         updatedRow = {
           ...newRow,
@@ -128,6 +137,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       });
     }catch(error){
       console.error("Error:", error);
+      
     };
     return updatedRow;
   };
@@ -165,7 +175,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       flex: 1,
       width: 125,
       headerAlign: 'center',
-      editable: true,
+      editable: true,      
     },
     {
       field: 'endDate',
@@ -197,7 +207,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     {
       field: 'seats',
       headerName: 'Students',
-      type: 'string',
+      type: 'number',
       width: 100,
       headerAlign: 'center',
       editable: true,
@@ -275,6 +285,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         rows={rows}
         columns={columns}
         rowsPerPageOptions={[5, 15, 100]}
+        autoPageSize={true}
         checkboxSelection
         disableSelectionOnClick
         components={{
@@ -301,7 +312,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         componentsProps={{
           toolbar: { setRows, setRowModesModel, rows }
         }}
-        experimentalFeatures={{ newEditingApi: true }}
+        experimentalFeatures={{ newEditingApi: true }}       
       />
     </Box>
   );

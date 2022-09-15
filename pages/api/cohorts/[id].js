@@ -18,14 +18,21 @@ export default async function handler(req, res) {
         case "POST": 
         try {
             const cohortToDb = await sanitize(JSON.parse(req.body.body));
-            const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb);
+            console.log("cohort to db", cohortToDb)
+            const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb, {runValidators: true});
+            console.log("COHORT BACK", cohort);
             if (!cohort) {
               return res.status(400).json({ success: false })
             }
             res.status(200).json({ success: true, data: cohort })
           } catch (error) {
             console.log(error);
-            throw error
+            if (error.name == "ValidationError") {
+                return res.status(400).json({
+                    success: false,
+                    message: error.message,
+                });
+            }
           }
           break
         case "DELETE":

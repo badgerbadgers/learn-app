@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 
 import Cohort from "../../lib/models/Cohort";
-import Course from "../../lib/models/Course";
+// import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -17,7 +17,6 @@ export default async function handler(req, res) {
             res.status(405).end(`Method ${ method } Not Allowed`);
     }
 };
-
 
 const getCohorts = async (req, res) => {
     let cohorts = [];
@@ -41,8 +40,16 @@ const createCohort = async (req, res) => {
         }
         res.status(200).json({ success: true, data: cohort })
       } catch (error) {
-        console.log(error);
-        res.status(400).json({ success: false })
+        console.log("ERRRR", error);
+        console.log("ERRRR MESS ====>", error.message);
+        console.log("BSON", error.name);
+            // if (error.name == "ValidationError") {
+                return res.status(400).json({
+                    success: false,
+                    message: error.message,
+                    message2: "MESSAGE",
+                });
+            // }
       }
       return res
 };
