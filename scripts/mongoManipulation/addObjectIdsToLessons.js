@@ -1,6 +1,8 @@
-const { mongoConnection, getConfigParam } = require("../utils.js");
+/*
+This script is inserting the object IDs from assignments and materials to lessons collection
+*/
 
-//This script is inserting the object IDs from assignments and materials to lessons collection
+const { mongoConnection, getConfigParam } = require("../utils.js");
 
 const getObjectIDs = async (from, localField, foreignField, newField) => {
   console.log(

@@ -1,6 +1,7 @@
 /*
 This script is fetching lessons from Airtable and inserting to mongo collection
 */
+
 const { airtableConnection, insertToMongo } = require("../utils.js");
 
 const getLessons = async () => {

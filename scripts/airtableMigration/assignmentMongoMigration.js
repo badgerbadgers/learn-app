@@ -1,6 +1,8 @@
-const { airtableConnection, insertToMongo } = require("../utils.js");
+/*
+This script is fetching assignments from Airtable and inserting to mongo collection
+*/
 
-// This script is fetching assignments from Airtable and inserting to mongo collection
+const { airtableConnection, insertToMongo } = require("../utils.js");
 
 const getAssignments = async () => {
   const assignmentData = [];

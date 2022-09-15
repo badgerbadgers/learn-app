@@ -1,5 +1,9 @@
+/*
+This script is fetching cohorts from Airtable and inserting to mongo collection
+*/
+
 const { airtableConnection, insertToMongo } = require("../utils.js");
-// This script is fetching cohorts from Airtable and inserting to mongo collection
+
 const getCohorts = async () => {
   const cohortData = [];
   const AtBase = await airtableConnection();

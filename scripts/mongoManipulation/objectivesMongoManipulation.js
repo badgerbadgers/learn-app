@@ -1,10 +1,13 @@
+/*
+This script is fetching the learning objectives from airtable and turning the objectives field 
+in the lessons collection from a string to an array
+*/
+
 const {
   airtableConnection,
   mongoConnection,
   getConfigParam,
 } = require("../utils.js");
-
-//This script is fetching the learning objectives from airtable and turning the objectives field in the lessons collection from a string to an array
 
 const getLearningObjectives = async () => {
   const dbName = await getConfigParam("MONGODB_DB");

@@ -1,6 +1,8 @@
-const { mongoConnection, getConfigParam } = require("../utils.js");
+/*
+This script is to flatten the link object in the assignment collection
+*/
 
-//this script is to flatten the link object in the assignment collection
+const { mongoConnection, getConfigParam } = require("../utils.js");
 
 const minifyAssignments = async () => {
   const dbName = await getConfigParam("MONGODB_DB");
