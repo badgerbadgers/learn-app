@@ -1,25 +1,9 @@
+/*
+This script is fetching courses and lessons from Airtable and inserting to mongo collection
+*/
 const { airtableConnection, insertToMongo } = require("../utils.js");
 
-// This script is fetching courses and lessons from Airtable and inserting to mongo collection
-
-const getLessons = async () => {
-  const AtBase = await airtableConnection();
-  const lessonTitles = {};
-  await AtBase("Lessons")
-    .select({})
-    .eachPage(function page(records, fetchNextPage) {
-      records.forEach((item) => {
-        lessonTitles[item.id] = item.get("Title");
-      });
-      fetchNextPage();
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  return lessonTitles;
-};
-
-const getDataFromAirtable = async (lessonsCache) => {
+const getDataFromAirtable = async () => {
   const dataToMongo = [];
   const AtBase = await airtableConnection();
   await AtBase("Courses")
@@ -32,9 +16,9 @@ const getDataFromAirtable = async (lessonsCache) => {
           let course = {
             course_name: record.get("Name"),
             airtable_id: record.id,
-            lessons:
-              record.get("Lessons")?.map((lesson) => lessonsCache[lesson]) ||
-              [],
+            lesson_airtable_ids: record.get("Lessons")
+              ? record.get("Lessons")
+              : [],
           };
           console.log("Course goes to mongo", course);
           dataToMongo.push(course);
@@ -50,9 +34,10 @@ const getDataFromAirtable = async (lessonsCache) => {
 };
 
 const main = async () => {
-  const lessons = await getLessons();
-  const toMongo = await getDataFromAirtable(lessons);
-  insertToMongo(toMongo, "courses"); // change the name of collection manually
+  const toMongo = await getDataFromAirtable();
+  await insertToMongo(toMongo, "courses");
+  console.log("all done");
+  process.exit(0);
 };
 
 main();
