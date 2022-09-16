@@ -10,7 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Link from "@mui/material/Link";
 
-export default function LessonMaterialsCard({ materials, key }) {
+export default function LessonMaterialsCard({ materials }) {
   return (
     <Card
       elevation={1}
@@ -31,11 +31,11 @@ export default function LessonMaterialsCard({ materials, key }) {
           there also.
         </Typography>
         <List>
-          {materials.map((material, key) => {
+          {materials.map((material) => {
             return (
-              <ListItem key={key} sx={{py:"0"}}>
+              <ListItem key={material._id} sx={{py:"0"}}>
                 <ListItemIcon  sx={{ minWidth: "36px" }}>
-                  <CircleIcon sx={{ width: "8px" }} />
+                  <CircleIcon  sx={{ width: "8px" }} />
                 </ListItemIcon>
                 <Link
                   target="_blank"
