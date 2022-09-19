@@ -1,7 +1,8 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import CancelIcon from '@mui/icons-material/Close';
@@ -10,10 +11,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import LinearProgress from '@mui/material/LinearProgress';
 import PropTypes from "prop-types";
 import SaveIcon from '@mui/icons-material/Save';
+import Snackbar from "@mui/material/Snackbar";
 import { Stack } from '@mui/material';
 import axios from "axios";
 import { format } from "date-fns";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -46,6 +48,7 @@ EditToolbar.propTypes = {
 export default function CohortsTable({ loading, tableRows, courses }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [snackbar, setSnackbar] = useState(null);
 
   useEffect(() => {
     setRows(tableRows)
@@ -101,6 +104,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     }
   };
 
+  
   const processRowUpdate = async (newRow, oldRow) => {
     console.log('OLD VAL', oldRow);
     console.log('NEW', newRow );
@@ -115,13 +119,13 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newRow),
         }
-      )
-      .then((response) => {
+        )
+        .then((response) => {
         console.log( "RESPONSE:", response,)
         if (!response.ok) {
           console.log("FRONT RESP is !OK", response)
           // throw new Error(res.json().then((error) => alert(error.message)));
-      }
+        }
         
         const course = courses.find(item => item.value === newRow.courseName);
         updatedRow = {
@@ -133,15 +137,21 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
           courseId: course.value,
         };
+        setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
     }catch(error){
-      console.error("Error:", error);
-      
+      console.error("Error:", error);    
+      throw new Error(error.response.data.message);
+  
     };
     return updatedRow;
   };
-
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleProcessRowUpdateError = useCallback((error) => {
+    setSnackbar({ children: error.message, severity: 'error' });
+  }, []);
+  
   const columns = [
     {
       field: 'cohortName',
@@ -308,12 +318,35 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         onRowEditStart={handleRowEditStart}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={(error) => console.log("ERROR", error)}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
         componentsProps={{
           toolbar: { setRows, setRowModesModel, rows }
         }}
         experimentalFeatures={{ newEditingApi: true }}       
+        // sx={{
+        //   '& .MuiDataGrid-cell ': {
+        //     fontFamily: "Montserrat",
+        //     fontSize: "0.9rem",
+             
+        //   },
+        //   '& .MuiDataGrid-editInputCell': {
+        //     fontFamily: "Montserrat",
+        //     fontSize: "0.9 rem",
+        //   }
+        
+        // }}
+
       />
+       {!!snackbar && (
+        <Snackbar
+          open
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          onClose={handleCloseSnackbar}
+          autoHideDuration={6000}
+        >
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
     </Box>
   );
 }
