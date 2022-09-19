@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic'
 import styles from '../styles/Home.module.css'
-// import useWindowDimensions from '../lib/useWindowDimensions'
 const Sketch = dynamic(() => import("react-p5"),
   { ssr: false }
 ) 

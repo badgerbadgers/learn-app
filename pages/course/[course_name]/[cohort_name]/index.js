@@ -8,7 +8,11 @@ import DisplayCards from "../../components/DisplayCards";
 import Router, { useRouter } from "next/router";
 
 export default function CurrentCoursePage({ user, lessonData }) {
-  const [selectedLabel, setSelectedLabel] = useState(lessonData[0].lesson_label);
+  const [selectedLabel, setSelectedLabel] = useState("");
+
+  useEffect(() => {
+    setSelectedLabel(lessonData[0].lesson_label);
+  },[]);
 
   const router = useRouter();
 
@@ -30,7 +34,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
       container
       spacing={3}
       sx={{ maxWidth: "100%", mt: "-118px" }}
-     // fix margin in .main home module for pages
+      // fix margin in .main home module for pages
     >
       <Menu
         lessonData={lessonData}
