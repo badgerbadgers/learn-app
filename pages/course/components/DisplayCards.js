@@ -5,7 +5,7 @@ import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
 
-export default function Display({ doc}) {
+export default function DisplayCards({ doc}) {
   return (
     <Grid item xs={12} md={9} lg={9} >
       <LessonHeader title={doc.lesson_label} />
