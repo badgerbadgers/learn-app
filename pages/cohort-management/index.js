@@ -27,11 +27,11 @@ const CohortManagement = () => {
     return {
       id: cohort._id,
       cohortName: cohort.cohort_name,
-      courseName: (cohort.course_id.course_name.length > 0) ? cohort.course_id.course_name : "",
-      courseId: (cohort.course_id._id.length > 0) ? cohort.course_id._id : "",
+      courseName: (cohort.course.course_name.length > 0) ? cohort.course.course_name : "",
+      courseId: (cohort.course._id.length > 0) ? cohort.course._id : "",
       startDate: cohort.start_date ? format(new Date(cohort.start_date), 'MMM dd, yyyy') : "",
       endDate: cohort.end_date ? format(new Date(cohort.end_date), 'MMM dd, yyyy') : "",
-      week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
+      week: 'counting', // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus(cohort.start_date, cohort.end_date),
       students: cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
