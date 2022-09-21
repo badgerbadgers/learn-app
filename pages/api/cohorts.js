@@ -52,7 +52,8 @@ const createCohort = async (req, res) => {
         if (!cohort) {
             return res.status(400).json({ success: false })
         }
-        res.status(400).json({ success: true, data: cohort })
+        console.log("created cohort =>", cohort);
+        res.status(200).json({ success: true, data: cohort })
     } catch (error) {
         console.log("ERRRR", error);
         console.log("ERRRR MESS ====>", error.message);

@@ -23,7 +23,6 @@ export default async function handler(req, res) {
                 cohort_name: cohortToDb.cohort_name,
                 _id: { $ne: cohortToDb._id},
             });
-            console.log("existingCohortName", existingCohortName)
             if (existingCohortName.lenght) {
                 const error = {
                     error: "Cohort name is not unique"
@@ -34,7 +33,7 @@ export default async function handler(req, res) {
                 });
                 return;
             }
-            console.log("existingCohortName ==>", existingCohortName );
+            
             const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb, {runValidators: true});
             console.log("COHORT BACK", cohort);
             if (!cohort) {
@@ -57,6 +56,7 @@ export default async function handler(req, res) {
           }
           break
         case "DELETE":
+            console.log("DEL REQ =>", req)
             try {
                 const deletedCohort = await Cohort.deleteOne(
                     { _id: mongoose.Types.ObjectId(id) }
