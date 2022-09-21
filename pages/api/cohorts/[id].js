@@ -18,7 +18,23 @@ export default async function handler(req, res) {
         case "POST": 
         try {
             const cohortToDb = await sanitize(JSON.parse(req.body.body));
-            console.log("cohort to db", cohortToDb)
+            console.log("cohort to db", cohortToDb);
+            const existingCohortName = await Cohort.find({
+                cohort_name: cohortToDb.cohort_name,
+                _id: { $ne: cohortToDb._id},
+            });
+            console.log("existingCohortName", existingCohortName)
+            if (existingCohortName.lenght) {
+                const error = {
+                    error: "Cohort name is not unique"
+                }
+                res.status(400).json({
+                    success: false,
+                    message: error
+                });
+                return;
+            }
+            console.log("existingCohortName ==>", existingCohortName );
             const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb, {runValidators: true});
             console.log("COHORT BACK", cohort);
             if (!cohort) {
