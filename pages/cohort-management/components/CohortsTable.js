@@ -141,8 +141,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
     }catch(error){
-      console.error("Error:", error);    
-      throw new Error(error.response.data.message);
+      const errorMessage = Object.values(error.response.data.message)[0];
+      console.error("Error:", error.response.data);    
+      throw new Error(errorMessage);
   
     };
     return updatedRow;

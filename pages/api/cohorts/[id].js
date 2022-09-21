@@ -27,9 +27,16 @@ export default async function handler(req, res) {
             res.status(200).json({ success: true, data: cohort })
           } catch (error) {
             console.log(error);
+            console.log(error.errors);
+
+            const errors = {};
+            Object.entries(error.errors).forEach(([k,v]) => {
+                errors[k] = v.message
+            })
+            console.log('errors=', errors);
             return res.status(400).json({
                 success: false,
-                message: error.message,
+                message: errors,
             });
           }
           break

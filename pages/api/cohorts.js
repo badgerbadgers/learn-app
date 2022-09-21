@@ -33,7 +33,9 @@ const getCohorts = async (req, res) => {
 
 const createCohort = async (req, res) => {
     try {
-        const cohortToDb = await sanitize(JSON.parse(req.body.body));  
+        const cohortToDb = await sanitize(JSON.parse(req.body.body)); 
+        console.log("REQ",req.body) 
+        console.log("COHORT to db", cohortToDb)
         const cohort = await Cohort.create(cohortToDb)
         if (!cohort) {
           return res.status(400).json({ success: false })
@@ -42,12 +44,15 @@ const createCohort = async (req, res) => {
       } catch (error) {
         console.log("ERRRR", error);
         console.log("ERRRR MESS ====>", error.message);
+        const errors = {};
+        Object.entries(error.errors).forEach(([k,v]) => {
+            errors[k] = v.message
+        })
         console.log("BSON", error.name);
             // if (error.name == "ValidationError") {
-                return res.status(200).json({
+                return res.status(400).json({
                     success: false,
-                    message: error.message,
-                    message2: "MESSAGE",
+                    message: errors
                 });
             // }
       }
@@ -55,9 +60,10 @@ const createCohort = async (req, res) => {
 };
 
 const sanitize = async (obj) => {
+    console.log()
     return {
         cohort_name: obj.cohortName,
-        course: ObjectId(obj.courseName),
+        course: obj.courseName ? ObjectId(obj.courseName) : null,
         start_date: obj.startDate ? new Date(obj.startDate) : null,
         seats: obj.seats || 0,
         slug: obj.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
