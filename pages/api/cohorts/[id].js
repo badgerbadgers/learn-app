@@ -1,4 +1,5 @@
 import Cohort from "../../../lib/models/Cohort";
+import Course from "../../../lib/models/Course";
 import dbConnect from "../../../lib/dbConnect";
 import mongoose from "mongoose";
 
@@ -15,55 +16,66 @@ export default async function handler(req, res) {
                 res.status(400).json({ success: false })
             }
             break
-        case "POST": 
-        try {
-            const cohortToDb = await sanitize(JSON.parse(req.body.body));
-            console.log("cohort to db", cohortToDb);
-            const existingCohortName = await Cohort.find({
-                cohort_name: cohortToDb.cohort_name,
-                _id: { $ne: cohortToDb._id},
-            });
-            if (existingCohortName.lenght) {
-                const error = {
-                    error: "Cohort name is not unique"
-                }
-                res.status(400).json({
-                    success: false,
-                    message: error
-                });
-                return;
-            }
-            
-            const cohort = await Cohort.findByIdAndUpdate(id,  cohortToDb, {runValidators: true});
-            console.log("COHORT BACK", cohort);
-            if (!cohort) {
-              return res.status(400).json({ success: false })
-            }
-            res.status(200).json({ success: true, data: cohort })
-          } catch (error) {
-            console.log(error);
-            console.log(error.errors);
 
-            const errors = {};
-            Object.entries(error.errors).forEach(([k,v]) => {
-                errors[k] = v.message
-            })
-            console.log('errors=', errors);
-            return res.status(400).json({
-                success: false,
-                message: errors,
-            });
-          }
-          break
+        case "POST":
+            try {
+                const cohortToDb = await sanitize(JSON.parse(req.body.body));
+                const existingCohortName = await Cohort.find({
+                    cohort_name: cohortToDb.cohort_name,
+                    _id: { $ne: cohortToDb._id }, // exclude the current cohort
+                });
+                if (existingCohortName.lenght) {
+                    const error = {
+                        error: "Cohort name is not unique"
+                    }
+                    res.status(400).json({
+                        success: false,
+                        message: error
+                    });
+                    return;
+                }
+
+                const checkCourseId = await Course.findOne({
+                    _id: cohortToDb.course
+                })
+
+                if (!checkCourseId) {
+                    const error = {
+                        error: "Course does not excist"
+                    }
+                    res.status(400).json({
+                        success: false,
+                        message: error
+                    });
+                    return;
+                }
+                const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true });
+
+                if (!cohort) {
+                    return res.status(400).json({ success: false })
+                }
+                res.status(200).json({ success: true, data: cohort })
+            } catch (error) {
+                console.log(error);
+                const errors = {};
+                Object.entries(error.errors).forEach(([k, v]) => {
+                    errors[k] = v.message
+                })
+                return res.status(400).json({
+                    success: false,
+                    message: errors,
+                });
+            }
+            break
+
         case "DELETE":
-            console.log("DEL REQ =>", req)
             try {
                 const deletedCohort = await Cohort.deleteOne(
                     { _id: mongoose.Types.ObjectId(id) }
                 );
                 if (!deletedCohort) {
                     return res.status(400).json({ success: false })
-                  };
+                };
                 res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
             } catch (error) {
                 res.status(400).json({ success: false })

@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 
 import Cohort from "../../lib/models/Cohort";
+import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -33,8 +34,6 @@ const getCohorts = async (req, res) => {
 const createCohort = async (req, res) => {
     try {
         const cohortToDb = await sanitize(JSON.parse(req.body.body));
-        console.log("REQ", req.body)
-        console.log("COHORT to db", cohortToDb)
         const existingCohortName = await Cohort.findOne({
             cohort_name: cohortToDb.cohort_name
         })
@@ -48,15 +47,28 @@ const createCohort = async (req, res) => {
             });
             return;
         }
+
+        const checkCourseId = await Course.findOne({
+            _id: cohortToDb.course
+        })
+        if (!checkCourseId) {
+            const error = {
+                error: "Course does not excist"
+            }
+            res.status(400).json({
+                success: false,
+                message: error
+            });
+            return;
+        }
+
         const cohort = await Cohort.create(cohortToDb)
         if (!cohort) {
             return res.status(400).json({ success: false })
         }
-        console.log("created cohort =>", cohort);
         res.status(200).json({ success: true, data: cohort })
     } catch (error) {
-        console.log("ERRRR", error);
-        console.log("ERRRR MESS ====>", error.message);
+        console.log(error);
         const errors = {};
         Object.entries(error.errors).forEach(([k, v]) => {
             errors[k] = v.message
@@ -66,13 +78,11 @@ const createCohort = async (req, res) => {
             success: false,
             message: errors
         });
-        // }
     }
     return res
 };
 
 const sanitize = async (obj) => {
-    console.log()
     return {
         cohort_name: obj.cohortName,
         course: obj.courseName ? ObjectId(obj.courseName) : null,

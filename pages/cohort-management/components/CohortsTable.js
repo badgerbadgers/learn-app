@@ -62,9 +62,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           headers: { "Content-Type": "application/json" },
         }
       )
-      .then((res) => {
-        console.log("Deleted Cohort:", res);
-      })
       .catch((error) => {
         console.error("Error:", error);
       })
@@ -104,47 +101,39 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     }
   };
 
-  
+
   const processRowUpdate = async (newRow, oldRow) => {
-    console.log('OLD VAL', oldRow);
-    console.log('NEW', newRow );
-    if (!newRow.courseName) newRow.courseName = null; 
+    if (!newRow.courseName) newRow.courseName = null;
     const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
-    try{
+    try {
       await axios
-      .post(
-        url,
-        {
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        }
+        .post(
+          url,
+          {
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newRow),
+          }
         )
         .then((response) => {
-        console.log( "RESPONSE:", response,)
-        if (!response.ok) {
-          console.log("FRONT RESP is !OK", response)
-          // throw new Error(res.json().then((error) => alert(error.message)));
-        }
-        
-        const course = courses.find(item => item.value === newRow.courseName);
-        updatedRow = {
-          ...newRow,
-          id: response.data.data._id,
-          isNew: false,
-          courseName: course.label,
-          startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
-          endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
-          courseId: course.value,
-        };
-        setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-      });
-    }catch(error){
+          const course = courses.find(item => item.value === newRow.courseName);
+          updatedRow = {
+            ...newRow,
+            id: response.data.data._id,
+            isNew: false,
+            courseName: course.label,
+            startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
+            endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
+            courseId: course.value,
+          };
+          setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
+          setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        });
+    } catch (error) {
       const errorMessage = Object.values(error.response.data.message)[0];
-      console.error("Error:", error.response.data);    
+      console.error("Error:", error.response.data);
       throw new Error(errorMessage);
-  
+
     };
     return updatedRow;
   };
@@ -152,7 +141,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   const handleProcessRowUpdateError = useCallback((error) => {
     setSnackbar({ children: error.message, severity: 'error' });
   }, []);
-  
+
   const columns = [
     {
       field: 'cohortName',
@@ -186,7 +175,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       flex: 1,
       width: 125,
       headerAlign: 'center',
-      editable: true,      
+      editable: true,
     },
     {
       field: 'endDate',
@@ -323,22 +312,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         componentsProps={{
           toolbar: { setRows, setRowModesModel, rows }
         }}
-        experimentalFeatures={{ newEditingApi: true }}       
-        // sx={{
-        //   '& .MuiDataGrid-cell ': {
-        //     fontFamily: "Montserrat",
-        //     fontSize: "0.9rem",
-             
-        //   },
-        //   '& .MuiDataGrid-editInputCell': {
-        //     fontFamily: "Montserrat",
-        //     fontSize: "0.9 rem",
-        //   }
-        
-        // }}
-
+        experimentalFeatures={{ newEditingApi: true }}
       />
-       {!!snackbar && (
+      {!!snackbar && (
         <Snackbar
           open
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
