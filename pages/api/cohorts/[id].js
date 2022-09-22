@@ -71,12 +71,23 @@ export default async function handler(req, res) {
         case "DELETE":
             try {
                 const deletedCohort = await Cohort.deleteOne(
-                    { _id: mongoose.Types.ObjectId(id) }
-                );
-                if (!deletedCohort) {
-                    return res.status(400).json({ success: false })
-                };
-                res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
+                        { _id: mongoose.Types.ObjectId(id) }
+                    );
+                    if (!deletedCohort) {
+                        return res.status(400).json({ success: false })
+                    };
+                    res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
+
+
+
+
+                // const deletedCohort = await Cohort.deleteOne(
+                //     { _id: mongoose.Types.ObjectId(id) }
+                // );
+                // if (!deletedCohort) {
+                //     return res.status(400).json({ success: false })
+                // };
+                // res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
             } catch (error) {
                 res.status(400).json({ success: false })
             }
