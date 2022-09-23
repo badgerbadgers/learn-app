@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET":
             try {
-                const cohort = await Cohort.find({ _id: mongoose.Types.ObjectId(id) });
+                const cohort = await Cohort.findById(id).exec();    // API won't return cohorts with time stapm in property deleted_at        
                 res.status(200).json({ cohort: cohort })
             } catch (error) {
                 res.status(400).json({ success: false })
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
                 const cohortToDb = await sanitize(JSON.parse(req.body.body));
                 const existingCohortName = await Cohort.find({
                     cohort_name: cohortToDb.cohort_name,
-                    _id: { $ne: cohortToDb._id }, // exclude the current cohort
+                    _id: { $ne: cohortToDb._id }, // to exclude the current cohort
                 });
                 if (existingCohortName.lenght) {
                     const error = {
@@ -35,9 +35,7 @@ export default async function handler(req, res) {
                     return;
                 }
 
-                const checkCourseId = await Course.findOne({
-                    _id: cohortToDb.course
-                })
+                const checkCourseId = await Course.findById(cohortToDb.course)
 
                 if (!checkCourseId) {
                     const error = {
@@ -70,24 +68,11 @@ export default async function handler(req, res) {
 
         case "DELETE":
             try {
-                const deletedCohort = await Cohort.deleteOne(
-                        { _id: mongoose.Types.ObjectId(id) }
-                    );
-                    if (!deletedCohort) {
-                        return res.status(400).json({ success: false })
-                    };
-                    res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
-
-
-
-
-                // const deletedCohort = await Cohort.deleteOne(
-                //     { _id: mongoose.Types.ObjectId(id) }
-                // );
-                // if (!deletedCohort) {
-                //     return res.status(400).json({ success: false })
-                // };
-                // res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
+                const deletedCohort = await Cohort.findByIdAndUpdate(id, { deleted_at: new Date() });
+                if (!deletedCohort) {
+                    return res.status(400).json({ success: false })
+                };
+                res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
             } catch (error) {
                 res.status(400).json({ success: false })
             }
