@@ -5,7 +5,7 @@ import Image from "next/image";
 import { publicLayout } from "../components/layout/PublicLayout";
 export default function Home({ user }) {
   return (
-    <div>
+    <div className="extra-padding-on-top">
       <Image alt="" src="/img/labs-g-01.png" width={315} height={240} />
       <Typography variant="h5" sx={{ textAlign: "center" }}>
         Building Together

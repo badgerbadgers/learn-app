@@ -1,11 +1,11 @@
-import styles from "../styles/Home.module.css";
+import styles from "./Footer.module.css";
 
 const year = new Date().getFullYear();
 
 const Footer = () => {
   return (
     <footer className={styles.footer}>
-      <div style={{ maxWidth: '2000px', margin: 'auto' }}>
+      <div style={{ maxWidth: "2000px", margin: "auto" }}>
         COPYRIGHT © {year} CODE THE DREAM · ALL RIGHTS RESERVED · BUILT WITH
         THOUGHT BY CODE THE DREAM LABS
       </div>
@@ -13,3 +13,4 @@ const Footer = () => {
   );
 };
 export default Footer;
+

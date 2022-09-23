@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import ResourceCard from "./components/ResourceCard";
 import minifyItems from "../../../lib/minifyItems";
 import ResourceToolBar from "./components/ResourceToolBar";
-import { privateLayout } from "../../../components/PrivateLayout";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getResourceData } from "../../../lib/airtable";
 
 function Resources({ resources }) {
@@ -37,8 +37,8 @@ function Resources({ resources }) {
         : [];
       const languageSearchResults = item.fields["Name (from language)"]
         ? item.fields["Name (from language)"].map((language) =>
-          language.toLowerCase()
-        )
+            language.toLowerCase()
+          )
         : [];
       return (
         languageSearchResults.includes(term.toLowerCase()) ||
@@ -50,65 +50,67 @@ function Resources({ resources }) {
     });
   };
 
-
   const getFilteredResources = () => {
     // Filter resourses using selected languages, types and topics.
-    const filteredResources = [...resources]
+    const filteredResources = [...resources];
     if (selectedLanguages.length) {
-      filteredResources = filteredResources.filter(
-        (resource) =>  {
-          const common = selectedLanguages.filter(
-            value => resource.fields["Name (from language)"].includes(value)
-          );
-          return common.length > 0;
-        }
-      )
-    };
+      filteredResources = filteredResources.filter((resource) => {
+        const common = selectedLanguages.filter((value) =>
+          resource.fields["Name (from language)"].includes(value)
+        );
+        return common.length > 0;
+      });
+    }
 
     if (selectedTopics.length) {
-      filteredResources = filteredResources.filter(
-        (resource) =>  {
-          const common = selectedTopics.filter(
-            value => resource.fields["Name (from topic)"]?.includes(value) || false
-          );
-          return common.length > 0;
-        }
-      )
-    };
+      filteredResources = filteredResources.filter((resource) => {
+        const common = selectedTopics.filter(
+          (value) =>
+            resource.fields["Name (from topic)"]?.includes(value) || false
+        );
+        return common.length > 0;
+      });
+    }
 
     if (selectedTypes.length) {
-      filteredResources = filteredResources.filter(
-        (resource) =>  {
-          const common = selectedTypes.filter(
-            value => resource.fields["Type"]?.includes(value)
-          );
-          return common.length > 0;
-        }
-      )
-
+      filteredResources = filteredResources.filter((resource) => {
+        const common = selectedTypes.filter((value) =>
+          resource.fields["Type"]?.includes(value)
+        );
+        return common.length > 0;
+      });
     }
 
     return filteredResources;
-  }
-
+  };
 
   useEffect(() => {
     if (resources) {
       setActiveResources(resources);
-      const allLanguages = new Set(resources.map(resource => {
-        return resource.fields["Name (from language)"] || []
-      }).flat());
-      const allTopics = new Set(resources.map(resource => {
-        return resource.fields["Name (from topic)"] || []
-      }).flat());
-      const allTypes = new Set(resources.map(resource => {
-        return resource.fields["Type"] || ''
-      }));
+      const allLanguages = new Set(
+        resources
+          .map((resource) => {
+            return resource.fields["Name (from language)"] || [];
+          })
+          .flat()
+      );
+      const allTopics = new Set(
+        resources
+          .map((resource) => {
+            return resource.fields["Name (from topic)"] || [];
+          })
+          .flat()
+      );
+      const allTypes = new Set(
+        resources.map((resource) => {
+          return resource.fields["Type"] || "";
+        })
+      );
       setLanguages([...allLanguages]);
       setTopics([...allTopics]);
       setTypes([...allTypes]);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     let newList;
@@ -121,6 +123,7 @@ function Resources({ resources }) {
   }, [searchTerm, selectedLanguages, selectedTopics, selectedTypes]);
   return (
     <Grid
+      className="extra-padding-on-top"
       container
       spacing={2}
       justifyContent="center"
@@ -177,13 +180,13 @@ export async function getServerSideProps(context) {
   }
   if (session) {
     const { user } = session;
-    if(!user.hasProfile) {
+    if (!user.hasProfile) {
       return {
         redirect: {
-          destination: '/signup',
+          destination: "/signup",
           permanent: false,
-        }
-      }
+        },
+      };
     }
     const data = await getResourceData();
     // Send the data as resources by minify data.
@@ -194,3 +197,4 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
