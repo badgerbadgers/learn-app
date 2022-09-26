@@ -2,20 +2,15 @@ import React, { useContext } from 'react';
 import { FormControl, FormLabel, FormControlLabel, InputLabel, Grid, Fragment, Typography, TextField, Radio, RadioGroup, Checkbox, Select, MenuItem } from '@mui/material';
 import { store } from "../../../store";
 
-
-
 function EmergencyContacts() {
     const { state, dispatch } = useContext(store);
     const { userInfoData } = state;
     function updateUserInfoData(key, value) {
         dispatch({ type: 'UPDATE_PERSONAL_DETAILS', payload: { ...userInfoData, [key]: value } })
-
     }
+
     return (
         <FormControl>
-            {/* <Typography>
-                <strong>EMERGENCY CONTACTS:</strong>
-            </Typography> */}
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
 

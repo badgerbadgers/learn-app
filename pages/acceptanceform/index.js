@@ -5,26 +5,25 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { privateLayout } from "../../components/PrivateLayout";
 import Wizard from "./components/Wizard";
-import styles from "../../styles/Portfolio.module.css";
+import styles from "./components/AcceptanceForm.module.css";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const AcceptanceForm = () => {
 
 
     return (
-        <Container >
-            <Paper elevation={15}>
+        <Container className={styles.formContainer}>
+            <Paper elevation={15} className={styles.paper}>
                 <div className={styles.titleForm}>
                     <PersonAddIcon fontSize="large" />
-                    <Typography p={2} variant="h4">Join The Class!</Typography>
-                    <Typography p={2} variant="h5">
-                        Student Offer Acceptance Form
-                    </Typography>
-                    <Typography p={2} variant="h7" align="justify">
+                    <Typography p={2} variant="h4" >Join the Class</Typography>
+                </div>
+                <div className={styles.descriptionForm}>
+                    <Typography p={2} variant="h7" >
                         We are pleased to offer you a seat in one of our courses!
-                        Please complete this form in order to accept that offer and confirm that you will be participating in the class.
-                        Input student’s data is only used for internal purposes (grant reporting, data analysis of program participants).
-                        Feel free to actualize and modify any pre-populated data. Required fields are marked with asterisk *.
+                        Please complete this <span className={styles.highlighted}>Student Offer Acceptance Form</span> in order to accept that offer and confirm that you will be participating in the class.
+                        Data you input  will only be used for internal purposes (grant reporting, data analysis of program participants).
+                        Feel free to actualize and modify any pre-populated data. Required fields are marked with asterisk (<span className={styles.highlighted}>*</span>).
                     </Typography>
                 </div>
                 <br></br>

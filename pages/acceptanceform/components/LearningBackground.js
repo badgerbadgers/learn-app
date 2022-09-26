@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormControl, FormControlLabel, InputLabel, Grid, Typography, Checkbox, Select, MenuItem, OutlinedInput, Box, Chip } from '@mui/material';
+import { FormControl, FormControlLabel, InputLabel, Grid, Checkbox, Select, MenuItem, OutlinedInput, Box, Chip } from '@mui/material';
 import { store } from "../../../store";
 
 // Styling the chips for multi-select input
@@ -24,10 +24,10 @@ function LearningBackground() {
     }
 
     //Setting Menu items options for the Prior Coding Languages multi-select list
-    const priorCodingLanguages = ['HTML', 'CSS', 'JavaScript (different from Java)', 'Ruby', 'Rails', 'React', 'Node', 'Express', 'Other'];
+    const priorCodingLanguages = ['HTML', 'CSS', 'JavaScript', 'Ruby', 'Rails', 'React', 'Node', 'Express', 'Other'];
 
     //Setting Menu items options for the Learning Style multi-select list
-    const learningStyles = ['Visual (watch videos)', 'Listening (hear a lecture/discussion)', 'Reading (read text)', 'Not sure'];
+    const learningStyles = ['Watching', 'Listening', 'Reading', 'Not sure'];
 
     function handlePriorCodingLanguagesArrayChange(event) {
         const { target: { value } } = event;
@@ -49,9 +49,6 @@ function LearningBackground() {
 
     return (
         <FormControl>
-            {/* <Typography>
-                <strong>LEARNING BACKGROUND:</strong>
-            </Typography> */}
             <Grid container p={3} justify="space-between">
                 <Grid container spacing={2} justify="space-between">
 

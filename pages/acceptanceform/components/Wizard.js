@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PersonalInfo from './PersonalInfo';
@@ -11,11 +12,10 @@ import Address from './Address';
 import DemographicStats from './DemographicStats';
 import EmergencyContacts from './EmergencyContacts';
 import LearningBackground from './LearningBackground';
-import { FormControl } from '@mui/material';
-
+import { useMediaQuery } from '@mui/material';
+import styles from './AcceptanceForm.module.css'
 
 const steps = ['Personal Information', 'Address', 'Demographic Stats', 'Emergency Contacts', 'Learning Background'];
-// const { formId, formField } = checkoutFormModel;
 
 function renderStepContent(step) {
   switch (step) {
@@ -33,95 +33,96 @@ function renderStepContent(step) {
       return <div>Not Found</div>;
   }
 }
-export default function Wizard() {
+
+function Wizard() {
   const [activeStep, setActiveStep] = useState(0);
-  // const [skipped, setSkipped] = useState(new Set());
-
-  // const isStepOptional = (step) => {
-  //   return step === 4;
-  // };
-
-  // const isStepSkipped = (step) => {
-  //   return skipped.has(step);
-  // };
 
   const handleNext = () => {
-    // let newSkipped = skipped;
-    // if (isStepSkipped(activeStep)) {
-    //   newSkipped = new Set(newSkipped.values());
-    //   newSkipped.delete(activeStep);
-    // }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // setSkipped(newSkipped);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // const handleSkip = () => {
-  //   if (!isStepOptional(activeStep)) {
-  //     // You probably want to guard against something like this,
-  //     // it should never occur unless someone's actively trying to break something.
-  //     throw new Error("You can't skip a step that isn't optional.");
-  //   }
-
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped((prevSkipped) => {
-  //     const newSkipped = new Set(prevSkipped.values());
-  //     newSkipped.add(activeStep);
-  //     return newSkipped;
-  //   });
-  // };
-
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
+  const isSmallScreen = useMediaQuery("(max-width:700px)");
 
   return (
 
     <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          // if (isStepOptional(index)) {
-          //   labelProps.optional = (
-          //     <Typography variant="caption">Optional</Typography>
-          //   );
-          // }
-          // if (isStepSkipped(index)) {
-          //   stepProps.completed = false;
-          // }
-          return (
 
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === steps.length ? (
+      {
+        isSmallScreen &&
+        <Stepper activeStep={activeStep} orientation='vertical'>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+                <StepContent>
+                  {activeStep < steps.length && (
+                    <Fragment>
+                      {renderStepContent(activeStep)}
+                      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                        <Button
+                          color="inherit"
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          sx={{ mr: 1 }}
+                        >
+                          Back
+                        </Button>
+                        <Box sx={{ flex: '1 1 auto' }} />
+                        <Button onClick={handleNext}>
+                          {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                        </Button>
+                      </Box>
+                    </Fragment>
+                  )}
+                </StepContent>
+              </Step>
+            );
+          })}
+        </Stepper>
+      }
+      {
+        (isSmallScreen) && (activeStep === steps.length) && (
+          <Fragment>
+            <Typography sx={{ mt: 2, mb: 1 }} className={styles.titleForm}>
+              <span className={styles.highlighted}>Your Acceptance Form has been submitted!</span>
+            </Typography>
+          </Fragment>
+        )
+      }
+
+      {
+        !isSmallScreen &&
+        <Stepper activeStep={activeStep} orientation='horizontal'>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+
+            return (
+
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+      }
+      {
+        (!isSmallScreen) && (activeStep === steps.length) &&
         <Fragment>
-          <Typography sx={{ mt: 2, mb: 1, justifyContent: 'center' }} >
-            Your Acceptance Form has been submitted!
+          <Typography sx={{ mt: 2, mb: 1 }} className={styles.titleForm} >
+            <span className={styles.highlighted}>Your Acceptance Form has been submitted!</span>
           </Typography>
-          {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box> */}
         </Fragment>
-      ) : (
+      }
+      {
+        (!isSmallScreen) && (activeStep < steps.length) &&
         <Fragment>
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
-
-          {/* <Formik
-            initialValues={formInitialValues}
-            validationSchema={currentValidationSchema}
-            onSubmit={_handleSubmit}
-          > */}
-          {/* <Form id={formId}> */}
           {renderStepContent(activeStep)}
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -133,20 +134,14 @@ export default function Wizard() {
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            {/* {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )} */}
-
             <Button onClick={handleNext}>
               {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
             </Button>
           </Box>
-          {/* </Form> */}
-          {/* </Formik> */}
         </Fragment>
-      )}
-    </Box>
+      }
+    </Box >
   );
 }
+
+export default Wizard;

@@ -16,14 +16,6 @@ const MenuProps = {
     },
 };
 
-// function App({ children }) {
-//     return (
-//         <LocalizationProvider dateAdapter={AdapterDayjs}>
-//             {children}
-//         </LocalizationProvider>
-//     );
-// }
-
 function DemographicStats() {
 
     const { state, dispatch } = useContext(store);
@@ -49,7 +41,6 @@ function DemographicStats() {
 
         <Grid container p={3} justify="space-between">
             <Grid container spacing={2} justify="space-between">
-
                 <Grid item xs={12} sm={6} width="100%">
                     <TextField
                         type="date"

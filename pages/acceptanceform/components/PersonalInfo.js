@@ -1,25 +1,17 @@
 import React, { useContext } from 'react';
-import { FormControl, Grid, Typography, TextField } from '@mui/material';
+import { FormControl, Grid, TextField } from '@mui/material';
 import { store } from "../../../store";
-
 
 function PersonalInfo() {
     const { state, dispatch } = useContext(store);
     const { userInfoData } = state;
     function updateUserInfoData(key, value) {
         dispatch({ type: 'UPDATE_PERSONAL_DETAILS', payload: { ...userInfoData, [key]: value } })
-
     }
 
     return (
         <FormControl>
-            {/* <Typography>
-                <strong>PERSONAL INFORMATION:</strong>
-            </Typography> */}
             <Grid container p={3} justify="space-between">
-                {/* <Typography variant="body1" gutterBottom>
-                <strong>Personal Information: </strong>
-            </Typography> */}
                 <Grid container spacing={2} justify="space-between">
                     <Grid item xs={12} sm={6} width="100%">
                         <TextField
@@ -48,7 +40,6 @@ function PersonalInfo() {
                             onChange={(e) => updateUserInfoData('last_name', e.target.value)}
                         />
                     </Grid>
-
                     <Grid item xs={12} sm={6} width="100%">
                         <TextField
                             name="email"
