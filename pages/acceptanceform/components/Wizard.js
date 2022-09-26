@@ -34,7 +34,7 @@ function renderStepContent(step) {
   }
 }
 
-function Wizard() {
+function Wizard(props) {
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -140,7 +140,9 @@ function Wizard() {
           </Box>
         </Fragment>
       }
+
     </Box >
+
   );
 }
 
