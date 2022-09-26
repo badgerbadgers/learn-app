@@ -22,82 +22,78 @@ const CohortManagement = () => {
     else if (new Date() > new Date(end)) return 'completed';
   }
 
+
+  const makeRowfromCohort = (cohort) => {
+    return {
+      id: cohort._id,
+      cohortName: cohort.cohort_name,
+      courseName: (cohort.course.course_name.length > 0) ? cohort.course.course_name : "",
+      courseId: (cohort.course._id.length > 0) ? cohort.course._id : "",
+      startDate: cohort.start_date ? format(new Date(cohort.start_date), 'MMM dd, yyyy') : "",
+      endDate: cohort.end_date ? format(new Date(cohort.end_date), 'MMM dd, yyyy') : "",
+      week: 'counting', // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
+      status: setStatus(cohort.start_date, cohort.end_date),
+      students: cohort.students && cohort.students.length ? cohort.students.length : 0,
+      seats: cohort.seats,
+      mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1] ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}` : '', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+    }
+  }
   useEffect(() => {
     const url = "/api/courses";
     const params = {}
     try {
       (async () => {
-        await getData(params, url).then((courses) => {
-          let localCourses = []
-          if (courses) {
-            courses.map(course => {
-              localCourses.push({
-                value: course._id,
-                label: course.course_name,
-              })
+        const response = await getData(params, url);
+        let courses = JSON.parse(response.data);
+        let localCourses = []
+        if (courses) {
+          courses.map(course => {
+            localCourses.push({
+              value: course._id,
+              label: course.course_name,
             })
-          }
-          setCourses(localCourses)
-        });
+          })
+        }
+        setCourses(localCourses)
       })();
     } catch (error) {
-      console.log(error, "an error from getData in /api/courses");
+      console.log("An error from getData in /api/courses:", error);
     }
   }, [])
- 
-
-
-  const makeRowfromCohort = (cohort) => {
-    return {
-      id: cohort._id, 
-      cohortName: cohort.cohort_name,
-      courseName: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]["course_name"] : "",
-      courseId: (cohort.course.length > 0 && cohort.course[0])? cohort.course[0]._id : "",
-      startDate: cohort.start_date? format(new Date(cohort.start_date), 'MMM dd, yyyy'): "",
-      endDate:  cohort.end_date?  format(new Date(cohort.end_date), 'MMM dd, yyyy'): "",
-      week: 'counting', // TODO: function that counts weeks accurately (winter holidays, summer breaks, delays etc)
-      status: setStatus(cohort.start_date, cohort.end_date),
-      students: cohort.students && cohort.students.length ? cohort.students.length : 0,
-      seats: cohort.seats,
-      mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1]? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`: '', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
-    }
-  }
-
 
   useEffect(() => {
     setLoading(true);
     const params = {}
     try {
       (async () => {
-        await getData(params, url).then((cohorts) => {
-          let localTableRows = []
-          if (cohorts) {
-            cohorts.map(async (cohort) => {
-              const item = makeRowfromCohort(cohort)
-              localTableRows.push(item)
-            })
-          }
-          setTableRows(localTableRows);
-          setLoading(false);
-        });
+        let response = await getData(params, url);
+        const cohorts = JSON.parse(response.data);
+        let localRows = [];
+        if (cohorts) {
+          cohorts.map(async (cohort) => {
+            const item = makeRowfromCohort(cohort)
+            localRows.push(item)
+          })
+        }
+        setTableRows(localRows);
+        setLoading(false);
       })();
     } catch (error) {
-      console.log(error, "an error from getData in /api/cohorts");
+      console.log("An error from getData in /api/cohorts:", error);
     }
   }, [])
 
   return (
     <Container sx={{ textAlign: "center" }}>
-      <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }} >Cohort Management</Typography>
+      <Typography pb={4} sx={{ fontWeight: 100, fontSize: '3rem', }}>Cohort Management</Typography>
 
-      <CohortsTable 
-      // getRowId={(r) => r.id}
-      loading={loading} 
-      tableRows={tableRows} 
-      courses={courses.sort()} // sort to het in in alphabetical order in the dropdown
-      id={id}
-      setId={setId}
-        />
+      <CohortsTable
+        loading={loading}
+        tableRows={tableRows}
+        courses={courses.sort()} // sort to get it in alphabetical order in the dropdown
+        id={id}
+        setId={setId}
+      />
     </Container>
   );
 };
