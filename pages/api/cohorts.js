@@ -39,7 +39,7 @@ const createCohort = async (req, res) => {
         })
         if (existingCohortName) {
             const error = {
-                error: "Cohort name is not unique"
+                error: "This cohort name is already in use"
             }
             res.status(400).json({
                 success: false,
@@ -53,7 +53,7 @@ const createCohort = async (req, res) => {
         })
         if (!checkCourseId) {
             const error = {
-                error: "Course does not excist"
+                error: "Please select a course"
             }
             res.status(400).json({
                 success: false,
