@@ -47,7 +47,7 @@ const createCohort = async (req, res) => {
             });
             return;
         }
-        let courseError = {
+        const courseError = {
             error: "Please select a course"
         }
         if (!cohortToDb.course) {
