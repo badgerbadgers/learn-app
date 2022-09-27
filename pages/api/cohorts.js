@@ -47,17 +47,23 @@ const createCohort = async (req, res) => {
             });
             return;
         }
-
+        let courseError = {
+            error: "Please select a course"
+        }
+        if (!cohortToDb.course) {
+            res.status(400).json({
+                success: false,
+                message: courseError
+            });
+            return;
+        }
         const checkCourseId = await Course.findOne({
             _id: cohortToDb.course
         })
         if (!checkCourseId) {
-            const error = {
-                error: "Please select a course"
-            }
             res.status(400).json({
                 success: false,
-                message: error
+                message: courseError
             });
             return;
         }
