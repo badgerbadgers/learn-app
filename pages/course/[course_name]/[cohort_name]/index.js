@@ -12,7 +12,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
 
   useEffect(() => {
     setSelectedLabel(lessonData[0].lesson_label);
-  },[]);
+  }, []);
 
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
       return;
     }
     //new query
-    const newSelectedLabel = router.query.lesson;
+    let newSelectedLabel = router.query.lesson;
 
     if (selectedLabel !== newSelectedLabel) {
       setSelectedLabel(newSelectedLabel);
@@ -46,7 +46,20 @@ export default function CurrentCoursePage({ user, lessonData }) {
         lessonData.map((doc) => {
           // filling in cards based on selectedLabel
           if (doc.lesson_label === selectedLabel) {
-            return <DisplayCards key={doc._id} doc={doc} />;
+            let index = lessonData.findIndex(
+              (doc) => doc.lesson_label === selectedLabel
+            );
+            console.log(index);
+            return (
+              <DisplayCards
+                courseName={router.query["course_name"]}
+                cohortName={router.query["cohort_name"]}
+                key={doc._id}
+                doc={doc}
+                index={index}
+                lessonData={lessonData}
+              />
+            );
           }
         })}
     </Grid>

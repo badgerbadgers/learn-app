@@ -5,10 +5,22 @@ import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
 
-export default function DisplayCards({ doc}) {
+export default function DisplayCards({
+  doc,
+  index,
+  lessonData,
+  courseName,
+  cohortName,
+}) {
   return (
-    <Grid item xs={12} md={9} lg={9} >
-      <LessonHeader title={doc.lesson_label} />
+    <Grid item xs={12} md={9} lg={9}>
+      <LessonHeader
+        title={doc.lesson_label}
+        index={index}
+        lessonData={lessonData}
+        courseName={courseName}
+        cohortName={cohortName}
+      />
       <LearningObjectivesCard objectives={doc.learning_objectives} />
       <LessonMaterialsCard materials={doc.materials} />
       <AssignmentCard

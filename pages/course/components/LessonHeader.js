@@ -1,32 +1,84 @@
 import React from "react";
 import CardHeader from "@mui/material/CardHeader";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Link from "next/link";
+import Button from "@mui/material/Button";
+export default function LessonHeader({
+  courseName,
+  cohortName,
+  title,
+  index,
+  lessonData,
+}) {
+  //  we don't need useEffect because were getting from index.js since it's parent component and it trickles down
 
-export default function LessonHeader({ title }) {
   return (
     // To Do: create functionality for buttons
-    
+
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button
-          varriant="text"
-          startIcon={<ArrowBackIcon />}
-          sx={{ color: "black" }}
-        >
-          Previous Lesson
-        </Button>
-        <Button
-          variant="text"
-          endIcon={<ArrowForwardIcon />}
-          sx={{ color: "black" }}
-        >
-          Next Lesson
-        </Button>
+        {index !== 0 ? (
+          <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
+            <Link
+              href={{
+                pathname: "/course/[course_name]/[cohort_name]/",
+
+                //lesson is the query from router
+                query: {
+                  course_name: courseName,
+                  cohort_name: cohortName,
+                  lesson: lessonData[index - 1].lesson_label,
+                },
+              }}
+              shallow={true}
+            >
+              Previous Lesson
+            </Link>
+          </Button>
+        ) : null}
+
+        {index === 0 ? (
+          <Button
+            sx={{ color: "black", ml: "auto" }}
+            endIcon={<ArrowForwardIcon />}
+          >
+            <Link
+              href={{
+                pathname: "/course/[course_name]/[cohort_name]/",
+
+                query: {
+                  course_name: courseName,
+                  cohort_name: cohortName,
+                  lesson: lessonData[index + 1].lesson_label,
+                },
+              }}
+              shallow={true}
+            >
+              Next Lesson
+            </Link>
+          </Button>
+        ) : index !== lessonData.length - 1 ? (
+          <Button sx={{ color: "black" }} endIcon={<ArrowForwardIcon />}>
+            <Link
+              href={{
+                pathname: "/course/[course_name]/[cohort_name]/",
+
+                query: {
+                  course_name: courseName,
+                  cohort_name: cohortName,
+                  lesson: lessonData[index + 1].lesson_label,
+                },
+              }}
+              shallow={true}
+            >
+              Next Lesson
+            </Link>
+          </Button>
+        ) : null}
       </CardActions>
 
       <CardHeader
