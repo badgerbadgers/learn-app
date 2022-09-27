@@ -60,7 +60,7 @@ function Wizard(props) {
             return (
               <Step key={label} {...stepProps}>
                 <StepLabel {...labelProps}>{label}</StepLabel>
-                <StepContent>
+                <StepContent sx={{ '& .MuiGrid-container': { padding: '5px', } }}>
                   {activeStep < steps.length && (
                     <Fragment>
                       {renderStepContent(activeStep)}
