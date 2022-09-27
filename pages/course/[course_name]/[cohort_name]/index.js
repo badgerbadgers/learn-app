@@ -17,7 +17,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
     } else {
       setSelectedLabel(lessonData[0].lesson_label);
     }
-  }, []);
+  }, [lessonData]);
 
   const router = useRouter();
 
@@ -54,7 +54,6 @@ export default function CurrentCoursePage({ user, lessonData }) {
             let index = lessonData.findIndex(
               (doc) => doc.lesson_label === selectedLabel
             );
-            console.log(index);
             return (
               <DisplayCards
                 courseName={router.query["course_name"]}

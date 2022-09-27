@@ -9,12 +9,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 
-export default function Menu({
-  courseName,
-  cohortName,
-  lessonData,
-}) {
-
+export default function Menu({ courseName, cohortName, lessonData }) {
   return (
     <Grid item md={3} sx={{ maxWidth: "100%" }}>
       <Paper
@@ -36,10 +31,8 @@ export default function Menu({
 
           {lessonData.map((lessons) => {
             return (
-              <Stack key={lessons.lesson_label} > 
-              
-                {/* {console.log("test",lessons.lesson_label)} */}
-                <Link 
+              <Stack key={lessons.lesson_label}>
+                <Link
                   href={{
                     pathname: "/course/[course_name]/[cohort_name]/",
 
@@ -53,7 +46,6 @@ export default function Menu({
                   passHref
                   //updates the path of current page without rerunnig
                   shallow={true}
-                  
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>

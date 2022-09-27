@@ -14,11 +14,7 @@ export default function LessonHeader({
   index,
   lessonData,
 }) {
-  //  we don't need useEffect because were getting from index.js since it's parent component and it trickles down
-
   return (
-    // To Do: create functionality for buttons
-
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         {index !== 0 ? (
