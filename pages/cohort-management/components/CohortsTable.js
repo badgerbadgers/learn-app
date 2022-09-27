@@ -285,7 +285,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         rows={rows}
         columns={columns}
         rowsPerPageOptions={[5, 15, 100]}
-        autoPageSize={true}
+        // autoPageSize={true}
         checkboxSelection
         disableSelectionOnClick
         components={{

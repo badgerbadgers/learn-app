@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
                 if (!checkCourseId) {
                     const error = {
-                        error: "Course does not excist"
+                        error: "Course does not exist"
                     }
                     res.status(400).json({
                         success: false,

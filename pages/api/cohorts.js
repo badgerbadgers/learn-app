@@ -39,7 +39,7 @@ const createCohort = async (req, res) => {
         })
         if (existingCohortName) {
             const error = {
-                error: "Cohort name is not unique"
+                error: "This cohort name is already in use"
             }
             res.status(400).json({
                 success: false,
@@ -47,17 +47,23 @@ const createCohort = async (req, res) => {
             });
             return;
         }
-
+        const courseError = {
+            error: "Please select a course"
+        }
+        if (!cohortToDb.course) {
+            res.status(400).json({
+                success: false,
+                message: courseError
+            });
+            return;
+        }
         const checkCourseId = await Course.findOne({
             _id: cohortToDb.course
         })
         if (!checkCourseId) {
-            const error = {
-                error: "Course does not excist"
-            }
             res.status(400).json({
                 success: false,
-                message: error
+                message: courseError
             });
             return;
         }
