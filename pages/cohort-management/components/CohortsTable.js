@@ -1,7 +1,8 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import CancelIcon from '@mui/icons-material/Close';
@@ -10,10 +11,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import LinearProgress from '@mui/material/LinearProgress';
 import PropTypes from "prop-types";
 import SaveIcon from '@mui/icons-material/Save';
+import Snackbar from "@mui/material/Snackbar";
 import { Stack } from '@mui/material';
 import axios from "axios";
 import { format } from "date-fns";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -46,6 +48,7 @@ EditToolbar.propTypes = {
 export default function CohortsTable({ loading, tableRows, courses }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [snackbar, setSnackbar] = useState(null);
 
   useEffect(() => {
     setRows(tableRows)
@@ -59,9 +62,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           headers: { "Content-Type": "application/json" },
         }
       )
-      .then((res) => {
-        console.log("Deleted Cohort:", res);
-      })
       .catch((error) => {
         console.error("Error:", error);
       })
@@ -101,36 +101,46 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     }
   };
 
-  const processRowUpdate = async (newRow) => {
+
+  const processRowUpdate = async (newRow, oldRow) => {
+    if (!newRow.courseName) newRow.courseName = null;
     const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
-    try{
+    try {
       await axios
-      .post(
-        url,
-        {
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        }
-      )
-      .then((response) => {
-        const course = courses.find(item => item.value === newRow.courseName);
-        updatedRow = {
-          ...newRow,
-          id: response.data.data._id,
-          isNew: false,
-          courseName: course.label,
-          startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
-          endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
-          courseId: course.value,
-        };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-      });
-    }catch(error){
-      console.error("Error:", error);
+        .post(
+          url,
+          {
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newRow),
+          }
+        )
+        .then((response) => {
+          const course = courses.find(item => item.value === newRow.courseName);
+          updatedRow = {
+            ...newRow,
+            id: response.data.data._id,
+            isNew: false,
+            courseName: course.label,
+            startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
+            endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
+            courseId: course.value,
+          };
+          setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
+          setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        });
+    } catch (error) {
+      const errorMessage = Object.values(error.response.data.message)[0];
+      console.error("Error:", error.response.data);
+      throw new Error(errorMessage);
+
     };
     return updatedRow;
   };
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleProcessRowUpdateError = useCallback((error) => {
+    setSnackbar({ children: error.message, severity: 'error' });
+  }, []);
 
   const columns = [
     {
@@ -197,7 +207,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     {
       field: 'seats',
       headerName: 'Students',
-      type: 'string',
+      type: 'number',
       width: 100,
       headerAlign: 'center',
       editable: true,
@@ -275,6 +285,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         rows={rows}
         columns={columns}
         rowsPerPageOptions={[5, 15, 100]}
+        // autoPageSize={true}
         checkboxSelection
         disableSelectionOnClick
         components={{
@@ -297,12 +308,22 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         onRowEditStart={handleRowEditStart}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={(error) => console.log("ERROR", error)}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
         componentsProps={{
           toolbar: { setRows, setRowModesModel, rows }
         }}
         experimentalFeatures={{ newEditingApi: true }}
       />
+      {!!snackbar && (
+        <Snackbar
+          open
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          onClose={handleCloseSnackbar}
+          autoHideDuration={6000}
+        >
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
     </Box>
   );
 }
