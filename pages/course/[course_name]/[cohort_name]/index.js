@@ -11,7 +11,12 @@ export default function CurrentCoursePage({ user, lessonData }) {
   const [selectedLabel, setSelectedLabel] = useState("");
 
   useEffect(() => {
-    setSelectedLabel(lessonData[0].lesson_label);
+    if (!lessonData || lessonData.length === 0) {
+      alert("There are no lessons for this course"); //TODO: uniform error messages
+      return null;
+    } else {
+      setSelectedLabel(lessonData[0].lesson_label);
+    }
   }, []);
 
   const router = useRouter();
