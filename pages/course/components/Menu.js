@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 
-export default function Menu({ courseName, cohortName, lessonData }) {
+export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
   return (
     <Grid item md={3} sx={{ maxWidth: "100%" }}>
       <Paper
@@ -21,7 +21,7 @@ export default function Menu({ courseName, cohortName, lessonData }) {
         }}
       >
         <MenuList dense>
-          <MenuHeader />
+          <MenuHeader zoomLink={zoomLink} />
           {/* ^^ component */}
           <Divider sx={{ mb: "5px" }} />
 

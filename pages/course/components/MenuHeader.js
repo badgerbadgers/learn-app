@@ -6,21 +6,21 @@ import Stack from "@mui/material/Stack";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import CommentIcon from "@mui/icons-material/Comment";
 
-export default function MenuHeader() {
+export default function MenuHeader({ zoomLink }) {
   return (
     <Box component="div" sx={{ p: "1em" }}>
       <Typography variant="h6">Mentor Sessions</Typography>
-      <Typography variant="body1" >
-        During this course you will sign up for a minumum of one mentor session
+      <Typography variant="body1">
+        During this course you will sign up for a minimum of one mentor session
         a week
       </Typography>
 
       <Stack sx={{ display: "flex", alignItems: "flex-start" }}>
         <Button
-          href="" //To Do: link comes from Mary Alice
+          target="_blank"
+          href={zoomLink}
           aria-label="zoom link"
           variant="text"
-          component="div"
           startIcon={<VideocamIcon />}
           sx={{ color: "#338AAF", textTransform: "lowercase" }}
         >
@@ -31,7 +31,6 @@ export default function MenuHeader() {
           href="" //To Do: link comes from Mary Alice
           aria-label="slack announcements"
           variant="text"
-          component="div"
           startIcon={<CommentIcon />}
           sx={{
             color: "#338AAF",

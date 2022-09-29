@@ -37,28 +37,11 @@ export default function LessonHeader({
           </Button>
         ) : null}
 
-        {index === 0 ? (
+        {index !== lessonData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
           >
-            <Link
-              href={{
-                pathname: "/course/[course_name]/[cohort_name]/",
-
-                query: {
-                  course_name: courseName,
-                  cohort_name: cohortName,
-                  lesson: lessonData[index + 1].lesson_label,
-                },
-              }}
-              shallow={true}
-            >
-              Next Lesson
-            </Link>
-          </Button>
-        ) : index !== lessonData.length - 1 ? (
-          <Button sx={{ color: "black" }} endIcon={<ArrowForwardIcon />}>
             <Link
               href={{
                 pathname: "/course/[course_name]/[cohort_name]/",
@@ -89,8 +72,9 @@ export default function LessonHeader({
           gutterBottom: true,
         }}
       />
+      {/* TODO: get dates from cohort */}
       <Typography variant="h6" sx={{ textAlign: "center" }}>
-        Week Date
+        Week Date 
       </Typography>
       <Typography variant="body1" sx={{ textAlign: "center" }}>
         Date

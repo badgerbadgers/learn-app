@@ -46,7 +46,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
         </Typography>
         <Typography variant="body1">{mindset}</Typography>
       </CardContent>
-      
+
       <CardActions sx={{ padding: "16px" }}>
         <Button
           target="_blank"

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { privateLayout } from "../../../../components/PrivateLayout";
 import { getSession } from "next-auth/react";
-import { mongoLessonsAfterPipeline } from "../../../../lib/courseData";
+import {
+  mongoLessonsAfterPipeline,
+  getZoomLink,
+} from "../../../../lib/courseData";
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
 import Router, { useRouter } from "next/router";
 
-export default function CurrentCoursePage({ user, lessonData }) {
+export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
   const [selectedLabel, setSelectedLabel] = useState("");
 
   useEffect(() => {
@@ -45,6 +48,7 @@ export default function CurrentCoursePage({ user, lessonData }) {
         lessonData={lessonData}
         courseName={router.query["course_name"]}
         cohortName={router.query["cohort_name"]}
+        zoomLink={zoomLink}
       />
 
       {lessonData &&
@@ -91,15 +95,16 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
-  const lessonData = (await mongoLessonsAfterPipeline()) || null;
-
+  const cohortName = context.params["cohort_name"];
+  const lessonData = (await mongoLessonsAfterPipeline(cohortName)) || null;
+  const zoomLink = (await getZoomLink(cohortName)) || null;
   return {
     props: {
       courseName: context.params["course_name"],
-      cohortName: context.params["cohort_name"],
+      cohortName: cohortName,
       user,
       lessonData: JSON.parse(JSON.stringify(lessonData)),
+      zoomLink,
     },
   };
   // returning LessonData as props in index
