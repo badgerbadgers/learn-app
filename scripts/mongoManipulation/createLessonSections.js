@@ -53,7 +53,6 @@ const extractAllSections = async () => {
         const matchingSection = await db
           .collection("sections")
           .findOne(section);
-        console.log(section, matchingSection);
 
         if (!matchingSection) {
           const result = await db.collection("sections").insertOne(section);
