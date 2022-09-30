@@ -50,7 +50,7 @@ const fixLessonNames = async () => {
   } catch (e) {
     console.error(e);
   } finally {
-    client.close();
+    await client.close();
   }
 };
 
@@ -61,3 +61,4 @@ const run = async () => {
   process.exit(0);
 };
 
+run();
