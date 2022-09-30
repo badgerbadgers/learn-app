@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import getData from "../../../lib/getData";
 import { getSession } from "next-auth/react";
-import { privateLayout } from "../../../components/PrivateLayout";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
 
 const CohortManagement = () => {
   const url = "/api/cohorts";
