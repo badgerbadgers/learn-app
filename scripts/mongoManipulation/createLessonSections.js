@@ -3,11 +3,9 @@ This script processes the list of lessons per course and creates sections object
 It also fixes the naming of the lessons and sections.
 */
 
-//TODO: handle errors
-
 const { mongoConnection, getConfigParam } = require("../utils.js");
 
-const extractAllSections = async () => {
+const createLessonSections = async () => {
   const dbName = await getConfigParam("MONGODB_DB");
 
   const client = await mongoConnection();
@@ -67,14 +65,13 @@ const extractAllSections = async () => {
     }
   } catch (e) {
     console.error(e);
-    return null;
   } finally {
     await client.close();
   }
 };
 
 const run = async () => {
-  await extractAllSections();
+  await createLessonSections();
 
   console.log("all done");
   process.exit(0);
