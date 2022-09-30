@@ -6,7 +6,6 @@ It also fixes the naming of the lessons and sections.
 //TODO: handle errors
 
 const { mongoConnection, getConfigParam } = require("../utils.js");
-const _ = require("lodash");
 
 const extractAllSections = async () => {
   const dbName = await getConfigParam("MONGODB_DB");
@@ -46,8 +45,6 @@ const extractAllSections = async () => {
           ),
           course: course._id,
         };
-
-        const sectionKey = `${section.title}_${section.order}_${section.course}`;
 
         //look for a matching section in the db
         const matchingSection = await db
