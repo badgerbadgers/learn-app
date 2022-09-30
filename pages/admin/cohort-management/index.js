@@ -4,9 +4,9 @@ import CohortsTable from "./components/CohortsTable";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import getData from "../../lib/getData";
+import getData from "../../../lib/getData";
 import { getSession } from "next-auth/react";
-import { privateLayout } from "../../components/layout/PrivateLayout";
+import { privateLayout } from "../../../components/PrivateLayout";
 
 const CohortManagement = () => {
   const url = "/api/cohorts";
