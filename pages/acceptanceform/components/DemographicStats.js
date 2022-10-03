@@ -245,7 +245,16 @@ function DemographicStats() {
             }
           />
         </Grid>
-        <Grid item xs={12} sm={4} width="100%">
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+        >
           <FormLabel id="demo-radio-buttons-group-label">
             Currently employed:
           </FormLabel>
@@ -268,7 +277,16 @@ function DemographicStats() {
             />
           </RadioGroup>
         </Grid>
-        <Grid item xs={12} sm={4} width="100%">
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+        >
           <FormLabel id="demo-radio-buttons-group-label">
             Currently in school:
           </FormLabel>
@@ -291,7 +309,16 @@ function DemographicStats() {
             />
           </RadioGroup>
         </Grid>
-        <Grid item xs={12} sm={4} width="100%">
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+        >
           <FormLabel id="demo-radio-buttons-group-label" required>
             Low income:
           </FormLabel>
