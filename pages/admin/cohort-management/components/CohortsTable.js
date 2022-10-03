@@ -150,6 +150,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       minWidth: 100,
       editable: true,
       headerAlign: 'center',
+      renderCell: (params) => <a href={"cohorts/" + params.row.slug}>{params.row.cohortName}</a>,
     },
     {
       field: 'courseName',

@@ -36,6 +36,7 @@ const CohortManagement = () => {
       students: cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
       mentors: cohort.mentors && cohort.mentors[0] && cohort.mentors[1] ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}` : '', // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+      slug:cohort.slug,
     }
   }
   useEffect(() => {
