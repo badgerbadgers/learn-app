@@ -18,9 +18,11 @@ Once all scripts in `airtableMigration` have been executed, the scripts in `mong
 
 ## Cleanup
 
-The script `removeAirtableIds.js` in the `mongoManipulation` folder removes all fields holding Airtable Ids from all collections. These fields are not needed for the app to work, but are needed for the migration to work. **Do not run this script before you are certain you don't need these fields any more**, otherwise you'll need to migrate all the data from Airtable again.
+The scripts in the `mongoManipulation` folder remove redundant fields left by by the Airtable migration and Mongo manipulation scripts.
+
+These fields are not necessary for the app, but removing them before the migration is complete can make render some of the migration and manipulation scripts useless. In short, these scripts cannot be undone. **Do not run these scripts without being certain that you don't need these fields any more**, otherwise you might have to start the migration all over again.
 
 ## Database Structure
 
-Please not that the db structure created with these scripts matches the [planned schema](https://www.figma.com/file/J3bzOgbpXCXbAQGwBFCvZv/DB-Schema?node-id=72846%3A1187). Any changes made to the schema since the creation of these scripts may not be reflected.
+Please note that the db structure created with these scripts matches the [planned schema](https://www.figma.com/file/J3bzOgbpXCXbAQGwBFCvZv/DB-Schema?node-id=72846%3A1187). Any changes made to the schema since the creation of these scripts may not be reflected.
 
