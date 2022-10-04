@@ -121,7 +121,7 @@ function Wizard(props) {
         </Stepper>
       )}
 
-      {/* Renders step content before the last step conditionally if a view port width is 700px or less */}
+      {/* Renders step content before the last step conditionally if a view port width is more than 700px */}
       {!isSmallScreen && activeStep < steps.length && (
         <Fragment>
           {renderStepContent(activeStep)}
