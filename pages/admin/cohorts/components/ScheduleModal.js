@@ -20,14 +20,11 @@ const style = {
   };
   
 
-  export default function ScheduleModal() {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+  export default function ScheduleModal({open, setOpen, cohort}) {
     const handleClose = () => setOpen(false);
   
     return (
       <div>
-        <Button onClick={handleOpen}>Open modal</Button>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

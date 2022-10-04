@@ -1,16 +1,20 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 
+import ScheduleModal from './components/ScheduleModal';
 import getData from '../../../lib/getData';
 import { getSession } from 'next-auth/react';
 import { privateLayout } from '../../../components/PrivateLayout';
 import { useRouter } from 'next/router';
 
 const IndividualCohortPage = () => {
+  const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = router.query;
 
+  
 
 
   useEffect(() => {
@@ -22,7 +26,8 @@ const IndividualCohortPage = () => {
         const response = await getData(params, url);
         cohort = response.cohort;
         console.log("COHORT", cohort);
-        setCohort(cohort)
+        setCohort(cohort);
+        setLoading(!loading);
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
@@ -31,7 +36,7 @@ const IndividualCohortPage = () => {
 
   return (
     <Fragment>
-      {!cohort && (
+      {!cohort && !loading && (
         <Grid>
           <Typography variant="body1" gutterBottom>
             This cohort was not found
@@ -48,7 +53,15 @@ const IndividualCohortPage = () => {
             {cohort.cohort_name}
           </Typography>
 
-          <Button>Change Schedule</Button>
+          <Button onClick={()=> setOpen(true)}>Change Schedule</Button>
+          {open && 
+            <ScheduleModal 
+            open={open}
+            setOpen={setOpen}
+            cohort={cohort}
+            />
+
+          }
         </Grid>
 
       )
