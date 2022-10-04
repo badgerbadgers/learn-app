@@ -1,7 +1,6 @@
 import Cohort from "../../../lib/models/Cohort";
 import Course from "../../../lib/models/Course";
 import dbConnect from "../../../lib/dbConnect";
-import mongoose from "mongoose";
 
 export default async function handler(req, res) {
     const { method } = req;
