@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 
 import getData from '../../../lib/getData';
@@ -21,6 +21,7 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
+        console.log("COHORT", cohort);
         setCohort(cohort)
       })();
     } catch (error) {
@@ -30,50 +31,65 @@ const IndividualCohortPage = () => {
 
   return (
     <Fragment>
-    { !cohort && (
-      
-      <Typography variant="body1" gutterBottom>
-        <strong> This cohort was not found </strong>
-        </Typography>
+      {!cohort && (
+        <Grid>
+          <Typography variant="body1" gutterBottom>
+            This cohort was not found
+          </Typography>
+          <Button> Back to cohort management</Button>
+
+        </Grid>
+
+      )
+      }
+      {cohort && (
+        <Grid>
+          <Typography variant="h2" gutterBottom>
+            {cohort.cohort_name}
+          </Typography>
+
+          <Button>Change Schedule</Button>
+        </Grid>
+
+      )
+      }
+
+
+    </Fragment>
   )
 }
 
-<Button>Change Schedule</Button>
-</Fragment>
-  )
-}
-
-  export default IndividualCohortPage
+export default IndividualCohortPage
 
 
-  IndividualCohortPage.getLayout = privateLayout;
-  export async function getServerSideProps(context) {
-    const session = await getSession(context);
+IndividualCohortPage.getLayout = privateLayout;
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
 
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-    const { user } = session;
-    if (!user.hasProfile) {
-      return {
-        redirect: {
-          destination: "/signup",
-          permanent: false,
-        },
-      };
-    }
-    console.log('context', context)
-    const slug = context.params["slug"];
-
+  if (!session) {
     return {
-      props: {
-        slug: context.params["slug"],
-        user,
+      redirect: {
+        destination: "/",
+        permanent: false,
       },
     };
   }
+  const { user } = session;
+  if (!user.hasProfile) {
+    return {
+      redirect: {
+        destination: "/signup",
+        permanent: false,
+      },
+    };
+  }
+  console.log('context', context)
+  const slug = context.params["slug"];
+
+  return {
+    props: {
+      slug: context.params["slug"],
+      user,
+    },
+  };
+}
