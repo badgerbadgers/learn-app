@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 
 import ScheduleModal from './components/ScheduleModal';
@@ -13,9 +13,6 @@ const IndividualCohortPage = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = router.query;
-
-  
-
 
   useEffect(() => {
     let cohort = {}
@@ -38,10 +35,17 @@ const IndividualCohortPage = () => {
     <Fragment>
       {!cohort && !loading && (
         <Grid>
-          <Typography variant="body1" gutterBottom>
+          <Typography align="center" variant="body1" gutterBottom>
             This cohort was not found
           </Typography>
-          <Button> Back to cohort management</Button>
+          <Link
+            href="../cohort-management"
+            variant="body2"
+            component="button"
+            sx={{ m: 5 }}>
+            Back to cohort management
+          </Link>
+
 
         </Grid>
 
@@ -53,13 +57,13 @@ const IndividualCohortPage = () => {
             {cohort.cohort_name}
           </Typography>
 
-          <Button onClick={()=> setOpen(true)}>Change Schedule</Button>
-  
-            <ScheduleModal 
+          <Button onClick={() => setOpen(true)}>Change Schedule</Button>
+
+          <ScheduleModal
             open={open}
             setOpen={setOpen}
             cohort={cohort}
-            />
+          />
 
         </Grid>
 
@@ -105,3 +109,13 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+
+
+
+// [{type: "lesson",
+// lesson: "62e26dbb69dd077fc82fbfe1",
+// section: "633d9915ec0d4b5e83a6b05e"}, 
+// {type: "break",
+// content: "content",
+// section: "633d9915ec0d4b5e83a6b05e"}]
