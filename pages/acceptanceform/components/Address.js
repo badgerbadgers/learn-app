@@ -133,8 +133,8 @@ function Address() {
             {userInfoData.US_resident === "no" && (
               <Autocomplete
                 id="country-select-demo"
-                onChange={(event, value) =>
-                  (userInfoData.physical_country = value.label)
+                onChange={(e) =>
+                  updateUserInfoData("physical_country", e.target.value)
                 }
                 options={countries}
                 autoHighlight
@@ -268,8 +268,8 @@ function Address() {
             <Grid item xs={12} sm={6} width="100%">
               <Autocomplete
                 id="country-select-demo"
-                onChange={(event, value) =>
-                  (userInfoData.mailing_country = value.label)
+                onChange={(e) =>
+                  updateUserInfoData("mailing_country", e.target.value)
                 }
                 options={countries}
                 autoHighlight
