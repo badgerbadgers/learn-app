@@ -1,6 +1,4 @@
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
-import PrivateLayout from "../components/PrivateLayout";
-import PublicLayout from "../components/PublicLayout";
 import { SessionProvider } from "next-auth/react";
 import { StateProvider } from "../store";
 import "../styles/globals.css";
@@ -8,7 +6,7 @@ import Head from "next/head";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   // If the component has a getLayout() function, use it. Otherwise just render the page as is.
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = Component.getLayout || ((page) => page);
   return (
     <>
       <Head>

@@ -91,8 +91,8 @@ const NavBar = () => {
             alt="Code the Dream logo"
             src={
               mode === "dark"
-                ? "../img/logo/BookLogoGradient.png"
-                : "../img/logo/BookLogoGradient.png"
+                ? "/img/logo/BookLogoGradient.png"
+                : "/img/logo/BookLogoGradient.png"
             }
             sx={{
               mr: 3,

@@ -100,7 +100,6 @@ function LearningBackground() {
                 variant="outlined"
                 fullWidth
                 size="small"
-                InputLabelProps={{ shrink: true }}
                 value={userInfoData.prior_coding_education}
                 onChange={(e) =>
                   updateUserInfoData("prior_coding_education", e.target.value)
@@ -131,7 +130,6 @@ function LearningBackground() {
                 variant="outlined"
                 fullWidth
                 size="small"
-                InputLabelProps={{ shrink: true }}
                 value={userInfoData.prior_coding_languages}
                 onChange={handlePriorCodingLanguagesArrayChange}
                 input={
@@ -190,7 +188,6 @@ function LearningBackground() {
                 variant="outlined"
                 fullWidth
                 size="small"
-                InputLabelProps={{ shrink: true }}
                 value={userInfoData.learning_style}
                 onChange={handleLearningStyleArrayChange}
                 input={

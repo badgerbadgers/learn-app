@@ -103,7 +103,6 @@ function DemographicStats() {
               variant="outlined"
               fullWidth
               size="small"
-              InputLabelProps={{ shrink: true }}
               value={userInfoData.gender_identity}
               onChange={handleGenderIdentityArrayChange}
               input={
@@ -254,6 +253,7 @@ function DemographicStats() {
           justifyContent="center"
           alignItems="center"
           direction="column"
+          container
         >
           <FormLabel id="demo-radio-buttons-group-label">
             Currently employed:
@@ -286,6 +286,7 @@ function DemographicStats() {
           justifyContent="center"
           alignItems="center"
           direction="column"
+          container
         >
           <FormLabel id="demo-radio-buttons-group-label">
             Currently in school:
@@ -318,6 +319,7 @@ function DemographicStats() {
           justifyContent="center"
           alignItems="center"
           direction="column"
+          container
         >
           <FormLabel id="demo-radio-buttons-group-label" required>
             Low income:

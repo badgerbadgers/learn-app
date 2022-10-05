@@ -43,10 +43,7 @@ function Address() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <FormLabel
-              id="demo-radio-buttons-group-label"
-              labelPlacement="start"
-            >
+            <FormLabel id="demo-radio-buttons-group-label">
               US/US territory resident:
             </FormLabel>
             <RadioGroup
