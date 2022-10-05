@@ -54,14 +54,13 @@ const IndividualCohortPage = () => {
           </Typography>
 
           <Button onClick={()=> setOpen(true)}>Change Schedule</Button>
-          {open && 
+  
             <ScheduleModal 
             open={open}
             setOpen={setOpen}
             cohort={cohort}
             />
 
-          }
         </Grid>
 
       )
