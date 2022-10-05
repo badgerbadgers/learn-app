@@ -107,7 +107,11 @@ function Wizard(props) {
 
       {/* Renders horizontal stepper conditionally if a view port width is more than 700px */}
       {!isSmallScreen && (
-        <Stepper activeStep={activeStep} orientation="horizontal">
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          orientation="horizontal"
+        >
           {steps.map((label, index) => {
             const stepProps = {};
             const labelProps = {};
