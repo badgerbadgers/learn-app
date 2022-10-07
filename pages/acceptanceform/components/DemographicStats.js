@@ -145,19 +145,26 @@ function DemographicStats() {
             </Select>
           </FormControl>
         </Grid>
+
         <Grid item xs={12} sm={6} width="100%">
-          <TextField
-            name="gender_identity_self"
-            placeholder="Type your gender identity"
-            label="Gender Identity (self described)"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.gender_identity_self}
-            onChange={(e) =>
-              updateUserInfoData("gender_identity_self", e.target.value)
-            }
-          />
+          {/* Conditionally shows the input field if "Other" in the previous Select is chosen */}
+          {userInfoData.gender_identity.includes("Other") && (
+            <TextField
+              name="gender_identity_self"
+              placeholder="Type your gender identity"
+              label="Gender Identity (self described)"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              disabled={
+                userInfoData.gender_identity.includes("Other") ? false : true
+              }
+              value={userInfoData.gender_identity_self}
+              onChange={(e) =>
+                updateUserInfoData("gender_identity_self", e.target.value)
+              }
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6} width="100%">
           <FormControl sx={{ width: "100%" }} size="small">
@@ -175,33 +182,52 @@ function DemographicStats() {
                 updateUserInfoData("race_ethnicity", e.target.value)
               }
             >
-              <MenuItem value={10}>Asian/Pacific Islander</MenuItem>
-              <MenuItem value={20}>Arab/Middle Eastern</MenuItem>
-              <MenuItem value={30}>Black/Afro Descent/African</MenuItem>
-              <MenuItem value={40}>Hispanic/Latinx/a/o</MenuItem>
-              <MenuItem value={50}>Indigenous/Native American</MenuItem>
-              <MenuItem value={60}>White/European/European Descent</MenuItem>
-              <MenuItem value={70}>Bi-racial/Multi-racial</MenuItem>
-              <MenuItem value={80}>
+              <MenuItem value={"Asian/Pacific Islander"}>
+                Asian/Pacific Islander
+              </MenuItem>
+              <MenuItem value={"Arab/Middle Eastern"}>
+                Arab/Middle Eastern
+              </MenuItem>
+              <MenuItem value={"Black/Afro Descent/African"}>
+                Black/Afro Descent/African
+              </MenuItem>
+              <MenuItem value={"Hispanic/Latinx/a/o"}>
+                Hispanic/Latinx/a/o
+              </MenuItem>
+              <MenuItem value={"Indigenous/Native American"}>
+                Indigenous/Native American
+              </MenuItem>
+              <MenuItem value={"White/European/European Descent"}>
+                White/European/European Descent
+              </MenuItem>
+              <MenuItem value={"Bi-racial/Multi-racial"}>
+                Bi-racial/Multi-racial
+              </MenuItem>
+              <MenuItem value={"Some other race, ethnicity, or origin"}>
                 Some other race, ethnicity, or origin
               </MenuItem>
-              <MenuItem value={90}>Prefer not to say</MenuItem>
+              <MenuItem value={"Prefer not to say"}>Prefer not to say</MenuItem>
             </Select>
           </FormControl>
         </Grid>
+
+        {/* Conditionally shows the input field if "Some other race, ethnicity, or origin" in the previous Select is chosen */}
         <Grid item xs={12} sm={6} width="100%">
-          <TextField
-            name="race_ethnicity_self"
-            placeholder="Type your race/ethnicity"
-            label="Race/Ethnicity (self described)"
-            fullWidth
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={userInfoData.race_ethnicity_self}
-            onChange={(e) =>
-              updateUserInfoData("race_ethnicity_self", e.target.value)
-            }
-          />
+          {userInfoData.race_ethnicity ===
+            "Some other race, ethnicity, or origin" && (
+            <TextField
+              name="race_ethnicity_self"
+              placeholder="Type your race/ethnicity"
+              label="Race/Ethnicity (self described)"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.race_ethnicity_self}
+              onChange={(e) =>
+                updateUserInfoData("race_ethnicity_self", e.target.value)
+              }
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6} width="100%">
           <FormControl sx={{ width: "100%" }} size="small">
@@ -216,17 +242,23 @@ function DemographicStats() {
               value={userInfoData.education}
               onChange={(e) => updateUserInfoData("education", e.target.value)}
             >
-              <MenuItem value={10}>High School/equivalent</MenuItem>
-              <MenuItem value={20}>Tech/occupational certificate</MenuItem>
-              <MenuItem value={30}>Associate degree</MenuItem>
-              <MenuItem value={40}>Some college coursework completed</MenuItem>
-              <MenuItem value={50}>Bachelor degree</MenuItem>
-              <MenuItem value={60}>Master degree</MenuItem>
-              <MenuItem value={70}>Doctorate</MenuItem>
-              <MenuItem value={80}>
+              <MenuItem value={"High School/equivalent"}>
+                High School/equivalent
+              </MenuItem>
+              <MenuItem value={"Tech/occupational certificate"}>
+                Tech/occupational certificate
+              </MenuItem>
+              <MenuItem value={"Associate degree"}>Associate degree</MenuItem>
+              <MenuItem value={"Some college coursework completed"}>
+                Some college coursework completed
+              </MenuItem>
+              <MenuItem value={"Bachelor degree"}>Bachelor degree</MenuItem>
+              <MenuItem value={"Master degree"}>Master degree</MenuItem>
+              <MenuItem value={"Doctorate"}>Doctorate</MenuItem>
+              <MenuItem value={"Other coursework/licensures/certifications"}>
                 Other coursework/licensures/certifications
               </MenuItem>
-              <MenuItem value={90}>None</MenuItem>
+              <MenuItem value={"None"}>None</MenuItem>
             </Select>
           </FormControl>
         </Grid>

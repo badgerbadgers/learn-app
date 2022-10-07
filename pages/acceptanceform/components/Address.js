@@ -23,10 +23,11 @@ function Address() {
     });
 
     // When the checkbox is checked all physical address values already entered at that moment
-    // are being copied from respective mailing address values
+    // are being copied into the respective mailing address values
     if (userInfoData.mailing_same) {
       userInfoData.mailing_zipcode = userInfoData.physical_zipcode;
-      userInfoData.mailing_address = userInfoData.physical_address;
+      userInfoData.mailing_address_1 = userInfoData.physical_address_1;
+      userInfoData.mailing_address_2 = userInfoData.physical_address_2;
       userInfoData.mailing_city = userInfoData.physical_city;
       userInfoData.mailing_state = userInfoData.physical_state;
       userInfoData.mailing_country = userInfoData.physical_country;
@@ -37,12 +38,30 @@ function Address() {
     <FormControl>
       <Grid container p={3} justify="space-between">
         <Grid container spacing={2} justify="space-between">
-          <Grid item xs={12} sm={12} width="100%">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            container
+          >
             <Typography variant="body1" gutterBottom>
               <strong>Physical Address: </strong>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} width="100%">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            container
+          >
             <FormLabel id="demo-radio-buttons-group-label">
               US/US territory resident:
             </FormLabel>
@@ -87,15 +106,29 @@ function Address() {
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             <TextField
-              name="physical_address"
-              placeholder="Type your address including apartment #"
+              name="physical_address_1"
+              placeholder="Type your address"
               label="Street Address"
               fullWidth
               size="small"
               InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_address}
+              value={userInfoData.physical_address_1}
               onChange={(e) =>
-                updateUserInfoData("physical_address", e.target.value)
+                updateUserInfoData("physical_address_1", e.target.value)
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            <TextField
+              name="physical_address_2"
+              placeholder="Type your #"
+              label="Apt/Unit/Suite #"
+              fullWidth
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={userInfoData.physical_address_2}
+              onChange={(e) =>
+                updateUserInfoData("physical_address_2", e.target.value)
               }
             />
           </Grid>
@@ -129,7 +162,7 @@ function Address() {
             />
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditional rendering of a country list depending on the US residency value */}
+            {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
             {userInfoData.US_resident === "no" && (
               <Autocomplete
                 id="country-select-demo"
@@ -168,13 +201,30 @@ function Address() {
               />
             )}
           </Grid>
-
-          <Grid item xs={12} sm={12} width="100%">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            container
+          >
             <Typography variant="body1" gutterBottom>
               <strong>Mailing Address: </strong>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} width="100%">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            container
+          >
             <FormControlLabel
               control={
                 <Checkbox
@@ -188,9 +238,9 @@ function Address() {
             />
           </Grid>
 
-          {/* Conditional rendering of an input depending on the checkbox same as physical address checked value */}
-          {!userInfoData.mailing_same && (
-            <Grid item xs={12} sm={6} width="100%">
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
               <TextField
                 name="mailing_zipcode"
                 placeholder="Type your ZIP code"
@@ -205,30 +255,47 @@ function Address() {
                   updateUserInfoData("mailing_zipcode", e.target.value)
                 }
               />
-            </Grid>
-          )}
-
-          {/* Conditional rendering of an input depending on the checkbox same as physical address checked value */}
-          {!userInfoData.mailing_same && (
-            <Grid item xs={12} sm={6} width="100%">
+            )}
+          </Grid>
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
               <TextField
-                name="mailing_address"
-                placeholder="Type your address including apartment #"
+                name="mailing_address_1"
+                placeholder="Type your address"
                 label="Street Address"
                 fullWidth
                 size="small"
                 InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_address}
+                value={userInfoData.mailing_address_1}
                 onChange={(e) =>
-                  updateUserInfoData("mailing_address", e.target.value)
+                  updateUserInfoData("mailing_address_1", e.target.value)
                 }
               />
-            </Grid>
-          )}
+            )}
+          </Grid>
 
-          {/* Conditional rendering of an input depending on the checkbox same as physical address checked value */}
-          {!userInfoData.mailing_same && (
-            <Grid item xs={12} sm={6} width="100%">
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
+              <TextField
+                name="mailing_address_2"
+                placeholder="Type your #"
+                label="Apt/Unit/Suite #"
+                fullWidth
+                size="small"
+                InputLabelProps={{ shrink: true }}
+                value={userInfoData.mailing_address_2}
+                onChange={(e) =>
+                  updateUserInfoData("mailing_address_2", e.target.value)
+                }
+              />
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
               <TextField
                 name="mailing_city"
                 placeholder="Type your city"
@@ -242,12 +309,12 @@ function Address() {
                   updateUserInfoData("mailing_city", e.target.value)
                 }
               />
-            </Grid>
-          )}
+            )}
+          </Grid>
 
-          {/* Conditional rendering of an input depending on the checkbox same as physical address checked value */}
-          {!userInfoData.mailing_same && (
-            <Grid item xs={12} sm={6} width="100%">
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
               <TextField
                 name="mailing_state"
                 placeholder="Type your state or province"
@@ -260,14 +327,15 @@ function Address() {
                   updateUserInfoData("mailing_state", e.target.value)
                 }
               />
-            </Grid>
-          )}
+            )}
+          </Grid>
 
-          {/* Conditional rendering of an input depending on the checkbox same as physical address checked value */}
-          {!userInfoData.mailing_same && (
-            <Grid item xs={12} sm={6} width="100%">
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
               <Autocomplete
                 id="country-select-demo"
+                disabled={userInfoData.mailing_same ? true : false}
                 onChange={(e) =>
                   updateUserInfoData("mailing_country", e.target.value)
                 }
@@ -301,8 +369,8 @@ function Address() {
                   />
                 )}
               />
-            </Grid>
-          )}
+            )}
+          </Grid>
         </Grid>
       </Grid>
     </FormControl>
