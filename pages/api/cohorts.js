@@ -102,25 +102,21 @@ const sanitize = async (obj) => {
 
 const createSchedule = async (courseId) => {
     let schedule = [];
-    try{
+    try {
         let lessonsInCourse = await Course.findOne({
             _id: courseId
         }, "lessons");
         lessonsInCourse = lessonsInCourse.lessons;
         const sortedLessons = await Lesson
-            .find( {_id:{$in:lessonsInCourse}})
-            .select({ _id: 1, order: 1, section:1 })
-            .sort({order:1});
-        for (let l of sortedLessons) {
-            let lesson =  {
+            .find({ _id: { $in: lessonsInCourse } })
+            .select({ _id: 1, order: 1, section: 1 })
+            .sort({ order: 1 });
+        sortedLessons.map(l => schedule.push({
             lesson: l._id,
-            type:"lesson",
+            type: "lesson",
             section: l.section,
-        };
-            schedule.push(lesson);
-        }
-
-    }catch (error){
+        }))
+    } catch (error) {
         console.log(error, "Can't fetch lessons from course");
     }
 

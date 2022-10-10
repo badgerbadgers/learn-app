@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
-
 import TextField from '@mui/material/TextField'
 import { format } from "date-fns";
 
-export default function CohortStartDatePicker({ cohort }) {
-  const startDate = cohort.start_date ? format(new Date(cohort.start_date), "yyyy-MM-dd") : "";
+export default function CohortStartDatePicker({id, startDate}) {
+  const defaultVal = startDate ? format(new Date(startDate), "yyyy-MM-dd") : "";
 
   return (
     <TextField
       id="date"
       label="Start Date"
       type="date"
-      defaultValue={startDate}
+      defaultValue={defaultVal}
       sx={{ width: 220 }}
       InputLabelProps={{
         shrink: true,

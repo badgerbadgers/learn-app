@@ -9,7 +9,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-export default function ScheduleModal({open, setOpen, cohort}) {
+export default function ScheduleModal({open, setOpen, id, title, startDate, schedule}) {
   // const [fullWidth, setFullWidth] = useState(true);
   // const [maxWidth, setMaxWidth] = useState('sm');
 
@@ -24,7 +24,7 @@ export default function ScheduleModal({open, setOpen, cohort}) {
   //   setFullWidth(event.target.checked);
   // };
 
-
+console.log("cohort", id, title, startDate, schedule)
 
 
   const handleClickOpen = () => {
@@ -61,8 +61,11 @@ export default function ScheduleModal({open, setOpen, cohort}) {
           width: '100%',
           mt: 1,
           }}> 
-            Current schedule for {cohort.cohort_name} 
-            <CohortStartDatePicker cohort={cohort}/>
+            Current schedule for {title} 
+            <CohortStartDatePicker 
+            id={id}
+            startDate={startDate}
+            />
             </DialogTitle> 
         <DialogContent>
           <DialogContentText>

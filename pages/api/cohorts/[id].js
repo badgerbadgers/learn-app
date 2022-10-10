@@ -106,14 +106,12 @@ const createSchedule = async (courseId) => {
             .find( {_id:{$in:lessonsInCourse}})
             .select({ _id: 1, order: 1, section:1 })
             .sort({order:1});
-        for (let l of sortedLessons) {
-            let lesson =  {
+        sortedLessons.map( l => schedule.push( {
             lesson: l._id,
             type:"lesson",
             section: l.section,
-        };
-            schedule.push(lesson);
-        }
+        }))
+
 
     }catch (error){
         console.log(error, "Can't fetch lessons from course");

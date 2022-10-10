@@ -55,7 +55,10 @@ const IndividualCohortPage = () => {
           <ScheduleModal
             open={open}
             setOpen={setOpen}
-            cohort={cohort}
+            id = {cohort._id}
+            title={cohort.cohort_name}
+            startDate={cohort.start_date}
+            schedule={cohort.schedule}
           />
         </Grid>
       )
