@@ -1,0 +1,33 @@
+.formContainer {
+  width: 100%;
+  margin-left: auto;
+  box-sizing: border-box;
+  margin-right: auto;
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 24px;
+}
+
+.paper {
+  padding: 24px;
+}
+
+.titleForm {
+  text-align: center;
+}
+
+.descriptionForm {
+  text-align: justify;
+}
+
+.highlighted {
+  font-weight: bold;
+}
+
+.headerLogo {
+  width: 120px;
+  height: auto;
+  margin: 0 auto;
+  position: relative;
+}
