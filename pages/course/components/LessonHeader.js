@@ -11,6 +11,8 @@ export default function LessonHeader({
   courseName,
   cohortName,
   title,
+  lessonOrder,
+  sectionOrder,
   index,
   lessonData,
 }) {
@@ -27,7 +29,7 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index - 1].lesson_label,
+                  lesson: lessonData[index - 1].title,
                 },
               }}
               shallow={true}
@@ -49,7 +51,7 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index + 1].lesson_label,
+                  lesson: lessonData[index + 1].title,
                 },
               }}
               shallow={true}
@@ -61,7 +63,8 @@ export default function LessonHeader({
       </CardActions>
 
       <CardHeader
-        title={title}
+        
+        title={`Lesson ${sectionOrder}.${lessonOrder} :${title}`}
         titleTypographyProps={{
           variant: "h4",
           align: "center",
@@ -74,7 +77,7 @@ export default function LessonHeader({
       />
       {/* TODO: get dates from cohort */}
       <Typography variant="h6" sx={{ textAlign: "center" }}>
-        Week Date 
+        Week Date
       </Typography>
       <Typography variant="body1" sx={{ textAlign: "center" }}>
         Date

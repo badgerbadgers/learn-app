@@ -18,7 +18,7 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
       alert("There are no lessons for this course"); //TODO: uniform error messages
       return null;
     } else {
-      setSelectedLabel(lessonData[0].lesson_label);
+      setSelectedLabel(lessonData[0].title);
     }
   }, [lessonData]);
 
@@ -54,9 +54,9 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
       {lessonData &&
         lessonData.map((doc) => {
           // filling in cards based on selectedLabel
-          if (doc.lesson_label === selectedLabel) {
+          if (doc.title === selectedLabel) {
             let index = lessonData.findIndex(
-              (doc) => doc.lesson_label === selectedLabel
+              (doc) => doc.title === selectedLabel
             );
             return (
               <DisplayCards
