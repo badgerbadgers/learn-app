@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb');
 
 import Cohort from "../../lib/models/Cohort";
 import Course from "../../lib/models/Course";
+import Lesson from "../../lib/models/Lesson";
 import dbConnect from "../../lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -68,7 +69,7 @@ const createCohort = async (req, res) => {
             });
             return;
         }
-        cohortToDb.lessons = createSchedule(cohortToDb.course)
+        cohortToDb.schedule = await createSchedule(cohortToDb.course)
         const cohort = await Cohort.create(cohortToDb)
         if (!cohort) {
             return res.status(400).json({ success: false })
@@ -106,11 +107,15 @@ const createSchedule = async (courseId) => {
     try{
         const lessonsArr = await Course.findOne({
             _id: courseId
-        }, "lessons")
-        console.log(lessonsArr)
-        for (id in lessonsArr) {
-            console.log(id)
-            
+        }, "lessons");
+        for (let id of lessonsArr.lessons) {
+            let lesson =  {
+            id,
+            type:"lesson"};
+            const lessonData = await Lesson.findById(id);
+            lesson.title = lessonData.title;
+            lesson.section = lessonData.section[0];
+            schedule.push(lesson);
         }
 
     }catch (error){
