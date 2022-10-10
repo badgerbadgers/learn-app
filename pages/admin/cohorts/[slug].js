@@ -22,9 +22,8 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        console.log("COHORT", cohort);
         setCohort(cohort);
-        setLoading(!loading);
+        setLoading(!loading); // if cohort???
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
@@ -99,12 +98,3 @@ export async function getServerSideProps(context) {
   };
 }
 
-
-
-
-// [{type: "lesson",
-// lesson: "62e26dbb69dd077fc82fbfe1",
-// section: "633d9915ec0d4b5e83a6b05e"}, 
-// {type: "break",
-// content: "content",
-// section: "633d9915ec0d4b5e83a6b05e"}]

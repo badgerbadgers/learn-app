@@ -35,7 +35,6 @@ const getCohorts = async (req, res) => {
 const createCohort = async (req, res) => {
     try {
         const cohortToDb = await sanitize(JSON.parse(req.body.body));
-        console.log("CTDB", cohortToDb);
         const existingCohortName = await Cohort.findOne({
             cohort_name: cohortToDb.cohort_name
         })
@@ -105,16 +104,20 @@ const sanitize = async (obj) => {
 const createSchedule = async (courseId) => {
     let schedule = [];
     try{
-        const lessonsArr = await Course.findOne({
+        let lessonsInCourse = await Course.findOne({
             _id: courseId
         }, "lessons");
-        for (let id of lessonsArr.lessons) {
+        lessonsInCourse = lessonsInCourse.lessons;
+        const sortedLessons = await Lesson
+            .find( {_id:{$in:lessonsInCourse}})
+            .select({ _id: 1, order: 1, section:1 })
+            .sort({order:1});
+        for (let l of sortedLessons) {
             let lesson =  {
-            id,
-            type:"lesson"};
-            const lessonData = await Lesson.findById(id, ["title", "section"]);
-            lesson.title = lessonData.title;
-            lesson.section = lessonData.section[0];
+            lesson: l._id,
+            type:"lesson",
+            section: l.section,
+        };
             schedule.push(lesson);
         }
 
