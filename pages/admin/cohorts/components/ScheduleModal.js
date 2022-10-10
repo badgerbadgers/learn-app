@@ -25,6 +25,9 @@ export default function ScheduleModal({open, setOpen, cohort}) {
   // };
 
 
+  console.log("cohort", cohort);
+  console.log("coh sch", cohort.schedule);
+
   const handleClickOpen = () => {
     setOpen(true);
   };

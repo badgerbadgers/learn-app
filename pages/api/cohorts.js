@@ -112,7 +112,7 @@ const createSchedule = async (courseId) => {
             let lesson =  {
             id,
             type:"lesson"};
-            const lessonData = await Lesson.findById(id);
+            const lessonData = await Lesson.findById(id, ["title", "section"]);
             lesson.title = lessonData.title;
             lesson.section = lessonData.section[0];
             schedule.push(lesson);

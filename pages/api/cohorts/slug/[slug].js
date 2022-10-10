@@ -8,7 +8,8 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET":
             try {
-                const cohort = await Cohort.findOne({slug:slug}).exec();    // API won't return cohorts with time stapm in property deleted_at        
+                const cohort = await Cohort.findOne({slug:slug}).exec().populate('cohort.');    // API won't return cohorts with time stapm in property deleted_at        
+                
                 res.status(200).json({ cohort: cohort })
             } catch (error) {
                 res.status(400).json({ success: false })
