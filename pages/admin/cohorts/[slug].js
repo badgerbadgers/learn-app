@@ -1,4 +1,4 @@
-import { Button, Grid, Link, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 
 import ScheduleModal from './components/ScheduleModal';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const IndividualCohortPage = () => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const router = useRouter();
   const query = router.query;
 
@@ -38,39 +38,29 @@ const IndividualCohortPage = () => {
           <Typography align="center" variant="body1" gutterBottom>
             This cohort was not found
           </Typography>
-          <Link
-            href="../cohort-management"
-            variant="body2"
-            component="button"
+          <Button
+            href="/admin/cohort-management"
             sx={{ m: 5 }}>
             Back to cohort management
-          </Link>
-
-
+          </Button>
         </Grid>
 
       )
       }
       {cohort && (
         <Grid>
-          <Typography variant="h2" gutterBottom>
+          <Typography variant="h2" align="center" gutterBottom>
             {cohort.cohort_name}
           </Typography>
-
-          <Button onClick={() => setOpen(true)}>Change Schedule</Button>
-
+          <Button align="center" onClick={() => setOpen(true)}>Change Schedule</Button>
           <ScheduleModal
             open={open}
             setOpen={setOpen}
             cohort={cohort}
           />
-
         </Grid>
-
       )
       }
-
-
     </Fragment>
   )
 }
@@ -99,7 +89,6 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  console.log('context', context)
   const slug = context.params["slug"];
 
   return {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import Button from '@mui/material/Button';
+import CohortStartDatePicker from './CohortStartDatePicker';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,15 +37,33 @@ export default function ScheduleModal({open, setOpen, cohort}) {
     <div>
       
       <Dialog 
-      PaperProps={{ sx: { width: "100%", height: "100%" } }}
+      
+      PaperProps={{ sx: { width: "100%", height: "100%", p:4 } }}
       // fullWidth={true}
       // maxWidth={true}
       maxWidth="xl"
       open={open} 
       onClose={handleClose}>
-        <DialogTitle sx={{ 
+        <DialogTitle
+        component="div"
+        variant="Body2"
+
+         sx={{ 
           fontFamily: "Gotham Rounded",
-          fontSize: "2rem", color:'#FF5C35'}}>Current schedule for <strong> {cohort.cohort_name} </strong> </DialogTitle>
+          fontWeight: "100",
+          // fontSize: "1.5rem", 
+          color:'#FF5C35',
+          fontSize: "36px",
+          // backgroundColor:"green",
+          justifyContent:"space-between",
+      display:'flex',
+          // media q or responsive fz
+          width: '100%',
+          mt: 1,
+          }}> 
+            Current schedule for {cohort.cohort_name} 
+            <CohortStartDatePicker cohort={cohort}/>
+            </DialogTitle> 
         <DialogContent>
           <DialogContentText>
             To subscribe to this website, please enter your email address here. We
@@ -61,8 +80,8 @@ export default function ScheduleModal({open, setOpen, cohort}) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -34,6 +34,7 @@ const getCohorts = async (req, res) => {
 const createCohort = async (req, res) => {
     try {
         const cohortToDb = await sanitize(JSON.parse(req.body.body));
+        console.log("CTDB", cohortToDb);
         const existingCohortName = await Cohort.findOne({
             cohort_name: cohortToDb.cohort_name
         })
@@ -67,7 +68,7 @@ const createCohort = async (req, res) => {
             });
             return;
         }
-
+        cohortToDb.lessons = createSchedule(cohortToDb.course)
         const cohort = await Cohort.create(cohortToDb)
         if (!cohort) {
             return res.status(400).json({ success: false })
@@ -98,3 +99,23 @@ const sanitize = async (obj) => {
         created_at: obj.created_at ? obj.created_at : new Date(),
     }
 };
+
+
+const createSchedule = async (courseId) => {
+    let schedule = [];
+    try{
+        const lessonsArr = await Course.findOne({
+            _id: courseId
+        }, "lessons")
+        console.log(lessonsArr)
+        for (id in lessonsArr) {
+            console.log(id)
+            
+        }
+
+    }catch (error){
+        console.log(error, "Can't fetch lessons from course");
+    }
+
+    return schedule
+}
