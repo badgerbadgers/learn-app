@@ -100,7 +100,6 @@ const sanitize = async (obj) => {
     }
 };
 
-
 const createSchedule = async (courseId) => {
     let schedule = [];
     try{

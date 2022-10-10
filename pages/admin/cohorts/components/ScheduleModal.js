@@ -41,8 +41,6 @@ export default function ScheduleModal({open, setOpen, cohort}) {
       <Dialog 
       
       PaperProps={{ sx: { width: "100%", height: "100%", p:4 } }}
-      // fullWidth={true}
-      // maxWidth={true}
       maxWidth="xl"
       open={open} 
       onClose={handleClose}>

@@ -1,5 +1,6 @@
 import Cohort from "../../../lib/models/Cohort";
 import Course from "../../../lib/models/Course";
+import Lesson from "../../../lib/models/Lesson";
 import dbConnect from "../../../lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -46,6 +47,7 @@ export default async function handler(req, res) {
                     });
                     return;
                 }
+                cohortToDb.schedule = await createSchedule(cohortToDb.course);
                 const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true });
 
                 if (!cohort) {
@@ -91,4 +93,31 @@ const sanitize = async (obj) => {
         seats: obj.seats || 0,
         slug: obj.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
     }
+}
+
+const createSchedule = async (courseId) => {
+    let schedule = [];
+    try{
+        let lessonsInCourse = await Course.findOne({
+            _id: courseId
+        }, "lessons");
+        lessonsInCourse = lessonsInCourse.lessons;
+        const sortedLessons = await Lesson
+            .find( {_id:{$in:lessonsInCourse}})
+            .select({ _id: 1, order: 1, section:1 })
+            .sort({order:1});
+        for (let l of sortedLessons) {
+            let lesson =  {
+            lesson: l._id,
+            type:"lesson",
+            section: l.section,
+        };
+            schedule.push(lesson);
+        }
+
+    }catch (error){
+        console.log(error, "Can't fetch lessons from course");
+    }
+
+    return schedule
 }
