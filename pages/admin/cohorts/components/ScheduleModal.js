@@ -8,8 +8,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import ScheduleItem from './ScheduleItem';
+import { Grid } from '@mui/material';
 
-export default function ScheduleModal({open, setOpen, id, title, startDate, schedule}) {
+export default function ScheduleModal({ open, setOpen, id, title, startDate, schedule }) {
   // const [fullWidth, setFullWidth] = useState(true);
   // const [maxWidth, setMaxWidth] = useState('sm');
 
@@ -24,7 +26,7 @@ export default function ScheduleModal({open, setOpen, id, title, startDate, sche
   //   setFullWidth(event.target.checked);
   // };
 
-console.log("cohort", id, title, startDate, schedule)
+  console.log("cohort", id, title, startDate, schedule)
 
 
   const handleClickOpen = () => {
@@ -37,49 +39,55 @@ console.log("cohort", id, title, startDate, schedule)
 
   return (
     <div>
-      
-      <Dialog 
-      
-      PaperProps={{ sx: { width: "100%", height: "100%", p:4 } }}
-      maxWidth="xl"
-      open={open} 
-      onClose={handleClose}>
-        <DialogTitle
-        component="div"
-        variant="Body2"
 
-         sx={{ 
-          fontFamily: "Gotham Rounded",
-          fontWeight: "100",
-          // fontSize: "1.5rem", 
-          color:'#FF5C35',
-          fontSize: "36px",
-          // backgroundColor:"green",
-          justifyContent:"space-between",
-      display:'flex',
-          // media q or responsive fz
-          width: '100%',
-          mt: 1,
-          }}> 
-            Current schedule for {title} 
-            <CohortStartDatePicker 
+      <Dialog
+
+        PaperProps={{ sx: { width: "100%", height: "100%", p: 4 } }}
+        maxWidth="xl"
+        open={open}
+        onClose={handleClose}>
+        <DialogTitle
+          component="div"
+          variant="Body2"
+
+          sx={{
+            fontFamily: "Gotham Rounded",
+            fontWeight: "100",
+            color: '#FF5C35',
+            fontSize: "36px",
+            justifyContent: "space-between",
+            display: 'flex',
+            // media q or responsive fz
+            width: '100%',
+            mt: 1,
+          }}>
+          Current schedule for {title}
+          <CohortStartDatePicker
             id={id}
             startDate={startDate}
-            />
-            </DialogTitle> 
-        <DialogContent>
-          <DialogContentText>
-            content
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
           />
+        </DialogTitle>
+
+
+        <DialogContent >
+          <Grid >
+            {schedule.map((week, idx) => {
+              console.log("week", week, "idx", idx);
+              return (
+              // <Grid item key={week.lesson}>
+                <ScheduleItem 
+                  key={week.lesson}
+                  id={id}
+                  startDate={startDate}
+                  lesson={week.lesson}
+                  weekNumber={idx+1}
+                  // showBtn={}
+                />
+              // </Grid>
+              )
+            })
+          }
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button color="secondary" onClick={handleClose}>Cancel</Button>
