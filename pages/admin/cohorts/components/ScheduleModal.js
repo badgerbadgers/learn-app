@@ -74,16 +74,17 @@ export default function ScheduleModal({ open, setOpen, id, title, startDate, sch
             {schedule.map((week, idx) => {
               console.log("week", week, "idx", idx);
               return (
-              // <Grid item key={week.lesson}>
+                  // <h1 key={idx}>hi</h1>
+        
                 <ScheduleItem 
-                  key={week.lesson}
+                  key={idx}
                   id={id}
                   startDate={startDate}
-                  lesson={week.lesson}
+                  lesson={week.lesson.title}
                   weekNumber={idx+1}
                   // showBtn={}
                 />
-              // </Grid>
+   
               )
             })
           }

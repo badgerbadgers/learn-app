@@ -22,6 +22,7 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
+        console.log("!!!cohort",cohort)
         setCohort(cohort);
         setLoading(!loading); // if cohort???
       })();

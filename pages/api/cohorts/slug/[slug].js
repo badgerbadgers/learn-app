@@ -27,10 +27,20 @@ export default async function handler(req, res) {
                             populate: {
                                 path: 'section',
                                 model: 'Section',
-                              }
-                          },
+                              },
+                            },
+                            {
+                            path: "schedule",
+                            model: "Lesson",
+                            select: "title",
+                            populate: {
+                                path: 'lesson',
+                                model: 'Lesson',
+                                }
+                        },
                     ]
-                ).exec();            
+                ).exec();
+                console.log("sluf cohort", cohort.schedule[0]);            
                 res.status(200).json({ cohort: cohort })
             } catch (error) {
                 console.error(error)
