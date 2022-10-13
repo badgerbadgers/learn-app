@@ -56,7 +56,7 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
           // filling in cards based on selectedLabel
           if (doc.title === selectedLabel) {
             let index = lessonData.findIndex(
-              (doc) => doc.title === selectedLabel
+              doc => doc.title === selectedLabel
             );
             return (
               <DisplayCards
@@ -95,13 +95,13 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const cohortName = context.params["cohort_name"];
-  const lessonData = (await mongoLessonsAfterPipeline(cohortName)) || null;
-  const zoomLink = (await getZoomLink(cohortName)) || null;
+  const slug = context.params["cohort_name"];
+  const lessonData = (await mongoLessonsAfterPipeline(slug)) || null;
+  const zoomLink = (await getZoomLink(slug)) || null;
   return {
     props: {
       courseName: context.params["course_name"],
-      cohortName: cohortName,
+      slug: slug,
       user,
       lessonData: JSON.parse(JSON.stringify(lessonData)),
       zoomLink,

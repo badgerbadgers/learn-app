@@ -64,7 +64,7 @@ export default function LessonHeader({
 
       <CardHeader
         
-        title={`Lesson ${sectionOrder}.${lessonOrder} :${title}`}
+        title={`Lesson ${sectionOrder}.${lessonOrder}: ${title}`}
         titleTypographyProps={{
           variant: "h4",
           align: "center",
