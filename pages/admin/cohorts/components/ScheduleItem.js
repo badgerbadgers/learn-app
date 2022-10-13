@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-export default function ScheduleItem({id, startDate, lesson, weekNumber }) {
+export default function ScheduleItem({id, startDate, lesson, lessonStartDate, showBreakBtns }) {
    
     return <Box
     sx={{ backgroundColor:"green", 
@@ -10,7 +10,7 @@ export default function ScheduleItem({id, startDate, lesson, weekNumber }) {
 }}
     > Item  {lesson} 
     <div>
-        <Box> {weekNumber} or date</Box>
+        <Box> {lessonStartDate} </Box>
         <Box></Box>
     </div>
     </Box>

@@ -22,9 +22,9 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        console.log("!!!cohort",cohort)
+        console.log("!!!cohort",cohort, cohort.cohort_name)
         setCohort(cohort);
-        setLoading(!loading); // if cohort???
+        setLoading(false); // if cohort???
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
@@ -57,7 +57,7 @@ const IndividualCohortPage = () => {
             open={open}
             setOpen={setOpen}
             id = {cohort._id}
-            title={cohort.cohort_name}
+            cohortName={cohort.cohort_name}
             startDate={cohort.start_date}
             schedule={cohort.schedule}
           />
@@ -68,7 +68,7 @@ const IndividualCohortPage = () => {
   )
 }
 
-export default IndividualCohortPage
+export default IndividualCohortPage;
 
 
 IndividualCohortPage.getLayout = privateLayout;

@@ -10,8 +10,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import ScheduleItem from './ScheduleItem';
 import { Grid } from '@mui/material';
+// import { addDays, format } from 'date-fns/esm';
+import { addDays, format } from 'date-fns'
 
-export default function ScheduleModal({ open, setOpen, id, title, startDate, schedule }) {
+export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule }) {
   // const [fullWidth, setFullWidth] = useState(true);
   // const [maxWidth, setMaxWidth] = useState('sm');
 
@@ -26,7 +28,7 @@ export default function ScheduleModal({ open, setOpen, id, title, startDate, sch
   //   setFullWidth(event.target.checked);
   // };
 
-  console.log("cohort", id, title, startDate, schedule)
+  console.log("cohort", id, cohortName, startDate, schedule)
 
 
   const handleClickOpen = () => {
@@ -61,7 +63,7 @@ export default function ScheduleModal({ open, setOpen, id, title, startDate, sch
             width: '100%',
             mt: 1,
           }}>
-          Current schedule for {title}
+          Current schedule for {cohortName}
           <CohortStartDatePicker
             id={id}
             startDate={startDate}
@@ -72,17 +74,17 @@ export default function ScheduleModal({ open, setOpen, id, title, startDate, sch
         <DialogContent >
           <Grid >
             {schedule.map((week, idx) => {
-              console.log("week", week, "idx", idx);
-              return (
-                  // <h1 key={idx}>hi</h1>
-        
+              const showBreakBtns = (idx != schedule.length) ? true : false;
+  
+              const lessonStartDate = startDate ? format( addDays(new Date(startDate), 7*idx), 'MMM/dd/yyyy') : `week ${idx+1}`;
+              return (       
                 <ScheduleItem 
                   key={idx}
                   id={id}
                   startDate={startDate}
                   lesson={week.lesson.title}
-                  weekNumber={idx+1}
-                  // showBtn={}
+                  lessonStartDate={lessonStartDate}
+                  showBreakBtns={showBreakBtns}
                 />
    
               )
