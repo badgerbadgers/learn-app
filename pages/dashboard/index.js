@@ -7,14 +7,17 @@ import { Container } from "@mui/material";
 import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
 import DashBoardHeader from "./components/DashBoardHeader";
 import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
-import { privateLayout } from "../../components/PrivateLayout";
+import { privateLayout } from "../../components/layout/PrivateLayout";
 
 const Dashboard = ({ user }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
   return (
-    <Container sx={{ textAlign: "center", p: !matches && 1 }}>
+    <Container
+      sx={{ textAlign: "center", p: !matches && 1 }}
+      className="extra-top-padding"
+    >
       <DashBoardHeader />
       <DashBoardCardsLayout matches={matches}>
         <CTDToolsCard style={cardStyles} user={user} />
@@ -46,21 +49,22 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
-    }
+    };
   }
   const { user } = session;
-  if(!user.hasProfile) {
+  if (!user.hasProfile) {
     return {
       redirect: {
-        destination: '/signup',
+        destination: "/signup",
         permanent: false,
-      }
-    }
+      },
+    };
   }
   return {
     props: { user },
-  }
+  };
 }
+

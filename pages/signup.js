@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UserForm from "../components/userform/UserForm";
-import { PublicLayout } from "../components/PublicLayout";
-import Footer from "../components/Footer";
+import { PublicLayout } from "../components/layout/PublicLayout";
+import Footer from "../components/layout/Footer";
 import { getSession } from "next-auth/react";
 
 const SignUp = () => {
@@ -17,7 +17,7 @@ const SignUp = () => {
     techStackInput: "",
     skillInput: "",
     previousIndustryInput: "",
-    bio: ""
+    bio: "",
   });
 
   return (
@@ -37,10 +37,10 @@ SignUp.getLayout = function getLayout(pages) {
   );
 };
 
-// getServerSideProps 
+// getServerSideProps
 // limit the access of other routes until you fill out the profile
 // call the DB to see if you have a profile doc (not create it & if you don't)
-// if it doesn't exist - then you have to stay on this route until it does 
+// if it doesn't exist - then you have to stay on this route until it does
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
