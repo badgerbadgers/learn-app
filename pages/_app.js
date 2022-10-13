@@ -1,7 +1,6 @@
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
-import PrivateLayout from "../components/layout/PrivateLayout";
-import PublicLayout from "../components/layout/PublicLayout";
 import { SessionProvider } from "next-auth/react";
+import { StateProvider } from "../store";
 import "../styles/globals.css";
 import Head from "next/head";
 
@@ -13,11 +12,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <Head>
         <title>Code the Dream Labs Internal Application </title>
       </Head>
-      <SessionProvider session={session}>
-        <ThemeContextWrapper>
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeContextWrapper>
-      </SessionProvider>
+      <StateProvider>
+        <SessionProvider session={session}>
+          <ThemeContextWrapper>
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeContextWrapper>
+        </SessionProvider>
+      </StateProvider>
     </>
   );
 }

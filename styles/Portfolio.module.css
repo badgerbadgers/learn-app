@@ -9,6 +9,8 @@
 }
 
 .portfolioVideoItem {
+  width: 50%;
+  margin: auto;
   grid-column: 1 / 3;
 }
 
@@ -26,10 +28,19 @@
   height: auto;
   margin: 0 auto;
   position: relative;
-  
+
 }
 
-@media only screen and (max-width: 950px) and (min-width: 700px)  {
+.teamDirectory {
+  color: #FF5C35;
+  font-weight: bold;
+}
+
+.helperText {
+  color: #FF5C35;
+}
+
+@media only screen and (max-width: 950px) and (min-width: 700px) {
   .innerCard {
     display: flex;
     flex-direction: column;
@@ -41,7 +52,9 @@
   .portfolioGrid {
     grid-template-columns: 1fr;
   }
+
   .portfolioVideoItem {
+    width: 100%;
     grid-column: 1 / 1;
   }
 }
