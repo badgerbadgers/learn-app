@@ -18,7 +18,7 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
       alert("There are no lessons for this course"); //TODO: uniform error messages
       return null;
     } else {
-      setSelectedLabel(lessonData[0].lesson_label);
+      setSelectedLabel(lessonData[0].title);
     }
   }, [lessonData]);
 
@@ -49,9 +49,9 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
       {lessonData &&
         lessonData.map((doc) => {
           // filling in cards based on selectedLabel
-          if (doc.lesson_label === selectedLabel) {
+          if (doc.title === selectedLabel) {
             let index = lessonData.findIndex(
-              (doc) => doc.lesson_label === selectedLabel
+              doc => doc.title === selectedLabel
             );
             return (
               <DisplayCards
@@ -90,13 +90,13 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const cohortName = context.params["cohort_name"];
-  const lessonData = (await mongoLessonsAfterPipeline(cohortName)) || null;
-  const zoomLink = (await getZoomLink(cohortName)) || null;
+  const slug = context.params["cohort_name"];
+  const lessonData = (await mongoLessonsAfterPipeline(slug)) || null;
+  const zoomLink = (await getZoomLink(slug)) || null;
   return {
     props: {
       courseName: context.params["course_name"],
-      cohortName: cohortName,
+      slug: slug,
       user,
       lessonData: JSON.parse(JSON.stringify(lessonData)),
       zoomLink,
