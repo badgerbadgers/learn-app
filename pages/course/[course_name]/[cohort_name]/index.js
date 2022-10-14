@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { privateLayout } from "../../../../components/PrivateLayout";
+import { privateLayout } from "../../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
 import {
   mongoLessonsAfterPipeline,
@@ -38,12 +38,7 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
   }, [selectedLabel, router]);
 
   return (
-    <Grid
-      container
-      spacing={3}
-      sx={{ maxWidth: "100%", mt: "-118px" }}
-      // fix margin in .main home module for pages
-    >
+    <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
       <Menu
         lessonData={lessonData}
         courseName={router.query["course_name"]}
@@ -110,3 +105,4 @@ export async function getServerSideProps(context) {
   // returning LessonData as props in index
   //context.params contains the route parameters
 }
+

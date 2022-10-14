@@ -6,18 +6,18 @@ body {
   min-height: 100vh;
   margin: 0;
 
-  font-family: 'Montserrat', 'gothamRoundedMedium', 'gothamRoundedBold';
+  font-family: "Montserrat", "gothamRoundedMedium", "gothamRoundedBold";
 }
 
 @font-face {
-  font-family: 'gothamRoundedBold';
-  src: url('/fonts/GothamRounded/GothamRounded-Bold[1].otf');
-
+  font-family: "gothamRoundedBold";
+  src: url("/fonts/GothamRounded/GothamRounded-Bold[1].otf");
 }
 
 @font-face {
-  font-family: 'gothamRoundedMedium';
-  src: url('/fonts/GothamRounded/GothamRounded-Medium[2].otf') format("opentype");
+  font-family: "gothamRoundedMedium";
+  src: url("/fonts/GothamRounded/GothamRounded-Medium[2].otf")
+    format("opentype");
 }
 
 a {
@@ -50,19 +50,18 @@ h1 {
   text-transform: uppercase;
   text-align: center;
   width: 100%;
-  font-family: 'gothamRoundedBold';
+  font-family: "gothamRoundedBold";
   font-size: 4.2rem;
   line-height: 1;
   letter-spacing: -0.5px;
   padding: 50px;
-
 }
 
 h2 {
   font-size: 3rem;
   font-weight: 500;
   line-height: 1.2;
-  font-family: 'gothamRoundedMedium';
+  font-family: "gothamRoundedMedium";
 }
 
 p {
@@ -72,3 +71,21 @@ p {
 .MuiGrid-container {
   max-width: 1250px;
 }
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2.5rem;
+  /* footer height */
+  padding-top: 20px;
+  max-width: 2000px;
+  margin: auto;
+}
+
+.extra-padding-on-top {
+  padding-top: 80px;
+}
+

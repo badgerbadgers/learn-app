@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { privateLayout } from "../../components/PrivateLayout";
+import { privateLayout } from "../../components/layout/PrivateLayout";
 import Wizard from "./components/Wizard";
 import styles from "./components/AcceptanceForm.module.css";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -68,3 +68,4 @@ export async function getServerSideProps(context) {
     props: { user },
   };
 }
+
