@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import ScheduleModal from './components/ScheduleModal';
 import getData from '../../../lib/getData';
 import { getSession } from 'next-auth/react';
-import { privateLayout } from '../../../components/PrivateLayout';
+import { privateLayout } from '../../../components/layout/PrivateLayout';
 import { useRouter } from 'next/router';
 
 const IndividualCohortPage = () => {
@@ -16,6 +16,7 @@ const IndividualCohortPage = () => {
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
+    console.log("in use effect");
     let cohort = {}
     const url = "/api/cohorts/slug/" + (`${query.slug}`);
     const params = { slug: query.slug };
@@ -76,7 +77,7 @@ export default IndividualCohortPage;
 IndividualCohortPage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-
+  
   if (!session) {
     return {
       redirect: {
@@ -95,6 +96,7 @@ export async function getServerSideProps(context) {
     };
   }
   const slug = context.params["slug"];
+  console.log(slug, "in session")
 
   return {
     props: {

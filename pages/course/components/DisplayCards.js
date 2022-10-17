@@ -15,7 +15,9 @@ export default function DisplayCards({
   return (
     <Grid item xs={12} md={9} lg={9}>
       <LessonHeader
-        title={doc.lesson_label}
+        title={doc.title}
+        lessonOrder={doc.order}
+        sectionOrder={doc.section.order}
         index={index}
         lessonData={lessonData}
         courseName={courseName}

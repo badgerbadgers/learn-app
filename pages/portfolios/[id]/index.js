@@ -10,7 +10,7 @@ import PreviousIndustryCard from "../components/PreviousIndustryCard";
 import { Button, Container } from "@mui/material";
 import styles from "../../../styles/Portfolio.module.css";
 import clientPromise from "../../../lib/mongodb";
-import { publicLayout } from "../../../components/PublicLayout";
+import { publicLayout } from "../../../components/layout/PublicLayout";
 
 function Portfolio({ user }) {
   const [isLoading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ function Portfolio({ user }) {
       )}
       {!isLoading && (
         <>
-          <Container sx={{ p: 2}}>
+          <Container sx={{ p: 2 }}>
             <div className={styles.portfolioGrid}>
               <div className={styles.portfolioItem}>
                 {user && <ContactCard user={user} />}
@@ -115,3 +115,4 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
