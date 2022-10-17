@@ -95,9 +95,6 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const slug = context.params["slug"];
-  console.log(slug, "in session")
-
   return {
     props: {
       slug: context.params["slug"],
@@ -105,4 +102,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
