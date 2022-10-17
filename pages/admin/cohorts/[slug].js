@@ -13,6 +13,7 @@ const IndividualCohortPage = () => {
   const [open, setOpen] = useState(true);
   const router = useRouter();
   const query = router.query;
+  const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     let cohort = {}
@@ -22,8 +23,9 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        console.log("!!!cohort",cohort, cohort.cohort_name)
+        console.log("!!!cohort",cohort)
         setCohort(cohort);
+        setSchedule(cohort.schedule)
         setLoading(false); // if cohort???
       })();
     } catch (error) {
@@ -59,7 +61,7 @@ const IndividualCohortPage = () => {
             id = {cohort._id}
             cohortName={cohort.cohort_name}
             startDate={cohort.start_date}
-            schedule={cohort.schedule}
+            schedule={schedule}
           />
         </Grid>
       )
