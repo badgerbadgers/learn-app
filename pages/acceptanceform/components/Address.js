@@ -70,6 +70,7 @@ function Address(props) {
               <strong>Physical Address: </strong>
             </Typography>
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -106,6 +107,7 @@ function Address(props) {
               />
             </RadioGroup>
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             <InputField
               name={physical_zipcode.name}
@@ -115,21 +117,8 @@ function Address(props) {
               variant="outlined"
               fullWidth
             />
-            {/* <TextField
-              name="physical_zipcode"
-              placeholder="Type your ZIP code"
-              label="ZIP Code"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_zipcode}
-              onChange={(e) =>
-                updateUserInfoData("physical_zipcode", e.target.value)
-              }
-            /> */}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             <InputField
               name={physical_address_1.name}
@@ -139,19 +128,8 @@ function Address(props) {
               variant="outlined"
               fullWidth
             />
-            {/* <TextField
-              name="physical_address_1"
-              placeholder="Type your address"
-              label="Street Address"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_address_1}
-              onChange={(e) =>
-                updateUserInfoData("physical_address_1", e.target.value)
-              }
-            /> */}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             <InputField
               name={physical_address_2.name}
@@ -161,19 +139,8 @@ function Address(props) {
               variant="outlined"
               fullWidth
             />
-            {/* <TextField
-              name="physical_address_2"
-              placeholder="Type your #"
-              label="Apt/Unit/Suite #"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_address_2}
-              onChange={(e) =>
-                updateUserInfoData("physical_address_2", e.target.value)
-              }
-            /> */}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             <InputField
               name={physical_city.name}
@@ -183,20 +150,8 @@ function Address(props) {
               variant="outlined"
               fullWidth
             />
-            {/* <TextField
-              name="physical_city"
-              placeholder="Type your city"
-              label="City"
-              variant="outlined"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_city}
-              onChange={(e) =>
-                updateUserInfoData("physical_city", e.target.value)
-              }
-            /> */}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             <InputField
               name={physical_state.name}
@@ -206,19 +161,8 @@ function Address(props) {
               variant="outlined"
               fullWidth
             />
-            {/* <TextField
-              name="physical_state"
-              placeholder="Type your state or province"
-              label="State/Province"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_state}
-              onChange={(e) =>
-                updateUserInfoData("physical_state", e.target.value)
-              }
-            /> */}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
             {userInfoData.US_resident === "no" && (
@@ -307,22 +251,9 @@ function Address(props) {
                 variant="outlined"
                 fullWidth
               />
-              // <TextField
-              //   name="mailing_zipcode"
-              //   placeholder="Type your ZIP code"
-              //   label="ZIP/Postal Code"
-              //   variant="outlined"
-              //   fullWidth
-              //   required
-              //   size="small"
-              //   InputLabelProps={{ shrink: true }}
-              //   value={userInfoData.mailing_zipcode}
-              //   onChange={(e) =>
-              //     updateUserInfoData("mailing_zipcode", e.target.value)
-              //   }
-              // />
             )}
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
             {!userInfoData.mailing_same && (
@@ -334,18 +265,6 @@ function Address(props) {
                 variant="outlined"
                 fullWidth
               />
-              // <TextField
-              //   name="mailing_address_1"
-              //   placeholder="Type your address"
-              //   label="Street Address"
-              //   fullWidth
-              //   size="small"
-              //   InputLabelProps={{ shrink: true }}
-              //   value={userInfoData.mailing_address_1}
-              //   onChange={(e) =>
-              //     updateUserInfoData("mailing_address_1", e.target.value)
-              //   }
-              // />
             )}
           </Grid>
 
@@ -360,18 +279,6 @@ function Address(props) {
                 variant="outlined"
                 fullWidth
               />
-              // <TextField
-              //   name="mailing_address_2"
-              //   placeholder="Type your #"
-              //   label="Apt/Unit/Suite #"
-              //   fullWidth
-              //   size="small"
-              //   InputLabelProps={{ shrink: true }}
-              //   value={userInfoData.mailing_address_2}
-              //   onChange={(e) =>
-              //     updateUserInfoData("mailing_address_2", e.target.value)
-              //   }
-              // />
             )}
           </Grid>
 
@@ -386,19 +293,6 @@ function Address(props) {
                 variant="outlined"
                 fullWidth
               />
-              // <TextField
-              //   name="mailing_city"
-              //   placeholder="Type your city"
-              //   label="City"
-              //   variant="outlined"
-              //   fullWidth
-              //   size="small"
-              //   InputLabelProps={{ shrink: true }}
-              //   value={userInfoData.mailing_city}
-              //   onChange={(e) =>
-              //     updateUserInfoData("mailing_city", e.target.value)
-              //   }
-              // />
             )}
           </Grid>
 
@@ -413,18 +307,6 @@ function Address(props) {
                 variant="outlined"
                 fullWidth
               />
-              // <TextField
-              //   name="mailing_state"
-              //   placeholder="Type your state or province"
-              //   label="State/Province"
-              //   fullWidth
-              //   size="small"
-              //   InputLabelProps={{ shrink: true }}
-              //   value={userInfoData.mailing_state}
-              //   onChange={(e) =>
-              //     updateUserInfoData("mailing_state", e.target.value)
-              //   }
-              // />
             )}
           </Grid>
 
