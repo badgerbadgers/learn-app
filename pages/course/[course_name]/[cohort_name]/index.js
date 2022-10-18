@@ -10,9 +10,12 @@ import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
 import Router, { useRouter } from "next/router";
 
-export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
+export default function CurrentCoursePage({ user, lessonData, zoomLink }) { 
+  // TODO change lessonData to scheduleData
+  console.log("lessonData",lessonData)
   const [selectedLabel, setSelectedLabel] = useState("");
 
+  // need to see how schedule will effect the below. . .
   useEffect(() => {
     if (!lessonData || lessonData.length === 0) {
       alert("There are no lessons for this course"); //TODO: uniform error messages

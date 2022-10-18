@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 import MenuHeader from "./MenuHeader";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -49,7 +49,7 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
-                    {`Lesson ${lessons.section.order}.${lessons.order}: ${lessons.title}`}
+                      {`Lesson ${lessons.section.order}.${lessons.order}: ${lessons.title}`}
                     </Typography>
                   </MenuItem>
                 </Link>
