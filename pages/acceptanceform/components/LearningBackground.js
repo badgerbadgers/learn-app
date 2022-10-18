@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import CheckboxField from "./FormFields/CheckboxField";
+import SelectField from "./FormFields/SelectField";
 import { store } from "../../../store";
 
 // Styling the chips for multi-select input
@@ -23,7 +25,7 @@ const MenuProps = {
   },
 };
 
-function LearningBackground() {
+function LearningBackground(props) {
   // Updating user info data through the global state provider
   const { state, dispatch } = useContext(store);
   const { userInfoData } = state;
@@ -34,17 +36,112 @@ function LearningBackground() {
     });
   }
 
-  //Setting Menu items options for the Prior Coding Languages multi-select list
+  const {
+    formField: {
+      learning_style,
+      prior_coding_education,
+      prior_coding_languages,
+      work_commitment_consent,
+      leave_notice_consent,
+    },
+  } = props;
+
+  // //Setting Menu items options for the Prior Coding Languages multi-select list
+  // const priorCodingLanguages = [
+  //   "HTML",
+  //   "CSS",
+  //   "JavaScript",
+  //   "Ruby",
+  //   "Rails",
+  //   "React",
+  //   "Node",
+  //   "Express",
+  //   "Other",
+  // ];
+
+  const priorCodingEducation = [
+    {
+      value: "A few hours",
+      label: "A few hours",
+    },
+    {
+      value: "A few days",
+      label: "A few days",
+    },
+    {
+      value: "A few weeks",
+      label: "A few weeks",
+    },
+    {
+      value: "A few months",
+      label: "A few months",
+    },
+    {
+      value: "A year or two",
+      label: "A year or two",
+    },
+    {
+      value: "Several years",
+      label: "Several years",
+    },
+  ];
+
   const priorCodingLanguages = [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "Ruby",
-    "Rails",
-    "React",
-    "Node",
-    "Express",
-    "Other",
+    {
+      value: "HTML",
+      label: "HTML",
+    },
+    {
+      value: "CSS",
+      label: "CSS",
+    },
+    {
+      value: "JavaScript",
+      label: "JavaScript",
+    },
+    {
+      value: "Ruby",
+      label: "Ruby",
+    },
+    {
+      value: "Rails",
+      label: "Rails",
+    },
+    {
+      value: "React",
+      label: "React",
+    },
+    {
+      value: "Node",
+      label: "Node",
+    },
+    {
+      value: "Express",
+      label: "Express",
+    },
+    {
+      value: "Other",
+      label: "Other",
+    },
+  ];
+
+  const learningStyle = [
+    {
+      value: "Watching",
+      label: "Watching",
+    },
+    {
+      value: "Listening",
+      label: "Listening",
+    },
+    {
+      value: "Reading",
+      label: "Reading",
+    },
+    {
+      value: "Not sure",
+      label: "Not sure",
+    },
   ];
 
   //Setting Menu items options for the Learning Style multi-select list
@@ -87,7 +184,14 @@ function LearningBackground() {
       <Grid container p={3} justify="space-between">
         <Grid container spacing={2} justify="space-between">
           <Grid item xs={12} sm={6} width="100%">
-            <FormControl sx={{ width: "100%" }} size="small">
+            <SelectField
+              name={prior_coding_education.name}
+              label={prior_coding_education.label}
+              data={priorCodingEducation}
+              multiple
+              fullWidth
+            />
+            {/* <FormControl sx={{ width: "100%" }} size="small">
               <InputLabel id="demo-select-small">
                 Prior Coding Education
               </InputLabel>
@@ -112,10 +216,17 @@ function LearningBackground() {
                 <MenuItem value={50}>A year or two</MenuItem>
                 <MenuItem value={60}>Several years</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <FormControl sx={{ width: "100%" }} size="small">
+            <SelectField
+              name={prior_coding_languages.name}
+              label={prior_coding_languages.label}
+              data={priorCodingLanguages}
+              multiple
+              fullWidth
+            />
+            {/* <FormControl sx={{ width: "100%" }} size="small">
               <InputLabel id="demo-select-small">
                 Prior Coding Languages/Frameworks
               </InputLabel>
@@ -172,10 +283,17 @@ function LearningBackground() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={12} width="100%">
-            <FormControl sx={{ width: "100%" }} size="small">
+            <SelectField
+              name={learning_style.name}
+              label={learning_style.label}
+              data={learningStyle}
+              multiple
+              fullWidth
+            />
+            {/* <FormControl sx={{ width: "100%" }} size="small">
               <InputLabel id="demo-select-small">Learning Style</InputLabel>
               <Select
                 labelId="demo-select-small"
@@ -228,19 +346,27 @@ function LearningBackground() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={12} width="100%">
-            <FormControlLabel
+            <CheckboxField
+              name={work_commitment_consent.name}
+              label={work_commitment_consent.label}
+            />
+            {/* <FormControlLabel
               control={<Checkbox required />}
               label="I agree that I am accepting my seat in a class I was offered and understand that the work commitment for each class is expected to be about 15-20 hours per week."
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={12} width="100%">
-            <FormControlLabel
+            <CheckboxField
+              name={leave_notice_consent.name}
+              label={leave_notice_consent.label}
+            />
+            {/* <FormControlLabel
               control={<Checkbox required />}
               label="I commit to trying my best throughout the course and agree to contact Code the Dream if I can no longer participate in this class so I can be made aware of future opportunities available."
-            />
+            /> */}
           </Grid>
         </Grid>
       </Grid>

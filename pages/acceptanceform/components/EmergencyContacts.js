@@ -6,9 +6,34 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import InputField from "./FormFields/InputField";
+import SelectField from "./FormFields/SelectField";
 import { store } from "../../../store";
 
-function EmergencyContacts() {
+const relationships = [
+  {
+    value: "Parent/Mother/Father",
+    label: "Parent/Mother/Father",
+  },
+  {
+    value: "Sibling/Brother/Sister",
+    label: "Sibling/Brother/Sister",
+  },
+  {
+    value: "Spouse/Partner",
+    label: "Spouse/Partner",
+  },
+  {
+    value: "Friend",
+    label: "Friend",
+  },
+  {
+    value: "Other",
+    label: "Other",
+  },
+];
+
+function EmergencyContacts(props) {
   // Updating user info data through the global state provider
   const { state, dispatch } = useContext(store);
   const { userInfoData } = state;
@@ -18,6 +43,17 @@ function EmergencyContacts() {
       payload: { ...userInfoData, [key]: value },
     });
   }
+
+  const {
+    formField: {
+      emergency_contact_1_name,
+      emergency_contact_1_relationship,
+      emergency_contact_1_phone,
+      emergency_contact_2_name,
+      emergency_contact_2_relationship,
+      emergency_contact_2_phone,
+    },
+  } = props;
 
   return (
     <FormControl>
@@ -29,7 +65,15 @@ function EmergencyContacts() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={emergency_contact_1_name.name}
+              label={emergency_contact_1_name.label}
+              // value={userInfoData.emergency_contact_1_name}
+              // onChange={(e) => updateUserInfoData("emergency_contact_1_name", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="emergency_contact_1_name"
               placeholder="Type your person's 1 full name"
               label="Full Name"
@@ -41,10 +85,16 @@ function EmergencyContacts() {
               onChange={(e) =>
                 updateUserInfoData("emergency_contact_1_name", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <FormControl sx={{ width: "100%" }} size="small">
+            <SelectField
+              name={emergency_contact_1_relationship.name}
+              label={emergency_contact_1_relationship.label}
+              data={relationships}
+              fullWidth
+            />
+            {/* <FormControl sx={{ width: "100%" }} size="small">
               <InputLabel required id="demo-select-small">
                 Relationship
               </InputLabel>
@@ -67,10 +117,18 @@ function EmergencyContacts() {
                 <MenuItem value={40}>Friend</MenuItem>
                 <MenuItem value={50}>Other</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={12} width="100%">
-            <TextField
+            <InputField
+              name={emergency_contact_1_phone.name}
+              label={emergency_contact_1_phone.label}
+              // value={userInfoData.emergency_contact_1_phone}
+              // onChange={(e) => updateUserInfoData("emergency_contact_1_phone", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="emergency_contact_1_phone"
               placeholder="Type person's 1 phone number including country code"
               label="Phone"
@@ -82,7 +140,7 @@ function EmergencyContacts() {
               onChange={(e) =>
                 updateUserInfoData("emergency_contact_1_phone", e.target.value)
               }
-            />
+            /> */}
           </Grid>
 
           <Grid item xs={12} sm={12} width="100%">
@@ -91,7 +149,15 @@ function EmergencyContacts() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={emergency_contact_2_name.name}
+              label={emergency_contact_2_name.label}
+              // value={userInfoData.emergency_contact_2_name}
+              // onChange={(e) => updateUserInfoData("emergency_contact_2_name", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="emergency_contact_2_name"
               placeholder="Type person's 2 full name"
               label="Full Name"
@@ -103,10 +169,16 @@ function EmergencyContacts() {
               onChange={(e) =>
                 updateUserInfoData("emergency_contact_2_name", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <FormControl sx={{ width: "100%" }} size="small">
+            <SelectField
+              name={emergency_contact_2_relationship.name}
+              label={emergency_contact_2_relationship.label}
+              data={relationships}
+              fullWidth
+            />
+            {/* <FormControl sx={{ width: "100%" }} size="small">
               <InputLabel required id="demo-select-small">
                 Relationship
               </InputLabel>
@@ -129,10 +201,18 @@ function EmergencyContacts() {
                 <MenuItem value={40}>Friend</MenuItem>
                 <MenuItem value={50}>Other</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={12} width="100%">
-            <TextField
+            <InputField
+              name={emergency_contact_2_phone.name}
+              label={emergency_contact_2_phone.label}
+              // value={userInfoData.emergency_contact_2_phone}
+              // onChange={(e) => updateUserInfoData("emergency_contact_2_phone", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="emergency_contact_2_phone"
               placeholder="Type person's 2 phone number including country code"
               label="Phone"
@@ -144,7 +224,7 @@ function EmergencyContacts() {
               onChange={(e) =>
                 updateUserInfoData("emergency_contact_2_phone", e.target.value)
               }
-            />
+            /> */}
           </Grid>
         </Grid>
       </Grid>

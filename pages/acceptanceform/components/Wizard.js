@@ -6,6 +6,7 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import PersonalInfo from "./PersonalInfo";
 import Address from "./Address";
 import DemographicStats from "./DemographicStats";
@@ -13,6 +14,10 @@ import EmergencyContacts from "./EmergencyContacts";
 import LearningBackground from "./LearningBackground";
 import { useMediaQuery } from "@mui/material";
 import styles from "./AcceptanceForm.module.css";
+import { Formik, Form } from "formik";
+import validationSchema from "./FormModel/validationSchema";
+import formModel from "./FormModel/formModel";
+import formInitialValues from "./FormModel/formInitialValues";
 
 const steps = [
   "Personal Information",
@@ -22,32 +27,56 @@ const steps = [
   "Learning Background",
 ];
 
+const { formId, formField } = formModel;
+
 function renderStepContent(step) {
   switch (step) {
     case 0:
-      return <PersonalInfo />;
+      return <PersonalInfo formField={formField} />;
     case 1:
-      return <Address />;
+      return <Address formField={formField} />;
     case 2:
-      return <DemographicStats />;
+      return <DemographicStats formField={formField} />;
     case 3:
-      return <EmergencyContacts />;
+      return <EmergencyContacts formField={formField} />;
     case 4:
-      return <LearningBackground />;
+      return <LearningBackground formField={formField} />;
     default:
       return <div>Not Found</div>;
   }
 }
 
-function Wizard(props) {
+function Wizard() {
   const [activeStep, setActiveStep] = useState(0);
+  const currentValidationSchema = validationSchema[activeStep];
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  // const handleNext = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  // };
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(activeStep - 1);
+  };
+
+  async function submitForm(values, actions) {
+    await sleep(1000);
+    alert(JSON.stringify(values, null, 2));
+    actions.setSubmitting(false);
+    setActiveStep(activeStep + 1);
+  }
+
+  const handleSubmit = (values, actions) => {
+    if (activeStep === steps.length - 1) {
+      submitForm(values, actions);
+    } else {
+      setActiveStep(activeStep + 1);
+      actions.setTouched({});
+      actions.setSubmitting(false);
+    }
   };
 
   const isSmallScreen = useMediaQuery("(max-width:700px)");
@@ -68,23 +97,40 @@ function Wizard(props) {
                 >
                   {activeStep < steps.length && (
                     <Fragment>
-                      {renderStepContent(activeStep)}
-                      <Box
-                        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
+                      <Formik
+                        initialValues={formInitialValues}
+                        validationSchema={currentValidationSchema}
+                        onSubmit={handleSubmit}
                       >
-                        <Button
-                          color="inherit"
-                          disabled={activeStep === 0}
-                          onClick={handleBack}
-                          sx={{ mr: 1 }}
-                        >
-                          Back
-                        </Button>
-                        <Box sx={{ flex: "1 1 auto" }} />
-                        <Button onClick={handleNext}>
-                          {activeStep === steps.length - 1 ? "Submit" : "Next"}
-                        </Button>
-                      </Box>
+                        {({ isSubmitting }) => (
+                          <Form id={formId}>
+                            {renderStepContent(activeStep)}
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                pt: 2,
+                              }}
+                            >
+                              <Button
+                                color="inherit"
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                                sx={{ mr: 1 }}
+                              >
+                                Back
+                              </Button>
+                              <Box sx={{ flex: "1 1 auto" }} />
+                              <Button disabled={isSubmitting} type="submit">
+                                {activeStep === steps.length - 1
+                                  ? "Submit"
+                                  : "Next"}
+                              </Button>
+                              {isSubmitting && <CircularProgress size={24} />}
+                            </Box>
+                          </Form>
+                        )}
+                      </Formik>
                     </Fragment>
                   )}
                 </StepContent>
@@ -128,21 +174,32 @@ function Wizard(props) {
       {/* Renders step content before the last step conditionally if a view port width is more than 700px */}
       {!isSmallScreen && activeStep < steps.length && (
         <Fragment>
-          {renderStepContent(activeStep)}
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Submit" : "Next"}
-            </Button>
-          </Box>
+          <Formik
+            initialValues={formInitialValues}
+            validationSchema={currentValidationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting }) => (
+              <Form id={formId}>
+                {renderStepContent(activeStep)}
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Button
+                    color="inherit"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    sx={{ mr: 1 }}
+                  >
+                    Back
+                  </Button>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  <Button disabled={isSubmitting} type="submit">
+                    {activeStep === steps.length - 1 ? "Submit" : "Next"}
+                  </Button>
+                  {isSubmitting && <CircularProgress size={24} />}
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </Fragment>
       )}
 

@@ -10,9 +10,10 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import Checkbox from "@mui/material/Checkbox";
+import InputField from "./FormFields/InputField";
 import { store } from "../../../store";
 
-function Address() {
+function Address(props) {
   // Updating user info data through the global state provider
   const { state, dispatch } = useContext(store);
   const { userInfoData } = state;
@@ -33,6 +34,23 @@ function Address() {
       userInfoData.mailing_country = userInfoData.physical_country;
     }
   }
+
+  const {
+    formField: {
+      physical_zipcode,
+      physical_address_1,
+      physical_address_2,
+      physical_city,
+      physical_state,
+      // physical_country,
+      mailing_zipcode,
+      mailing_address_1,
+      mailing_address_2,
+      mailing_city,
+      mailing_state,
+      // mailing_country,
+    },
+  } = props;
 
   return (
     <FormControl>
@@ -68,7 +86,7 @@ function Address() {
             <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
-              name="radio-buttons-group"
+              name="US_resident"
               value={userInfoData.US_resident}
               onChange={(e) =>
                 updateUserInfoData("US_resident", e.target.value)
@@ -89,7 +107,15 @@ function Address() {
             </RadioGroup>
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={physical_zipcode.name}
+              label={physical_zipcode.label}
+              // value={userInfoData.physical_zipcode}
+              // onChange={(e) => updateUserInfoData("physical_zipcode", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="physical_zipcode"
               placeholder="Type your ZIP code"
               label="ZIP Code"
@@ -102,10 +128,18 @@ function Address() {
               onChange={(e) =>
                 updateUserInfoData("physical_zipcode", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={physical_address_1.name}
+              label={physical_address_1.label}
+              // value={userInfoData.physical_address_1}
+              // onChange={(e) => updateUserInfoData("physical_address_1", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="physical_address_1"
               placeholder="Type your address"
               label="Street Address"
@@ -116,10 +150,18 @@ function Address() {
               onChange={(e) =>
                 updateUserInfoData("physical_address_1", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={physical_address_2.name}
+              label={physical_address_2.label}
+              // value={userInfoData.physical_address_2}
+              // onChange={(e) => updateUserInfoData("physical_address_2", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="physical_address_2"
               placeholder="Type your #"
               label="Apt/Unit/Suite #"
@@ -130,10 +172,18 @@ function Address() {
               onChange={(e) =>
                 updateUserInfoData("physical_address_2", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={physical_city.name}
+              label={physical_city.label}
+              // value={userInfoData.physical_city}
+              // onChange={(e) => updateUserInfoData("physical_city", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="physical_city"
               placeholder="Type your city"
               label="City"
@@ -145,10 +195,18 @@ function Address() {
               onChange={(e) =>
                 updateUserInfoData("physical_city", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
+            <InputField
+              name={physical_state.name}
+              label={physical_state.label}
+              // value={userInfoData.physical_state}
+              // onChange={(e) => updateUserInfoData("physical_state", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* <TextField
               name="physical_state"
               placeholder="Type your state or province"
               label="State/Province"
@@ -159,16 +217,16 @@ function Address() {
               onChange={(e) =>
                 updateUserInfoData("physical_state", e.target.value)
               }
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
             {userInfoData.US_resident === "no" && (
               <Autocomplete
                 id="country-select-demo"
-                onChange={(e) =>
-                  updateUserInfoData("physical_country", e.target.value)
-                }
+                // onChange={(e) =>
+                //   updateUserInfoData("physical_country", e.target.value)
+                // }
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
@@ -241,92 +299,132 @@ function Address() {
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
             {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_zipcode"
-                placeholder="Type your ZIP code"
-                label="ZIP/Postal Code"
+              <InputField
+                name={mailing_zipcode.name}
+                label={mailing_zipcode.label}
+                // value={userInfoData.mailing_zipcode}
+                // onChange={(e) => updateUserInfoData("mailing_zipcode", e.target.value)}
                 variant="outlined"
                 fullWidth
-                required
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_zipcode}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_zipcode", e.target.value)
-                }
               />
+              // <TextField
+              //   name="mailing_zipcode"
+              //   placeholder="Type your ZIP code"
+              //   label="ZIP/Postal Code"
+              //   variant="outlined"
+              //   fullWidth
+              //   required
+              //   size="small"
+              //   InputLabelProps={{ shrink: true }}
+              //   value={userInfoData.mailing_zipcode}
+              //   onChange={(e) =>
+              //     updateUserInfoData("mailing_zipcode", e.target.value)
+              //   }
+              // />
             )}
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
             {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_address_1"
-                placeholder="Type your address"
-                label="Street Address"
-                fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_address_1}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_address_1", e.target.value)
-                }
-              />
-            )}
-          </Grid>
-
-          <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_address_2"
-                placeholder="Type your #"
-                label="Apt/Unit/Suite #"
-                fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_address_2}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_address_2", e.target.value)
-                }
-              />
-            )}
-          </Grid>
-
-          <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_city"
-                placeholder="Type your city"
-                label="City"
+              <InputField
+                name={mailing_address_1.name}
+                label={mailing_address_1.label}
+                // value={userInfoData.mailing_address_1}
+                // onChange={(e) => updateUserInfoData("mailing_address_1", e.target.value)}
                 variant="outlined"
                 fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_city}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_city", e.target.value)
-                }
               />
+              // <TextField
+              //   name="mailing_address_1"
+              //   placeholder="Type your address"
+              //   label="Street Address"
+              //   fullWidth
+              //   size="small"
+              //   InputLabelProps={{ shrink: true }}
+              //   value={userInfoData.mailing_address_1}
+              //   onChange={(e) =>
+              //     updateUserInfoData("mailing_address_1", e.target.value)
+              //   }
+              // />
             )}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
             {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_state"
-                placeholder="Type your state or province"
-                label="State/Province"
+              <InputField
+                name={mailing_address_2.name}
+                label={mailing_address_2.label}
+                // value={userInfoData.mailing_address_2}
+                // onChange={(e) => updateUserInfoData("mailing_address_2", e.target.value)}
+                variant="outlined"
                 fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_state}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_state", e.target.value)
-                }
               />
+              // <TextField
+              //   name="mailing_address_2"
+              //   placeholder="Type your #"
+              //   label="Apt/Unit/Suite #"
+              //   fullWidth
+              //   size="small"
+              //   InputLabelProps={{ shrink: true }}
+              //   value={userInfoData.mailing_address_2}
+              //   onChange={(e) =>
+              //     updateUserInfoData("mailing_address_2", e.target.value)
+              //   }
+              // />
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
+              <InputField
+                name={mailing_city.name}
+                label={mailing_city.label}
+                // value={userInfoData.mailing_city}
+                // onChange={(e) => updateUserInfoData("mailing_city", e.target.value)}
+                variant="outlined"
+                fullWidth
+              />
+              // <TextField
+              //   name="mailing_city"
+              //   placeholder="Type your city"
+              //   label="City"
+              //   variant="outlined"
+              //   fullWidth
+              //   size="small"
+              //   InputLabelProps={{ shrink: true }}
+              //   value={userInfoData.mailing_city}
+              //   onChange={(e) =>
+              //     updateUserInfoData("mailing_city", e.target.value)
+              //   }
+              // />
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!userInfoData.mailing_same && (
+              <InputField
+                name={mailing_state.name}
+                label={mailing_state.label}
+                // value={userInfoData.mailing_state}
+                // onChange={(e) => updateUserInfoData("mailing_state", e.target.value)}
+                variant="outlined"
+                fullWidth
+              />
+              // <TextField
+              //   name="mailing_state"
+              //   placeholder="Type your state or province"
+              //   label="State/Province"
+              //   fullWidth
+              //   size="small"
+              //   InputLabelProps={{ shrink: true }}
+              //   value={userInfoData.mailing_state}
+              //   onChange={(e) =>
+              //     updateUserInfoData("mailing_state", e.target.value)
+              //   }
+              // />
             )}
           </Grid>
 
@@ -336,9 +434,9 @@ function Address() {
               <Autocomplete
                 id="country-select-demo"
                 disabled={userInfoData.mailing_same ? true : false}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_country", e.target.value)
-                }
+                // onChange={(e) =>
+                //   updateUserInfoData("mailing_country", e.target.value)
+                // }
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
