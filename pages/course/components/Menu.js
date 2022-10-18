@@ -31,7 +31,7 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
 
           {lessonData.map((lessons) => {
             return (
-              <Stack key={lessons.lesson_label}>
+              <Stack key={lessons.title}>
                 <Link
                   href={{
                     pathname: "/course/[course_name]/[cohort_name]/",
@@ -40,7 +40,7 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                     query: {
                       course_name: courseName,
                       cohort_name: cohortName,
-                      lesson: lessons.lesson_label,
+                      lesson: lessons.title,
                     },
                   }}
                   passHref
@@ -49,7 +49,7 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
-                      {lessons.lesson_label}
+                    {`Lesson ${lessons.section.order}.${lessons.order}: ${lessons.title}`}
                     </Typography>
                   </MenuItem>
                 </Link>

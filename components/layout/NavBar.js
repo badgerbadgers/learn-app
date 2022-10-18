@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
-import { ThemeContext } from "../components/theme/ThemeContextWrapper";
+import { ThemeContext } from "../theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
 import {
   AppBar,
@@ -201,3 +201,4 @@ const NavBar = () => {
   );
 };
 export default NavBar;
+
