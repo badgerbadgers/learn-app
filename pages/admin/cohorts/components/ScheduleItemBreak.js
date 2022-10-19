@@ -1,13 +1,20 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 import AddWeekBtns from "./AddWeekBtns";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 
-export default function ScheduleItemBreak({ id, idx, startDate, weekType, content, sectionId, sectionTitle, showBreakBtns, insertItem }) {
+export default function ScheduleItemBreak({ id, idx, startDate, weekType, content, sectionId, sectionTitle, showBreakBtns, handleShowForm, insertItem }) {
 
-    return <Box
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(false)
+    }, []);
+
+    return (!loading && <Box
         sx={{
             height: "112px",
             width: "100%",
@@ -27,7 +34,7 @@ export default function ScheduleItemBreak({ id, idx, startDate, weekType, conten
         </Box>
 
         <Box sx={{
-         
+
             px: 2,
             display: "inline-block",
             width: "calc(100% - 110px)",
@@ -55,36 +62,38 @@ export default function ScheduleItemBreak({ id, idx, startDate, weekType, conten
                 {content || ""}
             </Typography>
 
-            <Stack direction="row" alignItems="center"  justifyContent="flex-end" spacing={1}
-            sx={{display: "inline-block",
-             float: "right"
-            }}>
-            <IconButton aria-label="edit" size="small" >
+            <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}
+                sx={{
+                    display: "inline-block",
+                    float: "right"
+                }}>
+                <IconButton aria-label="edit" size="small" >
                     <EditIcon fontSize="small" />
                 </IconButton>
                 <IconButton aria-label="delete" size="small">
                     <DeleteIcon fontSize="small" />
                 </IconButton> </Stack>
 
-    
-              
-       
+
+
+
 
         </Box>
         {
             showBreakBtns &&
             <AddWeekBtns
                 insertItem={insertItem}
-                // sectionId={section._id}
                 idx={idx}
+                sectionId={sectionId}
+                handleShowForm={handleShowForm}
                 mt={2}
                 sx={{
                     display: "flex",
 
                     width: "calc(100% - 110px)",
-                   
+
                 }}></AddWeekBtns>
         }
 
-    </Box>
+    </Box>)
 }

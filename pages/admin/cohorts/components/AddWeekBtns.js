@@ -1,14 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
-import AddItemForm from "./AddItemForm";
-import { calculateObjectSize } from "bson";
-import { useState } from "react";
-
-export default function AddWeekBtns(insertItem, sectionId, idx) {
+export default function AddWeekBtns({insertItem, idx, sectionId, handleShowForm}) {
  const [showForrm, setShowForm] = useState(false);
+ const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     return (
-        <Box mt={2}
+        !loading && <Box mt={2}
             ml={"110px"}
             sx={{
                 width: "calc(100% - 110px)",
@@ -34,11 +36,11 @@ export default function AddWeekBtns(insertItem, sectionId, idx) {
                 justifyContent: 'space-around',
             }}>
                 <Button size="small" variant="outlined"
-                onClick={() => {
-                    // alert("dfddfd")
-                    setShowForm(true)
-                  }}
-                // onClick={()=>insertItem(idx, content, sectionId, "break")}
+                    // onClick={() => {
+                    //     // alert("dfddfd")
+                    //     setShowForm(true)
+                    //   }}
+                    onClick={()=> handleShowForm(idx)}
                     sx={{
                         borderRadius: "20px",
                         height: "30px",
@@ -52,8 +54,6 @@ export default function AddWeekBtns(insertItem, sectionId, idx) {
                         backgroundColor: "white",
                         '&:hover': {
                             backgroundColor: 'white',
-                            // borderColor: '#0062cc',
-                            // boxShadow: 'none',
                           },
                     }}> + Break </Button>
                 <Button size="small" variant="outlined"
@@ -74,8 +74,7 @@ export default function AddWeekBtns(insertItem, sectionId, idx) {
                     }}> + Review </Button>
 
             </Box>
-                    {showForrm && <AddItemForm
-                    />}
+
         </Box>
     );
 }

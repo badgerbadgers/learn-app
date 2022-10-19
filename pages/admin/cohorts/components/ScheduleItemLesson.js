@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 
 import AddWeekBtns from "./AddWeekBtns";
 
-export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonStartDate, itemType, sectionTitle, showBreakBtns,  insertItem }) {
+export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonStartDate, itemType, sectionTitle, showBreakBtns, handleShowForm,  insertItem }) {
 
     return <Box
         sx={{
@@ -57,6 +57,7 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
             showBreakBtns &&
             <AddWeekBtns
             insertItem={insertItem}
+            handleShowForm={handleShowForm}
             // sectionId={section._id}
             idx={idx}
             mt={2}

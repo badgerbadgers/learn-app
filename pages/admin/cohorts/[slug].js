@@ -16,7 +16,6 @@ const IndividualCohortPage = () => {
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    console.log("in use effect");
     let cohort = {}
     const url = "/api/cohorts/slug/" + (`${query.slug}`);
     const params = { slug: query.slug };
@@ -63,6 +62,7 @@ const IndividualCohortPage = () => {
             cohortName={cohort.cohort_name}
             startDate={cohort.start_date}
             schedule={schedule}
+            setSchedule={setSchedule}
           />
         </Grid>
       )
