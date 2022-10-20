@@ -18,6 +18,7 @@ export default function LessonHeader({
 }) {
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
+      {console.log(index)}
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         {index !== 0 ? (
           <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
@@ -63,7 +64,6 @@ export default function LessonHeader({
       </CardActions>
 
       <CardHeader
-        
         title={`Lesson ${sectionOrder}.${lessonOrder}: ${title}`}
         titleTypographyProps={{
           variant: "h4",

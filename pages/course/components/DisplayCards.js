@@ -13,22 +13,23 @@ export default function DisplayCards({
   cohortName,
 }) {
   return (
-    <Grid item xs={12} md={9} lg={9}>
+
+    <Grid item xs={12} md={9} lg={9}>{console.log("amen",doc)}
       <LessonHeader
-        title={doc.title}
-        lessonOrder={doc.order}
-        sectionOrder={doc.section.order}
+        title={doc.lesson.title}
+        lessonOrder={doc.lesson.order}
+        sectionOrder={doc.lesson.section.order}
         index={index}
         lessonData={lessonData}
         courseName={courseName}
         cohortName={cohortName}
       />
-      <LearningObjectivesCard objectives={doc.learning_objectives} />
-      <LessonMaterialsCard materials={doc.materials} />
+      <LearningObjectivesCard objectives={doc.lesson.learning_objectives} />
+      <LessonMaterialsCard materials={doc.lesson.materials} />
       <AssignmentCard
-        mindset={doc.mindset_content}
-        submit={doc.submission_link.url}
-        assignments={doc.assignments}
+        mindset={doc.lesson.mindset_content}
+        submit={doc.lesson.submission_link.url}
+        assignments={doc.lesson.assignments}
       />
     </Grid>
   );

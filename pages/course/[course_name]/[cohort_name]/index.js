@@ -10,30 +10,64 @@ import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
 import Router, { useRouter } from "next/router";
 
-export default function CurrentCoursePage({ user, lessonData, zoomLink }) { 
+export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
+  /*
+  Objective: show the lesson, review, and breaks 
+  1. check type of first item in index ...check
+  2.
+  if it's a lesson = show the cards for lesson 
+  if it's a review = show the content of review
+  if it's a break = show the content of break
+  */
   // TODO change lessonData to scheduleData
-  console.log("lessonData",lessonData)
-  const [selectedLabel, setSelectedLabel] = useState("");
 
-  // need to see how schedule will effect the below. . .
-  useEffect(() => {
-    if (!lessonData || lessonData.length === 0) {
-      alert("There are no lessons for this course"); //TODO: uniform error messages
-      return null;
-    } else {
-      setSelectedLabel(lessonData[0].title);
-    }
-  }, [lessonData]);
+  const [selectedLabel, setSelectedLabel] = useState(lessonData[0]);
+
+  // const switchType = (val) => {
+  //   let typeValue = "";
+  //   switch (val) {
+  //     case "review":
+  //       typeValue = "review";
+  //       console.log("we're reviewing");
+  //       break;
+  //     case "lesson":
+  //       typeValue = "lesson";
+  //       console.log("we're having a lesson");
+  //       break;
+  //     case "break":
+  //       typeValue = "break";
+  //       console.log("we're on a break");
+  //       break;
+  //     default:
+  //       console.log("place an error here");
+  //       break;
+  //   }
+  //   return typeValue;
+  // };
+  // switchType(selectedLabel);
+  
+
+  // useEffect(() => {
+  //   if (!lessonData || lessonData.length === 0) {
+  //     alert("There are no lessons for this course"); //TODO: uniform error messages
+  //     return null;
+  //   } else {
+  //     setSelectedLabel(lessonData[0]);
+  //   }
+  // }, []);
 
   const router = useRouter();
-
+console.log(selectedLabel)
+  
   useEffect(() => {
     //if nothing in selectedLabel or nothing also in query then go back
-    if (!selectedLabel || !router.query.lesson) {
+    if (!selectedLabel || !router.query.week) {
+     
       return;
     }
     //new query
-    let newSelectedLabel = router.query.lesson;
+    let newSelectedLabel = router.query.week;
+   console.log(newSelectedLabel)
 
     if (selectedLabel !== newSelectedLabel) {
       setSelectedLabel(newSelectedLabel);
@@ -51,10 +85,13 @@ export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
 
       {lessonData &&
         lessonData.map((doc) => {
-          // filling in cards based on selectedLabel
-          if (doc.title === selectedLabel) {
+          
+          // console.log("hello")
+          // // filling in cards based on selectedLabel
+          if (doc === selectedLabel) {
+            console.log("here",selectedLabel)
             let index = lessonData.findIndex(
-              doc => doc.title === selectedLabel
+              (doc) => doc === selectedLabel
             );
             return (
               <DisplayCards
@@ -94,6 +131,7 @@ export async function getServerSideProps(context) {
     };
   }
   const slug = context.params["cohort_name"];
+
   const lessonData = (await mongoLessonsAfterPipeline(slug)) || null;
   const zoomLink = (await getZoomLink(slug)) || null;
   return {
@@ -108,4 +146,3 @@ export async function getServerSideProps(context) {
   // returning LessonData as props in index
   //context.params contains the route parameters
 }
-

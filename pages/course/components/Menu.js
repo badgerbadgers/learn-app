@@ -10,6 +10,30 @@ import Stack from "@mui/material/Stack";
 import Link from "next/link";
 
 export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
+  const switchType = (val) => {
+    let typeValue = "";
+    switch (val) {
+      case "review":
+        typeValue = "review";
+        console.log("we're reviewing");
+        lessonData.content;
+        break;
+      case "lesson":
+        typeValue = "lesson";
+        console.log("we're having a lesson");
+
+        break;
+      case "break":
+        typeValue = "break";
+        console.log("we're on a break");
+        break;
+      default:
+        console.log("place an error here");
+        break;
+    }
+    return typeValue;
+  };
+
   return (
     <Grid item md={3} sx={{ maxWidth: "100%" }}>
       <Paper
@@ -29,9 +53,13 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
 
-          {lessonData.map((lessons) => {
+          {lessonData.map((lessons, index) => {
+            // console.log(index, lessons)
+            // console.log(lessons.lesson._id)
+            // console.log("type", lessons);
+            // console.log(lessons.lesson.order)
             return (
-              <Stack key={lessons.title}>
+              <Stack key={index}>
                 <Link
                   href={{
                     pathname: "/course/[course_name]/[cohort_name]/",
@@ -40,7 +68,8 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                     query: {
                       course_name: courseName,
                       cohort_name: cohortName,
-                      lesson: lessons.title,
+                      week: index,
+                      // lesson: lessons.title,
                     },
                   }}
                   passHref
@@ -49,7 +78,8 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
-                      {`Lesson ${lessons.section.order}.${lessons.order}: ${lessons.title}`}
+                      {switchType(lessons.type)}
+                      {/* {`Lesson  ${lessons.type}`} */}
                     </Typography>
                   </MenuItem>
                 </Link>
