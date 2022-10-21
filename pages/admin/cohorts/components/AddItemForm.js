@@ -1,60 +1,80 @@
-import * as React from 'react';
+import { Box, Divider, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
-import { Box, IconButton, Stack, TextField, Typography } from "@mui/material";
-
+import ClearIcon from '@mui/icons-material/Clear';
 import SaveIcon from '@mui/icons-material/Save';
-import { useEffect } from "react";
 
-export default function AddItemForm({ insertItem, idx, sectionId }) {
-    const [content, setContent] = React.useState('');
+export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) {
 
-    useEffect(() => { console.log("IDDDD", idx) }, []);
-
+    const [content, setContent] = useState("");
 
     return (
         <Box
             sx={{
                 px: 2,
-                display: "inline-block",
-                border: "1px solid lightseagreen",
+                display: "block",
                 height: "112px",
-                width: "calc(100%-110px)",
-                margin: "10px",
+                // width: "calc(100%-2000px)",
+                // margin: "10px",
                 display: 'block',
-                marginLeft: "110px",
+                marginLeft: "120px",
+                // marginRight: "20px",
+                marginBottom: "40px",
+                boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",
+                borderRadius: "8px"
             }}
         >
             <Stack direction="row"
-                spacing={2} 
+                spacing={1}
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{height: "100%"}}>
-                    <Typography noWrap>Note for the students:</Typography>
+                sx={{ height: "100%" }}>
+                <Typography
+                    // nowrap
+                    sx={{
+                        minWidth: "20%",
+                        float: "right",
+                    }}> Note for students:</Typography>
                 <TextField
-                    // name="emergency_contact_1_name"
-                    placeholder="Type "
-                    label="Content for the break"
-                    
+                    placeholder="Type your note for the students"
+                    label="Note"
                     fullWidth
-                    // required
-                    // size="small"
                     InputLabelProps={{ shrink: true }}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    // sx={{
-                    //     display:"inline"
-
-                    // }}
                 />
-                <IconButton 
-                aria-label="edit" 
-                size="small" 
-                sx={{
 
-                }}
-                onClick={() => { insertItem(idx, { type: "break", content: content, section: { _id: sectionId, title: "" } }) }}  >
-                    <SaveIcon fontSize="small" />
-                </IconButton>
+
+                <Stack direction="row" 
+                divider={<Divider orientation="vertical" flexItem />}
+                alignItems="center" justifyContent="flex-end" spacing={1}
+                    sx={{
+                        display: "inline-block",
+                        float: "right"
+                    }}>
+                    <IconButton
+                        aria-label="discard"
+                        sx={{
+                            "&:hover": {
+                                color: "red",
+                            },
+                        }}
+                        onClick={() => { insertItem(null, {}) }}  >
+                        <ClearIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                        aria-label="save"
+                        sx={{
+                            "&:hover": {
+                                color: "green",
+                            },
+                        }}
+                        onClick={() => { insertItem(idx, { type: "break", content: content, section: sectionId }) }}  >
+                        <SaveIcon fontSize="small" />
+                    </IconButton>
+
+                </Stack>
+
             </Stack>
         </Box>
 

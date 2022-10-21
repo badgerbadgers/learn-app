@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import { Fragment, useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 // import { addDays, format } from 'date-fns/esm';
 import { addDays, format } from 'date-fns'
@@ -15,10 +14,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ScheduleItemBreak from './ScheduleItemBreak';
 import ScheduleItemLesson from './ScheduleItemLesson';
 import TextField from '@mui/material/TextField';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule, setSchedule }) {
+
 
   const [loading, setLoading] = useState(true);
   const [showFormIdx, setShowFormIdx] = useState(null);
@@ -32,37 +30,35 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
       console.log(schedule);
   }, [schedule]);
 
-  // const [fullWidth, setFullWidth] = useState(true);
-  // const [maxWidth, setMaxWidth] = useState('sm');
-
-  // const handleMaxWidthChange = (event) => {
-  //   setMaxWidth(
-  //     // @ts-expect-error autofill of arbitrary value is not handled.
-  //     event.target.value,
-  //   );
-  // };
-
-  // const handleFullWidthChange = (event) => {
-  //   setFullWidth(event.target.checked);
-  // };
 
   console.log("cohort", id, cohortName, startDate, schedule)
-
-  // const insertItem = (idx, content, section, type) => {
-  //   let newItem = {
-  //     type,
-  //     content,
-  //     section
-  //   }  
-  // setSchedule([...schedule].splice(idx + 1, newItem))
   
-// }
+  const updateCohortSchedule = async (idx, newItems) => {
+    const url = "/api/cohorts/";
+    await fetch(url+id, {  
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newItems)
+      })
+  }
 
-  const insertItem = (idx, newItem) => {
-    let newItems = [...schedule]
-    newItems.splice(idx + 1, 0, newItem)
+
+  const  removeItem = (idx) => {
+    let newItems = [...schedule];
+    newItems.splice(idx, 1);
+    setSchedule(newItems);
+    updateCohortSchedule(idx, newItems); 
+  }
+
+
+  const  insertItem = (idx, newItem) => {
+    let newItems = [...schedule];
+    newItems.splice(idx + 1, 0, newItem);
     setShowFormIdx(null);
-    setSchedule(newItems)
+    setSchedule(newItems);
+    updateCohortSchedule(idx, newItems); 
   }
 
   const handleShowForm = (idx) => {
@@ -118,7 +114,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
               const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), 'MMM dd, yyyy') : `week ${idx + 1}`;
               if (week.type === "lesson") {
                 return (
-                  <React.Fragment>
+                  <Fragment key={idx}>
                     <ScheduleItemLesson
                       key={idx}
                       id={id}
@@ -130,14 +126,15 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
                       showBreakBtns={showBreakBtns}
                       handleShowForm={handleShowForm}
                       insertItem={insertItem}
+                     
                     />
-                    {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} insertItem={insertItem}/>}
-                </React.Fragment>
+                    {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} insertItem={insertItem} removeItem={removeItem} sectionId={week.section._id}   />}
+                </Fragment>
                 )
 
               } else if (week.type == "break" || week.type == "review") {
                 return (
-                <React.Fragment>
+                <Fragment key={idx}>
                   <ScheduleItemBreak
                     key={idx}
                     id={id}
@@ -145,14 +142,14 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
                     startDate={weekStartDate}
                     weekType={week.type}
                     content={week.content}
-                    sectionId={week.section._id} 
-                    sectionTitle={week.section.title}
+                    sectionId={week.section} 
                     showBreakBtns={showBreakBtns}
                     handleShowForm={handleShowForm}
-                    insertItem={insertItem}>
+                    insertItem={insertItem}
+                    removeItem={removeItem}>
                   </ScheduleItemBreak>
-                  {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} insertItem={insertItem}/>}
-                </React.Fragment>
+                  {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} insertItem={insertItem} removeItem={removeItem} sectionId={sectionId}/>}
+                </Fragment>
                 )
               }
 
@@ -160,10 +157,6 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
             }
           </Grid>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => insertItem(0, {})}>Cancel</Button>
-          <Button variant="outlined" onClick={handleClose}>Save</Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

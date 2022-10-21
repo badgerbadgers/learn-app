@@ -23,7 +23,7 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        console.log("!!!cohort",cohort)
+        // console.log("!!!cohort",cohort)
         setCohort(cohort);
         setSchedule(cohort.schedule)
         setLoading(false); // if cohort???

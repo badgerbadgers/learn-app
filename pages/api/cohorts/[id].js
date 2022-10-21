@@ -67,6 +67,20 @@ export default async function handler(req, res) {
             }
             break
 
+        case "PATCH":
+            console.log("here", req.body)
+            try {
+                const newSchedule = req.body
+                await Cohort.updateOne({_id:id}, {schedule: newSchedule})
+
+                
+            } catch (error) {
+                console.error("Update schedule error", error)
+                res.status(400).json({ success: false })
+            }
+            res.status(200).json({ success: true })
+            break
+
         case "DELETE":
             try {
                 const deletedCohort = await Cohort.findByIdAndUpdate(id, { deleted_at: new Date() });

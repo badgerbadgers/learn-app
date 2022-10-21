@@ -6,7 +6,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 
-export default function ScheduleItemBreak({ id, idx, startDate, weekType, content, sectionId, sectionTitle, showBreakBtns, handleShowForm, insertItem }) {
+export default function ScheduleItemBreak({
+    id,
+    idx,
+    startDate,
+    weekType,
+    content,
+    sectionId,
+    showBreakBtns,
+    handleShowForm,
+    insertItem,
+    removeItem }) {
 
     const [loading, setLoading] = useState(true);
 
@@ -67,16 +77,16 @@ export default function ScheduleItemBreak({ id, idx, startDate, weekType, conten
                     display: "inline-block",
                     float: "right"
                 }}>
-                <IconButton aria-label="edit" size="small" >
+                    {/* Add item Form */}
+                <IconButton aria-label="edit" size="small" 
+                onClick={() => { handleShowForm(idx) }}
+                 > 
                     <EditIcon fontSize="small" />
                 </IconButton>
-                <IconButton aria-label="delete" size="small">
+                <IconButton aria-label="delete" size="small"
+                    onClick={() => { removeItem(idx) }} >
                     <DeleteIcon fontSize="small" />
                 </IconButton> </Stack>
-
-
-
-
 
         </Box>
         {
@@ -89,9 +99,7 @@ export default function ScheduleItemBreak({ id, idx, startDate, weekType, conten
                 mt={2}
                 sx={{
                     display: "flex",
-
                     width: "calc(100% - 110px)",
-
                 }}></AddWeekBtns>
         }
 
