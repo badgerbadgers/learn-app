@@ -26,7 +26,15 @@ function SelectField(props) {
   return (
     <FormControl {...rest} error={isError}>
       <InputLabel>{label}</InputLabel>
-      <Select {...field} value={selectedValue ? selectedValue : ""}>
+      <Select
+        {...field}
+        value={selectedValue ? selectedValue : ""}
+        label={label}
+        variant="outlined"
+        fullWidth
+        // onChange={(e) => handleInputChange(e)}
+        // value={userInfoData.department}
+      >
         {data.map((item, index) => (
           <MenuItem key={index} value={item.value}>
             {item.label}

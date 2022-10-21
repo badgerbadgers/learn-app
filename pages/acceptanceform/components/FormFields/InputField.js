@@ -6,10 +6,11 @@ import TextField from "@mui/material/TextField";
 function InputField(props) {
   const { errorText, ...rest } = props;
   const [field, meta] = useField(props);
+  const [touched, error] = at(meta, "touched", "error");
+  const isError = touched && error && true;
 
   function renderHelperText() {
-    const [touched, error] = at(meta, "touched", "error");
-    if (touched && error) {
+    if (isError) {
       return error;
     }
   }

@@ -1,12 +1,13 @@
 import React from "react";
 import { at } from "lodash";
 import { useField } from "formik";
-import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 
-export default function CheckboxField(props) {
+export default function RadioButtonGroup(props) {
   const { label, ...rest } = props;
   const [field, meta, helper] = useField(props);
   const { setValue } = helper;
@@ -32,12 +33,31 @@ export default function CheckboxField(props) {
 
   return (
     <FormControl {...rest}>
-      <FormControlLabel
+      <RadioGroup
+        {...field}
+        onChange={onChange}
+        row
+        value={field.checked}
+        // value={userInfoData.employed}
+        // onChange={(e) => updateUserInfoData("employed", e.target.value)}
+      >
+        <FormControlLabel
+          value="yes"
+          control={<Radio size="small" />}
+          label="Yes"
+        />
+        <FormControlLabel
+          value="no"
+          control={<Radio size="small" />}
+          label="No"
+        />
+      </RadioGroup>
+      {/* <FormControlLabel
         value={field.checked}
         checked={field.checked}
         control={<Checkbox {...field} onChange={onChange} />}
         label={label}
-      />
+      /> */}
       {renderHelperText()}
     </FormControl>
   );

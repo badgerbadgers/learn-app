@@ -14,7 +14,7 @@ import EmergencyContacts from "./EmergencyContacts";
 import LearningBackground from "./LearningBackground";
 import { useMediaQuery } from "@mui/material";
 import styles from "./AcceptanceForm.module.css";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import validationSchema from "./FormModel/validationSchema";
 import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
@@ -67,6 +67,7 @@ function Wizard() {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     setActiveStep(activeStep + 1);
+    console.log(values);
   }
 
   const handleSubmit = (values, actions) => {

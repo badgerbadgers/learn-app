@@ -16,7 +16,7 @@ function PersonalInfo(props) {
   }
 
   const {
-    formField: { first_name, last_name, email, gitHub, phone },
+    formField: { first_name, last_name, email, github, phone },
   } = props;
 
   return (
@@ -58,8 +58,8 @@ function PersonalInfo(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={gitHub.name}
-              label={gitHub.label}
+              name={github.name}
+              label={github.label}
               // value={userInfoData.gitHub}
               // onChange={(e) => updateUserInfoData("gitHub", e.target.value)}
               fullWidth

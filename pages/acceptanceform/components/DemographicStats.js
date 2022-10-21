@@ -1,13 +1,19 @@
 import React, { useContext } from "react";
 import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 import InputField from "./FormFields/InputField";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Chip from "@mui/material/Chip";
+import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/system/Box";
 import DatePickerField from "./FormFields/DatePickerField";
 import SelectField from "./FormFields/SelectField";
+import RadioButtonGroup from "./FormFields/RadioButtonGroup";
 import { store } from "../../../store";
 
 // Styling the chips for multi-select input
@@ -21,6 +27,8 @@ const MenuProps = {
     },
   },
 };
+
+// const genderIdentities = ["Woman/Female", "Man/Male", "Non-Binary", "Other"];
 
 const ethnicities = [
   {
@@ -116,6 +124,7 @@ function DemographicStats(props) {
       type: "UPDATE_PERSONAL_DETAILS",
       payload: { ...userInfoData, [key]: value },
     });
+    console.log(key, value);
   }
 
   const {
@@ -190,7 +199,57 @@ function DemographicStats(props) {
               data={genderIdentities}
               multiple
               fullWidth
+              value={userInfoData.gender_identity}
+              onChange={(e) =>
+                updateUserInfoData("gender_identity", e.target.value)
+              }
             />
+            {/* <FormControl sx={{ width: "100%" }}>
+              <InputLabel required>Gender Identity</InputLabel>
+              <Select
+                name={gender_identity.name}
+                label={gender_identity.label}
+                required
+                multiple
+                variant="outlined"
+                fullWidth
+                value={userInfoData.gender_identity}
+                onChange={handleGenderIdentityArrayChange}
+                input={<OutlinedInput label="Gender Identity" />}
+                renderValue={(selected) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 0.5,
+                    }}
+                  >
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        onMouseDown={(event) => {
+                          event.stopPropagation();
+                        }}
+                        onDelete={() => handleDeleteGenderIdentity(value)}
+                        color="secondary"
+                      />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {genderIdentities.map((value) => (
+                  <MenuItem key={value} value={value}>
+                    <Checkbox
+                      checked={userInfoData.gender_identity.indexOf(value) > -1}
+                    />
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+              {<FormHelperText>{error}</FormHelperText>}
+            </FormControl> */}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
@@ -212,10 +271,10 @@ function DemographicStats(props) {
               name={race_ethnicity.name}
               label={race_ethnicity.label}
               data={ethnicities}
-              // value={userInfoData.race_ethnicity}
-              // onChange={(e) =>
-              //   updateUserInfoData("race_ethnicity", e.target.value)
-              // }
+              value={userInfoData.race_ethnicity}
+              onChange={(e) =>
+                updateUserInfoData("race_ethnicity", e.target.value)
+              }
               fullWidth
             />
           </Grid>
@@ -271,12 +330,13 @@ function DemographicStats(props) {
             <FormLabel id="demo-radio-buttons-group-label">
               Currently employed:
             </FormLabel>
-            <RadioGroup
+            <RadioButtonGroup name={employed.name} label={employed.label} />
+            {/* <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
               name="radio-buttons-group"
-              value={userInfoData.employed}
-              onChange={(e) => updateUserInfoData("employed", e.target.value)}
+              // value={userInfoData.employed}
+              // onChange={(e) => updateUserInfoData("employed", e.target.value)}
             >
               <FormControlLabel
                 value="yes"
@@ -288,8 +348,9 @@ function DemographicStats(props) {
                 control={<Radio size="small" />}
                 label="No"
               />
-            </RadioGroup>
+            </RadioGroup> */}
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -304,7 +365,8 @@ function DemographicStats(props) {
             <FormLabel id="demo-radio-buttons-group-label">
               Currently in school:
             </FormLabel>
-            <RadioGroup
+            <RadioButtonGroup name={in_school.name} label={in_school.label} />
+            {/* <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
               name="radio-buttons-group"
@@ -321,8 +383,9 @@ function DemographicStats(props) {
                 control={<Radio size="small" />}
                 label="No"
               />
-            </RadioGroup>
+            </RadioGroup> */}
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -334,10 +397,15 @@ function DemographicStats(props) {
             direction="column"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label" required>
+            <FormLabel id="demo-radio-buttons-group-label">
               Low income:
             </FormLabel>
-            <RadioGroup
+            <RadioButtonGroup
+              name={low_income.name}
+              label={low_income.label}
+              required
+            />
+            {/* <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
               required
@@ -355,7 +423,7 @@ function DemographicStats(props) {
                 control={<Radio size="small" />}
                 label="No"
               />
-            </RadioGroup>
+            </RadioGroup> */}
           </Grid>
         </Grid>
       </Grid>

@@ -5,7 +5,7 @@ const {
     first_name,
     last_name,
     email,
-    gitHub,
+    github,
     phone,
     physical_zipcode,
     mailing_zipcode,
@@ -31,7 +31,7 @@ export default [
     [first_name.name]: Yup.string().required(`${first_name.requiredErrorMsg}`),
     [last_name.name]: Yup.string().required(`${last_name.requiredErrorMsg}`),
     [email.name]: Yup.string().email().required(`${email.requiredErrorMsg}`),
-    [gitHub.name]: Yup.string().required(`${gitHub.requiredErrorMsg}`),
+    [github.name]: Yup.string().required(`${github.requiredErrorMsg}`),
     [phone.name]: Yup.string()
       .required(`${phone.requiredErrorMsg}`)
       .matches(
@@ -55,13 +55,13 @@ export default [
         new Date(Date.now() - 567648000000),
         "You must be at least 18 years"
       ),
-    [gender_identity.name]: Yup.string().required(
-      `${gender_identity.requiredErrorMsg}`
-    ),
+    [gender_identity.name]: Yup.array()
+      .min(1, `${gender_identity.requiredErrorMsg}`)
+      .nullable(),
     [race_ethnicity.name]: Yup.string().required(
       `${race_ethnicity.requiredErrorMsg}`
     ),
-    // [low_income.name]: Yup.string().required(`${low_income.requiredErrorMsg}`),
+    [low_income.name]: Yup.string().required(`${low_income.requiredErrorMsg}`),
   }),
   Yup.object().shape({
     [emergency_contact_1_name.name]: Yup.string().required(

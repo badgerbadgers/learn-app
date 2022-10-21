@@ -44,10 +44,14 @@ function DatePickerField(props) {
           {...props}
           value={selectedDate}
           onChange={onChange}
-          error={isError}
           invalidDateMessage={isError && error}
-          helperText={isError && error}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              helperText={isError && error}
+              error={isError}
+            />
+          )}
         />
       </LocalizationProvider>
     </Grid>
