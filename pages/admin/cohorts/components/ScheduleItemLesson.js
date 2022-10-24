@@ -5,10 +5,10 @@ import AddWeekBtns from "./AddWeekBtns";
 export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonStartDate, itemType, sectionTitle, showBreakBtns, handleShowForm,  insertItem }) {
 
     return <Box
+    mb={2}
         sx={{
             height: "112px",
             width: "100%",
-            margin: "10px",
             display:'block',
         }}
     >
@@ -44,9 +44,7 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
             
             <Typography
             sx={{
-                display: "inline-block",
-                // fontSize: "18px",
-                
+                display: "inline-block",                
             }}>
             {lesson}
             </Typography>
@@ -56,16 +54,15 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
         {
             showBreakBtns &&
             <AddWeekBtns
-            insertItem={insertItem}
-            handleShowForm={handleShowForm}
-            idx={idx}
-            mt={2}
-             sx={{
+              handleShowForm={handleShowForm}
+              idx={idx}
+              mt={2}
+              sx={{
                 display: "flex",
-                
                 width: "calc(100% - 110px)",
                 backgroundColor: "green",
-            }}></AddWeekBtns>
+            }} 
+            />
         }
 
     </Box>

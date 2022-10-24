@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
 import { addDays, format } from 'date-fns'
 import AddItemForm from './AddItemForm';
 import CohortStartDatePicker from './CohortStartDatePicker';
@@ -23,7 +22,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     setLoading(false);
   }, [schedule]);
 
-  const updateCohortSchedule = async (idx, newItems) => { //id vs idx?????
+  const updateCohortSchedule = async (newItems) => { //id vs idx?????
     const url = "/api/cohorts/";
     await fetch(url + id, {
       method: 'PATCH',
@@ -39,7 +38,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     let newItems = [...schedule];
     newItems.splice(idx, 1);
     setSchedule(newItems);
-    updateCohortSchedule(idx, newItems);
+    updateCohortSchedule(newItems);
   }
 
 
@@ -48,14 +47,14 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     newItems.splice(idx + 1, 0, newItem);
     setShowFormIdx(null);
     setSchedule(newItems);
-    updateCohortSchedule(idx, newItems);
+    updateCohortSchedule(newItems);
   }
 
   const updateItem = (idx, item) => {
     let newItems = [...schedule];
     newItems[idx] = item;
     setSchedule(newItems);
-    updateCohortSchedule(idx, newItems);
+    updateCohortSchedule(newItems);
   }
 
   const handleShowForm = (idx, formType) => {
@@ -98,11 +97,9 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
 
         <DialogContent >
-          <Grid >
+          {/* <Grid > */}
             {schedule.map((week, idx) => {
               const showBreakBtns = (idx < schedule.length - 1) ? true : false;
-              console.log("week", week);
-
               const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), 'MMM dd, yyyy') : `week ${idx + 1}`;
               if (week.type === "lesson") {
                 return (
@@ -162,7 +159,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
             })
             }
-          </Grid>
+          {/* </Grid> */}
         </DialogContent>
       </Dialog>
     </div>
