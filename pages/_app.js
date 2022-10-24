@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>Learn</title>
+        <title>Learns</title>
       </Head>
       <StateProvider>
         <SessionProvider session={session}>

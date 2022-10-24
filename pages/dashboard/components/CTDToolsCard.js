@@ -60,7 +60,7 @@ export default function CTDToolsCard({ style, user }) {
             }}
           />
 
-          <CardHeader title={" Tools"}></CardHeader>
+          <CardHeader title={"Tools"}></CardHeader>
           <CardContent>
             <Typography variant="body1">
               Don&apos;t forget to update and share your student profile.
