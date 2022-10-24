@@ -9,7 +9,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    setContent(note);
+    setContent(note ? note : "");
   }, []);
 
   return (
