@@ -19,7 +19,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         display: "block",
         height: "112px",
         display: "block",
-        marginLeft: "120px",
+        marginLeft: "112px",
         width: "calc(100%-120px)",
         marginBottom: "40px",
         boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",

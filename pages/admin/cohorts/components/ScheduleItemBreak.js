@@ -36,6 +36,7 @@ export default function ScheduleItemBreak({
       idx={idx}
       sectionId={sectionId}
       note={content}
+      type={weekType}
     />
   }
 
