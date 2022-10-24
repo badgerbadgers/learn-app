@@ -1,8 +1,8 @@
 import { Box, IconButton, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import ClearIcon from '@mui/icons-material/Clear';
-import SaveIcon from '@mui/icons-material/Save';
+import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 
 export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
 
@@ -50,7 +50,6 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           }}
         />
 
-
         <Stack direction="row"
           alignItems="center" justifyContent="flex-end" spacing={1}
           sx={{
@@ -69,7 +68,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
             <ClearIcon fontSize="small" />
           </IconButton>
           <IconButton
-             size="small"
+            size="small"
             aria-label="save"
             sx={{
               "&:hover": {
@@ -79,9 +78,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
             onClick={() => { saveItem(idx, { type, content: content, section: sectionId }) }}  >
             <SaveIcon fontSize="small" />
           </IconButton>
-
         </Stack>
-
       </Stack>
     </Box>
   )}

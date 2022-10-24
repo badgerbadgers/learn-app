@@ -33,14 +33,12 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     })
   }
 
-
   const removeItem = (idx) => {
     let newItems = [...schedule];
     newItems.splice(idx, 1);
     setSchedule(newItems);
     updateCohortSchedule(newItems);
   }
-
 
   const insertItem = (idx, newItem) => {
     let newItems = [...schedule];
@@ -97,7 +95,6 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
 
         <DialogContent >
-          {/* <Grid > */}
             {schedule.map((week, idx) => {
               const showBreakBtns = (idx < schedule.length - 1) ? true : false;
               const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
@@ -159,7 +156,6 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
             })
             }
-          {/* </Grid> */}
         </DialogContent>
       </Dialog>
     </div>

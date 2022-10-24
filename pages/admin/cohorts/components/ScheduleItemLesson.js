@@ -18,9 +18,8 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
             display: "inline-block",
             color: "#bababa",
             width: "110px",
-
-
-        }}> {lessonStartDate}
+        }}>
+          {lessonStartDate}
         </Box>
    
         <Box sx={{
@@ -64,6 +63,5 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
             }} 
             />
         }
-
     </Box>
 }

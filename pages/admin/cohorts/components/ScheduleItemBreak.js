@@ -48,7 +48,6 @@ export default function ScheduleItemBreak({
       display: "block",
     }}
   >
-
     <Box sx={{
       fontSize: "14px",
       display: "inline-block",
@@ -57,7 +56,6 @@ export default function ScheduleItemBreak({
     }}> 
     {startDate}
     </Box>
-
     <Box sx={{
       px: 2,
       display: "inline-block",
