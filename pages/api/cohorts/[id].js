@@ -36,7 +36,6 @@ export default async function handler(req, res) {
                 }
 
                 const checkCourseId = await Course.findById(cohortToDb.course)
-
                 if (!checkCourseId) {
                     const error = {
                         error: "Course does not exist"
@@ -68,12 +67,9 @@ export default async function handler(req, res) {
             break
 
         case "PATCH":
-            console.log("here", req.body)
             try {
                 const newSchedule = req.body
-                await Cohort.updateOne({_id:id}, {schedule: newSchedule})
-
-                
+                await Cohort.updateOne({ _id: id }, { schedule: newSchedule })
             } catch (error) {
                 console.error("Update schedule error", error)
                 res.status(400).json({ success: false })
@@ -111,23 +107,22 @@ const sanitize = async (obj) => {
 
 const createSchedule = async (courseId) => {
     let schedule = [];
-    try{
+    try {
         let lessonsInCourse = await Course.findOne({
             _id: courseId
         }, "lessons");
         lessonsInCourse = lessonsInCourse.lessons;
         const sortedLessons = await Lesson
-            .find( {_id:{$in:lessonsInCourse}})
-            .select({ _id: 1, order: 1, section:1 })
-            .sort({order:1});
-        sortedLessons.map( l => schedule.push( {
+            .find({ _id: { $in: lessonsInCourse } })
+            .select({ _id: 1, order: 1, section: 1 })
+            .sort({ order: 1 });
+        sortedLessons.map(l => schedule.push({
             lesson: l._id,
-            type:"lesson",
+            type: "lesson",
             section: l.section,
         }))
 
-
-    }catch (error){
+    } catch (error) {
         console.log(error, "Can't fetch lessons from course");
     }
 

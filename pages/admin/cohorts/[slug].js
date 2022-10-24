@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const IndividualCohortPage = () => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = router.query;
   const [schedule, setSchedule] = useState([]);
@@ -23,10 +23,9 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        // console.log("!!!cohort",cohort)
         setCohort(cohort);
         setSchedule(cohort.schedule)
-        setLoading(false); // if cohort???
+        setLoading(false);
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
@@ -46,9 +45,7 @@ const IndividualCohortPage = () => {
             Back to cohort management
           </Button>
         </Grid>
-
-      )
-      }
+      )}
       {cohort && (
         <Grid>
           <Typography variant="h2" align="center" gutterBottom>
@@ -65,11 +62,9 @@ const IndividualCohortPage = () => {
             setSchedule={setSchedule}
           />
         </Grid>
-      )
-      }
+      )}
     </Fragment>
-  )
-}
+  )}
 
 export default IndividualCohortPage;
 

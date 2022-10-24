@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) {
+export default function AddItemForm({ saveItem, idx, sectionId, note }) {
 
     const [content, setContent] = useState("");
+
+    useEffect(() => {
+        setContent(note);
+    }, []);
 
     return (
         <Box
@@ -14,11 +18,8 @@ export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) 
                 px: 2,
                 display: "block",
                 height: "112px",
-                // width: "calc(100%-2000px)",
-                // margin: "10px",
                 display: 'block',
                 marginLeft: "120px",
-                // marginRight: "20px",
                 marginBottom: "40px",
                 boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",
                 borderRadius: "8px"
@@ -30,7 +31,6 @@ export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) 
                 justifyContent="space-between"
                 sx={{ height: "100%" }}>
                 <Typography
-                    // nowrap
                     sx={{
                         minWidth: "20%",
                         float: "right",
@@ -39,6 +39,7 @@ export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) 
                     placeholder="Type your note for the students"
                     label="Note"
                     fullWidth
+                    autoFocus
                     InputLabelProps={{ shrink: true }}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
@@ -59,7 +60,7 @@ export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) 
                                 color: "red",
                             },
                         }}
-                        onClick={() => { insertItem(null, {}) }}  >
+                        onClick={() => { saveItem(null, {}) }}  >
                         <ClearIcon fontSize="small" />
                     </IconButton>
                     <IconButton
@@ -69,7 +70,7 @@ export default function AddItemForm({ insertItem, removeItem, idx, sectionId }) 
                                 color: "green",
                             },
                         }}
-                        onClick={() => { insertItem(idx, { type: "break", content: content, section: sectionId }) }}  >
+                        onClick={() => { saveItem(idx, { type: "break", content: content, section: sectionId }) }}  >
                         <SaveIcon fontSize="small" />
                     </IconButton>
 

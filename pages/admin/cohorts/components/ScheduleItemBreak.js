@@ -5,6 +5,7 @@ import AddWeekBtns from "./AddWeekBtns";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import AddItemForm from "./AddItemForm";
 
 export default function ScheduleItemBreak({
     id,
@@ -16,13 +17,29 @@ export default function ScheduleItemBreak({
     showBreakBtns,
     handleShowForm,
     insertItem,
+    updateItem,
     removeItem }) {
 
     const [loading, setLoading] = useState(true);
+    const [formView, setFormView] = useState(false);
 
     useEffect(() => {
         setLoading(false)
     }, []);
+
+    if (formView) {
+        return <AddItemForm
+            saveItem={
+                (idx, item) => {
+                    setFormView(false);
+                    updateItem(idx, item);
+                }
+            }
+            idx={idx}
+            sectionId={sectionId}
+            note={content}
+         />
+    }
 
     return (!loading && <Box
         sx={{
@@ -79,7 +96,7 @@ export default function ScheduleItemBreak({
                 }}>
                     {/* Add item Form */}
                 <IconButton aria-label="edit" size="small" 
-                onClick={() => { handleShowForm(idx) }}
+                onClick={() => { setFormView(true) }}
                  > 
                     <EditIcon fontSize="small" />
                 </IconButton>
