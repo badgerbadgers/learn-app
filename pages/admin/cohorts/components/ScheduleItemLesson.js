@@ -9,7 +9,7 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
         sx={{
             height: "112px",
             width: "100%",
-            display:'block',
+            display:"block",
         }}
     >
 

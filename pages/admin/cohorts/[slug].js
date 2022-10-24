@@ -1,11 +1,11 @@
-import { Button, Grid, Typography } from '@mui/material';
-import { Fragment, useEffect, useState } from 'react';
+import { Button, Grid, Typography } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
 
-import ScheduleModal from './components/ScheduleModal';
-import getData from '../../../lib/getData';
-import { getSession } from 'next-auth/react';
-import { privateLayout } from '../../../components/layout/PrivateLayout';
-import { useRouter } from 'next/router';
+import ScheduleModal from "./components/ScheduleModal";
+import getData from "../../../lib/getData";
+import { getSession } from "next-auth/react";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
+import { useRouter } from "next/router";
 
 const IndividualCohortPage = () => {
   const [loading, setLoading] = useState(true);

@@ -31,7 +31,7 @@ export default function AddWeekBtns({ idx, handleShowForm }) {
           width: "234px",
           height: "50%",
           display: "flex",
-          justifyContent: 'space-around',
+          justifyContent: "space-around",
         }}>
         <Button size="small" variant="outlined"
           onClick={() => handleShowForm(idx, "break")}
@@ -46,8 +46,8 @@ export default function AddWeekBtns({ idx, handleShowForm }) {
             border: "1px solid #D9D9D9",
             color: "#FF5C34 !important",
             backgroundColor: "white",
-            '&:hover': {
-              backgroundColor: 'white',
+            "&:hover": {
+              backgroundColor: "white",
             },
           }}> + Break </Button>
 
@@ -64,8 +64,8 @@ export default function AddWeekBtns({ idx, handleShowForm }) {
             fontFamily: "Montserrat",
             border: "1px solid #D9D9D9",
             backgroundColor: "white",
-            '&:hover': {
-              backgroundColor: 'white',
+            "&:hover": {
+              backgroundColor: "white",
             },
           }}> + Review </Button>
       </Box>

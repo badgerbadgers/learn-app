@@ -2,9 +2,9 @@ import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import AddWeekBtns from "./AddWeekBtns";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import AddItemForm from "./AddItemForm";
 
 export default function ScheduleItemBreak({
@@ -44,7 +44,7 @@ export default function ScheduleItemBreak({
     sx={{
       height: "112px",
       width: "100%",
-      display: 'block',
+      display: "block",
     }}
   >
 

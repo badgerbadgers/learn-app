@@ -25,8 +25,8 @@ export default async function handler(req, res) {
                 model: "Section",
                 select: "title",
                 populate: {
-                  path: 'section',
-                  model: 'Section',
+                  path: "section",
+                  model: "Section",
                   select: "title",
                 },
               },
@@ -35,8 +35,8 @@ export default async function handler(req, res) {
                 model: "Lesson",
                 select: "title",
                 populate: {
-                  path: 'lesson',
-                  model: 'Lesson',
+                  path: "lesson",
+                  model: "Lesson",
                   select: "title",
                 }
               },

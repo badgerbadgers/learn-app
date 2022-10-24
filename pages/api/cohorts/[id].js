@@ -101,7 +101,7 @@ const sanitize = async (obj) => {
         course: obj.courseName,
         start_date: obj.startDate ? new Date(obj.startDate) : null,
         seats: obj.seats || 0,
-        slug: obj.cohortName.trim().replaceAll(' ', '-').toLowerCase(),
+        slug: obj.cohortName.trim().replaceAll(" ", "-").toLowerCase(),
     }
 }
 

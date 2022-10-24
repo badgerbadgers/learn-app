@@ -1,12 +1,12 @@
-import { Fragment, useEffect, useState } from 'react';
-import { addDays, format } from 'date-fns'
-import AddItemForm from './AddItemForm';
-import CohortStartDatePicker from './CohortStartDatePicker';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import ScheduleItemBreak from './ScheduleItemBreak';
-import ScheduleItemLesson from './ScheduleItemLesson';
+import { Fragment, useEffect, useState } from "react";
+import { addDays, format } from "date-fns"
+import AddItemForm from "./AddItemForm";
+import CohortStartDatePicker from "./CohortStartDatePicker";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import ScheduleItemBreak from "./ScheduleItemBreak";
+import ScheduleItemLesson from "./ScheduleItemLesson";
 
 export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule, setSchedule }) {
 
@@ -25,9 +25,9 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
   const updateCohortSchedule = async (newItems) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newItems)
     })
@@ -81,11 +81,11 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
           sx={{
             fontFamily: "Gotham Rounded",
             fontWeight: "100",
-            color: '#FF5C35',
+            color: "#FF5C35",
             fontSize: "36px",
             justifyContent: "space-between",
-            display: 'flex',
-            width: '100%',
+            display: "flex",
+            width: "100%",
             mt: 1,
           }}>
           Current schedule for {cohortName}
@@ -100,7 +100,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
           {/* <Grid > */}
             {schedule.map((week, idx) => {
               const showBreakBtns = (idx < schedule.length - 1) ? true : false;
-              const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), 'MMM dd, yyyy') : `week ${idx + 1}`;
+              const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
               if (week.type === "lesson") {
                 return (
                   <Fragment key={idx}>
