@@ -24,7 +24,7 @@ const IndividualCohortPage = () => {
         const response = await getData(params, url);
         cohort = response.cohort;
         setCohort(cohort);
-        setSchedule(cohort.schedule)
+        setSchedule(cohort.schedule);
         setLoading(false);
       })();
     } catch (error) {
@@ -55,7 +55,7 @@ const IndividualCohortPage = () => {
           <ScheduleModal
             open={open}
             setOpen={setOpen}
-            id = {cohort._id}
+            id={cohort._id}
             cohortName={cohort.cohort_name}
             startDate={cohort.start_date}
             schedule={schedule}

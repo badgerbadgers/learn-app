@@ -84,8 +84,4 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
 
       </Stack>
     </Box>
-
-
-  )
-
-}
+  )}

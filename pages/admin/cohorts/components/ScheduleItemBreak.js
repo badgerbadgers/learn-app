@@ -114,6 +114,5 @@ export default function ScheduleItemBreak({
         }}
       />
     }
-
   </Box>)
 }

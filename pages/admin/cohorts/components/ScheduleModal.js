@@ -22,7 +22,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     setLoading(false);
   }, [schedule]);
 
-  const updateCohortSchedule = async (newItems) => { //id vs idx?????
+  const updateCohortSchedule = async (newItems) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {
       method: 'PATCH',
