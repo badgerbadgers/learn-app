@@ -4,33 +4,63 @@ import LessonHeader from "./LessonHeader";
 import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
+import BreakCard from "./BreakCard";
 
+// place another switch statement here
 export default function DisplayCards({
-  doc,
-  index,
-  lessonData,
+  currentLesson,
+  currentIndex,
+  scheduleData,
   courseName,
   cohortName,
+  weekLessonNumber,
 }) {
-  return (
+  const switchCardDisplay = () => {
+    switch (currentLesson.type) {
+      case "review":
+      case "break":
+        return <BreakCard  content={currentLesson.content}/>;
+      case "lesson":
+        return (
+          <>
+            <LearningObjectivesCard
+              objectives={currentLesson.lesson.learning_objectives}
+            />
+            <LessonMaterialsCard materials={currentLesson.lesson.materials} />
+            <AssignmentCard
+              mindset={currentLesson.lesson.mindset_content}
+              submit={currentLesson.lesson.submission_link.url}
+              assignments={currentLesson.lesson.assignments}
+            />
+          </>
+        );
 
-    <Grid item xs={12} md={9} lg={9}>{console.log("amen",doc)}
+      default:
+        console.log("place an error here");
+        return "";
+        break;
+    }
+  };
+  return (
+    <Grid item xs={12} md={9} lg={9}>
       <LessonHeader
-        title={doc.lesson.title}
-        lessonOrder={doc.lesson.order}
-        sectionOrder={doc.lesson.section.order}
-        index={index}
-        lessonData={lessonData}
+        currentIndex={currentIndex}
+        scheduleData={scheduleData}
         courseName={courseName}
         cohortName={cohortName}
+        currentLesson={currentLesson}
+        weekLessonNumber={weekLessonNumber}
       />
-      <LearningObjectivesCard objectives={doc.lesson.learning_objectives} />
-      <LessonMaterialsCard materials={doc.lesson.materials} />
+      {switchCardDisplay()}
+      {/* <LearningObjectivesCard
+        objectives={currentLesson.lesson.learning_objectives}
+      />
+      <LessonMaterialsCard materials={currentLesson.lesson.materials} />
       <AssignmentCard
-        mindset={doc.lesson.mindset_content}
-        submit={doc.lesson.submission_link.url}
-        assignments={doc.lesson.assignments}
-      />
+        mindset={currentLesson.lesson.mindset_content}
+        submit={currentLesson.lesson.submission_link.url}
+        assignments={currentLesson.lesson.assignments}
+      /> */}
     </Grid>
   );
 }

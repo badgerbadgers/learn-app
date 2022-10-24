@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import MenuHeader from "./MenuHeader";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -9,30 +9,33 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 
-export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
-  const switchType = (val) => {
-    let typeValue = "";
-    switch (val) {
+export default function Menu({
+  courseName,
+  cohortName,
+  scheduleData,
+  zoomLink,
+  currentLesson,
+}) {
+
+  const getLessonTitle = (lesson) => {
+    switch (lesson.type) {
       case "review":
-        typeValue = "review";
-        console.log("we're reviewing");
-        lessonData.content;
+      case "break":
+        return lesson.type;
+        // console.log("we're reviewing");
         break;
       case "lesson":
-        typeValue = "lesson";
-        console.log("we're having a lesson");
-
-        break;
-      case "break":
-        typeValue = "break";
-        console.log("we're on a break");
+        return lesson.lesson.title;
+        // console.log("we're having a lesson");
         break;
       default:
         console.log("place an error here");
-        break;
+        return '';
+      break;
     }
-    return typeValue;
+  
   };
+
 
   return (
     <Grid item md={3} sx={{ maxWidth: "100%" }}>
@@ -52,8 +55,8 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
           <MenuItem>
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
-
-          {lessonData.map((lessons, index) => {
+          {scheduleData.map((lesson, index) => {
+            // console.log(lessons.lesson);
             // console.log(index, lessons)
             // console.log(lessons.lesson._id)
             // console.log("type", lessons);
@@ -69,7 +72,7 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                       course_name: courseName,
                       cohort_name: cohortName,
                       week: index,
-                      // lesson: lessons.title,
+                      lesson: getLessonTitle(lesson),
                     },
                   }}
                   passHref
@@ -78,8 +81,8 @@ export default function Menu({ courseName, cohortName, lessonData, zoomLink }) {
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
-                      {switchType(lessons.type)}
-                      {/* {`Lesson  ${lessons.type}`} */}
+                      {getLessonTitle(lesson)}
+                      
                     </Typography>
                   </MenuItem>
                 </Link>

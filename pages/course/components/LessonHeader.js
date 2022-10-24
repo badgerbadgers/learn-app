@@ -10,17 +10,53 @@ import Button from "@mui/material/Button";
 export default function LessonHeader({
   courseName,
   cohortName,
-  title,
   lessonOrder,
   sectionOrder,
-  index,
-  lessonData,
+  currentIndex,
+  scheduleData,
+  currentLesson,
+  weekLessonNumber,
 }) {
+  console.log("back to lessonheader");
+  const getLessonQueryString = (weekLessonNumber) => {
+    switch (scheduleData[weekLessonNumber].type) {
+      case "review":
+      case "break":
+        return scheduleData[weekLessonNumber].type;
+
+      case "lesson":
+        return scheduleData[weekLessonNumber].lesson.title;
+
+      default:
+        console.log("error");
+    }
+  };
+
+  const lessonTitle = () => {
+    let typeValue = "";
+
+    switch (currentLesson.type) {
+      case "review":
+      case "break":
+        typeValue = currentLesson.type;
+        // console.log("we're reviewing");
+        break;
+      case "lesson":
+        typeValue = `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`;
+        // console.log("we're having a lesson");
+        break;
+      default:
+      // console.log("place an error here");
+      // break;
+    }
+    return typeValue;
+  };
+
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
-      {console.log(index)}
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        {index !== 0 ? (
+        {/* {console.log(weekLessonNumber !== 0 )} */}
+        {weekLessonNumber !== 0 ? (
           <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
             <Link
               href={{
@@ -30,7 +66,8 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index - 1].title,
+                  week: weekLessonNumber - 1,
+                  lesson: getLessonQueryString(weekLessonNumber - 1),
                 },
               }}
               shallow={true}
@@ -40,7 +77,8 @@ export default function LessonHeader({
           </Button>
         ) : null}
 
-        {index !== lessonData.length - 1 ? (
+        {/* {console.log(weekLessonNumber !== scheduleData.length - 1)} */}
+        {weekLessonNumber !== scheduleData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
@@ -52,7 +90,8 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index + 1].title,
+                  week: weekLessonNumber + 1,
+                  lesson: getLessonQueryString(weekLessonNumber + 1),
                 },
               }}
               shallow={true}
@@ -64,7 +103,8 @@ export default function LessonHeader({
       </CardActions>
 
       <CardHeader
-        title={`Lesson ${sectionOrder}.${lessonOrder}: ${title}`}
+        // add a a switch case here
+        title={lessonTitle()}
         titleTypographyProps={{
           variant: "h4",
           align: "center",
