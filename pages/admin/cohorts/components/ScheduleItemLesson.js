@@ -58,7 +58,6 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
             <AddWeekBtns
             insertItem={insertItem}
             handleShowForm={handleShowForm}
-            // sectionId={section._id}
             idx={idx}
             mt={2}
              sx={{

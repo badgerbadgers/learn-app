@@ -13,6 +13,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
   const [loading, setLoading] = useState(true);
   const [showFormIdx, setShowFormIdx] = useState(null);
+  const [showFormType, setShowFormType] = useState();
 
   useEffect(() => {
     setLoading(false)
@@ -57,8 +58,9 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     updateCohortSchedule(idx, newItems);
   }
 
-  const handleShowForm = (idx) => {
+  const handleShowForm = (idx, formType) => {
     setShowFormIdx(idx === showFormIdx ? null : idx);
+    setShowFormType(formType);
   }
 
   const handleClose = () => {
@@ -118,7 +120,14 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
                       insertItem={insertItem}
 
                     />
-                    {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} saveItem={insertItem} removeItem={removeItem} sectionId={week.section._id} />}
+                    {showFormIdx === idx && <AddItemForm
+                      key={`form-${idx}`} 
+                      idx={idx} 
+                      saveItem={insertItem} 
+                      removeItem={removeItem} 
+                      sectionId={week.section._id} 
+                      type={showFormType}
+                    />}
                   </Fragment>
                 )
 
@@ -139,7 +148,14 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
                       removeItem={removeItem}
                       updateItem={updateItem}
                     />
-                    {showFormIdx === idx && <AddItemForm key={`form-${idx}`} idx={idx} saveItem={insertItem} removeItem={removeItem} sectionId={week.section} />}
+                    {showFormIdx === idx && <AddItemForm 
+                      key={`form-${idx}`} 
+                      idx={idx} 
+                      saveItem={insertItem} 
+                      removeItem={removeItem} 
+                      sectionId={week.section} 
+                      type={showFormType}
+                    />}
                   </Fragment>
                 )
               }

@@ -1,8 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function AddWeekBtns({insertItem, idx, sectionId, handleShowForm}) {
- const [showForrm, setShowForm] = useState(false);
+export default function AddWeekBtns({idx, handleShowForm}) {
  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -36,11 +35,7 @@ export default function AddWeekBtns({insertItem, idx, sectionId, handleShowForm}
                 justifyContent: 'space-around',
             }}>
                 <Button size="small" variant="outlined"
-                    // onClick={() => {
-                    //     // alert("dfddfd")
-                    //     setShowForm(true)
-                    //   }}
-                    onClick={()=> handleShowForm(idx)}
+                    onClick={()=> handleShowForm(idx, "break")}
                     sx={{
                         borderRadius: "20px",
                         height: "30px",
@@ -56,8 +51,10 @@ export default function AddWeekBtns({insertItem, idx, sectionId, handleShowForm}
                             backgroundColor: 'white',
                           },
                     }}> + Break </Button>
+
+
                 <Button size="small" variant="outlined"
-                // onClick={()=>insertItem(idx, content, sectionId, "review")}
+                onClick={()=> handleShowForm(idx, "review")}
                     sx={{
                         borderRadius: "20px",
                         height: "30px",

@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const IndividualCohortPage = () => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const router = useRouter();
   const query = router.query;
   const [schedule, setSchedule] = useState([]);

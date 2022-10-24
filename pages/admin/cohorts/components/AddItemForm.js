@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function AddItemForm({ saveItem, idx, sectionId, note }) {
+export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
 
     const [content, setContent] = useState("");
 
@@ -70,7 +70,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note }) {
                                 color: "green",
                             },
                         }}
-                        onClick={() => { saveItem(idx, { type: "break", content: content, section: sectionId }) }}  >
+                        onClick={() => { saveItem(idx, { type, content: content, section: sectionId }) }}  >
                         <SaveIcon fontSize="small" />
                     </IconButton>
 
