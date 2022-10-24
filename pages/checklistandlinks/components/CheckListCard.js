@@ -12,6 +12,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DOMPurify from "isomorphic-dompurify";
 import { useState, useEffect } from "react";
 
+//we need to change check list info for students
 const checkItemsInfo = [
   {
     label:
