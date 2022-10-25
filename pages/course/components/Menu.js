@@ -14,29 +14,7 @@ export default function Menu({
   cohortName,
   scheduleData,
   zoomLink,
-  currentLesson,
 }) {
-
-  const getLessonTitle = (lesson) => {
-    switch (lesson.type) {
-      case "review":
-      case "break":
-        return lesson.type;
-        // console.log("we're reviewing");
-       
-      case "lesson":
-        return lesson.lesson.title;
-        // console.log("we're having a lesson");
-      
-      default:
-        console.log("place an error here");
-        return '';
-  
-    }
-  
-  };
-
-
   return (
     <Grid item md={3} sx={{ maxWidth: "100%" }}>
       <Paper
@@ -55,8 +33,8 @@ export default function Menu({
           <MenuItem>
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
+          {/* TODO: see if it makes more sense to name lesson weekLesson or something */}
           {scheduleData.map((lesson, index) => {
-           
             return (
               <Stack key={index}>
                 <Link
@@ -68,7 +46,7 @@ export default function Menu({
                       course_name: courseName,
                       cohort_name: cohortName,
                       week: index,
-                      lesson: getLessonTitle(lesson),
+                      lesson: lesson.lesson?.title || lesson.type,
                     },
                   }}
                   passHref
@@ -77,9 +55,7 @@ export default function Menu({
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
-                      {/* giving all lesson instead of lesson.type */}
-                      {getLessonTitle(lesson)}
-                      
+                      {lesson.lesson?.title || lesson.type}
                     </Typography>
                   </MenuItem>
                 </Link>
