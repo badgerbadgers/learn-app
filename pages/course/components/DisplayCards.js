@@ -6,6 +6,12 @@ import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
 import BreakCard from "./BreakCard";
 
+// Objective: have 1 switch case that will check the type and have 2 layouts for is lesson or if break
+/*1. switch case that checks the type 
+2. if lesson show the lesson cards along
+3. if break/review show the breakcard
+4. next and previous lesson button functionality
+*/
 // place another switch statement here
 export default function DisplayCards({
   currentLesson,
@@ -19,10 +25,16 @@ export default function DisplayCards({
     switch (currentLesson.type) {
       case "review":
       case "break":
-        return <BreakCard  content={currentLesson.content}/>;
+        return (
+          <>
+           
+            <BreakCard content={currentLesson.content} />
+          </>
+        );
       case "lesson":
         return (
           <>
+           
             <LearningObjectivesCard
               objectives={currentLesson.lesson.learning_objectives}
             />
@@ -43,6 +55,7 @@ export default function DisplayCards({
   };
   return (
     <Grid item xs={12} md={9} lg={9}>
+    
       <LessonHeader
         currentIndex={currentIndex}
         scheduleData={scheduleData}

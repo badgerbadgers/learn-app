@@ -12,6 +12,7 @@ import Router, { useRouter } from "next/router";
 import BreakCard from "../../components/BreakCard";
 
 export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
+
   /*
   Objective: show the lesson, review, and breaks 
   1. check type of first item in index ...check
@@ -78,7 +79,8 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
     }
     //new query
     let newWeekLessonNumber = parseInt(router.query.week);
-    console.log("new label", typeof newWeekLessonNumber);
+    // parseInt to make sure its a number
+    // console.log("new label", typeof newWeekLessonNumber);
 
     // const currentweekLessonNumber = scheduleData
     if (
@@ -86,21 +88,12 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
       !!scheduleData[newWeekLessonNumber]
     ) {
       // scheduleData[newweekLessonNumber] is lesson
-      console.log("old label", weekLessonNumber);
+      // console.log("old label", weekLessonNumber);
       setweekLessonNumber(newWeekLessonNumber);
       setCurrentLesson(scheduleData[newWeekLessonNumber]);
     }
   }, [scheduleData, weekLessonNumber, router]);
 
-  // const getIndex = () => {
-
-  //   const currentIndex = scheduleData.indexOf(currentLesson)
-  //   console.log("index", currentIndex)
-  //   console.log("weekLessonNumber",weekLessonNumber)
-  //   const nextIndex = scheduleData.indexOf(currentLesson)+ 1
-  //   console.log("next INDEX",nextIndex)
-  //   return currentIndex
-  // }
   return (
     <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
       <Menu
@@ -110,7 +103,7 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
         zoomLink={zoomLink}
         currentLesson={currentLesson}
 
-        // index={weekLessonNumber}
+      
       />
 
       {scheduleData && currentLesson && <DisplayCards
@@ -124,7 +117,7 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
         // currentIndex={getIndex()}
       />}
 
-      {/* if scheduleData is true and exists currentLesson exists and is true then call switchType */}
+      {/* if scheduleData is true and exists currentLesson exists and is true then render DisplayCards */}
       {/* {const index = scheduleData.indexOf(currentLesson)} */}
 
       {/* {let index = scheduleData.findIndex(currentLesson)} */}

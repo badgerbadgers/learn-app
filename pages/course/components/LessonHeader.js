@@ -7,50 +7,22 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+
+// This is for lesson
 export default function LessonHeader({
   courseName,
   cohortName,
   lessonOrder,
   sectionOrder,
-  currentIndex,
   scheduleData,
   currentLesson,
   weekLessonNumber,
 }) {
-  console.log("back to lessonheader");
-  const getLessonQueryString = (weekLessonNumber) => {
-    switch (scheduleData[weekLessonNumber].type) {
-      case "review":
-      case "break":
-        return scheduleData[weekLessonNumber].type;
+  // console.log("hello", currentLesson)
 
-      case "lesson":
-        return scheduleData[weekLessonNumber].lesson.title;
-
-      default:
-        console.log("error");
-    }
-  };
-
-  const lessonTitle = () => {
-    let typeValue = "";
-
-    switch (currentLesson.type) {
-      case "review":
-      case "break":
-        typeValue = currentLesson.type;
-        // console.log("we're reviewing");
-        break;
-      case "lesson":
-        typeValue = `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`;
-        // console.log("we're having a lesson");
-        break;
-      default:
-      // console.log("place an error here");
-      // break;
-    }
-    return typeValue;
-  };
+  // console.log(typeof weekLessonNumber)
+  // console.log(scheduleData.indexOf(currentLesson))
+  const index = scheduleData.indexOf(currentLesson);
 
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
@@ -67,7 +39,9 @@ export default function LessonHeader({
                   course_name: courseName,
                   cohort_name: cohortName,
                   week: weekLessonNumber - 1,
-                  lesson: getLessonQueryString(weekLessonNumber - 1),
+                  lesson:
+                    scheduleData[weekLessonNumber - 1].lesson?.title ||
+                    scheduleData[weekLessonNumber - 1].type,
                 },
               }}
               shallow={true}
@@ -77,7 +51,6 @@ export default function LessonHeader({
           </Button>
         ) : null}
 
-        {/* {console.log(weekLessonNumber !== scheduleData.length - 1)} */}
         {weekLessonNumber !== scheduleData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
@@ -91,7 +64,10 @@ export default function LessonHeader({
                   course_name: courseName,
                   cohort_name: cohortName,
                   week: weekLessonNumber + 1,
-                  lesson: getLessonQueryString(weekLessonNumber + 1),
+                  // since data structures for lesson and review are different need ternary statement
+                  lesson:
+                    scheduleData[weekLessonNumber + 1].lesson?.title ||
+                    scheduleData[weekLessonNumber + 1].type,
                 },
               }}
               shallow={true}
@@ -103,8 +79,11 @@ export default function LessonHeader({
       </CardActions>
 
       <CardHeader
-        // add a a switch case here
-        title={lessonTitle()}
+        title={
+          currentLesson.lesson
+            ? `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`
+            : currentLesson.type
+        }
         titleTypographyProps={{
           variant: "h4",
           align: "center",

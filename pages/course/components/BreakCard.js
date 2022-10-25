@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
+
 export default function BreakCard({ content }) {
   return (
     <Grid item xs={12} md={9} lg={9}>

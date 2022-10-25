@@ -23,15 +23,15 @@ export default function Menu({
       case "break":
         return lesson.type;
         // console.log("we're reviewing");
-        break;
+       
       case "lesson":
         return lesson.lesson.title;
         // console.log("we're having a lesson");
-        break;
+      
       default:
         console.log("place an error here");
         return '';
-      break;
+  
     }
   
   };
@@ -56,11 +56,7 @@ export default function Menu({
             <Typography variant="h6">Lessons</Typography>
           </MenuItem>
           {scheduleData.map((lesson, index) => {
-            // console.log(lessons.lesson);
-            // console.log(index, lessons)
-            // console.log(lessons.lesson._id)
-            // console.log("type", lessons);
-            // console.log(lessons.lesson.order)
+           
             return (
               <Stack key={index}>
                 <Link
@@ -81,6 +77,7 @@ export default function Menu({
                 >
                   <MenuItem>
                     <Typography variant="body1" noWrap={true}>
+                      {/* giving all lesson instead of lesson.type */}
                       {getLessonTitle(lesson)}
                       
                     </Typography>
