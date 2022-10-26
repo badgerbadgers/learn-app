@@ -72,7 +72,7 @@ export default function CTDToolsCard({ style, user }) {
             <Link
               aria-label="link to portfolio page"
               sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
-              href={`/portfolios/${user.gh}`}
+              href="/dashboard"
             >
               Visit your Student profile
             </Link>
