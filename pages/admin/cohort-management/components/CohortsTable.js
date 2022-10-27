@@ -16,10 +16,10 @@ import { Stack } from '@mui/material';
 import axios from "axios";
 import { format } from "date-fns";
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from "next/router";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
-
   const handleClick = () => {
     const id = uuidv4();
     setRows((oldRows) => [...oldRows, { id, cohortName: "", courseName: "", students: "", isNew: true }]);
@@ -49,6 +49,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     setRows(tableRows)
@@ -125,7 +126,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             startDate: newRow.startDate ? format(new Date(newRow.startDate), "MMM dd, yyyy") : "",
             endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
             courseId: course.value,
-            slug:response.data.data.slug,
+            slug: response.data.data.slug,
           };
           setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
@@ -143,6 +144,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     setSnackbar({ children: error.message, severity: 'error' });
   }, []);
 
+  const handleClick = (e, url) => {
+    e.preventDefault()
+    router.push(url)
+  }
+
   const columns = [
     {
       field: 'cohortName',
@@ -151,7 +157,8 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       minWidth: 100,
       editable: true,
       headerAlign: 'center',
-      renderCell: (params) => <a href={"cohorts/" + params.row.slug}>{params.row.cohortName}</a>,
+      renderCell: (params) => <a href="" onClick={(e) => handleClick(e, "cohorts/" + params.row.slug)}>{params.row.cohortName}</a>,
+
     },
     {
       field: 'courseName',

@@ -18,7 +18,6 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         px: 2,
         display: "block",
         height: "112px",
-        display: "block",
         marginLeft: "112px",
         width: "calc(100%-120px)",
         marginBottom: "40px",
@@ -38,7 +37,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           }}> Note for students:</Typography>
         <TextField
           placeholder="Type your note for the students"
-          label="Note"
+          label={type ? type.charAt(0).toUpperCase() + type.slice(1) : ""}
           fullWidth
           autoFocus
           InputLabelProps={{ shrink: true }}
@@ -57,17 +56,6 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
             width: "72px",
           }}>
           <IconButton
-            aria-label="discard"
-            size="small"
-            sx={{
-              "&:hover": {
-                color: "red",
-              },
-            }}
-            onClick={() => { saveItem(null, {}) }}  >
-            <ClearIcon fontSize="small" />
-          </IconButton>
-          <IconButton
             size="small"
             aria-label="save"
             sx={{
@@ -78,7 +66,20 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
             onClick={() => { saveItem(idx, { type, content: content, section: sectionId }) }}  >
             <SaveIcon fontSize="small" />
           </IconButton>
+          <IconButton
+            aria-label="discard"
+            size="small"
+            sx={{
+              "&:hover": {
+                color: "red",
+              },
+            }}
+            onClick={() => { saveItem(null, {}) }}  >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+
         </Stack>
       </Stack>
     </Box>
-  )}
+  )
+}

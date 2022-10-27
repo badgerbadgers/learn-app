@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ScheduleItemBreak from "./ScheduleItemBreak";
 import ScheduleItemLesson from "./ScheduleItemLesson";
+import { Button, IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule, setSchedule }) {
 
@@ -95,67 +97,77 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
 
         <DialogContent >
-            {schedule.map((week, idx) => {
-              const showBreakBtns = (idx < schedule.length - 1) ? true : false;
-              const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
-              if (week.type === "lesson") {
-                return (
-                  <Fragment key={idx}>
-                    <ScheduleItemLesson
-                      key={idx}
-                      id={id}
-                      idx={idx}
-                      lesson={week.lesson.title}
-                      lessonStartDate={weekStartDate}
-                      itemType={week.type}
-                      sectionTitle={week.section.title}
-                      showBreakBtns={showBreakBtns}
-                      handleShowForm={handleShowForm}
-                      insertItem={insertItem}
+          {schedule.map((week, idx) => {
+            const showBreakBtns = (idx < schedule.length - 1) ? true : false;
+            const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
+            if (week.type === "lesson") {
+              return (
+                <Fragment key={idx}>
+                  <ScheduleItemLesson
+                    key={idx}
+                    id={id}
+                    idx={idx}
+                    lesson={week.lesson.title}
+                    lessonStartDate={weekStartDate}
+                    itemType={week.type}
+                    sectionTitle={week.section.title}
+                    showBreakBtns={showBreakBtns}
+                    handleShowForm={handleShowForm}
+                    insertItem={insertItem}
 
-                    />
-                    {showFormIdx === idx && <AddItemForm
-                      key={`form-${idx}`} 
-                      idx={idx} 
-                      saveItem={insertItem} 
-                      removeItem={removeItem} 
-                      sectionId={week.section._id} 
-                      type={showFormType}
-                    />}
-                  </Fragment>
-                )
+                  />
+                  {showFormIdx === idx && <AddItemForm
+                    key={`form-${idx}`}
+                    idx={idx}
+                    saveItem={insertItem}
+                    removeItem={removeItem}
+                    sectionId={week.section._id}
+                    type={showFormType}
+                  />}
+                </Fragment>
+              )
 
-              } else if (week.type == "break" || week.type == "review") {
-                return (
-                  <Fragment key={idx}>
-                    <ScheduleItemBreak
-                      key={idx}
-                      id={id}
-                      idx={idx}
-                      startDate={weekStartDate}
-                      weekType={week.type}
-                      content={week.content}
-                      sectionId={week.section}
-                      showBreakBtns={showBreakBtns}
-                      handleShowForm={handleShowForm}
-                      insertItem={insertItem}
-                      removeItem={removeItem}
-                      updateItem={updateItem}
-                    />
-                    {showFormIdx === idx && <AddItemForm 
-                      key={`form-${idx}`} 
-                      idx={idx} 
-                      saveItem={insertItem} 
-                      removeItem={removeItem} 
-                      sectionId={week.section} 
-                      type={showFormType}
-                    />}
-                  </Fragment>
-                )
-              }
-
-            })
+            } else if (week.type == "break" || week.type == "review") {
+              return (
+                <Fragment key={idx}>
+                  <ScheduleItemBreak
+                    key={idx}
+                    id={id}
+                    idx={idx}
+                    startDate={weekStartDate}
+                    weekType={week.type}
+                    content={week.content}
+                    sectionId={week.section}
+                    showBreakBtns={showBreakBtns}
+                    handleShowForm={handleShowForm}
+                    insertItem={insertItem}
+                    removeItem={removeItem}
+                    updateItem={updateItem}
+                  />
+                  {showFormIdx === idx && <AddItemForm
+                    key={`form-${idx}`}
+                    idx={idx}
+                    saveItem={insertItem}
+                    removeItem={removeItem}
+                    sectionId={week.section}
+                    type={showFormType}
+                  />}
+                </Fragment>
+              )
             }
+
+          })
+          }
+
+          <Button //TODO: add handle check for unsaved notes
+            onClick={handleClose}
+            variant="outlined"
+            endIcon={<CloseIcon />}
+            sx={{
+              float: "right",
+              mr: "3rem"
+            }}
+          >Close</Button>
         </DialogContent>
       </Dialog>
     </div>
