@@ -13,6 +13,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/system/Box";
 import DatePickerField from "./FormFields/DatePickerField";
 import SelectField from "./FormFields/SelectField";
+import MultiSelectField from "./FormFields/MultiSelectField";
 import RadioButtonGroup from "./FormFields/RadioButtonGroup";
 import { store } from "../../../store";
 
@@ -116,30 +117,30 @@ const degrees = [
 ];
 
 function DemographicStats(props) {
-  // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
-    console.log(key, value);
-  }
+  //   // Updating user info data through the global state provider
+  //   const { state, dispatch } = useContext(store);
+  //   const { userInfoData } = state;
+  //   function updateUserInfoData(key, value) {
+  //     dispatch({
+  //       type: "UPDATE_PERSONAL_DETAILS",
+  //       payload: { ...userInfoData, [key]: value },
+  //     });
+  //     console.log(key, value);
+  //   }
 
   const {
     formField: {
       dob,
       pronouns,
-      gender_identity,
-      gender_identity_self,
-      race_ethnicity,
-      race_ethnicity_self,
+      genderIdentity,
+      genderIdentitySelf,
+      raceEthnicity,
+      raceEthnicitySelf,
       education,
-      spoken_languages,
+      spokenLanguages,
       employed,
-      in_school,
-      low_income,
+      inSchool,
+      lowIncome,
     },
   } = props;
 
@@ -175,8 +176,8 @@ function DemographicStats(props) {
               minDate={new Date("1850/01/01")}
               maxDate={new Date(Date.now())}
               variant="outlined"
-              value={userInfoData.dob}
-              onChange={(e) => updateUserInfoData("dob", e.target.value)}
+              // value={userInfoData.dob}
+              // onChange={(e) => updateUserInfoData("dob", e.target.value)}
               fullWidth
             />
           </Grid>
@@ -193,16 +194,15 @@ function DemographicStats(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            <SelectField
-              name={gender_identity.name}
-              label={gender_identity.label}
+            <MultiSelectField
+              name={genderIdentity.name}
+              label={genderIdentity.label}
               data={genderIdentities}
-              multiple
               fullWidth
-              value={userInfoData.gender_identity}
-              onChange={(e) =>
-                updateUserInfoData("gender_identity", e.target.value)
-              }
+              // value={userInfoData.gender_identity}
+              // onChange={(e) =>
+              //   updateUserInfoData("gender_identity", e.target.value)
+              // }
             />
             {/* <FormControl sx={{ width: "100%" }}>
               <InputLabel required>Gender Identity</InputLabel>
@@ -254,44 +254,43 @@ function DemographicStats(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally shows the input field if "Other" in the previous Select is chosen */}
-            {userInfoData.gender_identity.includes("Other") && (
-              <InputField
-                name={gender_identity_self.name}
-                label={gender_identity_self.label}
-                // value={userInfoData.gender_identity_self}
-                // onChange={(e) => updateUserInfoData("gender_identity_self", e.target.value)}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            {/* {genderIdentity.includes("Other") && ( */}
+            <InputField
+              name={genderIdentitySelf.name}
+              label={genderIdentitySelf.label}
+              // value={userInfoData.gender_identity_self}
+              // onChange={(e) => updateUserInfoData("gender_identity_self", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* )} */}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             <SelectField
-              name={race_ethnicity.name}
-              label={race_ethnicity.label}
+              name={raceEthnicity.name}
+              label={raceEthnicity.label}
               data={ethnicities}
-              value={userInfoData.race_ethnicity}
-              onChange={(e) =>
-                updateUserInfoData("race_ethnicity", e.target.value)
-              }
+              // value={userInfoData.race_ethnicity}
+              // onChange={(e) =>
+              //   updateUserInfoData("race_ethnicity", e.target.value)
+              // }
               fullWidth
             />
           </Grid>
 
           {/* Conditionally shows the input field if "Some other race, ethnicity, or origin" in the previous Select is chosen */}
           <Grid item xs={12} sm={6} width="100%">
-            {userInfoData.race_ethnicity ===
-              "Some other race, ethnicity, or origin" && (
-              <InputField
-                name={race_ethnicity_self.name}
-                label={race_ethnicity_self.label}
-                // value={userInfoData.race_ethnicity_self}
-                // onChange={(e) => updateUserInfoData("race_ethnicity_self", e.target.value)}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            {/* {raceEthnicity === "Some other race, ethnicity, or origin" && ( */}
+            <InputField
+              name={raceEthnicitySelf.name}
+              label={raceEthnicitySelf.label}
+              // value={userInfoData.race_ethnicity_self}
+              // onChange={(e) => updateUserInfoData("race_ethnicity_self", e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+            {/* )} */}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
@@ -307,8 +306,8 @@ function DemographicStats(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={spoken_languages.name}
-              label={spoken_languages.label}
+              name={spokenLanguages.name}
+              label={spokenLanguages.label}
               // value={userInfoData.spoken_languages}
               // onChange={(e) => updateUserInfoData("spoken_languages", e.target.value)}
               variant="outlined"
@@ -365,7 +364,7 @@ function DemographicStats(props) {
             <FormLabel id="demo-radio-buttons-group-label">
               Currently in school:
             </FormLabel>
-            <RadioButtonGroup name={in_school.name} label={in_school.label} />
+            <RadioButtonGroup name={inSchool.name} label={inSchool.label} />
             {/* <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
@@ -401,8 +400,8 @@ function DemographicStats(props) {
               Low income:
             </FormLabel>
             <RadioButtonGroup
-              name={low_income.name}
-              label={low_income.label}
+              name={lowIncome.name}
+              label={lowIncome.label}
               required
             />
             {/* <RadioGroup

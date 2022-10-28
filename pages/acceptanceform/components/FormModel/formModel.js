@@ -1,12 +1,12 @@
 export default {
   formId: "acceptanceForm",
   formField: {
-    first_name: {
+    firstName: {
       name: "first_name",
       label: "First name*",
       requiredErrorMsg: "First name is required",
     },
-    last_name: {
+    lastName: {
       name: "last_name",
       label: "Last name*",
       requiredErrorMsg: "Last name is required",
@@ -16,7 +16,7 @@ export default {
       label: "Email*",
       requiredErrorMsg: "Email is required",
     },
-    github: {
+    gitHub: {
       name: "github",
       label: "GitHub username*",
       requiredErrorMsg: "GitHub username is required",
@@ -26,53 +26,61 @@ export default {
       label: "Phone*",
       requiredErrorMsg: "Phone is required",
     },
-    physical_zipcode: {
+    USResident: {
+      name: "USResident",
+      label: "US/US territory resident",
+    },
+    physicalZipcode: {
       name: "physical_zipcode",
       label: "ZIP code*",
       requiredErrorMsg: "ZIP code is required",
     },
-    physical_address_1: {
+    physicalAddress1: {
       name: "physical_address_1",
       label: "Street address",
     },
-    physical_address_2: {
+    physicalAddress2: {
       name: "physical_address_2",
       label: "Apt/Unit/Suite #",
     },
-    physical_city: {
+    physicalCity: {
       name: "physical_city",
       label: "City",
     },
-    physical_state: {
+    physicalState: {
       name: "physical_state",
       label: "State/Province",
     },
-    physical_country: {
+    physicalCountry: {
       name: "physical_country",
       label: "Country",
     },
-    mailing_zipcode: {
+    mailingSame: {
+      name: "mailingSame",
+      label: "Same as physical address",
+    },
+    mailingZipcode: {
       name: "mailing_zipcode",
       label: "ZIP code",
       requiredErrorMsg: "ZIP code is required",
     },
-    mailing_address_1: {
+    mailingAddress1: {
       name: "mailing_address_1",
       label: "Street address",
     },
-    mailing_address_2: {
+    mailingAddress2: {
       name: "mailing_address_2",
       label: "Apt/Unit/Suite #",
     },
-    mailing_city: {
+    mailingCity: {
       name: "mailing_city",
       label: "City",
     },
-    mailing_state: {
+    mailingState: {
       name: "mailing_state",
       label: "State/Province",
     },
-    mailing_country: {
+    mailingCountry: {
       name: "mailing_country",
       label: "Country",
     },
@@ -85,29 +93,31 @@ export default {
       name: "pronouns",
       label: "Pronouns",
     },
-    gender_identity: {
+    genderIdentity: {
       name: "gender_identity",
       label: "Gender identity*",
       requiredErrorMsg: "Gender identity is required",
     },
-    gender_identity_self: {
+    genderIdentitySelf: {
       name: "gender_identity_self",
       label: "Gender identity (self described)",
+      requiredErrorMsg: "Gender identity is required",
     },
-    race_ethnicity: {
+    raceEthnicity: {
       name: "race_ethnicity",
       label: "Race/Ethnicity*",
       requiredErrorMsg: "Race/Ethnicity is required",
     },
-    race_ethnicity_self: {
+    raceEthnicitySelf: {
       name: "race_ethnicity_self",
       label: "Race/Ethnicity (self described)",
+      requiredErrorMsg: "Race/Ethnicity is required",
     },
     education: {
       name: "education",
       label: "Education",
     },
-    spoken_languages: {
+    spokenLanguages: {
       name: "spoken_languages",
       label: "Spoken Languages",
     },
@@ -115,64 +125,64 @@ export default {
       name: "employed",
       label: "Employed",
     },
-    in_school: {
+    inSchool: {
       name: "in_school",
       label: "In school",
     },
-    low_income: {
+    lowIncome: {
       name: "low_income",
       label: "Low income",
       requiredErrorMsg: "Please select the answer",
     },
-    emergency_contact_1_name: {
+    emergencyContact1Name: {
       name: "emergency_contact_1_name",
       label: "Full name*",
       requiredErrorMsg: "Full name is required",
     },
-    emergency_contact_1_relationship: {
+    emergencyContact1Relationship: {
       name: "emergency_contact_1_relationship",
       label: "Relationship*",
       requiredErrorMsg: "Relationship is required",
     },
-    emergency_contact_1_phone: {
+    emergencyContact1Phone: {
       name: "emergency_contact_1_phone",
       label: "Phone*",
       requiredErrorMsg: "Phone is required",
     },
-    emergency_contact_2_name: {
+    emergencyContact2Name: {
       name: "emergency_contact_2_name",
       label: "Full name*",
       requiredErrorMsg: "Full name is required",
     },
-    emergency_contact_2_relationship: {
+    emergencyContact2Relationship: {
       name: "emergency_contact_2_relationship",
       label: "Relationship*",
       requiredErrorMsg: "Relationship is required",
     },
-    emergency_contact_2_phone: {
+    emergencyContact2Phone: {
       name: "emergency_contact_2_phone",
       label: "Phone*",
       requiredErrorMsg: "Phone is required",
     },
-    learning_style: {
+    learningStyle: {
       name: "learning_style",
       label: "Learning style",
     },
-    prior_coding_education: {
+    priorCodingEducation: {
       name: "prior_coding_education",
       label: "Prior coding education",
     },
-    prior_coding_languages: {
+    priorCodingLanguages: {
       name: "prior_coding_languages",
       label: "Prior coding languages",
     },
-    work_commitment_consent: {
+    workCommitmentConsent: {
       name: "work_commitment_consent",
       label:
         "I agree that I am accepting my seat in a class I was offered and understand that the work commitment for each class is expected to be about 15-20 hours per week.",
       requiredErrorMsg: "You must accept the terms and conditions",
     },
-    leave_notice_consent: {
+    leaveNoticeConsent: {
       name: "leave_notice_consent",
       label:
         "I commit to trying my best throughout the course and agree to contact Code the Dream if I can no longer participate in this class so I can be made aware of future opportunities available.",

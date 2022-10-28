@@ -6,17 +6,17 @@ import { store } from "../../../store";
 
 function PersonalInfo(props) {
   // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
-  }
+  // const { state, dispatch } = useContext(store);
+  // const { userInfoData } = state;
+  // function updateUserInfoData(key, value) {
+  //   dispatch({
+  //     type: "UPDATE_PERSONAL_DETAILS",
+  //     payload: { ...userInfoData, [key]: value },
+  //   });
+  // }
 
   const {
-    formField: { first_name, last_name, email, github, phone },
+    formField: { firstName, lastName, email, gitHub, phone },
   } = props;
 
   return (
@@ -25,10 +25,10 @@ function PersonalInfo(props) {
         <Grid container spacing={2} justify="space-between">
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={first_name.name}
-              label={first_name.label}
+              name={firstName.name}
+              label={firstName.label}
               // value={userInfoData.first_name}
-              // onChange={(e) => updateUserInfoData("first_name", e.target.value)}
+              // onChange={(e) => console.log(firstName.name.value)}
               variant="outlined"
               fullWidth
             />
@@ -36,8 +36,8 @@ function PersonalInfo(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={last_name.name}
-              label={last_name.label}
+              name={lastName.name}
+              label={lastName.label}
               // value={userInfoData.last_name}
               // onChange={(e) => updateUserInfoData("last_name", e.target.value)}
               variant="outlined"
@@ -58,8 +58,8 @@ function PersonalInfo(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={github.name}
-              label={github.label}
+              name={gitHub.name}
+              label={gitHub.label}
               // value={userInfoData.gitHub}
               // onChange={(e) => updateUserInfoData("gitHub", e.target.value)}
               fullWidth

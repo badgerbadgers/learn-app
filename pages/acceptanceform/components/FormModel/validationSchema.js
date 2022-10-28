@@ -2,36 +2,34 @@ import * as Yup from "yup";
 import formModel from "./formModel";
 const {
   formField: {
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     email,
-    github,
+    gitHub,
     phone,
-    physical_zipcode,
-    mailing_zipcode,
+    physicalZipcode,
     dob,
-    gender_identity,
-    gender_identity_self,
-    race_ethnicity,
-    race_ethnicity_self,
-    low_income,
-    emergency_contact_1_name,
-    emergency_contact_1_relationship,
-    emergency_contact_1_phone,
-    emergency_contact_2_name,
-    emergency_contact_2_relationship,
-    emergency_contact_2_phone,
-    work_commitment_consent,
-    leave_notice_consent,
+    genderIdentity,
+    raceEthnicity,
+    raceEthnicitySelf,
+    lowIncome,
+    emergencyContact1Name,
+    emergencyContact1Relationship,
+    emergencyContact1Phone,
+    emergencyContact2Name,
+    emergencyContact2Relationship,
+    emergencyContact2Phone,
+    workCommitmentConsent,
+    leaveNoticeConsent,
   },
 } = formModel;
 
 export default [
   Yup.object().shape({
-    [first_name.name]: Yup.string().required(`${first_name.requiredErrorMsg}`),
-    [last_name.name]: Yup.string().required(`${last_name.requiredErrorMsg}`),
+    [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
+    [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
     [email.name]: Yup.string().email().required(`${email.requiredErrorMsg}`),
-    [github.name]: Yup.string().required(`${github.requiredErrorMsg}`),
+    [gitHub.name]: Yup.string().required(`${gitHub.requiredErrorMsg}`),
     [phone.name]: Yup.string()
       .required(`${phone.requiredErrorMsg}`)
       .matches(
@@ -41,8 +39,8 @@ export default [
       .min(10, "Must be at least 10 digits"),
   }),
   Yup.object().shape({
-    [physical_zipcode.name]: Yup.string()
-      .required(`${physical_zipcode.requiredErrorMsg}`)
+    [physicalZipcode.name]: Yup.string()
+      .required(`${physicalZipcode.requiredErrorMsg}`)
       .matches(/^[0-9]+$/, "Must be only digits")
       .min(5, "Must be exactly 5 digits")
       .max(5, "Must be exactly 5 digits"),
@@ -55,36 +53,40 @@ export default [
         new Date(Date.now() - 567648000000),
         "You must be at least 18 years"
       ),
-    [gender_identity.name]: Yup.array()
-      .min(1, `${gender_identity.requiredErrorMsg}`)
+    [genderIdentity.name]: Yup.array()
+      .min(1, `${genderIdentity.requiredErrorMsg}`)
       .nullable(),
-    [race_ethnicity.name]: Yup.string().required(
-      `${race_ethnicity.requiredErrorMsg}`
+    [raceEthnicity.name]: Yup.string().required(
+      `${raceEthnicity.requiredErrorMsg}`
     ),
-    [low_income.name]: Yup.string().required(`${low_income.requiredErrorMsg}`),
+    [raceEthnicitySelf.name]: Yup.string().when("[raceEthnicity.name]", {
+      is: (val) => val == "Some other race, ethnicity, or origin",
+      then: Yup.string().required(`${raceEthnicitySelf.requiredErrorMsg}`),
+    }),
+    [lowIncome.name]: Yup.string().required(`${lowIncome.requiredErrorMsg}`),
   }),
   Yup.object().shape({
-    [emergency_contact_1_name.name]: Yup.string().required(
-      `${emergency_contact_1_name.requiredErrorMsg}`
+    [emergencyContact1Name.name]: Yup.string().required(
+      `${emergencyContact1Name.requiredErrorMsg}`
     ),
-    [emergency_contact_1_relationship.name]: Yup.string().required(
-      `${emergency_contact_1_relationship.requiredErrorMsg}`
+    [emergencyContact1Relationship.name]: Yup.string().required(
+      `${emergencyContact1Relationship.requiredErrorMsg}`
     ),
-    [emergency_contact_1_phone.name]: Yup.string()
-      .required(`${emergency_contact_1_phone.requiredErrorMsg}`)
+    [emergencyContact1Phone.name]: Yup.string()
+      .required(`${emergencyContact1Phone.requiredErrorMsg}`)
       .matches(
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
         "Phone number is not valid"
       )
       .min(10, "Must be at least 10 digits"),
-    [emergency_contact_2_name.name]: Yup.string().required(
-      `${emergency_contact_2_name.requiredErrorMsg}`
+    [emergencyContact2Name.name]: Yup.string().required(
+      `${emergencyContact2Name.requiredErrorMsg}`
     ),
-    [emergency_contact_2_relationship.name]: Yup.string().required(
-      `${emergency_contact_2_relationship.requiredErrorMsg}`
+    [emergencyContact2Relationship.name]: Yup.string().required(
+      `${emergencyContact2Relationship.requiredErrorMsg}`
     ),
-    [emergency_contact_2_phone.name]: Yup.string()
-      .required(`${emergency_contact_2_phone.requiredErrorMsg}`)
+    [emergencyContact2Phone.name]: Yup.string()
+      .required(`${emergencyContact2Phone.requiredErrorMsg}`)
       .matches(
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
         "Phone number is not valid"
@@ -92,13 +94,13 @@ export default [
       .min(10, "Must be at least 10 digits"),
   }),
   Yup.object().shape({
-    [work_commitment_consent.name]: Yup.boolean().oneOf(
+    [workCommitmentConsent.name]: Yup.boolean().oneOf(
       [true],
-      `${work_commitment_consent.requiredErrorMsg}`
+      `${workCommitmentConsent.requiredErrorMsg}`
     ),
-    [leave_notice_consent.name]: Yup.boolean().oneOf(
+    [leaveNoticeConsent.name]: Yup.boolean().oneOf(
       [true],
-      `${leave_notice_consent.requiredErrorMsg}`
+      `${leaveNoticeConsent.requiredErrorMsg}`
     ),
   }),
 ];

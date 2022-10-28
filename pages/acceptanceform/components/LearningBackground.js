@@ -3,6 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import CheckboxField from "./FormFields/CheckboxField";
 import SelectField from "./FormFields/SelectField";
+import MultiSelectField from "./FormFields/MultiSelectField";
 import { store } from "../../../store";
 
 // Styling the chips for multi-select input
@@ -19,28 +20,28 @@ import { store } from "../../../store";
 
 function LearningBackground(props) {
   // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
-  }
+  // const { state, dispatch } = useContext(store);
+  // const { userInfoData } = state;
+  // function updateUserInfoData(key, value) {
+  //   dispatch({
+  //     type: "UPDATE_PERSONAL_DETAILS",
+  //     payload: { ...userInfoData, [key]: value },
+  //   });
+  // }
 
   const {
     formField: {
-      learning_style,
-      prior_coding_education,
-      prior_coding_languages,
-      work_commitment_consent,
-      leave_notice_consent,
+      learningStyle,
+      priorCodingEducation,
+      priorCodingLanguages,
+      workCommitmentConsent,
+      leaveNoticeConsent,
     },
   } = props;
 
   //Setting Menu items options for Select lists
 
-  const priorCodingEducation = [
+  const education = [
     {
       value: "A few hours",
       label: "A few hours",
@@ -67,7 +68,7 @@ function LearningBackground(props) {
     },
   ];
 
-  const priorCodingLanguages = [
+  const languages = [
     {
       value: "HTML",
       label: "HTML",
@@ -106,7 +107,7 @@ function LearningBackground(props) {
     },
   ];
 
-  const learningStyles = [
+  const styles = [
     {
       value: "Watching",
       label: "Watching",
@@ -221,22 +222,22 @@ function LearningBackground(props) {
               </Select>
             </FormControl> */}
             <SelectField
-              name={prior_coding_education.name}
-              label={prior_coding_education.label}
-              data={priorCodingEducation}
-              value={userInfoData.prior_coding_education}
-              onChange={(e) =>
-                updateUserInfoData("prior_coding_education", e.target.value)
-              }
+              name={priorCodingEducation.name}
+              label={priorCodingEducation.label}
+              data={education}
+              // value={userInfoData.prior_coding_education}
+              // onChange={(e) =>
+              //   updateUserInfoData("prior_coding_education", e.target.value)
+              // }
               fullWidth
             />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            <SelectField
-              name={prior_coding_languages.name}
-              label={prior_coding_languages.label}
-              data={priorCodingLanguages}
+            <MultiSelectField
+              name={priorCodingLanguages.name}
+              label={priorCodingLanguages.label}
+              data={languages}
               multiple
               fullWidth
             />
@@ -297,10 +298,10 @@ function LearningBackground(props) {
                 ))}
               </Select>
             </FormControl> */}
-            <SelectField
-              name={learning_style.name}
-              label={learning_style.label}
-              data={learningStyles}
+            <MultiSelectField
+              name={learningStyle.name}
+              label={learningStyle.label}
+              data={styles}
               multiple
               fullWidth
             />
@@ -308,15 +309,15 @@ function LearningBackground(props) {
 
           <Grid item xs={12} sm={12} width="100%">
             <CheckboxField
-              name={work_commitment_consent.name}
-              label={work_commitment_consent.label}
+              name={workCommitmentConsent.name}
+              label={workCommitmentConsent.label}
             />
           </Grid>
 
           <Grid item xs={12} sm={12} width="100%">
             <CheckboxField
-              name={leave_notice_consent.name}
-              label={leave_notice_consent.label}
+              name={leaveNoticeConsent.name}
+              label={leaveNoticeConsent.label}
             />
           </Grid>
         </Grid>

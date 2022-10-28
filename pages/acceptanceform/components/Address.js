@@ -11,43 +11,47 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import Checkbox from "@mui/material/Checkbox";
 import InputField from "./FormFields/InputField";
+import RadioButtonGroup from "./FormFields/RadioButtonGroup";
+import CheckboxField from "./FormFields/CheckboxField";
 import { store } from "../../../store";
 
 function Address(props) {
   // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
+  // const { state, dispatch } = useContext(store);
+  // const { userInfoData } = state;
+  // function updateUserInfoData(key, value) {
+  //   dispatch({
+  //     type: "UPDATE_PERSONAL_DETAILS",
+  //     payload: { ...userInfoData, [key]: value },
+  //   });
 
-    // When the checkbox is checked all physical address values already entered at that moment
-    // are being copied into the respective mailing address values
-    if (userInfoData.mailing_same) {
-      userInfoData.mailing_zipcode = userInfoData.physical_zipcode;
-      userInfoData.mailing_address_1 = userInfoData.physical_address_1;
-      userInfoData.mailing_address_2 = userInfoData.physical_address_2;
-      userInfoData.mailing_city = userInfoData.physical_city;
-      userInfoData.mailing_state = userInfoData.physical_state;
-      userInfoData.mailing_country = userInfoData.physical_country;
-    }
-  }
+  // When the checkbox is checked all physical address values already entered at that moment
+  // are being copied into the respective mailing address values
+  //   if (userInfoData.mailing_same) {
+  //     userInfoData.mailing_zipcode = userInfoData.physical_zipcode;
+  //     userInfoData.mailing_address_1 = userInfoData.physical_address_1;
+  //     userInfoData.mailing_address_2 = userInfoData.physical_address_2;
+  //     userInfoData.mailing_city = userInfoData.physical_city;
+  //     userInfoData.mailing_state = userInfoData.physical_state;
+  //     userInfoData.mailing_country = userInfoData.physical_country;
+  //   }
+  // }
 
   const {
     formField: {
-      physical_zipcode,
-      physical_address_1,
-      physical_address_2,
-      physical_city,
-      physical_state,
+      USResident,
+      physicalZipcode,
+      physicalAddress1,
+      physicalAddress2,
+      physicalCity,
+      physicalState,
       // physical_country,
-      mailing_zipcode,
-      mailing_address_1,
-      mailing_address_2,
-      mailing_city,
-      mailing_state,
+      mailingSame,
+      mailingZipcode,
+      mailingAddress1,
+      mailingAddress2,
+      mailingCity,
+      mailingState,
       // mailing_country,
     },
   } = props;
@@ -84,7 +88,8 @@ function Address(props) {
             <FormLabel id="demo-radio-buttons-group-label">
               US/US territory resident:
             </FormLabel>
-            <RadioGroup
+            <RadioButtonGroup name={USResident.name} label={USResident.label} />
+            {/* <RadioGroup
               row
               aria-labelledby="demo-radio-buttons-group-label"
               name="US_resident"
@@ -105,13 +110,13 @@ function Address(props) {
                 labelPlacement="start"
                 label="No"
               />
-            </RadioGroup>
+            </RadioGroup> */}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={physical_zipcode.name}
-              label={physical_zipcode.label}
+              name={physicalZipcode.name}
+              label={physicalZipcode.label}
               // value={userInfoData.physical_zipcode}
               // onChange={(e) => updateUserInfoData("physical_zipcode", e.target.value)}
               variant="outlined"
@@ -121,8 +126,8 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={physical_address_1.name}
-              label={physical_address_1.label}
+              name={physicalAddress1.name}
+              label={physicalAddress1.label}
               // value={userInfoData.physical_address_1}
               // onChange={(e) => updateUserInfoData("physical_address_1", e.target.value)}
               variant="outlined"
@@ -132,10 +137,12 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={physical_address_2.name}
-              label={physical_address_2.label}
-              // value={userInfoData.physical_address_2}
-              // onChange={(e) => updateUserInfoData("physical_address_2", e.target.value)}
+              name={physicalAddress2.name}
+              label={physicalAddress2.label}
+              value={physicalAddress2.name.value}
+              onChange={(e) =>
+                console.log("physical_address_2", physicalAddress2.name.value)
+              }
               variant="outlined"
               fullWidth
             />
@@ -143,8 +150,8 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={physical_city.name}
-              label={physical_city.label}
+              name={physicalCity.name}
+              label={physicalCity.label}
               // value={userInfoData.physical_city}
               // onChange={(e) => updateUserInfoData("physical_city", e.target.value)}
               variant="outlined"
@@ -154,8 +161,8 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={physical_state.name}
-              label={physical_state.label}
+              name={physicalState.name}
+              label={physicalState.label}
               // value={userInfoData.physical_state}
               // onChange={(e) => updateUserInfoData("physical_state", e.target.value)}
               variant="outlined"
@@ -165,9 +172,11 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
-            {userInfoData.US_resident === "no" && (
+            {!USResident && (
               <Autocomplete
                 id="country-select-demo"
+                name={physicalCountry.name}
+                label={physicalCountry.label}
                 // onChange={(e) =>
                 //   updateUserInfoData("physical_country", e.target.value)
                 // }
@@ -227,7 +236,8 @@ function Address(props) {
             alignItems="center"
             container
           >
-            <FormControlLabel
+            <CheckboxField name={mailingSame.name} label={mailingSame.label} />
+            {/* <FormControlLabel
               control={
                 <Checkbox
                   checked={userInfoData.mailing_same}
@@ -237,15 +247,15 @@ function Address(props) {
                 />
               }
               label="Same as physical address"
-            />
+            /> */}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <InputField
-                name={mailing_zipcode.name}
-                label={mailing_zipcode.label}
+                name={mailingZipcode.name}
+                label={mailingZipcode.label}
                 // value={userInfoData.mailing_zipcode}
                 // onChange={(e) => updateUserInfoData("mailing_zipcode", e.target.value)}
                 variant="outlined"
@@ -256,10 +266,10 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <InputField
-                name={mailing_address_1.name}
-                label={mailing_address_1.label}
+                name={mailingAddress1.name}
+                label={mailingAddress1.label}
                 // value={userInfoData.mailing_address_1}
                 // onChange={(e) => updateUserInfoData("mailing_address_1", e.target.value)}
                 variant="outlined"
@@ -270,10 +280,10 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <InputField
-                name={mailing_address_2.name}
-                label={mailing_address_2.label}
+                name={mailingAddress2.name}
+                label={mailingAddress2.label}
                 // value={userInfoData.mailing_address_2}
                 // onChange={(e) => updateUserInfoData("mailing_address_2", e.target.value)}
                 variant="outlined"
@@ -284,10 +294,10 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <InputField
-                name={mailing_city.name}
-                label={mailing_city.label}
+                name={mailingCity.name}
+                label={mailingCity.label}
                 // value={userInfoData.mailing_city}
                 // onChange={(e) => updateUserInfoData("mailing_city", e.target.value)}
                 variant="outlined"
@@ -298,10 +308,10 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <InputField
-                name={mailing_state.name}
-                label={mailing_state.label}
+                name={mailingState.name}
+                label={mailingState.label}
                 // value={userInfoData.mailing_state}
                 // onChange={(e) => updateUserInfoData("mailing_state", e.target.value)}
                 variant="outlined"
@@ -312,9 +322,11 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!mailingSame && (
               <Autocomplete
                 id="country-select-demo"
+                name={mailingCountry.name}
+                label={mailingCountry.label}
                 disabled={userInfoData.mailing_same ? true : false}
                 // onChange={(e) =>
                 //   updateUserInfoData("mailing_country", e.target.value)

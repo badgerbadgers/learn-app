@@ -31,23 +31,23 @@ const relationships = [
 
 function EmergencyContacts(props) {
   // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
-  }
+  // const { state, dispatch } = useContext(store);
+  // const { userInfoData } = state;
+  // function updateUserInfoData(key, value) {
+  //   dispatch({
+  //     type: "UPDATE_PERSONAL_DETAILS",
+  //     payload: { ...userInfoData, [key]: value },
+  //   });
+  // }
 
   const {
     formField: {
-      emergency_contact_1_name,
-      emergency_contact_1_relationship,
-      emergency_contact_1_phone,
-      emergency_contact_2_name,
-      emergency_contact_2_relationship,
-      emergency_contact_2_phone,
+      emergencyContact1Name,
+      emergencyContact1Relationship,
+      emergencyContact1Phone,
+      emergencyContact2Name,
+      emergencyContact2Relationship,
+      emergencyContact2Phone,
     },
   } = props;
 
@@ -62,8 +62,8 @@ function EmergencyContacts(props) {
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={emergency_contact_1_name.name}
-              label={emergency_contact_1_name.label}
+              name={emergencyContact1Name.name}
+              label={emergencyContact1Name.label}
               // value={userInfoData.emergency_contact_1_name}
               // onChange={(e) => updateUserInfoData("emergency_contact_1_name", e.target.value)}
               variant="outlined"
@@ -73,24 +73,24 @@ function EmergencyContacts(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <SelectField
-              name={emergency_contact_1_relationship.name}
-              label={emergency_contact_1_relationship.label}
+              name={emergencyContact1Relationship.name}
+              label={emergencyContact1Relationship.label}
               data={relationships}
-              value={userInfoData.emergency_contact_1_relationship}
-              onChange={(e) =>
-                updateUserInfoData(
-                  "emergency_contact_1_relationship",
-                  e.target.value
-                )
-              }
+              // value={userInfoData.emergency_contact_1_relationship}
+              // onChange={(e) =>
+              //   updateUserInfoData(
+              //     "emergency_contact_1_relationship",
+              //     e.target.value
+              //   )
+              // }
               fullWidth
             />
           </Grid>
 
           <Grid item xs={12} sm={12} width="100%">
             <InputField
-              name={emergency_contact_1_phone.name}
-              label={emergency_contact_1_phone.label}
+              name={emergencyContact1Phone.name}
+              label={emergencyContact1Phone.label}
               // value={userInfoData.emergency_contact_1_phone}
               // onChange={(e) => updateUserInfoData("emergency_contact_1_phone", e.target.value)}
               variant="outlined"
@@ -105,8 +105,8 @@ function EmergencyContacts(props) {
           </Grid>
           <Grid item xs={12} sm={6} width="100%">
             <InputField
-              name={emergency_contact_2_name.name}
-              label={emergency_contact_2_name.label}
+              name={emergencyContact2Name.name}
+              label={emergencyContact2Name.label}
               // value={userInfoData.emergency_contact_2_name}
               // onChange={(e) => updateUserInfoData("emergency_contact_2_name", e.target.value)}
               variant="outlined"
@@ -116,8 +116,8 @@ function EmergencyContacts(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <SelectField
-              name={emergency_contact_2_relationship.name}
-              label={emergency_contact_2_relationship.label}
+              name={emergencyContact2Relationship.name}
+              label={emergencyContact2Relationship.label}
               data={relationships}
               fullWidth
             />
@@ -125,8 +125,8 @@ function EmergencyContacts(props) {
 
           <Grid item xs={12} sm={12} width="100%">
             <InputField
-              name={emergency_contact_2_phone.name}
-              label={emergency_contact_2_phone.label}
+              name={emergencyContact2Phone.name}
+              label={emergencyContact2Phone.label}
               // value={userInfoData.emergency_contact_2_phone}
               // onChange={(e) => updateUserInfoData("emergency_contact_2_phone", e.target.value)}
               variant="outlined"
