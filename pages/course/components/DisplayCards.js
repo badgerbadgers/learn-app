@@ -5,6 +5,7 @@ import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
 import BreakCard from "./BreakCard";
+import Alert from "@mui/material/Alert";
 
 // delete currentIndex
 export default function DisplayCards({
@@ -20,13 +21,13 @@ export default function DisplayCards({
       case "review":
       case "break":
         return (
-          <>
+          <Grid item xs={11}   sx={{ mx: "auto" }}>
             <BreakCard content={currentLesson.content} />
-          </>
+          </Grid>
         );
       case "lesson":
         return (
-          <>
+          <Grid item xs={11}  sx={{ mx: "auto" }}>
             <LearningObjectivesCard
               objectives={currentLesson.lesson.learning_objectives}
             />
@@ -36,13 +37,17 @@ export default function DisplayCards({
               submit={currentLesson.lesson.submission_link.url}
               assignments={currentLesson.lesson.assignments}
             />
-          </>
+          </Grid>
         );
 
       default:
-        throw new Exception(`case ${currentLesson.type} not found`)
-        // console.log("place an error here");
-        // return "";
+        return (
+          <Grid item xs={11} sx={{ mx: "auto" }}>
+            <Alert severity="error" sx={{ width: "100%" }}>
+              Lesson type does not exist
+            </Alert>
+          </Grid>
+        );
     }
   };
   return (

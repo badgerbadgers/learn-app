@@ -7,6 +7,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+import { useMediaQuery } from "@mui/material";
 
 // This is for lesson
 export default function LessonHeader({
@@ -22,6 +23,8 @@ export default function LessonHeader({
 
   // console.log(typeof weekLessonNumber)
   // console.log(scheduleData.indexOf(currentLesson))
+  const isSmallScreen = useMediaQuery("(max-width:900px)");
+
   const index = scheduleData.indexOf(currentLesson);
 
   return (
@@ -46,7 +49,7 @@ export default function LessonHeader({
               }}
               shallow={true}
             >
-              Previous Lesson
+              {isSmallScreen ? "Back" :"Previous Lesson" }
             </Link>
           </Button>
         ) : null}
@@ -71,8 +74,8 @@ export default function LessonHeader({
                 },
               }}
               shallow={true}
-            >
-              Next Lesson
+            >{isSmallScreen ? "Next" :"Next Lesson" }
+             
             </Link>
           </Button>
         ) : null}
@@ -84,14 +87,16 @@ export default function LessonHeader({
             ? `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`
             : currentLesson.type
         }
+        // fix fontSize
         titleTypographyProps={{
           variant: "h4",
           align: "center",
           color: "#FF5C35",
-          fontSize: "54px",
+          fontSize: "2rem",
           position: "relative",
           top: "8px",
           gutterBottom: true,
+          textTransform:"capitalize"
         }}
       />
       {/* TODO: get dates from cohort */}
