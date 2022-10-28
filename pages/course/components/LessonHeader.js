@@ -15,7 +15,7 @@ export default function LessonHeader({
   cohortName,
   lessonOrder,
   sectionOrder,
-  scheduleData,
+  filteredScheduleData,
   currentLesson,
   weekLessonNumber,
 }) {
@@ -25,7 +25,7 @@ export default function LessonHeader({
   // console.log(scheduleData.indexOf(currentLesson))
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
-  const index = scheduleData.indexOf(currentLesson);
+  // const index = filteredScheduleData.indexOf(currentLesson);
 
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
@@ -43,8 +43,8 @@ export default function LessonHeader({
                   cohort_name: cohortName,
                   week: weekLessonNumber - 1,
                   lesson:
-                    scheduleData[weekLessonNumber - 1].lesson?.title ||
-                    scheduleData[weekLessonNumber - 1].type,
+                  filteredScheduleData[weekLessonNumber - 1].lesson?.title ||
+                  filteredScheduleData[weekLessonNumber - 1].type,
                 },
               }}
               shallow={true}
@@ -54,7 +54,7 @@ export default function LessonHeader({
           </Button>
         ) : null}
 
-        {weekLessonNumber !== scheduleData.length - 1 ? (
+        {weekLessonNumber !== filteredScheduleData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
@@ -69,8 +69,8 @@ export default function LessonHeader({
                   week: weekLessonNumber + 1,
                   // since data structures for lesson and review are different need ternary statement
                   lesson:
-                    scheduleData[weekLessonNumber + 1].lesson?.title ||
-                    scheduleData[weekLessonNumber + 1].type,
+                  filteredScheduleData[weekLessonNumber + 1].lesson?.title ||
+                  filteredScheduleData[weekLessonNumber + 1].type,
                 },
               }}
               shallow={true}

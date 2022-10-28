@@ -17,7 +17,7 @@ import { useMediaQuery } from "@mui/material";
 export default function Menu({
   courseName,
   cohortName,
-  scheduleData,
+  filteredScheduleData,
   zoomLink,
 }) {
   // mui swippable drawer
@@ -46,7 +46,7 @@ export default function Menu({
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <MenuList sx={{py:"0"}}>
+      <MenuList sx={{ py: "0" }}>
         {/* <MenuHeader zoomLink={zoomLink} />
         ^^ component */}
         <Divider sx={{ mb: "5px" }} />
@@ -55,7 +55,7 @@ export default function Menu({
           <Typography variant="h6">Lessons</Typography>
         </MenuItem>
         {/* TODO: see if it makes more sense to name lesson weekLesson or something */}
-        {scheduleData.map((weekSchedule, index) => {
+        {filteredScheduleData.map((weekSchedule, index) => {
           return (
             <Stack key={index}>
               <Link
@@ -76,7 +76,9 @@ export default function Menu({
               >
                 <MenuItem sx={{ textTransform: "capitalize" }}>
                   <Typography variant="body1" noWrap={true}>
-                  {weekSchedule.lesson ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}` : weekSchedule.type}
+                    {weekSchedule.lesson
+                      ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}`
+                      : weekSchedule.type}
                   </Typography>
                 </MenuItem>
               </Link>
@@ -90,7 +92,7 @@ export default function Menu({
 
   /////////////////////////////////////////////////////////
   return (
-    <Grid item md={3} sm={ 12} sx={{ maxWidth: "100%" }}>
+    <Grid item md={3} sm={12} sx={{ maxWidth: "100%" }}>
       <Paper
         variant="outlined"
         square
@@ -109,7 +111,11 @@ export default function Menu({
               <Typography variant="h6">Lessons</Typography>
             </MenuItem>
             {/* TODO: see if it makes more sense to name lesson weekLesson or something */}
-            {scheduleData.map((weekSchedule, index) => {
+            {filteredScheduleData.map((weekSchedule, index) => {
+              // console.log(Object.values(weekSchedule).length ===0)
+              // console.log(JSON.stringify(weekSchedule) === "{}")
+              /**/
+
               return (
                 <Stack key={index}>
                   <Link
@@ -130,7 +136,9 @@ export default function Menu({
                   >
                     <MenuItem sx={{ textTransform: "capitalize" }}>
                       <Typography variant="body1" noWrap={true}>
-                        {weekSchedule.lesson ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}` : weekSchedule.type}
+                        {weekSchedule.lesson
+                          ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}`
+                          : weekSchedule.type}
                       </Typography>
                     </MenuItem>
                   </Link>
@@ -142,15 +150,13 @@ export default function Menu({
         )}
 
         {isSmallScreen && (
-          <Stack sx={{border:"none",backgroundColor:"transparent"   }}> 
-           
+          <Stack sx={{ border: "none", backgroundColor: "transparent" }}>
             {["left"].map((anchor) => (
               <React.Fragment key={anchor}>
-                
                 <Button
                   onClick={toggleDrawer(anchor, true)}
                   endIcon={<KeyboardArrowDownIcon />}
-                  sx={{ border: "none" ,}}
+                  sx={{ border: "none" }}
                 >
                   Lessons
                 </Button>
@@ -164,7 +170,7 @@ export default function Menu({
                 </SwipeableDrawer>
                 {/* <MenuHeader zoomLink={zoomLink} />
             ^^ component */}
-              </React.Fragment> 
+              </React.Fragment>
             ))}
           </Stack>
         )}

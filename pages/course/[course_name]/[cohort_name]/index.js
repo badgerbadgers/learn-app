@@ -11,13 +11,22 @@ import Alert from "@mui/material/Alert";
 export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
   const [weekLessonNumber, setweekLessonNumber] = useState(0);
 
+   // removing empty objs in scheduleData
+   const filteredScheduleData = scheduleData.filter(el => { 
+    if (Object.keys(el).length !== 0) { 
+      return true
+    }
+    return false
+  }) 
+
+  console.log(filteredScheduleData)
   // if scheduleData[0] exisits then get scheduleData[0] which is first week lesson otherwise undefined
   const [currentLesson, setCurrentLesson] = useState(
-    !!scheduleData[0] ? scheduleData[0] : undefined
+    !!filteredScheduleData[0] ? filteredScheduleData[0] : undefined
   );
 
   useEffect(() => {
-    if (!scheduleData || scheduleData.length === 0) {
+    if (!filteredScheduleData|| filteredScheduleData.length === 0) {
       return (
         <Alert severity="error" sx={{ width: "100%" }}>
           There are no lessons for this course
@@ -47,19 +56,19 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
 
     if (
       weekLessonNumber !== newWeekLessonNumber &&
-      !!scheduleData[newWeekLessonNumber]
+      !!filteredScheduleData[newWeekLessonNumber]
     ) {
       // scheduleData[newweekLessonNumber] is lesson
       // console.log("old label", weekLessonNumber);
       setweekLessonNumber(newWeekLessonNumber);
-      setCurrentLesson(scheduleData[newWeekLessonNumber]);
+      setCurrentLesson(filteredScheduleData[newWeekLessonNumber]);
     }
-  }, [scheduleData, weekLessonNumber, router]);
+  }, [filteredScheduleData, weekLessonNumber, router]);
 
   return (
     <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
       <Menu
-        scheduleData={scheduleData}
+        filteredScheduleData={filteredScheduleData}
         courseName={router.query["course_name"]}
         cohortName={router.query["cohort_name"]}
         zoomLink={zoomLink}
@@ -67,11 +76,11 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
       />
 
       {/* if scheduleData is true / exists & currentLesson exists / true then render DisplayCards */}
-      {scheduleData && currentLesson && (
+      {filteredScheduleData && currentLesson && (
         <DisplayCards
           courseName={router.query["course_name"]}
           cohortName={router.query["cohort_name"]}
-          scheduleData={scheduleData}
+          filteredScheduleData={filteredScheduleData}
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
         />
