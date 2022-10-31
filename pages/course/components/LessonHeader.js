@@ -9,28 +9,18 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 import { useMediaQuery } from "@mui/material";
 
-// This is for lesson
 export default function LessonHeader({
   courseName,
   cohortName,
-  lessonOrder,
-  sectionOrder,
   filteredScheduleData,
   currentLesson,
   weekLessonNumber,
 }) {
-  // console.log("hello", currentLesson)
-
-  // console.log(typeof weekLessonNumber)
-  // console.log(scheduleData.indexOf(currentLesson))
   const isSmallScreen = useMediaQuery("(max-width:900px)");
-
-  // const index = filteredScheduleData.indexOf(currentLesson);
 
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* {console.log(weekLessonNumber !== 0 )} */}
         {weekLessonNumber !== 0 ? (
           <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
             <Link
@@ -42,14 +32,15 @@ export default function LessonHeader({
                   course_name: courseName,
                   cohort_name: cohortName,
                   week: weekLessonNumber - 1,
+                  // since data structures for lesson and review are different need ternary operator
                   lesson:
-                  filteredScheduleData[weekLessonNumber - 1].lesson?.title ||
-                  filteredScheduleData[weekLessonNumber - 1].type,
+                    filteredScheduleData[weekLessonNumber - 1].lesson?.title ||
+                    filteredScheduleData[weekLessonNumber - 1].type,
                 },
               }}
               shallow={true}
             >
-              {isSmallScreen ? "Back" :"Previous Lesson" }
+              {isSmallScreen ? "Back" : "Previous Lesson"}
             </Link>
           </Button>
         ) : null}
@@ -67,15 +58,14 @@ export default function LessonHeader({
                   course_name: courseName,
                   cohort_name: cohortName,
                   week: weekLessonNumber + 1,
-                  // since data structures for lesson and review are different need ternary statement
                   lesson:
-                  filteredScheduleData[weekLessonNumber + 1].lesson?.title ||
-                  filteredScheduleData[weekLessonNumber + 1].type,
+                    filteredScheduleData[weekLessonNumber + 1].lesson?.title ||
+                    filteredScheduleData[weekLessonNumber + 1].type,
                 },
               }}
               shallow={true}
-            >{isSmallScreen ? "Next" :"Next Lesson" }
-             
+            >
+              {isSmallScreen ? "Next" : "Next Lesson"}
             </Link>
           </Button>
         ) : null}
@@ -87,16 +77,14 @@ export default function LessonHeader({
             ? `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`
             : currentLesson.type
         }
-        // fix fontSize
         titleTypographyProps={{
           variant: "h4",
           align: "center",
           color: "#FF5C35",
-          fontSize: "2rem",
           position: "relative",
           top: "8px",
           gutterBottom: true,
-          textTransform:"capitalize"
+          textTransform: "capitalize",
         }}
       />
       {/* TODO: get dates from cohort */}

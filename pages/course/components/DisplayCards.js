@@ -5,12 +5,9 @@ import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
 import BreakCard from "./BreakCard";
-import Alert from "@mui/material/Alert";
 
-// delete currentIndex
 export default function DisplayCards({
   currentLesson,
-  currentIndex,
   filteredScheduleData,
   courseName,
   cohortName,
@@ -21,13 +18,13 @@ export default function DisplayCards({
       case "review":
       case "break":
         return (
-          <Grid item xs={11}   sx={{ mx: "auto" }}>
+          <Grid item xs={12} sx={{ mx: "auto" }}>
             <BreakCard content={currentLesson.content} />
           </Grid>
         );
       case "lesson":
         return (
-          <Grid item xs={11}  sx={{ mx: "auto" }}>
+          <Grid item xs={12} sx={{ mx: "auto" }}>
             <LearningObjectivesCard
               objectives={currentLesson.lesson.learning_objectives}
             />
@@ -41,19 +38,13 @@ export default function DisplayCards({
         );
 
       default:
-        return (
-          <Grid item xs={11} sx={{ mx: "auto" }}>
-            <Alert severity="error" sx={{ width: "100%" }}>
-              Lesson type does not exist
-            </Alert>
-          </Grid>
-        );
+        console.log(`${currentLesson.type} does not exist`);
+        return "";
     }
   };
   return (
-    <Grid item xs={12} md={9} lg={9}>
+    <Grid item xs={11} md={9} lg={9} sx={{ mx: "auto" }}>
       <LessonHeader
-        currentIndex={currentIndex}
         filteredScheduleData={filteredScheduleData}
         courseName={courseName}
         cohortName={cohortName}

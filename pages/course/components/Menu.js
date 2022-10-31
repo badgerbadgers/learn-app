@@ -47,14 +47,12 @@ export default function Menu({
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <MenuList sx={{ py: "0" }}>
-        {/* <MenuHeader zoomLink={zoomLink} />
-        ^^ component */}
         <Divider sx={{ mb: "5px" }} />
 
         <MenuItem>
           <Typography variant="h6">Lessons</Typography>
         </MenuItem>
-        {/* TODO: see if it makes more sense to name lesson weekLesson or something */}
+
         {filteredScheduleData.map((weekSchedule, index) => {
           return (
             <Stack key={index}>
@@ -70,6 +68,7 @@ export default function Menu({
                     lesson: weekSchedule.lesson?.title || weekSchedule.type,
                   },
                 }}
+                // Forces Link to send the href property to its child
                 passHref
                 //updates the path of current page without rerunnig
                 shallow={true}
@@ -90,9 +89,8 @@ export default function Menu({
     </Box>
   );
 
-  /////////////////////////////////////////////////////////
   return (
-    <Grid item md={3} sm={12} sx={{ maxWidth: "100%" }}>
+    <Grid item md={3} xs={11} sx={{ maxWidth: "100%", mx: "auto" }}>
       <Paper
         variant="outlined"
         square
@@ -104,18 +102,12 @@ export default function Menu({
         {!isSmallScreen && (
           <MenuList dense>
             <MenuHeader zoomLink={zoomLink} />
-            {/* ^^ component */}
             <Divider sx={{ mb: "5px" }} />
-
             <MenuItem>
               <Typography variant="h6">Lessons</Typography>
             </MenuItem>
-            {/* TODO: see if it makes more sense to name lesson weekLesson or something */}
-            {filteredScheduleData.map((weekSchedule, index) => {
-              // console.log(Object.values(weekSchedule).length ===0)
-              // console.log(JSON.stringify(weekSchedule) === "{}")
-              /**/
 
+            {filteredScheduleData.map((weekSchedule, index) => {
               return (
                 <Stack key={index}>
                   <Link
@@ -150,13 +142,19 @@ export default function Menu({
         )}
 
         {isSmallScreen && (
-          <Stack sx={{ border: "none", backgroundColor: "transparent" }}>
+          <Stack
+            sx={{
+              border: "none",
+              backgroundColor: "transparent",
+              mx: "auto",
+            }}
+          >
             {["left"].map((anchor) => (
               <React.Fragment key={anchor}>
                 <Button
                   onClick={toggleDrawer(anchor, true)}
                   endIcon={<KeyboardArrowDownIcon />}
-                  sx={{ border: "none" }}
+                  sx={{ border: "none", textAlign: "left" }}
                 >
                   Lessons
                 </Button>
@@ -168,8 +166,7 @@ export default function Menu({
                 >
                   {list(anchor)}
                 </SwipeableDrawer>
-                {/* <MenuHeader zoomLink={zoomLink} />
-            ^^ component */}
+                <MenuHeader zoomLink={zoomLink} />
               </React.Fragment>
             ))}
           </Stack>

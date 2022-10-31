@@ -9,57 +9,49 @@ import Router, { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 
 export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
+  // removing empty objs in scheduleData
+  const filteredScheduleData = scheduleData.filter(el => {
+    if (Object.keys(el).length !== 0) {
+      return true;
+    }
+    return false;
+  });
+
   const [weekLessonNumber, setweekLessonNumber] = useState(0);
 
-   // removing empty objs in scheduleData
-   const filteredScheduleData = scheduleData.filter(el => { 
-    if (Object.keys(el).length !== 0) { 
-      return true
-    }
-    return false
-  }) 
-
-  console.log(filteredScheduleData)
-  // if scheduleData[0] exisits then get scheduleData[0] which is first week lesson otherwise undefined
+  // if filteredScheduleData[0] exisits then get lesson of first week
   const [currentLesson, setCurrentLesson] = useState(
     !!filteredScheduleData[0] ? filteredScheduleData[0] : undefined
   );
 
   useEffect(() => {
-    if (!filteredScheduleData|| filteredScheduleData.length === 0) {
+    if (!filteredScheduleData || filteredScheduleData.length === 0) {
       return (
         <Alert severity="error" sx={{ width: "100%" }}>
           There are no lessons for this course
         </Alert>
       );
-      // </Snackbar>)
-      // alert("There are no lessons for this course"); //TODO: uniform error messages
-      // return null;
     }
-    // else {
-    //   setSelectedLabel(scheduleData[0]);
-    // }
   });
 
   const router = useRouter();
 
   useEffect(() => {
-    //if nothing in selectedLabel or nothing also in query then go back
-
     if (weekLessonNumber === undefined || router.query.week === undefined) {
-      // Todo: have error or 404 pg
-      return;
+      // Todo: 404 pg
+      return (
+        <Alert severity="error" sx={{ width: "100%" }}>
+          There are no lessons for this course
+        </Alert>
+      );
     }
     //new query
     let newWeekLessonNumber = parseInt(router.query.week);
-    // parseInt to make sure its a number
 
     if (
       weekLessonNumber !== newWeekLessonNumber &&
       !!filteredScheduleData[newWeekLessonNumber]
     ) {
-      // scheduleData[newweekLessonNumber] is lesson
-      // console.log("old label", weekLessonNumber);
       setweekLessonNumber(newWeekLessonNumber);
       setCurrentLesson(filteredScheduleData[newWeekLessonNumber]);
     }
@@ -72,10 +64,9 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
         courseName={router.query["course_name"]}
         cohortName={router.query["cohort_name"]}
         zoomLink={zoomLink}
-        currentLesson={currentLesson}
       />
 
-      {/* if scheduleData is true / exists & currentLesson exists / true then render DisplayCards */}
+      {/* conditional to render DisplayCards */}
       {filteredScheduleData && currentLesson && (
         <DisplayCards
           courseName={router.query["course_name"]}
@@ -85,30 +76,6 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
           currentLesson={currentLesson}
         />
       )}
-
-      {/* {scheduleData &&
-        scheduleData.map((doc) => {
-          // let index = scheduleData.findIndex((doc) => doc == selectedLabel)
-        
-          // // filling in cards based on selectedLabel
-          // let index = scheduleData.findIndex((doc) => doc == selectedLabel)
-
-          // if (doc === selectedLabel) {
-          //   console.log("doc", doc)
-          //   console.log("selectedLabel",selectedLabel)
-          //   // let index = scheduleData.findIndex((doc) => doc == selectedLabel);
-          //   return (
-          //     <DisplayCards
-          //       courseName={router.query["course_name"]}
-          //       cohortName={router.query["cohort_name"]}
-          //       key={doc._id}
-          //       doc={doc}
-          //       index={index}
-          //       scheduleData={scheduleData}
-          //     />
-          //   );
-          // }
-        })} */}
     </Grid>
   );
 }
