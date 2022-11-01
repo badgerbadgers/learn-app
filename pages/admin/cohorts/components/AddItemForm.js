@@ -15,37 +15,30 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
   return (
     <Box
       sx={{
-        px: 2,
-        display: "block",
-        height: "112px",
+        p: 2,
+        display: "grid",
+        minHeight: "112px",
         marginLeft: "112px",
         width: "calc(100%-120px)",
         marginBottom: "40px",
         boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",
-        borderRadius: "8px"
+        borderRadius: "8px",
+        gridTemplateColumns:  "2fr 7fr 72px",
+        
       }}
     >
-      <Stack direction="row"
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ height: "100%" }}>
-        <Typography
-          sx={{
-            minWidth: "20%",
-            float: "right",
-          }}> Note for students:</Typography>
+        <Typography> Note for students:</Typography>
         <TextField
           placeholder="Type your note for the students"
           label={type ? type.charAt(0).toUpperCase() + type.slice(1) : ""}
           fullWidth
+          multiline
           autoFocus
           InputLabelProps={{ shrink: true }}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           sx={{
-            width: "calc(80% - 120px)",
-            float: "left",
+            pr: 2, 
           }}
         />
 
@@ -79,7 +72,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           </IconButton>
 
         </Stack>
-      </Stack>
+
     </Box>
   )
 }

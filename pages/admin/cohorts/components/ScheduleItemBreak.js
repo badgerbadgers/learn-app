@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import AddItemForm from "./AddItemForm";
 import AddWeekBtns from "./AddWeekBtns";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
-import AddItemForm from "./AddItemForm";
 
 export default function ScheduleItemBreak({
   idx,
@@ -46,6 +46,9 @@ export default function ScheduleItemBreak({
       height: "112px",
       width: "100%",
       display: "block",
+      justifyContent: "flex-end",
+      // border: "1px solid green",
+      height: "auto"
     }}
   >
     <Box sx={{
@@ -53,16 +56,20 @@ export default function ScheduleItemBreak({
       display: "inline-block",
       color: "#bababa",
       width: "110px",
+      height: "100%",
+      
     }}> 
     {startDate}
     </Box>
     <Box sx={{
-      px: 2,
-      display: "inline-block",
+      p: 2,
+      display: "inline-grid",
       width: "calc(100% - 110px)",
-      height: "63px",
+      // backgroundColor: "silver",
+      height: "auto",
       lineHeight: "63px",
       border: "0.5px solid #D9D9D9",
+      gridTemplateColumns:  "2fr 7fr 72px",
     }}>
       <Typography mr={2}
         variant="overline"
@@ -70,33 +77,44 @@ export default function ScheduleItemBreak({
           display: "inline-block",
           minWidth: "30%",
           color: "#12284C",
-          fontFamily: "Montserrat"
+          fontFamily: "Montserrat",
+          alignSelf: "center",
         }}>
         {weekType}
       </Typography>
       <Typography
         sx={{
+          pr: 4,
           display: "inline-block",
+          wordBreak: "break-all",
+          maxHeight: "150px",
+          overflowY: "auto",        
         }}>
-        {content || ""}
+        {content || ""} {/* Add text like "There is no note for students" */}
       </Typography>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}
+      <Stack direction="row" alignItems="center" spacing={1}
         sx={{
-          display: "inline-block",
-          float: "right"
+          width: "72px",
         }}>
         <IconButton 
         aria-label="edit" 
         size="small"
         onClick={() => { setFormView(true) }}
+        sx={{
+          display: "inline-grid",
+          alignSelf: "center",
+        }}
+
         >
           <EditIcon fontSize="small" />
         </IconButton>
         <IconButton 
         aria-label="delete" 
         size="small"
-        onClick={() => { removeItem(idx) }} >
+        onClick={() => { removeItem(idx) }}
+
+ >
           <DeleteIcon fontSize="small" />
         </IconButton> 
       </Stack>

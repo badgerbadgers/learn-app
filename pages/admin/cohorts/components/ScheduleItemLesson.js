@@ -22,29 +22,32 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
     </Box>
     <Box sx={{
       px: 2,
-      display: "inline-block",
+      display: "inline-grid",
       width: "calc(100% - 110px)",
       height: "63px",
       lineHeight: "63px",
       backgroundColor: "#f5f5f5",
+      gridTemplateColumns:  "2fr 7fr 72px",
+      alighItems: "center",
     }}>
       <Typography mr={2}
         variant="overline"
         sx={{
-          display: "inline-block",
-          minWidth: "30%",
           color: "#12284C",
-          fontFamily: "Montserrat"
+          fontFamily: "Montserrat",
+          height: "100%",
+          lineHeight: "63px"
         }}>
         {sectionTitle}
       </Typography>
 
       <Typography
         sx={{
-          display: "inline-block",
+          lineHeight: "63px"
         }}>
         {lesson}
       </Typography>
+      <Box></Box>
 
 
     </Box>
