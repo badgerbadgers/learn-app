@@ -51,7 +51,14 @@ const IndividualCohortPage = () => {
           <Typography variant="h2" align="center" gutterBottom>
             {cohort.cohort_name}
           </Typography>
+          <Button
+            color="secondary"
+            href="/admin/cohort-management"
+            sx={{ m: 5 }}>
+            Back to cohort management
+          </Button>
           <Button align="center" onClick={() => setOpen(true)}>Change Schedule</Button>
+
           <ScheduleModal
             open={open}
             setOpen={setOpen}
@@ -64,7 +71,8 @@ const IndividualCohortPage = () => {
         </Grid>
       )}
     </Fragment>
-  )}
+  )
+}
 
 export default IndividualCohortPage;
 
@@ -72,7 +80,7 @@ export default IndividualCohortPage;
 IndividualCohortPage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  
+
   if (!session) {
     return {
       redirect: {
