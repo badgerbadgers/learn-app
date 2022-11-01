@@ -52,16 +52,13 @@ export default function ScheduleItemBreak({
         display: "block",
         justifyContent: "flex-end",
         height: "auto"
-      }}
-    >
+      }}>
       <Box sx={{
         display: "block",
         color: "#bababa",
         width: "100%",
         height: "100%",
-      }}
-
-      >
+      }}>
         <Box sx={{
           fontSize: "14px",
           display: "inline-block",
@@ -181,7 +178,6 @@ export default function ScheduleItemBreak({
           color: "#12284C",
           fontFamily: "Montserrat",
           alignSelf: "center",
-
         }}>
         {weekType}
       </Typography>

@@ -70,15 +70,12 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
   };
 
   return (
-    !loading && <div>
-
-      <Dialog
+    !loading && <Dialog
         PaperProps={{ sx: { width: "100%", height: "100%", p: 4 } }}
         maxWidth="xl"
         open={open}
         onClose={handleClose}>
         <DialogTitle
-          component="div"
           variant="Body2"
           sx={{
             fontFamily: "Gotham Rounded",
@@ -102,9 +99,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
               startDate={startDate}
             />
           </Box>
-
         </DialogTitle>
-
 
         <DialogContent >
           {schedule.map((week, idx) => {
@@ -181,6 +176,5 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
           >Close</Button>
         </DialogContent>
       </Dialog>
-    </div>
   );
 }

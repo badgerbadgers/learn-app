@@ -64,8 +64,6 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
     </Box>)
   }
 
-
-
   return <Box
     mb={2}
     sx={{
