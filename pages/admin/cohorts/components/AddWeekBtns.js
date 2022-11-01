@@ -10,9 +10,9 @@ export default function AddWeekBtns({ idx, handleShowForm }) {
 
   return (
     !loading && <Box mt={2}
-      ml={"110px"}
+      
       sx={{
-        width: "calc(100% - 110px)",
+        width: "100%",
         position: "relative",
         display: "flex",
         justifyContent: "space-around",

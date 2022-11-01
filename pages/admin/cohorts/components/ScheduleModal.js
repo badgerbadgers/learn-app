@@ -1,8 +1,9 @@
+import { Button, useMediaQuery } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { addDays, format } from "date-fns"
 
 import AddItemForm from "./AddItemForm";
-import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import CohortStartDatePicker from "./CohortStartDatePicker";
 import Dialog from "@mui/material/Dialog";
@@ -16,6 +17,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
   const [loading, setLoading] = useState(true);
   const [showFormIdx, setShowFormIdx] = useState(null);
   const [showFormType, setShowFormType] = useState();
+  const matches_sx = useMediaQuery("(max-width: 600px )");
 
   useEffect(() => {
     setLoading(false)
@@ -78,22 +80,29 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
         <DialogTitle
           component="div"
           variant="Body2"
-
           sx={{
             fontFamily: "Gotham Rounded",
             fontWeight: "100",
             color: "#FF5C35",
-            fontSize: "36px",
+            fontSize: matches_sx ? "24px" : "36px",
             justifyContent: "space-between",
-            display: "flex",
+            display: matches_sx ? "block" : "flex",
             width: "100%",
             mt: 1,
+
           }}>
           Current schedule for {cohortName}
-          <CohortStartDatePicker
-            id={id}
-            startDate={startDate}
-          />
+          <Box
+            sx={{
+              mt: matches_sx ? 3 : 1,
+              mb: matches_sx ? 3 : 1,
+            }}>
+            <CohortStartDatePicker
+              id={id}
+              startDate={startDate}
+            />
+          </Box>
+
         </DialogTitle>
 
 
@@ -156,7 +165,6 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
                 </Fragment>
               )
             }
-
           })
           }
 
@@ -166,7 +174,9 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
             endIcon={<CloseIcon />}
             sx={{
               float: "right",
-              mr: "3rem"
+              mr: matches_sx ? "auto": "3rem",
+              my: matches_sx ? "20px" : "10px" ,
+              
             }}
           >Close</Button>
         </DialogContent>

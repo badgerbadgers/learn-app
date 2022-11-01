@@ -2,8 +2,69 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import AddWeekBtns from "./AddWeekBtns";
 
-export default function ScheduleItemLesson({idx, lesson, lessonStartDate, sectionTitle, showBreakBtns, handleShowForm}) {
+export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, sectionTitle, showBreakBtns, handleShowForm }) {
   const matches_md = useMediaQuery("(max-width: 1500px)");
+  const matches_sx = useMediaQuery("(max-width: 600px)");
+
+
+  if (matches_sx) {
+    return (<Box
+      mb={2}
+      sx={{
+        height: "auto",
+        width: "100%",
+        display: "block",
+      }}
+    >
+      <Box sx={{
+        fontSize: "14px",
+        color: "#bababa",
+        width: "100%",
+      }}>
+        {lessonStartDate}
+      </Box>
+      <Box sx={{
+        p: 2,
+        display: "block",
+        width: "100%",
+        height: "auto",
+        backgroundColor: "#f5f5f5",
+        alighItems: "center",
+      }}>
+        <Typography mr={2}
+          variant="overline"
+          sx={{
+            display: "block",
+            color: "#12284C",
+            fontFamily: "Montserrat",
+            height: "100%",
+            width: "100%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}>
+          {sectionTitle}
+        </Typography>
+        <Typography>
+          {lesson}
+        </Typography>
+      </Box>
+      {
+        showBreakBtns &&
+        <AddWeekBtns
+          idx={idx}
+          handleShowForm={handleShowForm}
+          mt={2}
+          sx={{
+            display: "block",
+            width: "100%",
+          }}
+        />
+      }
+    </Box>)
+  }
+
+
 
   return <Box
     mb={2}
@@ -52,26 +113,23 @@ export default function ScheduleItemLesson({idx, lesson, lessonStartDate, sectio
         {lesson}
       </Typography>
       <Box
-       sx={{
-        width: "72px"
+        sx={{
+          width: "72px"
         }}>
-       
       </Box>
-
-
     </Box>
     {
-      showBreakBtns &&
-      <AddWeekBtns
-        handleShowForm={handleShowForm}
-        idx={idx}
+      showBreakBtns && <Box
         mt={2}
         sx={{
-          display: "flex",
-          width: "calc(100% - 110px)",
-          backgroundColor: "green",
-        }}
-      />
+          ml: "110px",
+          mb: "3rem"
+        }}>
+        <AddWeekBtns
+          idx={idx}
+          handleShowForm={handleShowForm}
+        />
+      </Box>
     }
   </Box>
 }
