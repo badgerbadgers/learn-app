@@ -97,8 +97,10 @@ export default function ScheduleItemBreak({
             wordBreak: "break-all",
             maxHeight: "150px",
             overflowY: "auto",
+            whiteSpace: "pre-wrap",
           }}>
           {content || ""} {/* Add text like "There is no note for students" */}
+          
         </Typography>
 
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}
@@ -188,6 +190,7 @@ export default function ScheduleItemBreak({
           wordBreak: "break-all",
           maxHeight: "150px",
           overflowY: "auto",
+          whiteSpace: "pre-wrap",
         }}>
         {content || ""} {/* Add text like "There is no note for students" */}
       </Typography>
