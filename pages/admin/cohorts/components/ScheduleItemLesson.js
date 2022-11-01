@@ -1,8 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import AddWeekBtns from "./AddWeekBtns";
 
-export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonStartDate, itemType, sectionTitle, showBreakBtns, handleShowForm, insertItem }) {
+export default function ScheduleItemLesson({idx, lesson, lessonStartDate, sectionTitle, showBreakBtns, handleShowForm}) {
+  const matches_md = useMediaQuery("(max-width: 1500px)");
 
   return <Box
     mb={2}
@@ -27,7 +28,7 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
       height: "63px",
       lineHeight: "63px",
       backgroundColor: "#f5f5f5",
-      gridTemplateColumns:  "2fr 7fr 72px",
+      gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
       alighItems: "center",
     }}>
       <Typography mr={2}
@@ -36,7 +37,10 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
           color: "#12284C",
           fontFamily: "Montserrat",
           height: "100%",
-          lineHeight: "63px"
+          lineHeight: "63px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}>
         {sectionTitle}
       </Typography>
@@ -47,7 +51,12 @@ export default function ScheduleItemLesson({ id, idx, startDate, lesson, lessonS
         }}>
         {lesson}
       </Typography>
-      <Box></Box>
+      <Box
+       sx={{
+        width: "72px"
+        }}>
+       
+      </Box>
 
 
     </Box>

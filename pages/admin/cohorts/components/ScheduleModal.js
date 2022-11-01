@@ -1,14 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { addDays, format } from "date-fns"
+
 import AddItemForm from "./AddItemForm";
+import { Button } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import CohortStartDatePicker from "./CohortStartDatePicker";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ScheduleItemBreak from "./ScheduleItemBreak";
 import ScheduleItemLesson from "./ScheduleItemLesson";
-import { Button, IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
 
 export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule, setSchedule }) {
 

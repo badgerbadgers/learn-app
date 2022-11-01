@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import AddItemForm from "./AddItemForm";
@@ -25,6 +25,11 @@ export default function ScheduleItemBreak({
     setLoading(false)
   }, []);
 
+  const matches_md = useMediaQuery("(max-width: 1500px )");
+  const matches_sx = useMediaQuery("(max-width: 600px)");
+  console.log("matches", matches_md, matches_sx);
+
+
   if (formView) {
     return <AddItemForm
       saveItem={
@@ -41,9 +46,9 @@ export default function ScheduleItemBreak({
   }
 
   return (!loading && <Box
-  mb={2}
+    mb={2}
     sx={{
-      height: "112px",
+      height: matches_sx ? "300px" : "112px",
       width: "100%",
       display: "block",
       justifyContent: "flex-end",
@@ -57,28 +62,29 @@ export default function ScheduleItemBreak({
       color: "#bababa",
       width: "110px",
       height: "100%",
-      
-    }}> 
-    {startDate}
+
+    }}>
+      {startDate}
     </Box>
     <Box sx={{
       p: 2,
       display: "inline-grid",
       width: "calc(100% - 110px)",
-      // backgroundColor: "silver",
+      // backgroundColor: matches_md ? "silver" : "yellow",
       height: "auto",
       lineHeight: "63px",
       border: "0.5px solid #D9D9D9",
-      gridTemplateColumns:  "2fr 7fr 72px",
+      gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
+
     }}>
       <Typography mr={2}
         variant="overline"
         sx={{
           display: "inline-block",
-          minWidth: "30%",
           color: "#12284C",
           fontFamily: "Montserrat",
           alignSelf: "center",
+
         }}>
         {weekType}
       </Typography>
@@ -88,7 +94,7 @@ export default function ScheduleItemBreak({
           display: "inline-block",
           wordBreak: "break-all",
           maxHeight: "150px",
-          overflowY: "auto",        
+          overflowY: "auto",
         }}>
         {content || ""} {/* Add text like "There is no note for students" */}
       </Typography>
@@ -97,26 +103,26 @@ export default function ScheduleItemBreak({
         sx={{
           width: "72px",
         }}>
-        <IconButton 
-        aria-label="edit" 
-        size="small"
-        onClick={() => { setFormView(true) }}
-        sx={{
-          display: "inline-grid",
-          alignSelf: "center",
-        }}
+        <IconButton
+          aria-label="edit"
+          size="small"
+          onClick={() => { setFormView(true) }}
+          sx={{
+            display: "inline-grid",
+            alignSelf: "center",
+          }}
 
         >
           <EditIcon fontSize="small" />
         </IconButton>
-        <IconButton 
-        aria-label="delete" 
-        size="small"
-        onClick={() => { removeItem(idx) }}
+        <IconButton
+          aria-label="delete"
+          size="small"
+          onClick={() => { removeItem(idx) }}
 
- >
+        >
           <DeleteIcon fontSize="small" />
-        </IconButton> 
+        </IconButton>
       </Stack>
     </Box>
     {

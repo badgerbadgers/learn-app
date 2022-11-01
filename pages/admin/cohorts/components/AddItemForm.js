@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { Box, IconButton, Stack, TextField, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import ClearIcon from "@mui/icons-material/Clear";
@@ -7,6 +7,7 @@ import SaveIcon from "@mui/icons-material/Save";
 export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
 
   const [content, setContent] = useState("");
+  const matches_md = useMediaQuery("(max-width: 1500px)");
 
   useEffect(() => {
     setContent(note ? note : "");
@@ -23,7 +24,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         marginBottom: "40px",
         boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",
         borderRadius: "8px",
-        gridTemplateColumns:  "2fr 7fr 72px",
+        gridTemplateColumns:  matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
         
       }}
     >
