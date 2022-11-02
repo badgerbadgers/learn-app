@@ -22,6 +22,13 @@ const CohortManagement = () => {
     else if (new Date() > new Date(end)) return "completed";
   };
 
+  const calculateCurrentWeek = (cohort) => {
+
+    console.log(cohort)
+    return "counting"
+
+  }
+
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -35,7 +42,7 @@ const CohortManagement = () => {
       endDate: cohort.end_date
         ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
-      week: "counting", // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
+      week: calculateCurrentWeek (cohort), // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
       status: setStatus(cohort.start_date, cohort.end_date),
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
@@ -45,6 +52,7 @@ const CohortManagement = () => {
           ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`
           : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug:cohort.slug,
+      scheduleLen: cohort.schedule.length,
     };
   };
   useEffect(() => {

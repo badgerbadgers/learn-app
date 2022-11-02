@@ -198,15 +198,14 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       type: 'date',
       width: 125,
       headerAlign: 'center',
-      renderCell: (params)=> {
-        const cohortduration = 16;
-        let endDate = add(new Date(params.row.startDate),{
-          weeks: cohortduration,
+      renderCell: (params) => {
+        let endDate = add(new Date(params.row.startDate), {
+          weeks: params.row.scheduleLen,
         });
         return params.row.startDate ? format(new Date(endDate), "MMM dd, yyyy") : ""
       }
-      
-      
+
+
     },
     {
       field: 'week',
@@ -298,7 +297,8 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       },
 
 
-    }];
+    },
+  ];
 
   return (
     <Box sx={{ height: '500px', width: '100%' }}>
