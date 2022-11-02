@@ -198,7 +198,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       type: 'date',
       width: 125,
       headerAlign: 'center',
-      renderCell: (params) => {
+      valueGetter: (params) => {
         let endDate = add(new Date(params.row.startDate), {
           weeks: params.row.scheduleLen,
         });
@@ -223,7 +223,20 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       width: 110,
       editable: false,
       headerAlign: 'center',
-      align: 'center'
+      align: 'center',
+      renderCell: (params) => {
+        if (!params.row.startDate) return "TBD";
+        else {
+          let endDate = add(new Date(params.row.startDate), {
+            weeks: params.row.scheduleLen,
+          });
+          if (
+            new Date(params.row.startDate) <= new Date()
+            && new Date() <= new Date(endDate)) return "in progress"
+          else if (new Date() < new Date(params.row.startDate)) return "upcoming";
+          else if (new Date() > new Date(endDate)) return "completed";
+        } 
+      }
     },
     {
       field: 'seats',

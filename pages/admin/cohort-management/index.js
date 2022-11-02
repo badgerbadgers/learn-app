@@ -15,12 +15,7 @@ const CohortManagement = () => {
   const [id, setId] = useState(0);
   const [courses, setCourses] = useState([]);
 
-  const setStatus = (start, end) => {
-    if (new Date(start) <= new Date() && new Date() <= new Date(end))
-      return "in progress";
-    else if (new Date() < new Date(start)) return "upcoming";
-    else if (new Date() > new Date(end)) return "completed";
-  };
+
 
   const calculateCurrentWeek = (cohort) => {
 
@@ -43,7 +38,7 @@ const CohortManagement = () => {
         ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
       week: calculateCurrentWeek (cohort), // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
-      status: setStatus(cohort.start_date, cohort.end_date),
+      // status: setStatus(cohort.start_date, cohort.end_date),
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
