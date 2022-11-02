@@ -13,10 +13,11 @@ import PropTypes from "prop-types";
 import SaveIcon from '@mui/icons-material/Save';
 import Snackbar from "@mui/material/Snackbar";
 import { Stack } from '@mui/material';
+import { add } from 'date-fns'
 import axios from "axios";
 import { format } from "date-fns";
-import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";
+import { v4 as uuidv4 } from 'uuid';
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -139,6 +140,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     };
     return updatedRow;
   };
+
+
+
+
   const handleCloseSnackbar = () => setSnackbar(null);
   const handleProcessRowUpdateError = useCallback((error) => {
     setSnackbar({ children: error.message, severity: 'error' });
@@ -193,7 +198,15 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       type: 'date',
       width: 125,
       headerAlign: 'center',
-      editable: true,
+      renderCell: (params)=> {
+        const cohortduration = 16;
+        let endDate = add(new Date(params.row.startDate),{
+          weeks: cohortduration,
+        });
+        return params.row.startDate ? format(new Date(endDate), "MMM dd, yyyy") : ""
+      }
+      
+      
     },
     {
       field: 'week',
