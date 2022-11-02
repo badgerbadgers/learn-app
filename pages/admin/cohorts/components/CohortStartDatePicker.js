@@ -1,3 +1,5 @@
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from "@mui/material/TextField";
 // import { format } from "date-fns";
 // import { getTimezoneOffset } from 'date-fns-tz'
@@ -18,13 +20,15 @@ export default function CohortStartDatePicker({id, date, setDate}) {
         shrink: true,
       }}
       onChange={ (e) =>{
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const sDate =  e.target.value;
-        // const sDateTz = utcToZonedTime(new Date(sDate), tz)
-        const sDateTz = toDate(new Date(sDate), { timeZone: tz});
-        setDate(sDateTz)
-        console.log("new date", sDate, sDateTz);
+        const test = new Date(sDate).toISOString()
+        setDate(new Date(sDate).toISOString())
 
+        // const sDateTz = utcToZonedTime(new Date(sDate), tz)
+        // // const sDateTz = new Date(sDate);
+        // setDate(sDateTz)
+        console.log("new date", test);      
       }
 
       }

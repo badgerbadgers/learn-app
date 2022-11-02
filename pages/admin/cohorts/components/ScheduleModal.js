@@ -28,6 +28,8 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     setDate(startDate);
   }, [schedule]);
 
+
+  console.log('typeof', typeof(startDate), startDate);
   const updateCohortSchedule = async (payload) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {

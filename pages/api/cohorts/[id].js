@@ -1,7 +1,8 @@
+import { createSchedule, sanitize } from "../cohorts";
+
 import Cohort from "../../../lib/models/Cohort";
 import Course from "../../../lib/models/Course";
 import dbConnect from "../../../lib/dbConnect";
-import { createSchedule, sanitize } from "../cohorts";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -72,6 +73,7 @@ export default async function handler(req, res) {
       break
 
     case "PATCH":
+      const allowedFields = ["schedule", "startDate"]
       try {
         const newSchedule = req.body
         await Cohort.updateOne({ _id: id }, { schedule: newSchedule })
