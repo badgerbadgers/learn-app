@@ -1,8 +1,11 @@
 import TextField from "@mui/material/TextField";
-import { format } from "date-fns";
+// import { format } from "date-fns";
+// import { getTimezoneOffset } from 'date-fns-tz'
+// import { format } from "date-fns-tz";
+const {utcToZonedTime, format, toDate} = require('date-fns-tz')
 
-export default function CohortStartDatePicker({id, startDate}) {
-  const defaultVal = startDate ? format(new Date(startDate), "yyyy-MM-dd") : "";
+export default function CohortStartDatePicker({id, date, setDate}) {
+  const defaultVal = date ? format(new Date(date), "yyyy-MM-dd") : "";
 
   return (
     <TextField
@@ -14,6 +17,17 @@ export default function CohortStartDatePicker({id, startDate}) {
       InputLabelProps={{
         shrink: true,
       }}
+      onChange={ (e) =>{
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const sDate =  e.target.value;
+        // const sDateTz = utcToZonedTime(new Date(sDate), tz)
+        const sDateTz = toDate(new Date(sDate), { timeZone: tz});
+        setDate(sDateTz)
+        console.log("new date", sDate, sDateTz);
+
+      }
+
+      }
     />
   );
 }

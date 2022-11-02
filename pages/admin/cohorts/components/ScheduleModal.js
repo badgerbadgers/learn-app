@@ -16,6 +16,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
   const [loading, setLoading] = useState(true);
   const [showFormIdx, setShowFormIdx] = useState(null);
   const [showFormType, setShowFormType] = useState();
+  const [date, setDate] = useState(null)
   const matches_sx = useMediaQuery("(max-width: 600px)");
 
   useEffect(() => {
@@ -24,16 +25,17 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
 
   useEffect(() => {
     setLoading(false);
+    setDate(startDate);
   }, [schedule]);
 
-  const updateCohortSchedule = async (newItems) => {
+  const updateCohortSchedule = async (payload) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newItems)
+      body: JSON.stringify(payload)
     })
   }
 
@@ -41,7 +43,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     let newItems = [...schedule];
     newItems.splice(idx, 1);
     setSchedule(newItems);
-    updateCohortSchedule(newItems);
+    updateCohortSchedule({"schedule": newItems});
   }
 
   const insertItem = (idx, newItem) => {
@@ -49,7 +51,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     newItems.splice(idx + 1, 0, newItem);
     setShowFormIdx(null);
     setSchedule(newItems);
-    updateCohortSchedule(newItems);
+    updateCohortSchedule({"schedule": newItems});
   }
 
   const updateItem = (idx, item) => {
@@ -94,7 +96,9 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
           }}>
           <CohortStartDatePicker
             id={id}
-            startDate={startDate}
+            date={date}
+            setDate={setDate}
+
           />
         </Box>
       </DialogTitle>
@@ -102,7 +106,8 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
       <DialogContent >
         {schedule.map((week, idx) => {
           const showBreakBtns = (idx < schedule.length - 1) ? true : false;
-          const weekStartDate = startDate ? format(addDays(new Date(startDate), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
+          console.log("!!!date", date)
+          const weekStartDate = date ? format(addDays(new Date(date), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
           if (week.type === "lesson") {
             return (
               <Fragment key={idx}>
