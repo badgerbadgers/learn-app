@@ -14,13 +14,6 @@ export default function RadioButtonGroup(props) {
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 
-  // function renderHelperText() {
-  //   const [touched, error] = at(meta, "touched", "error");
-  //   if (touched && error) {
-  //     return <FormHelperText>{error}</FormHelperText>;
-  //   }
-  // }
-
   function renderHelperText() {
     if (isError) {
       return <FormHelperText>{error}</FormHelperText>;
@@ -33,14 +26,7 @@ export default function RadioButtonGroup(props) {
 
   return (
     <FormControl {...rest}>
-      <RadioGroup
-        {...field}
-        onChange={onChange}
-        row
-        value={field.checked}
-        // value={userInfoData.employed}
-        // onChange={(e) => updateUserInfoData("employed", e.target.value)}
-      >
+      <RadioGroup {...field} onChange={onChange} row value={field.checked}>
         <FormControlLabel
           value="yes"
           control={<Radio size="small" />}
@@ -52,12 +38,6 @@ export default function RadioButtonGroup(props) {
           label="No"
         />
       </RadioGroup>
-      {/* <FormControlLabel
-        value={field.checked}
-        checked={field.checked}
-        control={<Checkbox {...field} onChange={onChange} />}
-        label={label}
-      /> */}
       {renderHelperText()}
     </FormControl>
   );

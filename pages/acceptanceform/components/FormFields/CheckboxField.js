@@ -13,13 +13,6 @@ export default function CheckboxField(props) {
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 
-  // function renderHelperText() {
-  //   const [touched, error] = at(meta, "touched", "error");
-  //   if (touched && error) {
-  //     return <FormHelperText>{error}</FormHelperText>;
-  //   }
-  // }
-
   function renderHelperText() {
     if (isError) {
       return <FormHelperText>{error}</FormHelperText>;

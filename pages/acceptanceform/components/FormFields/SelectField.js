@@ -32,8 +32,6 @@ function SelectField(props) {
         label={label}
         variant="outlined"
         fullWidth
-        // onChange={(e) => handleInputChange(e)}
-        // value={userInfoData.department}
       >
         {data.map((item, index) => (
           <MenuItem key={index} value={item.value}>

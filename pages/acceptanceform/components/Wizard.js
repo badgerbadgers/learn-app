@@ -14,7 +14,7 @@ import EmergencyContacts from "./EmergencyContacts";
 import LearningBackground from "./LearningBackground";
 import { useMediaQuery } from "@mui/material";
 import styles from "./AcceptanceForm.module.css";
-import { Formik, Form, Field, useField, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import validationSchema from "./FormModel/validationSchema";
 import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
@@ -28,13 +28,6 @@ const steps = [
 ];
 
 const { formId, formField } = formModel;
-
-const InputValues = (props) => {
-  const {
-    values: { formField },
-  } = useFormikContext();
-  const [field, meta] = useField(props);
-};
 
 function renderStepContent(step) {
   switch (step) {
@@ -56,6 +49,8 @@ function renderStepContent(step) {
 function Wizard() {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
+  // const formRef = useRef();
+  // const { values } = useFormikContext();
 
   // const handleNext = () => {
   //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -74,8 +69,7 @@ function Wizard() {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     setActiveStep(activeStep + 1);
-
-    console.log(values);
+    console.log("Values", values);
   }
 
   const handleSubmit = (values, actions) => {

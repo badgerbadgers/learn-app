@@ -9,7 +9,6 @@ import {
   MenuItem,
   FormHelperText,
   Checkbox,
-  ListItemText,
 } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
@@ -32,16 +31,6 @@ function MultiSelectField(props) {
 
   const [personName, setPersonName] = React.useState([]);
 
-  // const handleChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setPersonName(
-  //     // On autofill we get a stringified value.
-  //     typeof value === "string" ? value.split(",") : value
-  //   );
-  // };
-
   function renderHelperText() {
     if (isError) {
       return <FormHelperText>{error}</FormHelperText>;
@@ -58,17 +47,12 @@ function MultiSelectField(props) {
         variant="outlined"
         fullWidth
         multiple
-        // onChange={handleChange}
-        // input={<OutlinedInput label="Tag" />}
-        // renderValue={(selected) => selected.join(", ")}
-        // MenuProps={MenuProps}
-        // onChange={(e) => handleInputChange(e)}
-        // value={userInfoData.department}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={MenuProps}
       >
         {data.map((item, index) => (
           <MenuItem key={index} value={item.value}>
-            {/* <Checkbox checked={personName.indexOf(item.value) > -1} />
-            <ListItemText primary={item.label} /> */}
+            <Checkbox checked={selectedValue.indexOf(item.value) > -1} />
             {item.label}
           </MenuItem>
         ))}

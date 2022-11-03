@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import InputField from "./FormFields/InputField";
 import SelectField from "./FormFields/SelectField";
-import { store } from "../../../store";
 
 const relationships = [
   {
@@ -30,16 +29,6 @@ const relationships = [
 ];
 
 function EmergencyContacts(props) {
-  // Updating user info data through the global state provider
-  // const { state, dispatch } = useContext(store);
-  // const { userInfoData } = state;
-  // function updateUserInfoData(key, value) {
-  //   dispatch({
-  //     type: "UPDATE_PERSONAL_DETAILS",
-  //     payload: { ...userInfoData, [key]: value },
-  //   });
-  // }
-
   const {
     formField: {
       emergencyContact1Name,
@@ -64,8 +53,6 @@ function EmergencyContacts(props) {
             <InputField
               name={emergencyContact1Name.name}
               label={emergencyContact1Name.label}
-              // value={userInfoData.emergency_contact_1_name}
-              // onChange={(e) => updateUserInfoData("emergency_contact_1_name", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -76,13 +63,6 @@ function EmergencyContacts(props) {
               name={emergencyContact1Relationship.name}
               label={emergencyContact1Relationship.label}
               data={relationships}
-              // value={userInfoData.emergency_contact_1_relationship}
-              // onChange={(e) =>
-              //   updateUserInfoData(
-              //     "emergency_contact_1_relationship",
-              //     e.target.value
-              //   )
-              // }
               fullWidth
             />
           </Grid>
@@ -91,8 +71,6 @@ function EmergencyContacts(props) {
             <InputField
               name={emergencyContact1Phone.name}
               label={emergencyContact1Phone.label}
-              // value={userInfoData.emergency_contact_1_phone}
-              // onChange={(e) => updateUserInfoData("emergency_contact_1_phone", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -107,8 +85,6 @@ function EmergencyContacts(props) {
             <InputField
               name={emergencyContact2Name.name}
               label={emergencyContact2Name.label}
-              // value={userInfoData.emergency_contact_2_name}
-              // onChange={(e) => updateUserInfoData("emergency_contact_2_name", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -127,8 +103,6 @@ function EmergencyContacts(props) {
             <InputField
               name={emergencyContact2Phone.name}
               label={emergencyContact2Phone.label}
-              // value={userInfoData.emergency_contact_2_phone}
-              // onChange={(e) => updateUserInfoData("emergency_contact_2_phone", e.target.value)}
               variant="outlined"
               fullWidth
             />
