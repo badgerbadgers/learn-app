@@ -21,15 +21,22 @@ export default function CohortStartDatePicker({id, date, setDate, updateDate}) {
       }}
       onChange={ (e) =>{
         // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const sDate =  e.target.value;
-        const test = new Date(sDate).toISOString()
-        setDate(new Date(sDate).toISOString())
-        updateDate(new Date(test))
+        // const sDate =  e.target.value;
+        // const test = new Date(sDate).toISOString()
+        // setDate(new Date(sDate).toISOString())
+        // updateDate(new Date(test))
+
+
+        const sDate = e.target.value;
+        const startDate = zonedTimeToUtc(
+          sDate,
+          "America/New_York"
+        ).toISOString();
 
         // const sDateTz = utcToZonedTime(new Date(sDate), tz)
         // // const sDateTz = new Date(sDate);
         // setDate(sDateTz)
-        console.log("new date", test);      
+        console.log("new  startDate date", startDate);      
       }
 
       }

@@ -117,7 +117,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
               color: "green",
             },
           }}
-          onClick={() => { saveItem(idx, { type, content: content, section: sectionId }) }}  >
+          onClick={() => { saveItem(idx, { type, content: content.trim(), section: sectionId }) }}  >
           <SaveIcon fontSize="small" />
         </IconButton>
         <IconButton
