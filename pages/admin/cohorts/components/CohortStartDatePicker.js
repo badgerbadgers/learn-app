@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 // import { format } from "date-fns-tz";
 const {utcToZonedTime, format, toDate} = require('date-fns-tz')
 
-export default function CohortStartDatePicker({id, date, setDate}) {
+export default function CohortStartDatePicker({id, date, setDate, updateDate}) {
   const defaultVal = date ? format(new Date(date), "yyyy-MM-dd") : "";
 
   return (
@@ -24,6 +24,7 @@ export default function CohortStartDatePicker({id, date, setDate}) {
         const sDate =  e.target.value;
         const test = new Date(sDate).toISOString()
         setDate(new Date(sDate).toISOString())
+        updateDate(new Date(test))
 
         // const sDateTz = utcToZonedTime(new Date(sDate), tz)
         // // const sDateTz = new Date(sDate);

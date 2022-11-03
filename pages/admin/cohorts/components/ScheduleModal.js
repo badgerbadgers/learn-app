@@ -28,8 +28,11 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     setDate(startDate);
   }, [schedule]);
 
+const updateDate = (date) => {
+  updateCohortField(["start_date", date])
+}
 
-  const updateCohortSchedule = async (payload) => {
+  const updateCohortField = async (payload) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {
       method: "PATCH",
@@ -44,7 +47,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     let newItems = [...schedule];
     newItems.splice(idx, 1);
     setSchedule(newItems);
-    updateCohortSchedule({"schedule": newItems});
+    updateCohortField(["schedule", newItems]);
   }
 
   const insertItem = (idx, newItem) => {
@@ -52,14 +55,14 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     newItems.splice(idx + 1, 0, newItem);
     setShowFormIdx(null);
     setSchedule(newItems);
-    updateCohortSchedule({"schedule": newItems});
+    updateCohortField(["schedule", newItems]);
   }
 
   const updateItem = (idx, item) => {
     let newItems = [...schedule];
     newItems[idx] = item;
     setSchedule(newItems);
-    updateCohortSchedule(newItems);
+    updateCohortField(["schedule", newItems]);
   }
 
   const handleShowForm = (idx, formType) => {
@@ -99,6 +102,7 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
             id={id}
             date={date}
             setDate={setDate}
+            updateDate={updateDate}
 
           />
         </Box>
@@ -107,7 +111,6 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
       <DialogContent >
         {schedule.map((week, idx) => {
           const showBreakBtns = (idx < schedule.length - 1) ? true : false;
-          console.log("!!!date", date)
           const weekStartDate = date ? format(addDays(new Date(date), 7 * idx), "MMM dd, yyyy") : `week ${idx + 1}`;
           if (week.type === "lesson") {
             return (

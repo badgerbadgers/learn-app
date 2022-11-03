@@ -73,16 +73,26 @@ export default async function handler(req, res) {
       break
 
     case "PATCH":
-      const allowedFields = ["schedule", "startDate"]
-      try {
-        const newSchedule = req.body
-        await Cohort.updateOne({ _id: id }, { schedule: newSchedule })
-      } catch (error) {
-        console.error("Update schedule error", error)
-        res.status(400).json({ success: false })
+      const [key, val] = req.body
+      const allowedFields = ["schedule", "start_date"]
+      if (allowedFields.indexOf(key) > -1) {
+        const data = {}
+        data[key] = val;
+        try {        
+          await Cohort.updateOne({ _id: id }, data);
+        } catch (error) {
+          console.error("Update schedule error", error)
+          res.status(400).json({ success: false })
+        }
+        res.status(200).json({ success: true })
+        break
       }
-      res.status(200).json({ success: true })
+      return res.status(400).json({
+        success: false,
+        message: `Not allowed to update "${key}"`,
+      });
       break
+      
 
     case "DELETE":
       try {
