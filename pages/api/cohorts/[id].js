@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         if (oldCohort.course.toString() !== cohortToDb.course.toString()) {
           cohortToDb.schedule = await createSchedule(cohortToDb.course);
         }
-        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true });
+        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true, new: true });
 
         if (!cohort) {
           return res.status(400).json({ success: false })

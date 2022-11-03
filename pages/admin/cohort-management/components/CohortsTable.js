@@ -128,6 +128,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
             courseId: course.value,
             slug: response.data.data.slug,
+            scheduleLen:response.data.data.schedule.length,
           };
           setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
