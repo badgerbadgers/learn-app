@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 // import { format } from "date-fns";
 // import { getTimezoneOffset } from 'date-fns-tz'
 // import { format } from "date-fns-tz";
-const {utcToZonedTime, format, toDate} = require('date-fns-tz')
+const {zonedTimeToUtc, format} = require('date-fns-tz')
 
 export default function CohortStartDatePicker({id, date, setDate, updateDate}) {
   const defaultVal = date ? format(new Date(date), "yyyy-MM-dd") : "";
@@ -20,23 +20,12 @@ export default function CohortStartDatePicker({id, date, setDate, updateDate}) {
         shrink: true,
       }}
       onChange={ (e) =>{
-        // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        // const sDate =  e.target.value;
-        // const test = new Date(sDate).toISOString()
-        // setDate(new Date(sDate).toISOString())
-        // updateDate(new Date(test))
-
-
-        const sDate = e.target.value;
         const startDate = zonedTimeToUtc(
-          sDate,
-          "America/New_York"
-        ).toISOString();
-
-        // const sDateTz = utcToZonedTime(new Date(sDate), tz)
-        // // const sDateTz = new Date(sDate);
-        // setDate(sDateTz)
-        console.log("new  startDate date", startDate);      
+          e.target.value,
+          Intl.DateTimeFormat().resolvedOptions().timeZone
+          ).toISOString();
+          setDate(startDate)
+          updateDate(new Date(startDate))
       }
 
       }

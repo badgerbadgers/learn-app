@@ -1,5 +1,6 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
 import React, { useCallback, useEffect, useState } from 'react';
+import { add, differenceInWeeks } from 'date-fns'
 
 import AddIcon from '@mui/icons-material/Add';
 import Alert from '@mui/material/Alert';
@@ -13,7 +14,6 @@ import PropTypes from "prop-types";
 import SaveIcon from '@mui/icons-material/Save';
 import Snackbar from "@mui/material/Snackbar";
 import { Stack } from '@mui/material';
-import { add } from 'date-fns'
 import axios from "axios";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
@@ -128,7 +128,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             endDate: newRow.endDate ? format(new Date(newRow.endDate), "MMM dd, yyyy") : "",
             courseId: course.value,
             slug: response.data.data.slug,
-            scheduleLen:response.data.data.schedule.length,
+            scheduleLen: response.data.data.schedule.length,
           };
           setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
@@ -141,9 +141,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     };
     return updatedRow;
   };
-
-
-
 
   const handleCloseSnackbar = () => setSnackbar(null);
   const handleProcessRowUpdateError = useCallback((error) => {
@@ -216,6 +213,17 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       width: 100,
       headerAlign: 'center',
       editable: false,
+      renderCell: (params) => {
+        const startDate = new Date(params.row.startDate)
+        const endDate = add(new Date(params.row.startDate), {
+          weeks: params.row.scheduleLen,
+        });
+        if (!startDate ||
+          new Date() < startDate ||
+          new Date() > endDate) return "";
+        return differenceInWeeks(new Date(), startDate) + 1
+
+      }
     },
     {
       field: 'status',
@@ -236,7 +244,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             && new Date() <= new Date(endDate)) return "in progress"
           else if (new Date() < new Date(params.row.startDate)) return "upcoming";
           else if (new Date() > new Date(endDate)) return "completed";
-        } 
+        }
       }
     },
     {

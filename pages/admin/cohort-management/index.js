@@ -16,14 +16,6 @@ const CohortManagement = () => {
   const [courses, setCourses] = useState([]);
 
 
-
-  const calculateCurrentWeek = (cohort) => {
-
-    console.log(cohort)
-    return "counting"
-
-  }
-
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -35,10 +27,8 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(new Date(cohort.end_date), "MMM dd, yyyy")
+        ? format(new Date(cohort.end_date, cohort.schedule.length), "MMM dd, yyyy")
         : "",
-      week: calculateCurrentWeek (cohort), // TODO: a function that counts weeks accurately (winter holidays, summer breaks, delays etc)
-      // status: setStatus(cohort.start_date, cohort.end_date),
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
