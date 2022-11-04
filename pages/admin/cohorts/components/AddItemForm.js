@@ -85,6 +85,8 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         boxShadow: "0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%)",
         borderRadius: "8px",
         gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
+        alignItems: "center",
+
 
       }}
     >

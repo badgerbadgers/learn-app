@@ -36,7 +36,7 @@ const CohortManagement = () => {
         cohort.mentors && cohort.mentors[0] && cohort.mentors[1]
           ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`
           : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
-      slug:cohort.slug,
+      slug: cohort.slug,
       scheduleLen: cohort.schedule.length,
     };
   };

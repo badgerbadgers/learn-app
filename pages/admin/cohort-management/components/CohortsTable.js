@@ -1,23 +1,23 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from 'react';
-import { add, differenceInWeeks } from 'date-fns'
+import React, { useCallback, useEffect, useState } from "react";
+import { add, differenceInWeeks } from "date-fns"
 
-import AddIcon from '@mui/icons-material/Add';
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
+import AddIcon from "@mui/icons-material/Add";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CancelIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import EditIcon from '@mui/icons-material/Edit';
-import LinearProgress from '@mui/material/LinearProgress';
+import CancelIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import LinearProgress from "@mui/material/LinearProgress";
 import PropTypes from "prop-types";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 import Snackbar from "@mui/material/Snackbar";
-import { Stack } from '@mui/material';
+import { Stack } from "@mui/material";
 import axios from "axios";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -130,7 +130,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             slug: response.data.data.slug,
             scheduleLen: response.data.data.schedule.length,
           };
-          setSnackbar({ children: 'Cohort successfully saved', severity: 'success' });
+          setSnackbar({ children: "Cohort successfully saved", severity: "success" });
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         });
     } catch (error) {
@@ -144,7 +144,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
 
   const handleCloseSnackbar = () => setSnackbar(null);
   const handleProcessRowUpdateError = useCallback((error) => {
-    setSnackbar({ children: error.message, severity: 'error' });
+    setSnackbar({ children: error.message, severity: "error" });
   }, []);
 
   const handleClick = (e, url) => {
@@ -154,23 +154,23 @@ export default function CohortsTable({ loading, tableRows, courses }) {
 
   const columns = [
     {
-      field: 'cohortName',
-      headerName: 'Cohort',
+      field: "cohortName",
+      headerName: "Cohort",
       flex: 1,
       minWidth: 100,
       editable: true,
-      headerAlign: 'center',
+      headerAlign: "center",
       renderCell: (params) => <a href="" onClick={(e) => handleClick(e, "cohorts/" + params.row.slug)}>{params.row.cohortName}</a>,
 
     },
     {
-      field: 'courseName',
-      headerName: 'Course',
+      field: "courseName",
+      headerName: "Course",
       flex: 1,
       minWidth: 250,
       type: "singleSelect",
       editable: true,
-      headerAlign: 'center',
+      headerAlign: "center",
       valueOptions: courses,
       valueGetter: (params) => {
         if (params.row.courseName === "") {
@@ -181,21 +181,21 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       },
     },
     {
-      field: 'startDate',
-      headerName: 'Start Date',
-      type: 'date',
+      field: "startDate",
+      headerName: "Start Date",
+      type: "date",
       flex: 1,
       width: 125,
-      headerAlign: 'center',
+      headerAlign: "center",
       editable: true,
     },
     {
-      field: 'endDate',
-      headerName: 'End Date',
+      field: "endDate",
+      headerName: "End Date",
       flex: 1,
-      type: 'date',
+      type: "date",
       width: 125,
-      headerAlign: 'center',
+      headerAlign: "center",
       valueGetter: (params) => {
         let endDate = add(new Date(params.row.startDate), {
           weeks: params.row.scheduleLen,
@@ -206,12 +206,12 @@ export default function CohortsTable({ loading, tableRows, courses }) {
 
     },
     {
-      field: 'week',
-      headerName: 'Week',
+      field: "week",
+      headerName: "Week",
       flex: 1,
-      type: 'number',
+      type: "number",
       width: 100,
-      headerAlign: 'center',
+      headerAlign: "center",
       editable: false,
       renderCell: (params) => {
         const startDate = new Date(params.row.startDate)
@@ -226,13 +226,13 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       }
     },
     {
-      field: 'status',
-      headerName: 'Status',
+      field: "status",
+      headerName: "Status",
       flex: 1,
       width: 110,
       editable: false,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
         if (!params.row.startDate) return "TBD";
         else {
@@ -248,11 +248,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       }
     },
     {
-      field: 'seats',
-      headerName: 'Students',
-      type: 'number',
+      field: "seats",
+      headerName: "Students",
+      type: "number",
       width: 100,
-      headerAlign: 'center',
+      headerAlign: "center",
       editable: true,
       valueGetter: (params) => {
         const id = params.id;
@@ -262,22 +262,22 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       }
     },
     {
-      field: 'mentors',
-      headerName: 'Mentors',
-      type: 'number',
+      field: "mentors",
+      headerName: "Mentors",
+      type: "number",
       width: 100,
-      headerAlign: 'center',
+      headerAlign: "center",
       editable: false,
     },
     {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
       sortable: false,
       width: 80,
-      headerAlign: 'center',
-      align: 'right',
-      cellClassName: 'actions',
+      headerAlign: "center",
+      align: "right",
+      cellClassName: "actions",
       getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         if (isInEditMode) {
@@ -323,7 +323,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   ];
 
   return (
-    <Box sx={{ height: '500px', width: '100%' }}>
+    <Box sx={{ height: "500px", width: "100%" }}>
       <DataGrid
         loading={loading}
         rows={rows}
@@ -361,7 +361,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       {!!snackbar && (
         <Snackbar
           open
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           onClose={handleCloseSnackbar}
           autoHideDuration={6000}
         >
