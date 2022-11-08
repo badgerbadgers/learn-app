@@ -36,7 +36,8 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           autoFocus
           InputLabelProps={{ shrink: true }}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => {setContent(e.target.value); console.log(e.key)}}
+          // onKeyPress={(e)=> {console.log(e.key); e.preventDefault()}}
           sx={{
             my: 4,
           }}
@@ -100,6 +101,11 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         InputLabelProps={{ shrink: true }}
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onKeyDown={(e)=> { 
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          saveItem(null, {});
+   }}}
         sx={{
           pr: 2,
         }}
