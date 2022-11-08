@@ -36,8 +36,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           autoFocus
           InputLabelProps={{ shrink: true }}
           value={content}
-          onChange={(e) => {setContent(e.target.value); console.log(e.key)}}
-          // onKeyPress={(e)=> {console.log(e.key); e.preventDefault()}}
+          onChange={(e) => {setContent(e.target.value)}}
           sx={{
             my: 4,
           }}
@@ -66,7 +65,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
                 color: "red",
               },
             }}
-            onClick={() => { saveItem(null, {}) }}  >
+            onClick={() => {saveItem(null, {}) }}  >
             <ClearIcon fontSize="small" />
           </IconButton>
         </Stack>
