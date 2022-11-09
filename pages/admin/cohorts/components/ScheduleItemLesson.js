@@ -45,7 +45,14 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
           }}>
           {sectionTitle}
         </Typography>
-        <Typography>
+        <Typography
+        sx={{
+          display: "inline-block",
+          wordBreak: "break-all",
+          maxHeight: "150px",
+          overflowY: "auto",
+          whiteSpace: "pre-wrap",
+        }}>
           {lesson}
         </Typography>
       </Box>
@@ -106,7 +113,14 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
 
       <Typography
         sx={{
-          lineHeight: "63px"
+          lineHeight: "63px",
+          display: "inline-block",
+          wordBreak: "break-all",
+          maxHeight: "150px",
+          overflowY: "hidden",
+          overflowX: "auto",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}>
         {lesson}
       </Typography>
