@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { privateLayout } from "../../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
-import { getCohortSchedule, getZoomLink } from "../../../../lib/courseData";
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
 import Router, { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
+import Cohort from "../../../../lib/models/Cohort";
+import dbConnect from "../../../../lib/dbConnect";
 
 export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
   // removing empty objs in scheduleData
-  const filteredScheduleData = scheduleData.filter(el => {
+  const filteredScheduleData = scheduleData.filter((el) => {
     if (Object.keys(el).length !== 0) {
       return true;
     }
@@ -37,7 +38,7 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (weekLessonNumber === undefined || router.query.week === undefined) {
+    if (weekLessonNumber === null || router.query.week === null) {
       // Todo: 404 pg
       return (
         <Alert severity="error" sx={{ width: "100%" }}>
@@ -83,6 +84,7 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
 CurrentCoursePage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  await dbConnect();
 
   if (!session) {
     return {
@@ -103,16 +105,15 @@ export async function getServerSideProps(context) {
   }
   //context.params contains the route parameters
   const slug = context.params["cohort_name"];
+  const scheduleData = await Cohort.getBySlug(slug);
 
-  const scheduleData = (await getCohortSchedule(slug)) || null;
-  const zoomLink = (await getZoomLink(slug)) || null;
   return {
     props: {
       courseName: context.params["course_name"],
       slug: slug,
       user,
-      scheduleData: JSON.parse(JSON.stringify(scheduleData)),
-      zoomLink,
+      scheduleData: JSON.parse(JSON.stringify(scheduleData.schedule)),
+      zoomLink: scheduleData.zoom_link,
     },
   };
   // returning scheduleData as props in index

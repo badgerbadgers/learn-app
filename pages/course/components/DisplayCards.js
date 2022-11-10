@@ -4,7 +4,8 @@ import LessonHeader from "./LessonHeader";
 import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
-import BreakCard from "./BreakCard";
+import BreakCard from "./BreakCard"; 
+import Alert from "@mui/material/Alert";
 
 export default function DisplayCards({
   currentLesson,
@@ -38,8 +39,7 @@ export default function DisplayCards({
         );
 
       default:
-        console.log(`${currentLesson.type} does not exist`);
-        return "";
+        return <Alert severity="error">Lesson type does not exist</Alert>;
     }
   };
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MenuHeader from "./MenuHeader";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -89,6 +89,15 @@ export default function Menu({
     </Box>
   );
 
+  // const [active, setActive] = useState(false);
+
+  // useEffect(() => {
+  //   const handleClick = (e) => {
+  //     setActive(!active);
+  //     e.target.style.color = "red";
+  //   };
+  // }, [active]);
+
   return (
     <Grid item md={3} xs={11} sx={{ maxWidth: "100%", mx: "auto" }}>
       <Paper
@@ -126,7 +135,13 @@ export default function Menu({
                     //updates the path of current page without rerunnig
                     shallow={true}
                   >
-                    <MenuItem sx={{ textTransform: "capitalize" }}>
+                    <MenuItem
+                      sx={{
+                        textTransform: "capitalize",
+                        // backgroundColor: active ? "green" : "white",
+                      }}
+                      // onClick={handleClick}
+                    >
                       <Typography variant="body1" noWrap={true}>
                         {weekSchedule.lesson
                           ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}`
