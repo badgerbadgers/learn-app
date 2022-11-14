@@ -4,7 +4,7 @@ import { getSession } from "next-auth/react";
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import Cohort from "../../../../lib/models/Cohort";
 import dbConnect from "../../../../lib/dbConnect";
