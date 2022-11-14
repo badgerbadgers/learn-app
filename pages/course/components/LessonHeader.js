@@ -12,7 +12,7 @@ import { useMediaQuery } from "@mui/material";
 export default function LessonHeader({
   courseName,
   cohortName,
-  filteredScheduleData,
+  scheduleData,
   currentLesson,
   weekLessonNumber,
 }) {
@@ -34,8 +34,8 @@ export default function LessonHeader({
                   week: weekLessonNumber - 1,
                   // since data structures for lesson and review are different need ternary operator
                   lesson:
-                    filteredScheduleData[weekLessonNumber - 1].lesson?.title ||
-                    filteredScheduleData[weekLessonNumber - 1].type,
+                    scheduleData[weekLessonNumber - 1].lesson?.title ||
+                    scheduleData[weekLessonNumber - 1].type,
                 },
               }}
               shallow={true}
@@ -45,7 +45,7 @@ export default function LessonHeader({
           </Button>
         ) : null}
 
-        {weekLessonNumber !== filteredScheduleData.length - 1 ? (
+        {weekLessonNumber !== scheduleData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
@@ -59,8 +59,8 @@ export default function LessonHeader({
                   cohort_name: cohortName,
                   week: weekLessonNumber + 1,
                   lesson:
-                    filteredScheduleData[weekLessonNumber + 1].lesson?.title ||
-                    filteredScheduleData[weekLessonNumber + 1].type,
+                    scheduleData[weekLessonNumber + 1].lesson?.title ||
+                    scheduleData[weekLessonNumber + 1].type,
                 },
               }}
               shallow={true}

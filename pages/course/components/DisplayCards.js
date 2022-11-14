@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 
 export default function DisplayCards({
   currentLesson,
-  filteredScheduleData,
+  scheduleData,
   courseName,
   cohortName,
   weekLessonNumber,
@@ -45,7 +45,7 @@ export default function DisplayCards({
   return (
     <Grid item xs={11} md={9} lg={9} sx={{ mx: "auto" }}>
       <LessonHeader
-        filteredScheduleData={filteredScheduleData}
+        scheduleData={scheduleData}
         courseName={courseName}
         cohortName={cohortName}
         currentLesson={currentLesson}

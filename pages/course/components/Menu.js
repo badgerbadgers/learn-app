@@ -17,9 +17,15 @@ import { useMediaQuery } from "@mui/material";
 export default function Menu({
   courseName,
   cohortName,
-  filteredScheduleData,
+  scheduleData,
   zoomLink,
+  weekLessonNumber,
 }) {
+  // removing empty objs in scheduleData
+  const filteredScheduleData = scheduleData.filter((el) => {
+    return el !== null && el !== undefined;
+  });
+
   // mui swippable drawer
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
@@ -49,9 +55,9 @@ export default function Menu({
       <MenuList sx={{ py: "0" }}>
         <Divider sx={{ mb: "5px" }} />
 
-        <MenuItem>
-          <Typography variant="h6">Lessons</Typography>
-        </MenuItem>
+        <Typography variant="h6" sx={{ ml: "15px" }}>
+          Lessons
+        </Typography>
 
         {filteredScheduleData.map((weekSchedule, index) => {
           return (
@@ -89,15 +95,6 @@ export default function Menu({
     </Box>
   );
 
-  // const [active, setActive] = useState(false);
-
-  // useEffect(() => {
-  //   const handleClick = (e) => {
-  //     setActive(!active);
-  //     e.target.style.color = "red";
-  //   };
-  // }, [active]);
-
   return (
     <Grid item md={3} xs={11} sx={{ maxWidth: "100%", mx: "auto" }}>
       <Paper
@@ -112,9 +109,10 @@ export default function Menu({
           <MenuList dense>
             <MenuHeader zoomLink={zoomLink} />
             <Divider sx={{ mb: "5px" }} />
-            <MenuItem>
-              <Typography variant="h6">Lessons</Typography>
-            </MenuItem>
+
+            <Typography variant="h6" sx={{ ml: "15px" }}>
+              Lessons
+            </Typography>
 
             {filteredScheduleData.map((weekSchedule, index) => {
               return (
@@ -138,9 +136,8 @@ export default function Menu({
                     <MenuItem
                       sx={{
                         textTransform: "capitalize",
-                        // backgroundColor: active ? "green" : "white",
+                        color: index === weekLessonNumber ? "#FF5C35" : "",
                       }}
-                      // onClick={handleClick}
                     >
                       <Typography variant="body1" noWrap={true}>
                         {weekSchedule.lesson

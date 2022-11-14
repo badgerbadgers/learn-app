@@ -10,23 +10,15 @@ import Cohort from "../../../../lib/models/Cohort";
 import dbConnect from "../../../../lib/dbConnect";
 
 export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
-  // removing empty objs in scheduleData
-  const filteredScheduleData = scheduleData.filter((el) => {
-    if (Object.keys(el).length !== 0) {
-      return true;
-    }
-    return false;
-  });
-
   const [weekLessonNumber, setweekLessonNumber] = useState(0);
 
   // if filteredScheduleData[0] exisits then get lesson of first week
   const [currentLesson, setCurrentLesson] = useState(
-    !!filteredScheduleData[0] ? filteredScheduleData[0] : undefined
+    !!scheduleData[0] ? scheduleData[0] : undefined
   );
 
   useEffect(() => {
-    if (!filteredScheduleData || filteredScheduleData.length === 0) {
+    if (!scheduleData || scheduleData.length === 0) {
       return (
         <Alert severity="error" sx={{ width: "100%" }}>
           There are no lessons for this course
@@ -51,28 +43,29 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
 
     if (
       weekLessonNumber !== newWeekLessonNumber &&
-      !!filteredScheduleData[newWeekLessonNumber]
+      !!scheduleData[newWeekLessonNumber]
     ) {
       setweekLessonNumber(newWeekLessonNumber);
-      setCurrentLesson(filteredScheduleData[newWeekLessonNumber]);
+      setCurrentLesson(scheduleData[newWeekLessonNumber]);
     }
-  }, [filteredScheduleData, weekLessonNumber, router]);
+  }, [scheduleData, weekLessonNumber, router]);
 
   return (
     <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
       <Menu
-        filteredScheduleData={filteredScheduleData}
+        scheduleData={scheduleData}
         courseName={router.query["course_name"]}
         cohortName={router.query["cohort_name"]}
         zoomLink={zoomLink}
+        weekLessonNumber={weekLessonNumber}
       />
 
       {/* conditional to render DisplayCards */}
-      {filteredScheduleData && currentLesson && (
+      {scheduleData && currentLesson && (
         <DisplayCards
           courseName={router.query["course_name"]}
           cohortName={router.query["cohort_name"]}
-          filteredScheduleData={filteredScheduleData}
+          scheduleData={scheduleData}
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
         />
