@@ -1,7 +1,8 @@
+import { createSchedule, sanitize } from "../cohorts";
+
 import Cohort from "../../../lib/models/Cohort";
 import Course from "../../../lib/models/Course";
 import dbConnect from "../../../lib/dbConnect";
-import { createSchedule, sanitize } from "../cohorts";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -52,7 +53,7 @@ export default async function handler(req, res) {
         if (oldCohort.course.toString() !== cohortToDb.course.toString()) {
           cohortToDb.schedule = await createSchedule(cohortToDb.course);
         }
-        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true });
+        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true, new: true });
 
         if (!cohort) {
           return res.status(400).json({ success: false })
@@ -72,15 +73,26 @@ export default async function handler(req, res) {
       break
 
     case "PATCH":
-      try {
-        const newSchedule = req.body
-        await Cohort.updateOne({ _id: id }, { schedule: newSchedule })
-      } catch (error) {
-        console.error("Update schedule error", error)
-        res.status(400).json({ success: false })
+      const [key, val] = req.body
+      const allowedFields = ["schedule", "start_date"]
+      if (allowedFields.indexOf(key) > -1) {
+        const data = {}
+        data[key] = val;
+        try {        
+          await Cohort.updateOne({ _id: id }, data);
+        } catch (error) {
+          console.error("Update schedule error", error)
+          res.status(400).json({ success: false })
+        }
+        res.status(200).json({ success: true })
+        break
       }
-      res.status(200).json({ success: true })
+      return res.status(400).json({
+        success: false,
+        message: `Not allowed to update "${key}"`,
+      });
       break
+      
 
     case "DELETE":
       try {
