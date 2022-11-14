@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>Code the Dream Labs Internal Application </title>
+        <title>Learn</title>
       </Head>
       <StateProvider>
         <SessionProvider session={session}>

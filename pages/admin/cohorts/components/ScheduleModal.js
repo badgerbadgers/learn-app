@@ -77,7 +77,7 @@ const updateDate = (date) => {
   return (
     !loading && <Dialog
       disableEscapeKeyDown
-      PaperProps={{ sx: { width: "100%", height: "100%", p: 4 } }}
+      PaperProps={{ sx: { width: "100%", height: "100%", p: 4, minWidth: "360px" } }}
       maxWidth="xl"
       open={open}
       onClose={handleClose}>
