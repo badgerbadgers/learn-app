@@ -121,8 +121,13 @@ const darkTheme = createTheme({
       button: "#FF5C35", //orange
       chip: "#FF6C47",
       contactIcon: "#F3C300",
-      skillsChip: "#F3C300"
+      skillsChip: "#F3C300",
     },
+    schedule: {
+      text: "#FFF",
+      background: "#444646",
+    },
+
   },
 });
 
@@ -175,6 +180,10 @@ const lightTheme = createTheme({
       tech: "#FA6F4C", //2 shades lighter orange than original
       contrastText: "#000",
     },
+    schedule: {
+      text: "#181919", //2 shades lighter blue than zone4
+      background: "#f5f5f5",
+    }
   },
 });
 

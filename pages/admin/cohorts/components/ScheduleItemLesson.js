@@ -1,11 +1,12 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import AddWeekBtns from "./AddWeekBtns";
+import { useTheme } from "@emotion/react";
 
 export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, sectionTitle, showBreakBtns, handleShowForm }) {
+  const theme = useTheme();
   const matches_md = useMediaQuery("(max-width: 1500px)");
   const matches_sx = useMediaQuery("(max-width: 600px)");
-
 
   if (matches_sx) {
     return (<Box
@@ -99,7 +100,7 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
       px: 2,
       display: "grid",
       lineHeight: "63px",
-      backgroundColor: "#f5f5f5",
+      backgroundColor: theme.palette.schedule.background,
       gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
       alighItems: "center",
       gridArea: "lesson",
@@ -107,7 +108,7 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
       <Typography mr={2}
         variant="overline"
         sx={{
-          color: "#12284C",
+          color: theme.palette.schedule.text,
           fontFamily: "Montserrat",
           height: "100%",
           lineHeight: "63px",
