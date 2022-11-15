@@ -11,7 +11,6 @@ const {
     dob,
     genderIdentity,
     raceEthnicity,
-    raceEthnicitySelf,
     lowIncome,
     emergencyContact1Name,
     emergencyContact1Relationship,
@@ -38,13 +37,13 @@ export default [
       )
       .min(10, "Must be at least 10 digits"),
   }),
+
   Yup.object().shape({
-    [physicalZipcode.name]: Yup.string()
-      .required(`${physicalZipcode.requiredErrorMsg}`)
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .min(5, "Must be exactly 5 digits")
-      .max(5, "Must be exactly 5 digits"),
+    [physicalZipcode.name]: Yup.string().required(
+      `${physicalZipcode.requiredErrorMsg}`
+    ),
   }),
+
   Yup.object().shape({
     [dob.name]: Yup.string()
       .nullable()
@@ -59,12 +58,9 @@ export default [
     [raceEthnicity.name]: Yup.string().required(
       `${raceEthnicity.requiredErrorMsg}`
     ),
-    [raceEthnicitySelf.name]: Yup.string().when("[raceEthnicity.name]", {
-      is: (val) => val == "Some other race, ethnicity, or origin",
-      then: Yup.string().required(`${raceEthnicitySelf.requiredErrorMsg}`),
-    }),
     [lowIncome.name]: Yup.string().required(`${lowIncome.requiredErrorMsg}`),
   }),
+
   Yup.object().shape({
     [emergencyContact1Name.name]: Yup.string().required(
       `${emergencyContact1Name.requiredErrorMsg}`
@@ -93,6 +89,7 @@ export default [
       )
       .min(10, "Must be at least 10 digits"),
   }),
+
   Yup.object().shape({
     [workCommitmentConsent.name]: Yup.boolean().oneOf(
       [true],

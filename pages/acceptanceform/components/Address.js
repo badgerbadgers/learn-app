@@ -83,8 +83,6 @@ function Address(props) {
             <InputField
               name={physicalZipcode.name}
               label={physicalZipcode.label}
-              // value={userInfoData.physical_zipcode}
-              // onChange={(e) => updateUserInfoData("physical_zipcode", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -94,8 +92,6 @@ function Address(props) {
             <InputField
               name={physicalAddress1.name}
               label={physicalAddress1.label}
-              // value={userInfoData.physical_address_1}
-              // onChange={(e) => updateUserInfoData("physical_address_1", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -105,10 +101,6 @@ function Address(props) {
             <InputField
               name={physicalAddress2.name}
               label={physicalAddress2.label}
-              //value={physical_address_2}
-              // onChange={(e) =>
-              //   console.log("physical_address_2", physicalAddress2.name.value)
-              // }
               variant="outlined"
               fullWidth
             />
@@ -118,8 +110,6 @@ function Address(props) {
             <InputField
               name={physicalCity.name}
               label={physicalCity.label}
-              // value={userInfoData.physical_city}
-              // onChange={(e) => updateUserInfoData("physical_city", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -129,8 +119,6 @@ function Address(props) {
             <InputField
               name={physicalState.name}
               label={physicalState.label}
-              // value={userInfoData.physical_state}
-              // onChange={(e) => updateUserInfoData("physical_state", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -138,7 +126,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
-            {!values.USResident && (
+            {values.USResident === "no" && (
               <Autocomplete
                 id="country-select-demo"
                 name={physicalCountry.name}

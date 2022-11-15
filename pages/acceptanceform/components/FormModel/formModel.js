@@ -119,7 +119,7 @@ export default {
     },
     spokenLanguages: {
       name: "spoken_languages",
-      label: "Spoken Languages",
+      label: "Spoken languages",
     },
     employed: {
       name: "employed",

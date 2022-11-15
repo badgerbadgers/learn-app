@@ -21,7 +21,7 @@ export default function RadioButtonGroup(props) {
   }
 
   function onChange(e) {
-    setValue(e.target.checked);
+    setValue(e.target.value);
   }
 
   return (

@@ -29,8 +29,6 @@ function MultiSelectField(props) {
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 
-  const [personName, setPersonName] = React.useState([]);
-
   function renderHelperText() {
     if (isError) {
       return <FormHelperText>{error}</FormHelperText>;

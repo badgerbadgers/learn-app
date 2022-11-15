@@ -245,7 +245,7 @@ function DemographicStats(props) {
             container
           >
             <FormLabel id="demo-radio-buttons-group-label">
-              Low income:
+              Low income*:
             </FormLabel>
             <RadioButtonGroup
               name={lowIncome.name}
