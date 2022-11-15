@@ -14,7 +14,7 @@ import EmergencyContacts from "./EmergencyContacts";
 import LearningBackground from "./LearningBackground";
 import { useMediaQuery } from "@mui/material";
 import styles from "./AcceptanceForm.module.css";
-import { Formik, Form, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import validationSchema from "./FormModel/validationSchema";
 import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
@@ -49,12 +49,6 @@ function renderStepContent(step) {
 function Wizard() {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
-  // const formRef = useRef();
-  // const { values } = useFormikContext();
-
-  // const handleNext = () => {
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  // };
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
