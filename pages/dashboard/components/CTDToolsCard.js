@@ -52,7 +52,7 @@ export default function CTDToolsCard({ style, user }) {
           }}
         >
           <HandymanIcon
-            color="secondary"
+            color="primary"
             style={{
               fontSize: "38px",
               top: "15px",
@@ -60,7 +60,7 @@ export default function CTDToolsCard({ style, user }) {
             }}
           />
 
-          <CardHeader title={"CTD Tools"}></CardHeader>
+          <CardHeader title={"Tools"}></CardHeader>
           <CardContent>
             <Typography variant="body1">
               Don&apos;t forget to update and share your student profile.
@@ -72,7 +72,7 @@ export default function CTDToolsCard({ style, user }) {
             <Link
               aria-label="link to portfolio page"
               sx={{ textDecoration: "none", flexGrow: 1, textAlign: "left" }}
-              href={`/portfolios/${user.gh}`}
+              href="/dashboard"
             >
               Visit your Student profile
             </Link>
