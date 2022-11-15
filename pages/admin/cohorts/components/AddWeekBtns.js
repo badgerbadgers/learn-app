@@ -11,8 +11,7 @@ import { useTheme } from "@emotion/react";
 
 export default function AddWeekBtns({ idx, handleShowForm }) {
   const [loading, setLoading] = useState(true);
-  const theme = useTheme()
-  console.log("theme", theme)
+  const theme = useTheme();
 
   useEffect(() => {
     setLoading(false);

@@ -76,26 +76,33 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
     sx={{
       height: "112px",
       width: "100%",
-      display: "block",
+      display: "grid",
+      gap: 0,
+      gridTemplateColumns: "110px 1fr",
+      gridTemplateRows: "63px 1fr",
+      gridTemplateAreas: 
+      `"date lesson"
+      "btns btns"`,
     }}
   >
     <Box sx={{
       fontSize: "14px",
-      display: "inline-block",
       color: "#bababa",
-      width: "110px",
+      gridArea: "date",
+      lineHeight: "63px"
+
     }}>
       {lessonStartDate}
     </Box>
+
     <Box sx={{
       px: 2,
-      display: "inline-grid",
-      width: "calc(100% - 110px)",
-      height: "63px",
+      display: "grid",
       lineHeight: "63px",
       backgroundColor: "#f5f5f5",
       gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
       alighItems: "center",
+      gridArea: "lesson",
     }}>
       <Typography mr={2}
         variant="overline"
@@ -124,18 +131,14 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
         }}>
         {lesson}
       </Typography>
-      <Box
-        sx={{
-          width: "72px"
-        }}>
-      </Box>
+     
     </Box>
     {
       showBreakBtns && <Box
-        mt={2}
         sx={{
           ml: "110px",
-          mb: "3rem"
+          mb: "3rem",
+          gridArea: "btns",
         }}>
         <AddWeekBtns
           idx={idx}
