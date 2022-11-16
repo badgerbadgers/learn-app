@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
+import PrintMarkdown from "./PrintMarkdown";
 
 export default function AssignmentCard({ mindset, assignments, submit }) {
   return (
@@ -44,7 +45,9 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
         <Typography variant="h6" sx={{ pt: "1em", pb: "8px" }}>
           Mindset Assignment
         </Typography>
-        <Typography variant="body1">{mindset}</Typography>
+        <Typography variant="body1">
+          <PrintMarkdown mindset={mindset} />
+        </Typography>
       </CardContent>
 
       <CardActions sx={{ padding: "16px" }}>
