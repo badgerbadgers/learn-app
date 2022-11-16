@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
@@ -37,7 +37,7 @@ function DatePickerField(props) {
 
   return (
     <Grid container>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
           {...field}
           {...props}
