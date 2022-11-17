@@ -140,7 +140,7 @@ function Wizard() {
       {/* Renders submission confirmation fragment conditionally on the last step if a view port width is 700px or less */}
       {isSmallScreen && activeStep === steps.length && (
         <Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }} className={styles.titleForm}>
+          <Typography sx={{ my: 10 }} className={styles.titleForm}>
             <span className={styles.highlighted}>
               Your Acceptance Form has been submitted!
             </span>
@@ -203,7 +203,7 @@ function Wizard() {
       {/* Renders submission confirmation fragment on the last step conditionally if a view port width is more than 700px */}
       {!isSmallScreen && activeStep === steps.length && (
         <Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }} className={styles.titleForm}>
+          <Typography sx={{ my: 10 }} className={styles.titleForm}>
             <span className={styles.highlighted}>
               Your Acceptance Form has been submitted!
             </span>

@@ -210,7 +210,7 @@ function DemographicStats(props) {
             direction="column"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel sx={{ mt: 2 }} id="demo-radio-buttons-group-label">
               Currently employed:
             </FormLabel>
             <RadioButtonGroup name={employed.name} label={employed.label} />
@@ -227,7 +227,7 @@ function DemographicStats(props) {
             direction="column"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel sx={{ mt: 2 }} id="demo-radio-buttons-group-label">
               Currently in school:
             </FormLabel>
             <RadioButtonGroup name={inSchool.name} label={inSchool.label} />
@@ -244,7 +244,7 @@ function DemographicStats(props) {
             direction="column"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel sx={{ mt: 2 }} id="demo-radio-buttons-group-label">
               Low income*:
             </FormLabel>
             <RadioButtonGroup

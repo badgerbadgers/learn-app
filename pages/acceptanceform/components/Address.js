@@ -73,8 +73,8 @@ function Address(props) {
             alignItems="center"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label">
-              US/US territory resident: &nbsp;
+            <FormLabel sx={{ mr: 3 }} id="demo-radio-buttons-group-label">
+              US/US territory resident:
             </FormLabel>
             <RadioButtonGroup name={USResident.name} label={USResident.label} />
           </Grid>
