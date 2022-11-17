@@ -8,7 +8,7 @@ import {
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
 import DisplayCards from "../../components/DisplayCards";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function CurrentCoursePage({ user, lessonData, zoomLink }) {
   const [selectedLabel, setSelectedLabel] = useState("");
