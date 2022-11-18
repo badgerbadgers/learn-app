@@ -4,32 +4,54 @@ import LessonHeader from "./LessonHeader";
 import LearningObjectivesCard from "./LearningObjectivesCard";
 import AssignmentCard from "./AssignmentCard";
 import LessonMaterialsCard from "./LessonMaterialsCard";
+import BreakCard from "./BreakCard"; 
+import Alert from "@mui/material/Alert";
 
 export default function DisplayCards({
-  doc,
-  index,
-  lessonData,
+  currentLesson,
+  scheduleData,
   courseName,
   cohortName,
+  weekLessonNumber,
 }) {
+  const switchCardDisplay = () => {
+    switch (currentLesson.type) {
+      case "review":
+      case "break":
+        return (
+          <Grid item xs={12} sx={{ mx: "auto" }}>
+            <BreakCard content={currentLesson.content} />
+          </Grid>
+        );
+      case "lesson":
+        return (
+          <Grid item xs={12} sx={{ mx: "auto" }}>
+            <LearningObjectivesCard
+              objectives={currentLesson.lesson.learning_objectives}
+            />
+            <LessonMaterialsCard materials={currentLesson.lesson.materials} />
+            <AssignmentCard
+              mindset={currentLesson.lesson.mindset_content}
+              submit={currentLesson.lesson.submission_link.url}
+              assignments={currentLesson.lesson.assignments}
+            />
+          </Grid>
+        );
+
+      default:
+        return <Alert severity="error">Lesson type does not exist</Alert>;
+    }
+  };
   return (
-    <Grid item xs={12} md={9} lg={9}>
+    <Grid item xs={11} md={9} lg={9} sx={{ mx: "auto" }}>
       <LessonHeader
-        title={doc.title}
-        lessonOrder={doc.order}
-        sectionOrder={doc.section.order}
-        index={index}
-        lessonData={lessonData}
+        scheduleData={scheduleData}
         courseName={courseName}
         cohortName={cohortName}
+        currentLesson={currentLesson}
+        weekLessonNumber={weekLessonNumber}
       />
-      <LearningObjectivesCard objectives={doc.learning_objectives} />
-      <LessonMaterialsCard materials={doc.materials} />
-      <AssignmentCard
-        mindset={doc.mindset_content}
-        submit={doc.submission_link.url}
-        assignments={doc.assignments}
-      />
+      {switchCardDisplay()}
     </Grid>
   );
 }
