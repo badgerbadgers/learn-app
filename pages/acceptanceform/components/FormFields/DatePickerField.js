@@ -7,11 +7,17 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function DatePickerField(props) {
+  // Formik's useField is a custom React hook returning array of 3 elements containing FieldProps, FieldMetaProps and FieldHelperProps
   const [field, meta, helper] = useField(props);
-  const { touched, error } = meta;
-  const { setValue } = helper;
-  const isError = touched && error && true;
   const { value } = field;
+
+  // Formik's setValue helper function to change the field's value
+  const { setValue } = helper;
+
+  // Formik tracks whether the field has been visited and returned an error message
+  const { touched, error } = meta;
+  const isError = touched && error && true;
+
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {

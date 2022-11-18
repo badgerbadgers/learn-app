@@ -5,7 +5,11 @@ import TextField from "@mui/material/TextField";
 
 function InputField(props) {
   const { errorText, ...rest } = props;
-  const [field, meta] = useField(props);
+
+  // Formik's useField is a custom React hook returning array of 3 elements containing FieldProps, FieldMetaProps and FieldHelperProps
+  const [field, meta, helper] = useField(props);
+
+  // Formik tracks whether the field has been visited and returned an error message
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 

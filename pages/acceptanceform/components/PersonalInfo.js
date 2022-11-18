@@ -2,19 +2,8 @@ import React, { useContext } from "react";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import InputField from "./FormFields/InputField";
-import { store } from "../../../store";
 
 function PersonalInfo(props) {
-  // Updating user info data through the global state provider
-  // const { state, dispatch } = useContext(store);
-  // const { userInfoData } = state;
-  // function updateUserInfoData(key, value) {
-  //   dispatch({
-  //     type: "UPDATE_PERSONAL_DETAILS",
-  //     payload: { ...userInfoData, [key]: value },
-  //   });
-  // }
-
   const {
     formField: { firstName, lastName, email, gitHub, phone },
   } = props;
@@ -27,8 +16,6 @@ function PersonalInfo(props) {
             <InputField
               name={firstName.name}
               label={firstName.label}
-              // value={userInfoData.first_name}
-              // onChange={(e) => console.log(firstName.name.value)}
               variant="outlined"
               fullWidth
             />
@@ -38,8 +25,6 @@ function PersonalInfo(props) {
             <InputField
               name={lastName.name}
               label={lastName.label}
-              // value={userInfoData.last_name}
-              // onChange={(e) => updateUserInfoData("last_name", e.target.value)}
               variant="outlined"
               fullWidth
             />
@@ -49,31 +34,17 @@ function PersonalInfo(props) {
             <InputField
               name={email.name}
               label={email.label}
-              // value={userInfoData.email}
-              // onChange={(e) => updateUserInfoData("email", e.target.value)}
               variant="outlined"
               fullWidth
             />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            <InputField
-              name={gitHub.name}
-              label={gitHub.label}
-              // value={userInfoData.gitHub}
-              // onChange={(e) => updateUserInfoData("gitHub", e.target.value)}
-              fullWidth
-            />
+            <InputField name={gitHub.name} label={gitHub.label} fullWidth />
           </Grid>
 
           <Grid item xs={12} sm={12} width="100%">
-            <InputField
-              name={phone.name}
-              label={phone.label}
-              // value={userInfoData.phone}
-              // onChange={(e) => updateUserInfoData("phone", e.target.value)}
-              fullWidth
-            />
+            <InputField name={phone.name} label={phone.label} fullWidth />
           </Grid>
         </Grid>
       </Grid>

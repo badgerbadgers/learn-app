@@ -8,8 +8,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 export default function CheckboxField(props) {
   const { label, ...rest } = props;
+
+  // Formik's useField is a custom React hook returning array of 3 elements containing FieldProps, FieldMetaProps and FieldHelperProps
   const [field, meta, helper] = useField(props);
+
+  // Formik's setValue helper function to change the field's value
   const { setValue } = helper;
+
+  // Formik tracks whether the field has been visited and returned an error message
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 

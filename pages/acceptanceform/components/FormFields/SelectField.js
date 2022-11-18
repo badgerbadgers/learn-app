@@ -12,8 +12,12 @@ import {
 
 function SelectField(props) {
   const { label, data, ...rest } = props;
+
+  // Formik's useField is a custom React hook returning array of 3 elements containing FieldProps, FieldMetaProps and FieldHelperProps
   const [field, meta] = useField(props);
   const { value: selectedValue } = field;
+
+  // Formik tracks whether the field has been visited and returned an error message
   const [touched, error] = at(meta, "touched", "error");
   const isError = touched && error && true;
 
