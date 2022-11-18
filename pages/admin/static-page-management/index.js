@@ -1,82 +1,58 @@
-import React, { useEffect, useState } from "react"
-import { Switch, FormControlLabel } from "@mui/material"
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid"
+import React, { useState } from "react"
+import { Switch } from "@mui/material"
+import { DataGrid } from "@mui/x-data-grid"
+import NavBar from "../../../components/layout/NavBar"
+import Footer from "../../../components/layout/Footer"
+import PublicLayout from "../../../components/layout/PublicLayout"
 
 export default function StaticPage({ posts }) {
-  const [pages, setPages] = useState([])
+  const [pages, setPages] = useState(posts)
   const [hidden, setIsHidden] = useState(false)
 
   function toggleHidden() {
     setIsHidden(!hidden)
     console.log("hidden", hidden)
   }
-  // const GridRowsProp = [
-  //   {
-  //     getRowId: 1,
-  //     col1: "Hello",
-  //     col2: "World",
-  //     col3: <Switch onClick={toggleHidden} />,
-  //   },
-  //   {
-  //     getRowId: 2,
-  //     col1: "DataGridPro",
-  //     col2: "is Awesome",
-  //     col3: <Switch onClick={toggleHidden} />,
-  //   },
-  //   {
-  //     id: 3,
-  //     col1: "MUI",
-  //     col2: "is Amazing",
-  //     col3: <Switch onClick={toggleHidden} />,
-  //   },
-  // ]
 
-  // const GridColDef = [
-  //   { field: "col1", headerName: "Page ID", width: 150 },
-  //   { field: "col2", headerName: "Title", width: 150 },
-  //   { field: "col3", headerName: "Shown On Learn App", width: 150 },
-  // ]
+  const columns = [
+    {
+      field: "slug",
+      headerName: "Title",
+      width: 450,
+      // valueGetter: getNestedObject,
+      // renderCell: (params) => (
+      //   <ul className='flex'>
+      //     {params.value.map((title, index) => (
+      //       <li key={index}>{title.rendered}</li>
+      //     ))}
+      //   </ul>
+      // ),
+    },
+    { field: "id", headerName: "ID", width: 150 },
+    {
+      field: "col3",
+      headerName: "Shown in Learn App",
+      width: 150,
+      renderCell: (params) => {
+        return <Switch onClick={toggleHidden} />
+      },
+    },
+  ]
 
-  useEffect(() => {
-    setPages(posts)
-  }, [])
-  // console.log("posts", posts)
+  console.log("pages", pages)
   return (
-    <div style={{ height: 350, width: "100%" }}>
-      <h2>WordPress pages</h2>
-      <DataGrid
-        rows={[
-          {
-            id: 1,
-            col1: "Hello",
-            col2: "World",
-            // col3: <Switch onClick={toggleHidden} />,
-          },
-          {
-            id: 2,
-            col1: "DataGridPro",
-            col2: "is Awesome",
-            col3: <Switch onClick={toggleHidden} />,
-          },
-          {
-            id: 3,
-            col1: "MUI",
-            col2: "is Amazing",
-            col3: <Switch onClick={toggleHidden} />,
-          },
-        ]}
-        columns={[
-          { field: "col1", headerName: "Page ID", width: 150 },
-          { field: "col2", headerName: "Title", width: 150 },
-          { field: "col3", headerName: "Shown On Learn App", width: 150 },
-        ]}
-        getRowId={(row) => row.id}
-      />
-    </div>
+    <>
+      <NavBar />
+      <div style={{ height: 700, width: "100%" }}>
+        <h2>WordPress pages</h2>
+        <DataGrid columns={columns} rows={pages} />
+      </div>
+      <Footer />
+    </>
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages")
