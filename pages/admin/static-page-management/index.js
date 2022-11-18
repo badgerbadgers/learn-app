@@ -3,7 +3,8 @@ import { Switch } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import NavBar from "../../../components/layout/NavBar"
 import Footer from "../../../components/layout/Footer"
-import PublicLayout2 from "../../../components/layout/PublicLayout2"
+// import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
+// import styles from "../../../styles"
 
 export default function StaticPage({ posts }) {
   const [pages, setPages] = useState(posts)
@@ -67,7 +68,7 @@ export async function getServerSideProps() {
   }
 }
 
-StaticPage.getLayout = PublicLayout2
+// StaticPage.getLayout = PublicLayout2
 // import * as React from "react"
 // import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid"
 
