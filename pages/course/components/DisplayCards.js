@@ -13,6 +13,7 @@ export default function DisplayCards({
   courseName,
   cohortName,
   weekLessonNumber,
+  startDate
 }) {
   const switchCardDisplay = () => {
     switch (currentLesson.type) {
@@ -50,6 +51,7 @@ export default function DisplayCards({
         cohortName={cohortName}
         currentLesson={currentLesson}
         weekLessonNumber={weekLessonNumber}
+        startDate={startDate}
       />
       {switchCardDisplay()}
     </Grid>

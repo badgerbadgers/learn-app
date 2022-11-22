@@ -9,9 +9,10 @@ import Alert from "@mui/material/Alert";
 import Cohort from "../../../../lib/models/Cohort";
 import dbConnect from "../../../../lib/dbConnect";
 
-export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
-  const [weekLessonNumber, setweekLessonNumber] = useState(0);
+export default function CurrentCoursePage({ user, scheduleData, zoomLink, startDate }) { 
 
+  const [weekLessonNumber, setweekLessonNumber] = useState(0);
+ 
   // if filteredScheduleData[0] exisits then get lesson of first week
   const [currentLesson, setCurrentLesson] = useState(
     !!scheduleData[0] ? scheduleData[0] : undefined
@@ -68,6 +69,7 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
           scheduleData={scheduleData}
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
+          startDate={startDate}
         />
       )}
     </Grid>
@@ -106,7 +108,10 @@ export async function getServerSideProps(context) {
       slug: slug,
       user,
       scheduleData: JSON.parse(JSON.stringify(scheduleData.schedule)),
+      // remember to remove zoomlink !!
       zoomLink: scheduleData.zoom_link,
+      startDate: JSON.parse(JSON.stringify(scheduleData.start_date)),
+      // why do I have to parse and stringify?
     },
   };
   // returning scheduleData as props in index

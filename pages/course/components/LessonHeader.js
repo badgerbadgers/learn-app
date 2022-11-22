@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import { useMediaQuery } from "@mui/material";
+import { format, addDays } from "date-fns";
 
 export default function LessonHeader({
   courseName,
@@ -15,9 +16,25 @@ export default function LessonHeader({
   scheduleData,
   currentLesson,
   weekLessonNumber,
+  startDate,
 }) {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
+  const lessonStartDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * weekLessonNumber),
+      "MMM dd, yyyy"
+    );
+  };
+
+  const lessonEndDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * (weekLessonNumber + 1) - 1),
+      "MMM dd, yyyy"
+    );
+  };
+
+  console.log(typeof startDate);
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -87,12 +104,12 @@ export default function LessonHeader({
           textTransform: "capitalize",
         }}
       />
-      {/* TODO: get dates from cohort */}
       <Typography variant="h6" sx={{ textAlign: "center" }}>
-        Week Date
+        Week {weekLessonNumber + 1} of {scheduleData.length}
       </Typography>
+
       <Typography variant="body1" sx={{ textAlign: "center" }}>
-        Date
+        {lessonStartDate()} - {lessonEndDate()}
       </Typography>
     </Card>
   );
