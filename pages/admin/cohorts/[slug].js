@@ -7,21 +7,19 @@ import Grid from "@mui/material/Unstable_Grid2";
 import IndCohortContent from "./components/IndCohortContent";
 import ScheduleModal from "./components/ScheduleModal";
 import getData from "../../../lib/getData";
+import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { useRouter } from "next/router";
 import { useTheme } from "@emotion/react";
 
-const IndividualCohortPage = () => {
+const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
   const [open, setOpen] = useState(false);
   const [schedule, setSchedule] = useState([]);
-  const [prevCohort, setPrevCohort] = useState(null);
-  const [nextCohort, setNextCohort] = useState(null);
   const router = useRouter();
   const theme = useTheme();
-
   const query = router.query;
 
   useEffect(() => {
@@ -32,7 +30,6 @@ const IndividualCohortPage = () => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-        console.log(cohort)
         setCohort(cohort);
         setSchedule(cohort.schedule);
         setLoading(false);
@@ -42,28 +39,6 @@ const IndividualCohortPage = () => {
     }
   }, [])
 
-
-
-  //get prev and next to nav between cohorts
-
-  useEffect(() => {
-    if (!cohort) return
-    const url = "/api/cohorts/nextPrev";
-    const params = { params: { 
-      currCohortName: cohort.cohort_name,
-      targetDate: cohort.start_date,
-   } };
-    try {
-      (async () => {
-        const cohortList = await getData(params, url);
-        console.log('cohortList in USE', cohortList)
-      }
-      )()
-
-    } catch (error) {
-      console.log(`An error from ${url}`, error);
-    }
-  }, [cohort])
 
   return (
     <Container>
@@ -81,16 +56,16 @@ const IndividualCohortPage = () => {
       )}
       {cohort && !loading && (
         <Box>
-{/* 
+
           <CohortHeader
             title={cohort.cohort_name}
             course={cohort.course}
             setOpen={setOpen}
             startDate={cohort.start_date}
             scheduleLen={schedule.length}
-            prev={prevCohort} //prevCohort._id
-            next={nextCohort} //nextCohort._id
-          /> */}
+            prevCohort={prevCohort} 
+            nextCohort={nextCohort} 
+          /> 
           <IndCohortContent />
 
           <ScheduleModal
@@ -132,10 +107,14 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(context.params["slug"])) || null;
+  console.log("SSP", prevCohort, nextCohort )
   return {
     props: {
       slug: context.params["slug"],
       user,
+      prevCohort,
+      nextCohort,
     },
   };
 }

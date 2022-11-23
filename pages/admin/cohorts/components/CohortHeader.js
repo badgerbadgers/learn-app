@@ -1,19 +1,21 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { add, format } from "date-fns";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Container } from "@mui/system";
 import Grid from '@mui/material/Unstable_Grid2'
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from "@emotion/react";
 
-export default function CohortHeader({ title, course, setOpen, startDate, scheduleLen, prev, next }) {
+export default function CohortHeader({ title, course, setOpen, startDate, scheduleLen, prevCohort, nextCohort }) {
     const endDate = add(new Date(startDate), { weeks: scheduleLen })
     const theme = useTheme();
 
-    return <Grid container spacing={2}>
+
+    console.log('prev, next in header!!!', prevCohort, nextCohort)
+
+    return <Grid container spacing={2} sx={{alignItems:"top"}}>
         <Grid xs={12}>
             <Button
                 size="small"
@@ -45,6 +47,7 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
                 pr={2}
                 mr={1}
                 sx={{
+                    font: theme.typography.root.fontFamilySecondary,
                     fontSize: "4rem",
                     fontWeight: "light",
                     display: "inline-flex",
@@ -70,7 +73,7 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
 
         </Grid>
 
-        <Grid xs={12} md={4}>
+        <Grid xs={12} md={4} pt={10} sx={{backgroundColor:"green"}}>
             {!!startDate ? <Box
                 direction="row"
                 spacing={0}
@@ -82,8 +85,8 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
                     alignItems: "center",
                 }}
             >
-                {prev && (<IconButton size="small" aria-label="Previous Cohort"
-                    href={`${prev.slug}`}
+                {prevCohort && (<IconButton size="small" aria-label="Previous Cohort"
+                    href={`${prevCohort}`}
                     sx={{
                         display: "inline"
                     }}
@@ -93,8 +96,8 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
                 <Typography> {`${format(new Date(startDate), "MMMMMM dd, yyyy")} - ${format(endDate, "MMMMMM dd, yyyy")}`}  </Typography>
 
 
-                {next && (<IconButton aria-label="Next Cohort"
-                    href={`${next.slug}`}
+                {nextCohort && (<IconButton aria-label="Next Cohort"
+                    href={`${nextCohort}`}
                     sx={{
                         display: "inline"
                     }}>
@@ -104,8 +107,6 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
                 <Typography sx={{
                     display: "inline"
                 }}> The start date has not been set yet</Typography>
-
-
             }
 
             <Button align="center" onClick={() => setOpen(true)}>Change Schedule</Button>
