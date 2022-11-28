@@ -1,6 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
-import { compareAsc, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 import CohortHeader from "./components/CohortHeader";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -63,9 +62,9 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
             setOpen={setOpen}
             startDate={cohort.start_date}
             scheduleLen={schedule.length}
-            prevCohort={prevCohort} 
-            nextCohort={nextCohort} 
-          /> 
+            prevCohort={prevCohort}
+            nextCohort={nextCohort}
+          />
           <IndCohortContent />
 
           <ScheduleModal
@@ -108,7 +107,7 @@ export async function getServerSideProps(context) {
     };
   }
   const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(context.params["slug"])) || null;
-  console.log("SSP", prevCohort, nextCohort )
+  console.log("SSP", prevCohort, nextCohort)
   return {
     props: {
       slug: context.params["slug"],
