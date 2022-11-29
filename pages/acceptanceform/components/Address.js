@@ -1,37 +1,47 @@
-import React, { useContext } from "react";
+import React from "react";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
-import Checkbox from "@mui/material/Checkbox";
-import { store } from "../../../store";
+import InputField from "./FormFields/InputField";
+import RadioButtonGroup from "./FormFields/RadioButtonGroup";
+import CheckboxField from "./FormFields/CheckboxField";
+import { useFormikContext } from "formik";
 
-function Address() {
-  // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
+function Address(props) {
+  const {
+    formField: {
+      USResident,
+      physicalZipcode,
+      physicalAddress1,
+      physicalAddress2,
+      physicalCity,
+      physicalState,
+      physicalCountry,
+      mailingSame,
+      mailingZipcode,
+      mailingAddress1,
+      mailingAddress2,
+      mailingCity,
+      mailingState,
+      mailingCountry,
+    },
+  } = props;
 
-    // When the checkbox is checked all physical address values already entered at that moment
-    // are being copied into the respective mailing address values
-    if (userInfoData.mailing_same) {
-      userInfoData.mailing_zipcode = userInfoData.physical_zipcode;
-      userInfoData.mailing_address_1 = userInfoData.physical_address_1;
-      userInfoData.mailing_address_2 = userInfoData.physical_address_2;
-      userInfoData.mailing_city = userInfoData.physical_city;
-      userInfoData.mailing_state = userInfoData.physical_state;
-      userInfoData.mailing_country = userInfoData.physical_country;
-    }
+  const { values } = useFormikContext();
+
+  // When the checkbox is checked all physical address values already entered at that moment
+  // are being copied into the respective mailing address values
+  if (values.mailing_same) {
+    values.mailing_zipcode = values.physical_zipcode;
+    values.mailing_address_1 = values.physical_address_1;
+    values.mailing_address_2 = values.physical_address_2;
+    values.mailing_city = values.physical_city;
+    values.mailing_state = values.physical_state;
+    values.mailing_country = values.physical_country;
   }
 
   return (
@@ -52,6 +62,7 @@ function Address() {
               <strong>Physical Address: </strong>
             </Typography>
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -62,113 +73,64 @@ function Address() {
             alignItems="center"
             container
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel sx={{ mr: 3 }} id="demo-radio-buttons-group-label">
               US/US territory resident:
             </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-radio-buttons-group-label"
-              name="radio-buttons-group"
-              value={userInfoData.US_resident}
-              onChange={(e) =>
-                updateUserInfoData("US_resident", e.target.value)
-              }
-            >
-              <FormControlLabel
-                value="yes"
-                control={<Radio size="small" />}
-                labelPlacement="start"
-                label="Yes"
-              />
-              <FormControlLabel
-                value="no"
-                control={<Radio size="small" />}
-                labelPlacement="start"
-                label="No"
-              />
-            </RadioGroup>
+            <RadioButtonGroup name={USResident.name} label={USResident.label} />
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="physical_zipcode"
-              placeholder="Type your ZIP code"
-              label="ZIP Code"
+            <InputField
+              name={physicalZipcode.name}
+              label={physicalZipcode.label}
               variant="outlined"
               fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_zipcode}
-              onChange={(e) =>
-                updateUserInfoData("physical_zipcode", e.target.value)
-              }
             />
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="physical_address_1"
-              placeholder="Type your address"
-              label="Street Address"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_address_1}
-              onChange={(e) =>
-                updateUserInfoData("physical_address_1", e.target.value)
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="physical_address_2"
-              placeholder="Type your #"
-              label="Apt/Unit/Suite #"
-              fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_address_2}
-              onChange={(e) =>
-                updateUserInfoData("physical_address_2", e.target.value)
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="physical_city"
-              placeholder="Type your city"
-              label="City"
+            <InputField
+              name={physicalAddress1.name}
+              label={physicalAddress1.label}
               variant="outlined"
               fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_city}
-              onChange={(e) =>
-                updateUserInfoData("physical_city", e.target.value)
-              }
             />
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="physical_state"
-              placeholder="Type your state or province"
-              label="State/Province"
+            <InputField
+              name={physicalAddress2.name}
+              label={physicalAddress2.label}
+              variant="outlined"
               fullWidth
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.physical_state}
-              onChange={(e) =>
-                updateUserInfoData("physical_state", e.target.value)
-              }
             />
           </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            <InputField
+              name={physicalCity.name}
+              label={physicalCity.label}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            <InputField
+              name={physicalState.name}
+              label={physicalState.label}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
-            {userInfoData.US_resident === "no" && (
+            {values.USResident === "no" && (
               <Autocomplete
                 id="country-select-demo"
-                onChange={(e) =>
-                  updateUserInfoData("physical_country", e.target.value)
-                }
+                name={physicalCountry.name}
+                label={physicalCountry.label}
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
@@ -225,120 +187,77 @@ function Address() {
             alignItems="center"
             container
           >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={userInfoData.mailing_same}
-                  onChange={(e) =>
-                    updateUserInfoData("mailing_same", e.target.checked)
-                  }
-                />
-              }
-              label="Same as physical address"
-            />
+            <CheckboxField name={mailingSame.name} label={mailingSame.label} />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_zipcode"
-                placeholder="Type your ZIP code"
-                label="ZIP/Postal Code"
+            {!values.mailingSame && (
+              <InputField
+                name={mailingZipcode.name}
+                label={mailingZipcode.label}
                 variant="outlined"
                 fullWidth
-                required
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_zipcode}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_zipcode", e.target.value)
-                }
-              />
-            )}
-          </Grid>
-          <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_address_1"
-                placeholder="Type your address"
-                label="Street Address"
-                fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_address_1}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_address_1", e.target.value)
-                }
               />
             )}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_address_2"
-                placeholder="Type your #"
-                label="Apt/Unit/Suite #"
-                fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_address_2}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_address_2", e.target.value)
-                }
-              />
-            )}
-          </Grid>
-
-          <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_city"
-                placeholder="Type your city"
-                label="City"
+            {!values.mailingSame && (
+              <InputField
+                name={mailingAddress1.name}
+                label={mailingAddress1.label}
                 variant="outlined"
                 fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_city}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_city", e.target.value)
-                }
               />
             )}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
-              <TextField
-                name="mailing_state"
-                placeholder="Type your state or province"
-                label="State/Province"
+            {!values.mailingSame && (
+              <InputField
+                name={mailingAddress2.name}
+                label={mailingAddress2.label}
+                variant="outlined"
                 fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={userInfoData.mailing_state}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_state", e.target.value)
-                }
+              />
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!values.mailingSame && (
+              <InputField
+                name={mailingCity.name}
+                label={mailingCity.label}
+                variant="outlined"
+                fullWidth
+              />
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
+            {!values.mailingSame && (
+              <InputField
+                name={mailingState.name}
+                label={mailingState.label}
+                variant="outlined"
+                fullWidth
               />
             )}
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
-            {!userInfoData.mailing_same && (
+            {!values.mailingSame && (
               <Autocomplete
                 id="country-select-demo"
-                disabled={userInfoData.mailing_same ? true : false}
-                onChange={(e) =>
-                  updateUserInfoData("mailing_country", e.target.value)
-                }
+                name={mailingCountry.name}
+                label={mailingCountry.label}
+                disabled={values.mailingSame ? true : false}
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
