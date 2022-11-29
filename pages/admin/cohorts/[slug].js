@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import CohortHeader from "./components/CohortHeader";
 import Grid from "@mui/material/Unstable_Grid2";
-import IndCohortContent from "./components/IndCohortContent";
+import IndCohortGrid from "./components/IndCohortGrid";
 import ScheduleModal from "./components/ScheduleModal";
 import getData from "../../../lib/getData";
 import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
@@ -15,6 +15,7 @@ import { useTheme } from "@emotion/react";
 const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
+  const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [schedule, setSchedule] = useState([]);
   const router = useRouter();
@@ -65,7 +66,10 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
             prevCohort={prevCohort}
             nextCohort={nextCohort}
           />
-          <IndCohortContent />
+          <IndCohortGrid 
+          loading={loading}
+          rows={rows}
+          />
 
           <ScheduleModal
             open={open}
