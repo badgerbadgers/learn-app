@@ -4,7 +4,8 @@ import dbConnect from "../../../../lib/dbConnect";
 import Section from "../../../../lib/models/Section";
 import Lesson from "../../../../lib/models/Lesson";
 
-export default async function handler(req, res) {
+export default async function handler(req, res) { 
+  
   const { method } = req;
   const slug = req.query.slug;
   await dbConnect();
@@ -37,12 +38,16 @@ export default async function handler(req, res) {
                 populate: {
                   path: "lesson",
                   model: "Lesson",
-                  select: "title",
+                  select: "title", 
+                  populate: {
+                    path: "assignments materials section",
+                  },
                 }
               },
             ]
           ).exec();
         res.status(200).json({ cohort: cohort })
+       
       } catch (error) {
         console.error(error)
         res.status(400).json({ success: false })

@@ -1,90 +1,50 @@
 import React, { useContext } from "react";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import { store } from "../../../store";
+import InputField from "./FormFields/InputField";
 
-function PersonalInfo() {
-  // Updating user info data through the global state provider
-  const { state, dispatch } = useContext(store);
-  const { userInfoData } = state;
-  function updateUserInfoData(key, value) {
-    dispatch({
-      type: "UPDATE_PERSONAL_DETAILS",
-      payload: { ...userInfoData, [key]: value },
-    });
-  }
+function PersonalInfo(props) {
+  const {
+    formField: { firstName, lastName, email, gitHub, phone },
+  } = props;
 
   return (
     <FormControl>
       <Grid container p={3} justify="space-between">
         <Grid container spacing={2} justify="space-between">
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="first_name"
-              placeholder="Type your first name"
-              label="First Name"
-              fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.first_name}
-              onChange={(e) => updateUserInfoData("first_name", e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="last_name"
-              placeholder="Type your last name"
-              label="Last Name"
+            <InputField
+              name={firstName.name}
+              label={firstName.label}
               variant="outlined"
               fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.last_name}
-              onChange={(e) => updateUserInfoData("last_name", e.target.value)}
             />
           </Grid>
+
           <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="email"
-              placeholder="Type your email"
-              label="Email"
-              fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.email}
-              onChange={(e) => updateUserInfoData("email", e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} width="100%">
-            <TextField
-              name="gitHub"
-              placeholder="Type your GitHub username"
-              label="GitHub Username"
+            <InputField
+              name={lastName.name}
+              label={lastName.label}
               variant="outlined"
               fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.gitHub}
-              onChange={(e) => updateUserInfoData("gitHub", e.target.value)}
             />
           </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            <InputField
+              name={email.name}
+              label={email.label}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} width="100%">
+            <InputField name={gitHub.name} label={gitHub.label} fullWidth />
+          </Grid>
+
           <Grid item xs={12} sm={12} width="100%">
-            <TextField
-              name="Phone"
-              placeholder="Type your phone number"
-              label="Phone"
-              fullWidth
-              required
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={userInfoData.phone}
-              onChange={(e) => updateUserInfoData("phone", e.target.value)}
-            />
+            <InputField name={phone.name} label={phone.label} fullWidth />
           </Grid>
         </Grid>
       </Grid>

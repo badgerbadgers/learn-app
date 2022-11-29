@@ -14,12 +14,12 @@ const AcceptanceForm = () => {
       <Paper elevation={15} className={styles.paper}>
         <div className={styles.titleForm}>
           <PersonAddIcon fontSize="large" />
-          <Typography p={2} variant="h4">
+          <Typography sx={{ py: 2 }} variant="h4">
             Join the Class
           </Typography>
         </div>
         <div className={styles.descriptionForm}>
-          <Typography p={2} variant="h7">
+          <Typography sx={{ px: 2, display: "inline-block" }} variant="h7">
             We are pleased to offer you a seat in one of our courses! Please
             complete this{" "}
             <span className={styles.highlighted}>
@@ -68,4 +68,3 @@ export async function getServerSideProps(context) {
     props: { user },
   };
 }
-
