@@ -1,33 +1,41 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Switch } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import NavBar from "../../../components/layout/NavBar"
 import Footer from "../../../components/layout/Footer"
 // import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
-// import styles from "../../../styles"
+// import wordpressdata from "../../../lib/wordpressdata"
+import axios from "axios"
 
 export default function StaticPage({ posts }) {
   const [pages, setPages] = useState(posts)
-  const [hidden, setIsHidden] = useState(false)
+  const [deleted, setIsDeleted] = useState(false)
+  const [staticPages, setStaticPages] = useState([])
 
-  function toggleHidden() {
-    setIsHidden(!hidden)
-    console.log("hidden", hidden)
+  // function toggleDeleted() {
+  //   setIsDeleted(deleted)
+  //   console.log("deleted", deleted)
+  // }
+
+  const handleSwitch = async (event) => {
+    //type string
+    let id = event.target.id
+    console.log(typeof id)
+    await fetch("/api/staticpages")
+      .then((res) => res.json())
+      .then((res) => setStaticPages(res.data))
+      .then((mapData) => console.log("static pages", staticPages))
+    setIsDeleted(!deleted)
   }
-
   const columns = [
     {
-      field: "rendered",
+      // field: "slug",
+      field: "title",
       headerName: "Title",
       width: 450,
-      // valueGetter: getNestedObject,
-      // renderCell: (params) => (
-      //   <ul className='flex'>
-      //     {params.value.map((title, index) => (
-      //       <li key={index}>{title.rendered}</li>
-      //     ))}
-      //   </ul>
-      // ),
+      valueGetter: (params) => {
+        return params.row.title.rendered
+      },
     },
     { field: "id", headerName: "ID", width: 150 },
     {
@@ -35,16 +43,34 @@ export default function StaticPage({ posts }) {
       headerName: "Shown in Learn App",
       width: 150,
       renderCell: (params) => {
-        return <Switch onClick={toggleHidden} />
+        const id = params.id
+        return <Switch onClick={handleSwitch} id={id} />
       },
     },
   ]
 
-  console.log("pages", pages)
+  // useEffect(() => {
+  //   // const url = `api/staticpage/getstaticpages`
+  //   // try {
+  //   //   async
+  //   // }
+  //       const url = "/api/staticpage/getstaticpages"
+  //       // const params = { slug: query.slug }
+  //       // console.log("params", params)
+  //       try {
+  //         ;(async () => {
+  //           const response = await getData(url)
+  //           cohort = response.cohort
+  //         })()
+  //       } catch (error) {
+  //         console.log("An error from getData in", url, error)
+  //       }
+  // })
+  // console.log("pages", pages)
   return (
     <>
       <NavBar />
-      <div style={{ height: 700, width: "100%" }}>
+      <div style={{ height: 800, width: "100%" }}>
         <h2>WordPress pages</h2>
         <DataGrid columns={columns} rows={pages} />
       </div>
@@ -58,6 +84,8 @@ export async function getServerSideProps() {
   // You can use any data fetching library
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages")
   const posts = await res.json()
+  // const whatever = await wordpressdata()
+  // console.log("whatever", whatever)
 
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
@@ -69,24 +97,10 @@ export async function getServerSideProps() {
 }
 
 // StaticPage.getLayout = PublicLayout2
-// import * as React from "react"
-// import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid"
-
-// const rows = [
-//   { id: 1, col1: "Hello", col2: "World" },
-//   { id: 2, col1: "DataGridPro", col2: "is Awesome" },
-//   { id: 3, col1: "MUI", col2: "is Amazing" },
-// ]
-
-// const columns = [
-//   { field: "col1", headerName: "Column 1", width: 150 },
-//   { field: "col2", headerName: "Column 2", width: 150 },
-// ]
-
-// export default function App() {
+// StaticPage.getLayout = function getLayout(pages) {
 //   return (
-//     <div style={{ height: 300, width: "100%" }}>
-//       <DataGrid rows={rows} columns={columns} />
-//     </div>
+//     <>
+//       <PublicLayout2>{pages}</PublicLayout2>
+//     </>
 //   )
 // }
