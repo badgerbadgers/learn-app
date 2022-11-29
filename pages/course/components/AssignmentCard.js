@@ -8,18 +8,23 @@ import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
 import PrintMarkdown from "./PrintMarkdown";
 
-export default function AssignmentCard({ mindset, assignments, submit }) {
+export default function AssignmentCard({
+  mindset,
+  assignments,
+  submit,
+  lessonEndDate,
+}) {
   return (
     <Card
       elevation={1}
       square
       sx={{
-        backgroundColor:"background.lessonCard",
+        backgroundColor: "background.lessonCard",
         padding: "1em",
         boxShadow: "none",
       }}
     >
-      <CardHeader title="Assignments" subheader={<div>Due Date:</div>} />
+      <CardHeader title="Assignments" subheader={<div>Due Date: { lessonEndDate}</div>} />
 
       <CardContent>
         <Typography variant="h6">Coding Assignment</Typography>

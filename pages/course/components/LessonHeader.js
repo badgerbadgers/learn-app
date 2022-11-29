@@ -16,26 +16,11 @@ export default function LessonHeader({
   scheduleData,
   currentLesson,
   weekLessonNumber,
-  startDate,
+  lessonStartDate,
+  lessonEndDate
 }) {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
-  // move to index and pass function as props
-  const lessonStartDate = () => {
-    return format(
-      addDays(new Date(startDate), 7 * weekLessonNumber),
-      "MMM dd, yyyy"
-    );
-  };
-
-  const lessonEndDate = () => {
-    return format(
-      addDays(new Date(startDate), 7 * (weekLessonNumber + 1) - 1),
-      "MMM dd, yyyy"
-    );
-  };
-
-  console.log(typeof startDate);
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -110,7 +95,7 @@ export default function LessonHeader({
       </Typography>
 
       <Typography variant="body1" sx={{ textAlign: "center" }}>
-        {lessonStartDate()} - {lessonEndDate()}
+        {lessonStartDate} - {lessonEndDate}
       </Typography>
     </Card>
   );

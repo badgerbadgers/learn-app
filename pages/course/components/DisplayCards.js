@@ -13,7 +13,9 @@ export default function DisplayCards({
   courseName,
   cohortName,
   weekLessonNumber,
-  startDate
+  startDate, 
+  lessonStartDate,
+  lessonEndDate
 }) {
   const switchCardDisplay = () => {
     switch (currentLesson.type) {
@@ -34,7 +36,8 @@ export default function DisplayCards({
             <AssignmentCard
               mindset={currentLesson.lesson.mindset_content}
               submit={currentLesson.lesson.submission_link.url}
-              assignments={currentLesson.lesson.assignments}
+              assignments={currentLesson.lesson.assignments} 
+              lessonEndDate={lessonEndDate}
             />
           </Grid>
         );
@@ -51,7 +54,9 @@ export default function DisplayCards({
         cohortName={cohortName}
         currentLesson={currentLesson}
         weekLessonNumber={weekLessonNumber}
-        startDate={startDate}
+        startDate={startDate} 
+        lessonStartDate={lessonStartDate}
+        lessonEndDate={lessonEndDate}
       />
       {switchCardDisplay()}
     </Grid>

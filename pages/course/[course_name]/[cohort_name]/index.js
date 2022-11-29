@@ -8,7 +8,8 @@ import DisplayCards from "../../components/DisplayCards";
 import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import Cohort from "../../../../lib/models/Cohort";
-import dbConnect from "../../../../lib/dbConnect";
+import dbConnect from "../../../../lib/dbConnect"; 
+import { format, addDays } from "date-fns";
 
 export default function CurrentCoursePage({
   user,
@@ -54,7 +55,21 @@ export default function CurrentCoursePage({
       setweekLessonNumber(newWeekLessonNumber);
       setCurrentLesson(scheduleData[newWeekLessonNumber]);
     }
-  }, [scheduleData, weekLessonNumber, router]);
+  }, [scheduleData, weekLessonNumber, router]); 
+
+  const lessonStartDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * weekLessonNumber),
+      "MMM dd, yyyy"
+    );
+  };
+
+  const lessonEndDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * (weekLessonNumber + 1) - 1),
+      "MMM dd, yyyy"
+    );
+  };
 
   return (
     <Grid
@@ -79,6 +94,9 @@ export default function CurrentCoursePage({
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
           startDate={startDate}
+          lessonStartDate={lessonStartDate()}
+          lessonEndDate={lessonEndDate()}
+
         />
       )}
     </Grid>
