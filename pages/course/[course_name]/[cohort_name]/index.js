@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { privateLayout } from "../../../../components/layout/PrivateLayout";
+
 import { getSession } from "next-auth/react";
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
@@ -9,10 +10,14 @@ import Alert from "@mui/material/Alert";
 import Cohort from "../../../../lib/models/Cohort";
 import dbConnect from "../../../../lib/dbConnect";
 
-export default function CurrentCoursePage({ user, scheduleData, zoomLink, startDate }) { 
-
+export default function CurrentCoursePage({
+  user,
+  scheduleData,
+  zoomLink,
+  startDate,
+}) {
   const [weekLessonNumber, setweekLessonNumber] = useState(0);
- 
+
   // if filteredScheduleData[0] exisits then get lesson of first week
   const [currentLesson, setCurrentLesson] = useState(
     !!scheduleData[0] ? scheduleData[0] : undefined
@@ -52,7 +57,11 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink, startD
   }, [scheduleData, weekLessonNumber, router]);
 
   return (
-    <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
+    <Grid
+      container
+      spacing={3}
+      sx={{ maxWidth: "100%"}}
+    >
       <Menu
         scheduleData={scheduleData}
         courseName={router.query["course_name"]}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CardHeader from "@mui/material/CardHeader";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -20,6 +20,7 @@ export default function LessonHeader({
 }) {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
+  // move to index and pass function as props
   const lessonStartDate = () => {
     return format(
       addDays(new Date(startDate), 7 * weekLessonNumber),
@@ -39,7 +40,7 @@ export default function LessonHeader({
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         {weekLessonNumber !== 0 ? (
-          <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
+          <Button sx={{color:"background.navButton"}} startIcon={<ArrowBackIcon />}>
             <Link
               href={{
                 pathname: "/course/[course_name]/[cohort_name]/",
@@ -64,7 +65,7 @@ export default function LessonHeader({
 
         {weekLessonNumber !== scheduleData.length - 1 ? (
           <Button
-            sx={{ color: "black", ml: "auto" }}
+            sx={{color:"background.navButton", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
           >
             <Link

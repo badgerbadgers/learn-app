@@ -14,7 +14,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor:"background.lessonCard",
         padding: "1em",
         boxShadow: "none",
       }}

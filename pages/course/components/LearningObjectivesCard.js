@@ -14,7 +14,7 @@ export default function LearningObjectivesCard({ objectives }) {
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor: "background.lessonCard",
         mb: "2em",
         padding: "1em",
         boxShadow: "none",

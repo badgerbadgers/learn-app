@@ -102,7 +102,7 @@ export default function Menu({
         square
         sx={{
           height: "100%",
-          backgroundColor: "#F4F5F7",
+          backgroundColor:"background.lessonCard"
         }}
       >
         {!isSmallScreen && (
