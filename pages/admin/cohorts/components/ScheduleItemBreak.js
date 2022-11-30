@@ -6,6 +6,7 @@ import AddWeekBtns from "./AddWeekBtns";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@emotion/react";
 
 export default function ScheduleItemBreak({
   idx,
@@ -20,6 +21,7 @@ export default function ScheduleItemBreak({
 
   const [loading, setLoading] = useState(true);
   const [formView, setFormView] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     setLoading(false)
@@ -177,7 +179,7 @@ export default function ScheduleItemBreak({
         variant="overline"
         sx={{
           display: "inline-block",
-          color: "#12284C",
+          color: theme.palette.schedule.text,
           fontFamily: "Montserrat",
           alignSelf: "center",
         }}>
