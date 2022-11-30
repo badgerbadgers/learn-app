@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MenuHeader from "./MenuHeader";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -11,7 +11,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "@mui/material";
 
 export default function Menu({
@@ -53,6 +53,7 @@ export default function Menu({
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <MenuList sx={{ py: "0" }}>
+        <MenuHeader />
         <Divider sx={{ mb: "5px" }} />
 
         <Typography variant="h6" sx={{ ml: "15px" }}>
@@ -96,79 +97,76 @@ export default function Menu({
   );
 
   return (
-    <Grid item md={3} xs={11} sx={{ maxWidth: "100%", mx: "auto" }}>
-      <Paper
-        variant="outlined"
-        square
-        sx={{
-          height: "100%",
-          backgroundColor:"background.lessonCard"
-        }}
-      >
-        {!isSmallScreen && (
-          <MenuList dense>
-            <MenuHeader zoomLink={zoomLink} />
-            <Divider sx={{ mb: "5px" }} />
+    <Grid item md={3} xs={11} sx={{ maxWidth: "100%",  }}>
+      <div>
+       
+          {!isSmallScreen && (
+             <Paper
+          variant="outlined"
+          square
+          sx={{
+            height: "100%",
+            backgroundColor: "background.lessonCard",
+          }}
+        >
+            <MenuList dense>
+              <MenuHeader zoomLink={zoomLink} />
+              <Divider sx={{ mb: "5px" }} />
 
-            <Typography variant="h6" sx={{ ml: "15px" }}>
-              Lessons
-            </Typography>
+              <Typography variant="h6" sx={{ ml: "15px" }}>
+                Lessons
+              </Typography>
 
-            {filteredScheduleData.map((weekSchedule, index) => {
-              return (
-                <Stack key={index}>
-                  <Link
-                    href={{
-                      pathname: "/course/[course_name]/[cohort_name]/",
+              {filteredScheduleData.map((weekSchedule, index) => {
+                return (
+                  <Stack key={index}>
+                    <Link
+                      href={{
+                        pathname: "/course/[course_name]/[cohort_name]/",
 
-                      //lesson is the query from router
-                      query: {
-                        course_name: courseName,
-                        cohort_name: cohortName,
-                        week: index,
-                        lesson: weekSchedule.lesson?.title || weekSchedule.type,
-                      },
-                    }}
-                    passHref
-                    //updates the path of current page without rerunnig
-                    shallow={true}
-                  >
-                    <MenuItem
-                      sx={{
-                        textTransform: "capitalize",
-                        color: index === weekLessonNumber ? "#FF5C35" : "",
+                        //lesson is the query from router
+                        query: {
+                          course_name: courseName,
+                          cohort_name: cohortName,
+                          week: index,
+                          lesson:
+                            weekSchedule.lesson?.title || weekSchedule.type,
+                        },
                       }}
+                      passHref
+                      //updates the path of current page without rerunnig
+                      shallow={true}
                     >
-                      <Typography variant="body1" noWrap={true}>
-                        {weekSchedule.lesson
-                          ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}`
-                          : weekSchedule.type}
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                  <Divider />
-                </Stack>
-              );
-            })}
-          </MenuList>
-        )}
-
+                      <MenuItem
+                        sx={{
+                          textTransform: "capitalize",
+                          color: index === weekLessonNumber ? "#FF5C35" : "",
+                        }}
+                      >
+                        <Typography variant="body1" noWrap={true}>
+                          {weekSchedule.lesson
+                            ? `Lesson ${weekSchedule.lesson.section.order}.${weekSchedule.lesson.order}: ${weekSchedule.lesson.title}`
+                            : weekSchedule.type}
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                  </Stack>
+                );
+              })}
+            </MenuList>
+             </Paper>
+          )}
+       
         {isSmallScreen && (
-          <Stack
-            sx={{
-              border: "none",
-              backgroundColor: "transparent",
-              mx: "auto",
-            }}
-          >
+          <Stack>
             {["left"].map((anchor) => (
               <React.Fragment key={anchor}>
                 <Button
                   onClick={toggleDrawer(anchor, true)}
-                  endIcon={<KeyboardArrowDownIcon />}
-                  sx={{ border: "none", textAlign: "left" }}
+                  sx={{ justifyContent:"start", maxWidth:"30px", ml:"30px"}}
                 >
-                  Lessons
+                  <MenuIcon sx={{color:"#000"}} />
                 </Button>
                 <SwipeableDrawer
                   anchor={anchor}
@@ -178,12 +176,11 @@ export default function Menu({
                 >
                   {list(anchor)}
                 </SwipeableDrawer>
-                <MenuHeader zoomLink={zoomLink} />
               </React.Fragment>
             ))}
           </Stack>
         )}
-      </Paper>
+      </div>
     </Grid>
   );
 }

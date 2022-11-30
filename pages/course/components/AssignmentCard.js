@@ -24,7 +24,11 @@ export default function AssignmentCard({
         boxShadow: "none",
       }}
     >
-      <CardHeader title="Assignments" subheader={<div>Due Date: { lessonEndDate}</div>} />
+      <CardHeader
+        title="Assignments"
+        subheader={<div>Due Date: {lessonEndDate}</div>}
+        sx={{ lineHeight: "50px" }}
+      />
 
       <CardContent>
         <Typography variant="h6">Coding Assignment</Typography>
