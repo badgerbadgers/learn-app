@@ -261,7 +261,7 @@ export default function IndCohortGrid({}) {
           LoadingOverlay: LinearProgress,
           NoRowsOverlay: () => (
             <Stack height="100%" alignItems="center" justifyContent="center">
-              So far, there are no cohorts here. Would you like to create one?
+              So far, there are no students in this cohort
             </Stack>
           ),
           NoResultsOverlay: () => (
