@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import StudentsTable from "./components/StudentsTable";
+import StudentsFilter from "./components/StudentsFilter";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
 import getData from "../../../lib/getData";
 import { format } from "date-fns";
-import { Rowing } from "@mui/icons-material";
+import Grid from "@mui/material/Grid";
 
 const StudentManagemant = () => {
   const url = "/api/students";
@@ -16,6 +17,28 @@ const StudentManagemant = () => {
   const [cohorts, setCohorts] = useState([]);
   const [courses, setCourses] = useState([]);
   const [roles, setRoles] = useState([]);
+
+  //sreate setFilter with callback
+  const setFilter = (filters) => {
+    //create a subset of all students using the filters (set Tablerows and update)
+    const filteredRows = allStudents.current.filter((row) => {
+      if (!!filters.cohort && row.cohortId !== filters.cohort) {
+        return false;
+      }
+
+      if (!!filters.course && row.currentCourseId !== filters.course) {
+        return false;
+      }
+
+      if (!!filters.role && !row.roleId.includes(filters.role)) {
+        return false;
+      }
+
+      return true;
+    });
+
+    setTableRows(filteredRows);
+  };
 
   const makeRowfromStudent = (student) => {
     return {
@@ -56,6 +79,29 @@ const StudentManagemant = () => {
       })();
     } catch (error) {
       console.log("An error getData in /api/cohorts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const url = "/api/courses";
+    const params = {};
+    try {
+      (async () => {
+        const response = await getData(params, url);
+        let courses = JSON.parse(response.data);
+        let localCourses = [];
+        if (courses) {
+          courses.map((course) => {
+            localCourses.push({
+              value: course._id,
+              label: course.course_name,
+            });
+          });
+        }
+        setCourses(localCourses);
+      })();
+    } catch (error) {
+      console.log("An error from getData in /api/courses:", error);
     }
   }, []);
 
@@ -110,12 +156,12 @@ const StudentManagemant = () => {
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
         Student Management
       </Typography>
-      
-      <StudentsTable
-        loading={loading}
-        tableRows={tableRows}
-        id={id}
-        setId={setId} />
+      <Grid container spasing={2}>
+        <Grid item xs={10}>
+          <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles.sort()} setFilter={setFilter} />
+        </Grid>
+      </Grid>
+      <StudentsTable loading={loading} tableRows={tableRows} id={id} setId={setId} />
     </Container>
   );
 };

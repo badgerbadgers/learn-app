@@ -98,7 +98,6 @@ export default function StudentsTable({ loading, tableRows }) {
   };
 
   const processRowUpdate = async (newRow, oldRow) => {
-
     const url = "/api/students" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
