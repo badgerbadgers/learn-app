@@ -1,0 +1,127 @@
+import { useState, useEffect, useRef } from "react";
+import StudentsTable from "./components/StudentsTable";
+import { Container, Typography } from "@mui/material";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
+import { getSession } from "next-auth/react";
+import getData from "../../../lib/getData";
+import { format } from "date-fns";
+import { Rowing } from "@mui/icons-material";
+
+const StudentManagemant = () => {
+  const url = "/api/students";
+  const allStudents = useRef([]);
+  const [loading, setLoading] = useState(true);
+  const [tableRows, setTableRows] = useState([]);
+  const [id, setId] = useState([]);
+  const [cohorts, setCohorts] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [roles, setRoles] = useState([]);
+
+  const makeRowfromStudent = (student) => {
+    return {
+      id: student._id,
+      firstName: student.firstName ? student.firstName : "",
+      lastName: student.lastName ? student.lastName : "",
+      email: student.email ? student.email : "",
+      gh: student.gh ? student.gh : "",
+      recordCreated: student.createdAt ? format(new Date(student.createdAt), "MMM dd, yyyy") : "",
+      cohort: student.cohort ? student.cohort.cohort_name : "",
+      cohortId: student.cohort ? student.cohort._id : "",
+      currentCourse: student.cohort ? student.cohort.course.course_name : "",
+      currentCourseId: student.cohort ? student.cohort.course._id : "",
+      status: "counting",
+      lastLogin: "counting",
+    };
+  };
+
+  useEffect(() => {
+    const url = "/api/cohorts";
+    const params = {};
+    try {
+      (async () => {
+        const response = await getData(params, url);
+        let cohorts = JSON.parse(response.data);
+        let localCohorts = [];
+        if (cohorts) {
+          cohorts.map((cohort) => {
+            localCohorts.push({
+              value: cohort._id,
+              label: cohort.cohort_name,
+            });
+          });
+        }
+        setCohorts(localCohorts);
+      })();
+    } catch (error) {
+      console.log("An error getData in /api/cohorts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    const params = {};
+    try {
+      (async () => {
+        let response = await getData(params, url);
+        const students = JSON.parse(response.data);
+        let localRows = [];
+        if (students) {
+          students.map(async (student) => {
+            const item = makeRowfromStudent(student);
+            localRows.push(item);
+          });
+        }
+        allStudents.current = localRows;
+        setTableRows(localRows);
+        setLoading(false);
+      })();
+    } catch (error) {
+      console.log("An error from getData in /api/students", error);
+    }
+  }, []);
+
+  return (
+    <Container sx={{ textAlign: "center " }}>
+      <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
+        Student Management
+      </Typography>
+      
+      <StudentsTable
+        loading={loading}
+        tableRows={tableRows}
+        cohorts={cohorts.sort()}
+        courses={courses.sort()}
+        id={id}
+        setId={setId} />
+    </Container>
+  );
+};
+
+export default StudentManagemant;
+
+StudentManagemant.getLyout = privateLayout;
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  const { user } = session;
+  if (!user.hasProfile) {
+    return {
+      redirect: {
+        destination: "/signup",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { user },
+  };
+}
