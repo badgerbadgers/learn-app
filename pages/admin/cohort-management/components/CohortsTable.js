@@ -323,7 +323,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   ];
 
   return (
-    <Box sx={{ height: "500px", width: "100%" }}>
+    <Box sx={{
+      height: "calc(100vh - 64px - 3rem - 3rem)", //100% - header - data grid title - footer
+      width: "100%",
+      mb: "4rem",
+    }}>
       <DataGrid
         loading={loading}
         rows={rows}
@@ -354,9 +358,48 @@ export default function CohortsTable({ loading, tableRows, courses }) {
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}
         componentsProps={{
-          toolbar: { setRows, setRowModesModel, rows }
+          toolbar: { setRows, setRowModesModel, rows },
+           pagination: {
+            SelectProps: {
+              MenuProps: {
+                sx: {
+     
+                  "& .MuiMenuItem-root": {
+                    fontSize: "0.9rem"
+                  }
+                }
+              }
+            }
+          },
+          BaseSelect: {
+            SelectProps: {
+              MenuProps: {
+                sx: {
+                  color: "red",
+     
+                  "& .MuiMenuItem-root": {
+                    fontSize: "0.9rem"
+                  }
+                }
+              }
+            }
+          },
         }}
+        
         experimentalFeatures={{ newEditingApi: true }}
+
+        sx={{
+          "*, .MuiSelect-outlined, .MuiInputBase-input": {
+            fontFamily: "Montserrat",
+            fontSize: "0.9rem",
+          },
+          "fieldset" : { //course name 
+            border: "none"
+          },
+          ".MuiTablePagination-selectLabel": {  // pagination label
+            fontFamily: "Montserrat",
+          },
+        }}
       />
       {!!snackbar && (
         <Snackbar

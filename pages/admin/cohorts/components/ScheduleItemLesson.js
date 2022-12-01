@@ -1,11 +1,12 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import AddWeekBtns from "./AddWeekBtns";
+import { useTheme } from "@emotion/react";
 
 export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, sectionTitle, showBreakBtns, handleShowForm }) {
+  const theme = useTheme();
   const matches_md = useMediaQuery("(max-width: 1500px)");
   const matches_sx = useMediaQuery("(max-width: 600px)");
-
 
   if (matches_sx) {
     return (<Box
@@ -76,31 +77,38 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
     sx={{
       height: "112px",
       width: "100%",
-      display: "block",
+      display: "grid",
+      gap: 0,
+      gridTemplateColumns: "110px 1fr",
+      gridTemplateRows: "63px 1fr",
+      gridTemplateAreas: 
+      `"date lesson"
+      "btns btns"`,
     }}
   >
     <Box sx={{
       fontSize: "14px",
-      display: "inline-block",
       color: "#bababa",
-      width: "110px",
+      gridArea: "date",
+      lineHeight: "63px"
+
     }}>
       {lessonStartDate}
     </Box>
+
     <Box sx={{
       px: 2,
-      display: "inline-grid",
-      width: "calc(100% - 110px)",
-      height: "63px",
+      display: "grid",
       lineHeight: "63px",
-      backgroundColor: "#f5f5f5",
+      backgroundColor: theme.palette.schedule.background,
       gridTemplateColumns: matches_md ? "1fr 2fr 72px" : "2fr 7fr 72px",
       alighItems: "center",
+      gridArea: "lesson",
     }}>
       <Typography mr={2}
         variant="overline"
         sx={{
-          color: "#12284C",
+          color: theme.palette.schedule.text,
           fontFamily: "Montserrat",
           height: "100%",
           lineHeight: "63px",
@@ -124,18 +132,14 @@ export default function ScheduleItemLesson({ idx, lesson, lessonStartDate, secti
         }}>
         {lesson}
       </Typography>
-      <Box
-        sx={{
-          width: "72px"
-        }}>
-      </Box>
+     
     </Box>
     {
       showBreakBtns && <Box
-        mt={2}
         sx={{
           ml: "110px",
-          mb: "3rem"
+          mb: "3rem",
+          gridArea: "btns",
         }}>
         <AddWeekBtns
           idx={idx}
