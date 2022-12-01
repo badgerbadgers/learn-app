@@ -12,6 +12,8 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       return await getStudents(req, res);
+    case "POST":
+      return await createStudent(req, res);
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -34,4 +36,48 @@ const getStudents = async (req, res) => {
   }
   return res;
 };
+
+const createStudent = async (req, res) => {
+  try {
+    const studentToDb = await sanitize(JSON.parse(req.body.body));
+    // const existingStudentGithub = await Userprofile.findOne({
+    //   gh: studentToDb.gh,
+    // });
+    // if (existingStudentGithub) {
+    //   const error = {
+    //     error: "This github is already in use",
+    //   };
+    //   res.status(400).json({
+    //     success: false,
+    //     message: error,
+    //   });
+    //   return;
+    // }
+
+    const student = await Userprofile.create(studentToDb);
+    if (!student) {
+      return res.status(400).json({ success: false });
+    }
+    res.status(200).json({ success: true, data: student });
+  } catch (error) {
+    console.log(error);
+    const errors = {};
+
+    return res.status(400).json({
+      success: false,
+      message: errors,
+    });
+  }
+  return res;
+};
+
+export const sanitize = async (obj) => {
+  return {
+    firstName: obj.firstName,
+    lastName: obj.lastName,
+    email: obj.email,
+    gh: obj.gh,
+  };
+};
+
 
