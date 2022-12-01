@@ -109,6 +109,7 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
           display: "inline-flex",
           borderRight: "1px solid",
           borderRightColor: "#FF5C35",
+          borderImage: `linear-gradient(180deg, #FF5C35,70%, #FF5C35,${theme.palette.background.default},75%, ${theme.palette.background.default}) 1`,
 
         }}>
         {title.toUpperCase()}

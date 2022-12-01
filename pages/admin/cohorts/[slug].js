@@ -15,7 +15,7 @@ import { useTheme } from "@emotion/react";
 const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
-  const [rows, setRows] = useState([]);
+  const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
   const [schedule, setSchedule] = useState([]);
   const router = useRouter();
@@ -30,10 +30,22 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
+
         console.log("cohort", cohort)
         setCohort(cohort);
+
         setSchedule(cohort.schedule);
         setLoading(false);
+        //TMP for MVP, needs to be changed when DB scema and Student model are ready
+        if (cohort.students) {
+          const localStudents = [];
+          cohort.students.map(st => {
+            st.id = st._id;
+            delete st._id;
+            localStudents.push(st)
+          })
+          await setStudents(localStudents)
+        }
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
@@ -41,29 +53,7 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   }, [])
 
 
-  //TMP for MVP
-  useEffect(() => {
-    // const url = "/api/courses";
-    // const params = {};
-    // try {
-    //   (async () => {
-    //     const response = await getData(params, url);
-    //     let courses = JSON.parse(response.data);
-    //     let localCourses = [];
-    //     if (courses) {
-    //       courses.map((course) => {
-    //         localCourses.push({
-    //           value: course._id,
-    //           label: course.course_name,
-    //         });
-    //       });
-    //     }
-    //     setCourses(localCourses);
-    //   })();
-    // } catch (error) {
-    //   console.log("An error from getData in /api/courses:", error);
-    // }
-  }, []);
+
 
   return (
     <Container>
@@ -91,11 +81,10 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
             prevCohort={prevCohort}
             nextCohort={nextCohort}
           />
-          <IndCohortGrid 
-          loading={loading}
-          rows={rows}
+          <IndCohortGrid
+            loading={loading}
+            students={students}
           />
-
           <ScheduleModal
             open={open}
             setOpen={setOpen}
