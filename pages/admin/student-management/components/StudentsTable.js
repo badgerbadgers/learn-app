@@ -43,7 +43,7 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-export default function StudentsTable({ loading, tableRows, courses, cohorts }) {
+export default function StudentsTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);

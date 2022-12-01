@@ -29,6 +29,8 @@ const StudentManagemant = () => {
       cohortId: student.cohort ? student.cohort._id : "",
       currentCourse: student.cohort ? student.cohort.course.course_name : "",
       currentCourseId: student.cohort ? student.cohort.course._id : "",
+      role: student.userId ? student.userId.roleIds : "",
+      roleId: student.userId ? student.userId.roleIds : "",
       status: "counting",
       lastLogin: "counting",
     };
@@ -51,6 +53,29 @@ const StudentManagemant = () => {
           });
         }
         setCohorts(localCohorts);
+      })();
+    } catch (error) {
+      console.log("An error getData in /api/cohorts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const url = "/api/roles";
+    const params = {};
+    try {
+      (async () => {
+        const response = await getData(params, url);
+        let roles = JSON.parse(response.data);
+        let localRoles = [];
+        if (roles) {
+          roles.map((role) => {
+            localRoles.push({
+              value: role._id,
+              label: role.name,
+            });
+          });
+        }
+        setRoles(localRoles);
       })();
     } catch (error) {
       console.log("An error getData in /api/cohorts:", error);
@@ -89,8 +114,6 @@ const StudentManagemant = () => {
       <StudentsTable
         loading={loading}
         tableRows={tableRows}
-        cohorts={cohorts.sort()}
-        courses={courses.sort()}
         id={id}
         setId={setId} />
     </Container>
