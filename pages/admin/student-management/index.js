@@ -7,6 +7,38 @@ import { getSession } from "next-auth/react";
 import getData from "../../../lib/getData";
 import { format } from "date-fns";
 import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
+import makeStyles from "@mui/styles/makeStyles";
+import { createTheme } from "@mui/material/styles";
+
+const defaultTheme = createTheme();
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      padding: theme.spacing(0.5, 0.5, 0),
+      justifyContent: "space-between",
+      display: "flex",
+      alignItems: "flex-start",
+      flexWrap: "wrap",
+    },
+    textField: {
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
+      margin: theme.spacing(1, 0.5, 1.5),
+      "& .MuiSvgIcon-root": {
+        marginRight: theme.spacing(0.5),
+      },
+      "& .MuiInput-underline:before": {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+    },
+  }),
+  { defaultTheme }
+);
 
 const StudentManagemant = () => {
   const url = "/api/students";
@@ -17,6 +49,7 @@ const StudentManagemant = () => {
   const [cohorts, setCohorts] = useState([]);
   const [courses, setCourses] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
   //sreate setFilter with callback
   const setFilter = (filters) => {
@@ -39,6 +72,36 @@ const StudentManagemant = () => {
 
     setTableRows(filteredRows);
   };
+
+  const requestSearch = (searchValue) => {
+    setSearchInput(searchValue);
+
+    const searchedRows = allStudents.current.filter((row) => {
+      if (!searchValue) {
+        return true;
+      }
+      if (row.firstName.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      if (row.lastName.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      if (row.gh.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      if (row.email.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      return false;
+    });
+
+    setTableRows(searchedRows);
+  };
+
+  const clearSearch = () => {
+    requestSearch("");
+  };
+
 
   const makeRowfromStudent = (student) => {
     return {
@@ -159,6 +222,22 @@ const StudentManagemant = () => {
       <Grid container spasing={2}>
         <Grid item xs={10}>
           <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles.sort()} setFilter={setFilter} />
+        </Grid>
+        <Grid item xs={2}>
+          <TextField
+            id="input-with-icon-textfield"
+            variant="outlined"
+            value={searchInput}
+            onChange={(e) => requestSearch(e.target.value)}
+            InputProps={{
+              startAdornment: <SearchIcon fontSize="small" />,
+              endAdornment: (
+                <IconButton title="Clear" aria-label="Clear" size="small" onClick={clearSearch} style={{ visibility: searchInput ? "visible" : "hidden" }}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              ),
+            }}
+          />
         </Grid>
       </Grid>
       <StudentsTable loading={loading} tableRows={tableRows} id={id} setId={setId} />
