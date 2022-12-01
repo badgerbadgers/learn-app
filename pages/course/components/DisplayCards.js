@@ -13,7 +13,6 @@ export default function DisplayCards({
   courseName,
   cohortName,
   weekLessonNumber,
-  startDate, 
   lessonStartDate,
   lessonEndDate
 }) {
@@ -54,7 +53,6 @@ export default function DisplayCards({
         cohortName={cohortName}
         currentLesson={currentLesson}
         weekLessonNumber={weekLessonNumber}
-        startDate={startDate} 
         lessonStartDate={lessonStartDate}
         lessonEndDate={lessonEndDate}
       />

@@ -10,6 +10,9 @@ import Image from "next/image";
 
 export default function MenuHeader({ zoomLink }) {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
+  const logoStyle = {
+    marginRight: "50px",
+  };
   return (
     <Box component="div" sx={{ p: "1em" }}>
       {!isSmallScreen && (
@@ -25,10 +28,21 @@ export default function MenuHeader({ zoomLink }) {
               href={zoomLink}
               aria-label="zoom link"
               variant="text"
-              sx={{ color: "#338AAF", textTransform: "lowercase" }}
+              sx={{
+                color: "#338AAF",
+                textTransform: "lowercase",
+                p: "0",
+                my: ".2em",
+              }}
             >
-              <Image src={zoomLogo} alt="slack" width="50px" height="30px" />
-              zoom link
+              <Image
+                style={logoStyle}
+                src={zoomLogo}
+                alt="slack"
+                width="30"
+                height="30"
+              />
+              <Typography sx={{ ml: "10px" }}>zoom link</Typography>
             </Button>
 
             <Button
@@ -39,10 +53,12 @@ export default function MenuHeader({ zoomLink }) {
                 color: "#338AAF",
                 textTransform: "lowercase",
                 whiteSpace: "no-wrap",
+                p: "0",
+                my: ".5em",
               }}
             >
-              <Image src={slackLogo} alt="slack" width="60px" height="30px" />
-              slack announcements
+              <Image src={slackLogo} alt="slack" width="25px" height="25px" />
+              <Typography sx={{ ml: "10px" }}>slack announcements</Typography>
             </Button>
           </Stack>
         </Stack>
@@ -59,9 +75,10 @@ export default function MenuHeader({ zoomLink }) {
           <Stack
             sx={{
               display: "flex",
-              justifyContent: "start",
+              justifyContent: "flex-start",
               flexDirection: "row",
-              mt: "1em",
+              mt: "1em", 
+             
             }}
           >
             <Button
@@ -70,15 +87,16 @@ export default function MenuHeader({ zoomLink }) {
               aria-label="zoom link"
               sx={{ p: "0px" }}
             >
-              <Image src={zoomLogo} alt="slack" width="60px" height="40px" />
+              <Image src={zoomLogo} alt="slack" width="40px" height="40px" />
             </Button>
 
             <Button
               href="" //To Do: link comes from Mary Alice
               aria-label="slack announcements"
               target="_blank"
+              sx={{ m: "0px" }}
             >
-              <Image src={slackLogo} alt="slack" width="60px" height="30px" />
+              <Image src={slackLogo} alt="slack" width="30px" height="30px" />
             </Button>
           </Stack>
         </Stack>

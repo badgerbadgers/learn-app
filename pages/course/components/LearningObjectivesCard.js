@@ -26,7 +26,7 @@ export default function LearningObjectivesCard({ objectives }) {
           {objectives.map((objective) => {
             return (
               <ListItem key={objective} sx={{ py: "0" }}>
-                <ListItemIcon sx={{ minWidth: "36px" }}>
+                <ListItemIcon sx={{ minWidth: "36px"}}>
                   <CircleIcon sx={{ width: "8px" }} />
                 </ListItemIcon>
                 <ListItemText sx={{ display: "block" }}>

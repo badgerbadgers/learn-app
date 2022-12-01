@@ -22,7 +22,7 @@ export default function LessonHeader({
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
   return (
-    <Card sx={{ mb: "1em", boxShadow: "none" }}>
+    <Card sx={{ mb: "2em", boxShadow: "none", padding: "1em" }}>
       {!isSmallScreen && (
         <Stack>
           <CardActions
@@ -82,6 +82,7 @@ export default function LessonHeader({
           </CardActions>
 
           <CardHeader
+            sx={{p:"6px"}}
             title={
               currentLesson.lesson
                 ? `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`
@@ -126,60 +127,77 @@ export default function LessonHeader({
             }}
           />
           <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-            {weekLessonNumber !== 0 ? (
-              <Link
-                href={{
-                  pathname: "/course/[course_name]/[cohort_name]/",
+            <Link
+              href={
+                weekLessonNumber !== 0
+                  ? {
+                      pathname: "/course/[course_name]/[cohort_name]/",
 
-                  //lesson is the query from router
-                  query: {
-                    course_name: courseName,
-                    cohort_name: cohortName,
-                    week: weekLessonNumber - 1,
-                    // since data structures for lesson and review are different need ternary operator
-                    lesson:
-                      scheduleData[weekLessonNumber - 1].lesson?.title ||
-                      scheduleData[weekLessonNumber - 1].type,
-                  },
+                      //lesson is the query from router
+                      query: {
+                        course_name: courseName,
+                        cohort_name: cohortName,
+                        week: weekLessonNumber - 1,
+                        // since data structures for lesson and review are different need ternary operator
+                        lesson:
+                          scheduleData[weekLessonNumber - 1].lesson?.title ||
+                          scheduleData[weekLessonNumber - 1].type,
+                      },
+                    }
+                  : ""
+              }
+              shallow={true}
+              passHref
+              // sends href to child
+            >
+              <Button
+                sx={{
+                  color: "background.navButton",
+                  visibility: weekLessonNumber === 0 ? "hidden" : "visible",
+                  pointerEvents: weekLessonNumber === 0 ? "none" : "auto",
                 }}
-                shallow={true}
-                passHref
-                // sends href to child
-              >
-                <Button
-                  sx={{ color: "background.navButton" }}
-                  startIcon={<ArrowBackIcon />}
-                ></Button>
-              </Link>
-            ) : null}
+                startIcon={<ArrowBackIcon />}
+              ></Button>
+            </Link>
 
             <Typography variant="h6" sx={{ textAlign: "center" }}>
               Week {weekLessonNumber + 1} of {scheduleData.length}
             </Typography>
 
-            {weekLessonNumber !== scheduleData.length - 1 ? (
-              <Link
-                href={{
-                  pathname: "/course/[course_name]/[cohort_name]/",
+            <Link
+              href={
+                weekLessonNumber !== scheduleData.length - 1? {
+                      pathname: "/course/[course_name]/[cohort_name]/",
 
-                  query: {
-                    course_name: courseName,
-                    cohort_name: cohortName,
-                    week: weekLessonNumber + 1,
-                    lesson:
-                      scheduleData[weekLessonNumber + 1].lesson?.title ||
-                      scheduleData[weekLessonNumber + 1].type,
-                  },
+                      query: {
+                        course_name: courseName,
+                        cohort_name: cohortName,
+                        week: weekLessonNumber + 1,
+                        lesson:
+                          scheduleData[weekLessonNumber + 1].lesson?.title ||
+                          scheduleData[weekLessonNumber + 1].type,
+                      },
+                    }
+                  : ""
+              }
+              shallow={true}
+              passHref
+            >
+              <Button
+                sx={{
+                  color: "background.navButton",
+                  visibility:
+                    weekLessonNumber === scheduleData.length - 1
+                      ? "hidden"
+                      : "visible",
+                  pointerEvents:
+                    weekLessonNumber === scheduleData.length - 1
+                      ? "none"
+                      : "auto",
                 }}
-                shallow={true}
-                passHref
-              >
-                <Button
-                  sx={{ color: "background.navButton", ml: "auto" }}
-                  endIcon={<ArrowForwardIcon />}
-                ></Button>
-              </Link>
-            ) : null}
+                endIcon={<ArrowForwardIcon />}
+              ></Button>
+            </Link>
           </CardActions>
           <Typography variant="body1" sx={{ textAlign: "center" }}>
             {lessonStartDate} - {lessonEndDate}

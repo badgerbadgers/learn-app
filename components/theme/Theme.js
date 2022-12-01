@@ -123,7 +123,8 @@ const darkTheme = createTheme({
       contactIcon: "#F3C300",
       skillsChip: "#F3C300",
       lessonCard: "#353638",
-      navButton:"#FFF",
+      navButton: "#FFF",
+      menuIcon:"#FFF"
     },
   },
 });
@@ -157,7 +158,8 @@ const lightTheme = createTheme({
       contactIcon: "#12284C",
       skillsChip: "#12284C",
       lessonCard: "#F4F5F7",//light gray 
-      navButton:"#000000"
+      navButton: "#000000",
+      menuIcon:"#000000"
     },
     zone1: {
       personal: "#8D9DB9", // 2 shades lighter blue than zone2

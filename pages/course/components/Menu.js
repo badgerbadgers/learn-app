@@ -88,7 +88,7 @@ export default function Menu({
                   </Typography>
                 </MenuItem>
               </Link>
-              <Divider />
+              <Divider/>
             </Stack>
           );
         })}
@@ -97,18 +97,17 @@ export default function Menu({
   );
 
   return (
-    <Grid item md={3} xs={11} sx={{ maxWidth: "100%",  }}>
+    <Grid item md={3} xs={11} sx={{ maxWidth: "100%" }}>
       <div>
-       
-          {!isSmallScreen && (
-             <Paper
-          variant="outlined"
-          square
-          sx={{
-            height: "100%",
-            backgroundColor: "background.lessonCard",
-          }}
-        >
+        {!isSmallScreen && (
+          <Paper
+            variant="outlined"
+            square
+            sx={{
+              height: "100%",
+              backgroundColor: "background.lessonCard",
+            }}
+          >
             <MenuList dense>
               <MenuHeader zoomLink={zoomLink} />
               <Divider sx={{ mb: "5px" }} />
@@ -155,18 +154,18 @@ export default function Menu({
                 );
               })}
             </MenuList>
-             </Paper>
-          )}
-       
+          </Paper>
+        )}
+
         {isSmallScreen && (
           <Stack>
             {["left"].map((anchor) => (
               <React.Fragment key={anchor}>
                 <Button
                   onClick={toggleDrawer(anchor, true)}
-                  sx={{ justifyContent:"start", maxWidth:"30px", ml:"30px"}}
+                  sx={{ justifyContent: "start", maxWidth: "30px", ml: "30px" }}
                 >
-                  <MenuIcon sx={{color:"#000"}} />
+                  <MenuIcon sx={{color:"background.menuIcon"}} />
                 </Button>
                 <SwipeableDrawer
                   anchor={anchor}

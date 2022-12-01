@@ -93,7 +93,6 @@ export default function CurrentCoursePage({
           scheduleData={scheduleData}
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
-          startDate={startDate}
           lessonStartDate={lessonStartDate()}
           lessonEndDate={lessonEndDate()}
 
@@ -135,10 +134,8 @@ export async function getServerSideProps(context) {
       slug: slug,
       user,
       scheduleData: JSON.parse(JSON.stringify(scheduleData.schedule)),
-      // remember to remove zoomlink !!
       zoomLink: scheduleData.zoom_link,
       startDate: JSON.parse(JSON.stringify(scheduleData.start_date)),
-      // why do I have to parse and stringify?
     },
   };
   // returning scheduleData as props in index
