@@ -247,7 +247,7 @@ const StudentManagemant = () => {
 
 export default StudentManagemant;
 
-StudentManagemant.getLyout = privateLayout;
+StudentManagemant.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
