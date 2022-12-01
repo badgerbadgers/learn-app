@@ -30,8 +30,6 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
       (async () => {
         const response = await getData(params, url);
         cohort = response.cohort;
-
-        console.log("cohort", cohort)
         setCohort(cohort);
 
         setSchedule(cohort.schedule);
@@ -125,7 +123,6 @@ export async function getServerSideProps(context) {
     };
   }
   const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(context.params["slug"])) || null;
-  console.log("SSP", prevCohort, nextCohort)
   return {
     props: {
       slug: context.params["slug"],
