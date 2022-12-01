@@ -21,11 +21,7 @@ export default function Menu({
   zoomLink,
   weekLessonNumber,
 }) {
-  // removing empty objs in scheduleData
-  const filteredScheduleData = scheduleData.filter((el) => {
-    return el !== null && el !== undefined;
-  });
-
+  
   // mui swippable drawer
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
@@ -60,7 +56,7 @@ export default function Menu({
           Lessons
         </Typography>
 
-        {filteredScheduleData.map((weekSchedule, index) => {
+        {scheduleData.map((weekSchedule, index) => {
           return (
             <Stack key={index}>
               <Link
@@ -116,7 +112,7 @@ export default function Menu({
                 Lessons
               </Typography>
 
-              {filteredScheduleData.map((weekSchedule, index) => {
+              {scheduleData.map((weekSchedule, index) => {
                 return (
                   <Stack key={index}>
                     <Link
