@@ -10,7 +10,6 @@ import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { useRouter } from "next/router";
-import { useTheme } from "@emotion/react";
 
 const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,6 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [open, setOpen] = useState(false);
   const [schedule, setSchedule] = useState([]);
   const router = useRouter();
-  const theme = useTheme();
   const query = router.query;
 
   useEffect(() => {
