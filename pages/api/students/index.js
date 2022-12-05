@@ -73,10 +73,11 @@ const createStudent = async (req, res) => {
 
 export const sanitize = async (obj) => {
   return {
-    firstName: obj.firstName,
-    lastName: obj.lastName,
-    email: obj.email,
-    gh: obj.gh,
+    firstName: obj.firstName.trim().toUpperCase(),
+    lastName: obj.lastName.trim().toUpperCase(),
+    email: obj.email.trim(),
+    gh: obj.gh.trim(),
+    
   };
 };
 
