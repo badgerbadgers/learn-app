@@ -49,7 +49,7 @@ export default function StaticPage({ posts }) {
         const id = params.id
         return (
           <Switch
-            // id={id}
+            id={id.toString()}
             checked={checked}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
