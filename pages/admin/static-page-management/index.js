@@ -5,27 +5,30 @@ import NavBar from "../../../components/layout/NavBar"
 import Footer from "../../../components/layout/Footer"
 // import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
 // import wordpressdata from "../../../lib/wordpressdata"
-import axios from "axios"
 
 export default function StaticPage({ posts }) {
   const [pages, setPages] = useState(posts)
-  const [deleted, setIsDeleted] = useState(false)
+  const [checked, setChecked] = useState(true)
   const [staticPages, setStaticPages] = useState([])
 
-  // function toggleDeleted() {
-  //   setIsDeleted(deleted)
-  //   console.log("deleted", deleted)
-  // }
-
-  const handleSwitch = async (event) => {
+  const handleChange = async (event) => {
+    setChecked(!checked)
     //type string
     let id = event.target.id
-    console.log(typeof id)
-    await fetch("/api/staticpages")
+    let deleted = event.target.checked
+    await fetch("/api/staticpages", {
+      method: "PATCH",
+      // body: id,
+      // body: JSON.stringify({ id, deleted }),
+      body: JSON.stringify({ id, deleted }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      // await fetch("/api/staticpages", { method: "PATCH" })
       .then((res) => res.json())
+      // .then((res) => console.log(res))
       .then((res) => setStaticPages(res.data))
-      .then((mapData) => console.log("static pages", staticPages))
-    setIsDeleted(!deleted)
   }
   const columns = [
     {
@@ -44,29 +47,18 @@ export default function StaticPage({ posts }) {
       width: 150,
       renderCell: (params) => {
         const id = params.id
-        return <Switch onClick={handleSwitch} id={id} />
+        return (
+          <Switch
+            // id={id}
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        )
       },
     },
   ]
 
-  // useEffect(() => {
-  //   // const url = `api/staticpage/getstaticpages`
-  //   // try {
-  //   //   async
-  //   // }
-  //       const url = "/api/staticpage/getstaticpages"
-  //       // const params = { slug: query.slug }
-  //       // console.log("params", params)
-  //       try {
-  //         ;(async () => {
-  //           const response = await getData(url)
-  //           cohort = response.cohort
-  //         })()
-  //       } catch (error) {
-  //         console.log("An error from getData in", url, error)
-  //       }
-  // })
-  // console.log("pages", pages)
   return (
     <>
       <NavBar />
@@ -84,8 +76,6 @@ export async function getServerSideProps() {
   // You can use any data fetching library
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages")
   const posts = await res.json()
-  // const whatever = await wordpressdata()
-  // console.log("whatever", whatever)
 
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
