@@ -4,12 +4,50 @@ import { DataGrid } from "@mui/x-data-grid"
 import NavBar from "../../../components/layout/NavBar"
 import Footer from "../../../components/layout/Footer"
 // import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
-// import wordpressdata from "../../../lib/wordpressdata"
 
 export default function StaticPage({ posts }) {
   const [pages, setPages] = useState(posts)
   const [checked, setChecked] = useState(true)
   const [staticPages, setStaticPages] = useState([])
+
+  console.log("useeffect", staticPages)
+  // useEffect(() => {
+  //   const url = "/api/staticpages"
+  //   try {
+  //     ;async () => {
+  //       await getData(url)
+  //         .then((res) => res.json())
+  //         .then((res) => setStaticPages(res.data))
+  //       // .then((res) => console.log(res))
+  //     }
+  //   } catch (error) {
+  //     console.log(error, "error")
+  //   }
+  // }, [])
+  useEffect(() => {
+    let newPage = {}
+    const url = "/api/staticpages"
+    //  + `${query.slug}`
+    // const params = { slug: query.slug }
+    try {
+      ;(async () => {
+        await fetch(url)
+          .then((res) => res.json())
+          .then((res) => setStaticPages(res.data))
+        // id = response.id
+        // deleted = response.deleted_at
+        // newPage = {
+        //   id,
+        //   deleted,
+        // }
+        // setStaticPages(newPage)
+        // setSchedule(cohort.schedule)
+        // setLoading(false)
+      })()
+    } catch (error) {
+      console.log("An error from getData in", url, error)
+    }
+  }, [])
 
   const handleChange = async (event) => {
     setChecked(!checked)
