@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 const updateStaticPages = async (req, res) => {
   let newpages = []
   const filter = { wordpress_id: req.body.id }
-  const update = { deleted_at: req.body.deleted }
+  const update = { isShown: req.body.deleted }
   try {
     let newpages = await Staticpage.findOneAndUpdate(filter, update)
     // console.log("newpages", newpages)
