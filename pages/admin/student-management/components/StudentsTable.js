@@ -136,16 +136,8 @@ export default function StudentsTable({ loading, tableRows }) {
 
   const columns = [
     {
-      field: "firstName",
-      headerName: "First name",
-      flex: 1,
-      minWidth: 100,
-      editable: true,
-      headerAlign: "center",
-    },
-    {
-      field: "lastName",
-      headerName: "Last name",
+      field: "name",
+      headerName: "Name",
       flex: 1,
       minWidth: 100,
       editable: true,

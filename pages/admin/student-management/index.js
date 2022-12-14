@@ -41,7 +41,7 @@ const useStyles = makeStyles(
 );
 
 const StudentManagemant = () => {
-  const url = "/api/students";
+  const url = "/api/users";
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -106,8 +106,8 @@ const StudentManagemant = () => {
   const makeRowfromStudent = (student) => {
     return {
       id: student._id,
-      firstName: student.firstName ? student.firstName : "",
-      lastName: student.lastName ? student.lastName : "",
+      name: student.name ? student.name : "",
+      // lastName: student.lastName ? student.lastName : "",
       email: student.email ? student.email : "",
       gh: student.gh ? student.gh : "",
       recordCreated: student.createdAt ? format(new Date(student.createdAt), "MMM dd, yyyy") : "",
