@@ -1,16 +1,33 @@
 import { getSession } from "next-auth/react";
 import clientPromise from "../../lib/mongodb";
+import User from "../../lib/models/User";
+import dbConnect from "../../lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
-
+  await dbConnect();
   switch (method) {
+    case "GET":
+      return await getUsers(req, res);
     case "POST":
       return updateUser(req, res);
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
+}
+
+const getUsers = async (req, res) => {
+  let users = [];
+  try {
+    users = await User.find({})
+      .select("name email gh")
+    res.status(200).json({ success: true, data: JSON.stringify(users) });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false });
+  }
+    return res;
 }
 
 const updateUser = async (req, res) => {
