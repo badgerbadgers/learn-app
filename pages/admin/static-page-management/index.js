@@ -6,21 +6,29 @@ import Footer from "../../../components/layout/Footer"
 import StaticPage from "../../../lib/models/StaticPage"
 // import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
 import dbConnect from "../../../lib/dbConnect"
+import axios from "axios"
 
 export default function AllStaticPages({ combinedData }) {
-  // console.log("combined data props", combinedData)
-  const [checked, setChecked] = useState(combinedData.deleted_at)
+  console.log("combined data props", combinedData)
+  //filter or find static pages look for id then have obj and add to post call
   const [staticPages, setStaticPages] = useState(combinedData)
   const [updatedPages, setUpdatedPages] = useState([])
+  const [checked, setIsChecked] = useState(combinedData.checked)
 
   const handleChange = async (event) => {
-    // console.log("event", event)
-    let id = event.target.id
+    console.log("event", event)
+    // let title = event.target.title
+    const id = event.target.id
+    //next steps
+    //call function or look id in static pages and grab property for post req
     // console.log("id", id)
-    let deleted = event.target.checked
-    // console.log("deleted", deleted)
+    const deleted = event.target.checked
+    console.log("deleted", deleted)
+    //todo:
+    // change to axios
     await fetch("/api/staticpages", {
       method: "PATCH",
+      // method: "POST",
       body: JSON.stringify({ id, deleted }),
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +38,7 @@ export default function AllStaticPages({ combinedData }) {
     // .then((res) => setStaticPages(res.data))
   }
 
-  const columns2 = [
+  const columns = [
     {
       field: "title",
       headerName: "Title",
@@ -42,13 +50,19 @@ export default function AllStaticPages({ combinedData }) {
       headerName: "Shown in Learn App",
       width: 150,
       renderCell: (params) => {
+        // const title = params.title
+        // const status = params.isShown
         const id = params.id
         return (
           <Switch
+            // title={params.title}
             id={id.toString()}
             checked={checked}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
+            //this sets the intial state this attribute checks if there is a mongodb id and automatically
+            //sets the switch (boolean flag) to true
+            defaultChecked={!!params.row.mongo_id}
           />
         )
       },
@@ -60,11 +74,8 @@ export default function AllStaticPages({ combinedData }) {
       <NavBar />
       <div style={{ height: 800, width: "100%" }}>
         <h2>WordPress pages</h2>
-        {/* <DataGrid columns={columns} rows={wpPages} /> */}
         <DataGrid
-          // {...parsedMongoData}
-          //           {...parsedMongoData, checked: parsedMongoData.deleted_at}
-          columns={columns2}
+          columns={columns}
           rows={staticPages}
           getRowId={(row) => row.wordpress_id}
         />
@@ -79,12 +90,6 @@ export async function getServerSideProps() {
   const mongoData = await StaticPage.find({}).lean()
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages")
   const wordpressData = await res.json()
-  /*
-  [x]new func combine data
-  map if isshown keep mongo _id
-  [x]take needed properties from wp data
-  [x] const newObj =  {}
-  */
   const combinedData = combineData(wordpressData, mongoData)
   return {
     props: {
@@ -110,6 +115,7 @@ function combineData(wordpressData, mongoData) {
     if (item) {
       //adds mongo_id empty string, if mongoDB id does not exist
       combinedObj.mongo_id = item._id + ""
+      // combinedObj.isShown = item.isShown
     }
     combinedData.push(combinedObj)
   })
