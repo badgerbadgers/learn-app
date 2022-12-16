@@ -51,9 +51,14 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
           alignItems="center"
           justifyContent="flex-end"
         >
-          {prevCohort && (<IconButton size="small" aria-label="Previous Cohort"
+          {prevCohort && (<IconButton
+            size="small"
+            aria-label="Previous Cohort"
             href={`${prevCohort}`}>
-            <ArrowBackIosIcon />
+            <ArrowBackIosIcon sx={{
+              transform: "translateX(4px)",
+              fontSize: "1em"
+            }} />
           </IconButton>)}
           <Typography
             sx={{
@@ -66,10 +71,12 @@ export default function CohortHeader({ title, course, setOpen, startDate, schedu
 
             }}> {`${format(new Date(startDate), "MMM dd, yyyy")} - ${format(endDate, "MMM dd, yyyy")}`}  </Typography>
 
-
-          {nextCohort && (<IconButton aria-label="Next Cohort"
+          {nextCohort && (<IconButton
+            size="small"
+            aria-label="Next Cohort"
             href={`${nextCohort}`}>
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon 
+            sx={{fontSize: "1em"}} />
           </IconButton>)}
         </Stack> :
           <Typography sx={{
