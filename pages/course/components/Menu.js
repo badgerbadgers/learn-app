@@ -84,7 +84,7 @@ export default function Menu({
                   </Typography>
                 </MenuItem>
               </Link>
-              <Divider/>
+              <Divider sx={{visibility: index === scheduleData.length-1? "hidden":"visible"}} />
             </Stack>
           );
         })}
@@ -113,7 +113,7 @@ export default function Menu({
                 Lessons
               </Typography>
 
-              {scheduleData.map((weekSchedule, index) => {
+              {scheduleData.map((weekSchedule, index) => { 
                 return (
                   <Stack key={index}>
                     <Link
@@ -146,7 +146,7 @@ export default function Menu({
                         </Typography>
                       </MenuItem>
                     </Link>
-                    <Divider />
+                    <Divider sx={{visibility: index === scheduleData.length-1? "hidden":"visible"}} />
                   </Stack>
                 );
               })}
