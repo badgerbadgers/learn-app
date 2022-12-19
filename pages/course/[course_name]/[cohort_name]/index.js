@@ -75,7 +75,7 @@ export default function CurrentCoursePage({
     <Grid
       container
       spacing={3}
-      sx={{ maxWidth: "100%"}}
+      sx={{ maxWidth: "100%", mb:"24px"}}
     >
       <Menu
         scheduleData={scheduleData}
