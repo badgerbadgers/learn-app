@@ -30,7 +30,7 @@ export default function LessonHeader({
           >
             {weekLessonNumber !== 0 ? (
               <Button
-                sx={{ color: "background.navButton" }}
+                sx={{ color: "syllabus.primary" }}
                 startIcon={<ArrowBackIcon />}
               >
                 <Link
@@ -57,7 +57,7 @@ export default function LessonHeader({
 
             {weekLessonNumber !== scheduleData.length - 1 ? (
               <Button
-                sx={{ color: "background.navButton", ml: "auto" }}
+                sx={{ color: "syllabus.primary", ml: "auto" }}
                 endIcon={<ArrowForwardIcon />}
               >
                 <Link
@@ -152,7 +152,7 @@ export default function LessonHeader({
             >
               <Button
                 sx={{
-                  color: "background.navButton",
+                  color: "syllabus.primary",
                   visibility: weekLessonNumber === 0 ? "hidden" : "visible",
                   pointerEvents: weekLessonNumber === 0 ? "none" : "auto",
                 }}
@@ -185,7 +185,7 @@ export default function LessonHeader({
             >
               <Button
                 sx={{
-                  color: "background.navButton",
+                  color: "syllabus.primary",
                   visibility:
                     weekLessonNumber === scheduleData.length - 1
                       ? "hidden"

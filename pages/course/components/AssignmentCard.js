@@ -19,7 +19,7 @@ export default function AssignmentCard({
       elevation={1}
       square
       sx={{
-        backgroundColor: "background.lessonCard",
+        backgroundColor: "syllabus.card",
         padding: "1em",
         boxShadow: "none",
       }}
@@ -64,7 +64,7 @@ export default function AssignmentCard({
           target="_blank"
           variant="contained"
           size="small"
-          sx={{ backgroundColor: "#6BDF77" }}
+          sx={{ backgroundColor: "#6BDF77",p:"8px 10px", textAlign:"center"  }}
           href={submit}
           aria-label="submit assignment button"
         >

@@ -1,6 +1,6 @@
-import React from 'react'
-import {unified} from 'unified';
-import parse from 'remark-parse';
+import React from "react"
+import {unified} from "unified";
+import parse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react";  
 /*

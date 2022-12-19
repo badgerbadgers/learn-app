@@ -30,7 +30,6 @@ export default function MenuHeader({ zoomLink }) {
               variant="text"
               sx={{
                 color: "#338AAF",
-                textTransform: "lowercase",
                 p: "0",
                 my: ".2em",
               }}
@@ -42,7 +41,7 @@ export default function MenuHeader({ zoomLink }) {
                 width="30"
                 height="30"
               />
-              <Typography sx={{ ml: "10px" }}>zoom link</Typography>
+              <Typography sx={{ ml: "10px", textTransform:"capitalize" }}>Zoom link</Typography>
             </Button>
 
             <Button
@@ -51,14 +50,13 @@ export default function MenuHeader({ zoomLink }) {
               variant="text"
               sx={{
                 color: "#338AAF",
-                textTransform: "lowercase",
                 whiteSpace: "no-wrap",
                 p: "0",
                 my: ".5em",
               }}
             >
               <Image src={slackLogo} alt="slack" width="25px" height="25px" />
-              <Typography sx={{ ml: "10px" }}>slack announcements</Typography>
+              <Typography sx={{ ml: "10px", textTransform:"capitalize" }}>Slack announcements</Typography>
             </Button>
           </Stack>
         </Stack>

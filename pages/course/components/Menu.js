@@ -48,7 +48,7 @@ export default function Menu({
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <MenuList sx={{ py: "0" }}>
+      <MenuList sx={{ py: "0"}}>
         <MenuHeader />
         <Divider sx={{ mb: "5px" }} />
 
@@ -101,10 +101,11 @@ export default function Menu({
             square
             sx={{
               height: "100%",
-              backgroundColor: "background.lessonCard",
+              backgroundColor: "syllabus.card",
+              border:"none"
             }}
           >
-            <MenuList dense>
+            <MenuList dense >
               <MenuHeader zoomLink={zoomLink} />
               <Divider sx={{ mb: "5px" }} />
 
@@ -161,7 +162,7 @@ export default function Menu({
                   onClick={toggleDrawer(anchor, true)}
                   sx={{ justifyContent: "start", maxWidth: "30px", ml: "30px" }}
                 >
-                  <MenuIcon sx={{color:"background.menuIcon"}} />
+                  <MenuIcon sx={{color:"syllabus.primary"}} />
                 </Button>
                 <SwipeableDrawer
                   anchor={anchor}

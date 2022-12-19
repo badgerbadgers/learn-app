@@ -4,7 +4,11 @@ const baseTheme = responsiveFontSizes(
   createTheme({
     typography: {
       root: {
-        fontFamily: ['gothamRoundedBold', 'gothamRoundedMedium', "Montserrat"].join(','),
+        fontFamily: [
+          "gothamRoundedBold",
+          "gothamRoundedMedium",
+          "Montserrat",
+        ].join(","),
         fontFamilySecondary: "Montserrat",
       },
       h3: {
@@ -79,7 +83,7 @@ const darkTheme = createTheme({
     // text | outlined buttons: Use the main color (e.g. primary.main) as the text color.
     mode: "dark",
     primary: {
-      main: "#FF5C35",//original orange from ctd pallete
+      main: "#FF5C35", //original orange from ctd pallete
       yellowCard: "#F3C300", //original yellow from ctd pallete
       greenCard: "#8BC34A", // light green
       contrastText: "#EBEBEB",
@@ -122,15 +126,15 @@ const darkTheme = createTheme({
       chip: "#FF6C47",
       contactIcon: "#F3C300",
       skillsChip: "#F3C300",
-      lessonCard: "#353638",
-      navButton: "#FFF",
-      menuIcon:"#FFF",
     },
     schedule: {
       text: "#FFF",
       background: "#444646",
     },
-
+    syllabus: {
+      card: "#353638",
+      primary: "#FFF",
+    },
   },
 });
 
@@ -162,9 +166,6 @@ const lightTheme = createTheme({
       chip: "#FF5C35",
       contactIcon: "#12284C",
       skillsChip: "#12284C",
-      lessonCard: "#F4F5F7",//light gray 
-      navButton: "#000000",
-      menuIcon:"#000000"
     },
     zone1: {
       personal: "#8D9DB9", // 2 shades lighter blue than zone2
@@ -189,7 +190,11 @@ const lightTheme = createTheme({
     schedule: {
       text: "#181919", //2 shades lighter blue than zone4
       background: "#f5f5f5",
-    }
+    },
+    syllabus: {
+      primary: "#000000",
+      card: "#F4F5F7", //light gray
+    },
   },
 });
 
