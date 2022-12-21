@@ -76,10 +76,11 @@ export default function AllStaticPages({ combinedData }) {
         gutterBottom
         color='secondary'
         style={{
-          fontSize: "54px",
+          fontSize: "45px",
           position: "relative",
           top: "20px",
           left: "20px",
+          marginBottom: "30px",
         }}
       >
         {" "}
