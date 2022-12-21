@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
 const createStaticPages = async (req, res) => {
   const body = req.body
-  const filter = { wordpress_id: id }
+  const filter = { wordpress_id: body.wp_id }
   const update = {
     wordpress_id: body.wp_id,
     isShown: body.isShown,

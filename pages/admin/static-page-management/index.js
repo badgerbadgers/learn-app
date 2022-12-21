@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Switch } from "@mui/material"
+import { Switch, Typography, Box } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import NavBar from "../../../components/layout/NavBar"
 import Footer from "../../../components/layout/Footer2"
@@ -68,19 +68,30 @@ export default function AllStaticPages({ combinedData }) {
   ]
 
   return (
-    <>
+    <Box sx={{ height: 650, width: "100%" }}>
       <NavBar />
-      <div style={{ height: 800, width: "100%" }}>
-        <h2>WordPress pages</h2>
-        <DataGrid
-          columns={columns}
-          rows={staticPages}
-          getRowId={(row) => row.wordpress_id}
-        />
-        <Footer />
-      </div>
-      {/* <Footer /> */}
-    </>
+      {/* <h2>WordPress Pages</h2> */}
+      <Typography
+        variant='h3'
+        gutterBottom
+        color='secondary'
+        style={{
+          fontSize: "54px",
+          position: "relative",
+          top: "20px",
+          left: "20px",
+        }}
+      >
+        {" "}
+        WordPress Pages
+      </Typography>
+      <DataGrid
+        columns={columns}
+        rows={staticPages}
+        getRowId={(row) => row.wordpress_id}
+      />
+      <Footer />
+    </Box>
   )
 }
 
