@@ -87,11 +87,12 @@ export default function AllStaticPages({ combinedData }) {
         WordPress Pages
       </Typography>
       <DataGrid
+        sx={{ m: 1 }}
         columns={columns}
         rows={staticPages}
         getRowId={(row) => row.wordpress_id}
       />
-      <Footer />
+      <Footer style={{ marginBottom: "140px" }} />
     </Box>
   )
 }
