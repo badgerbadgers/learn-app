@@ -5,9 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
+import { Divider, Typography } from "@mui/material";
+import Link from "next/link";
 
-export default function Header({ courseData }) {
-  console.log("HeaderPage",courseData)
+export default function Header({ courseTitle, allCourses }) {
   // mui dropdown
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -17,9 +18,9 @@ export default function Header({ courseData }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  console.log(allCourses);
+  // console.log("slug",allCourses)
   return (
-   
     <Grid
       item
       xs={12}
@@ -27,15 +28,20 @@ export default function Header({ courseData }) {
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        backgroundColor: "green",
+        alignItems: "center",
       }}
-    > 
-      {/* {courseData.map(course => { 
-        return (
-          <h2 key={index}>{ course.course_name}</h2>
-        )
-      })}
-      */}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          fontFamily: "Gotham Rounded",
+          fontWeight: "100",
+          color: "#FF5C35",
+          fontSize: "36px",
+        }}
+      >
+        {courseTitle}
+      </Typography>
 
       <Stack sx={{ display: "inline" }}>
         <Button
@@ -45,8 +51,9 @@ export default function Header({ courseData }) {
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
           endIcon={<ExpandMoreIcon />}
+          sx={{ textTransform: "capitalize" }}
         >
-          Course
+          Courses
         </Button>
         <Menu
           id="basic-menu"
@@ -57,9 +64,34 @@ export default function Header({ courseData }) {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleClose}>Course 1</MenuItem>
-          <MenuItem onClick={handleClose}>Course 2</MenuItem>
-          <MenuItem onClick={handleClose}>Course 3</MenuItem>
+          {allCourses.map((course, index) => {
+            return (
+              <Stack key={course._id}>
+                <Link
+                  href={`/admin/course-editing/${course.slug}`}
+                  // forces link to send href to children
+                  passHref
+                >
+                  <MenuItem
+                    onClick={handleClose}
+                    sx={{
+                      color:
+                        course.course_name === courseTitle ? "#FF5C35" : "",
+                    }}
+                  >
+                    {course.course_name}
+                  </MenuItem>
+                </Link>
+
+                <Divider
+                  sx={{
+                    visibility:
+                      index === allCourses.length - 1 ? "hidden" : "visible",
+                  }}
+                />
+              </Stack>
+            );
+          })}
         </Menu>
       </Stack>
     </Grid>
