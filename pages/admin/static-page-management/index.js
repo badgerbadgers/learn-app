@@ -6,8 +6,10 @@ import Footer from "../../../components/layout/Footer2"
 import StaticPage from "../../../lib/models/StaticPage"
 import dbConnect from "../../../lib/dbConnect"
 import axios from "axios"
+import { privateLayout } from "../../../components/layout/PrivateLayout2"
 
-export default function AllStaticPages({ combinedData }) {
+// export default function AllStaticPages({ combinedData }) {
+const AllStaticPages = ({ combinedData }) => {
   const [staticPages, setStaticPages] = useState(combinedData)
   const [updatedPages, setUpdatedPages] = useState([])
   const [checked, setIsChecked] = useState(combinedData.checked)
@@ -72,37 +74,40 @@ export default function AllStaticPages({ combinedData }) {
       <NavBar />
       {/* <h2>WordPress Pages</h2> */}
       <Typography
-        variant='h3'
+        variant='h4'
         gutterBottom
-        color='secondary'
+        color='primary'
         style={{
-          fontSize: "45px",
+          fontSize: "30px",
           position: "relative",
-          top: "20px",
-          left: "20px",
-          marginBottom: "30px",
+          top: "50px",
+          left: "70px",
+          marginBottom: "70px",
         }}
       >
         {" "}
         WordPress Pages
       </Typography>
       <DataGrid
-        sx={{ m: 1 }}
+        sx={{ m: 8 }}
         columns={columns}
         rows={staticPages}
         getRowId={(row) => row.wordpress_id}
       />
-      <Footer style={{ marginBottom: "140px" }} />
+      <Footer />
     </Box>
   )
 }
+
+export default AllStaticPages
+
+AllStaticPages.getLayout = privateLayout
 
 export async function getServerSideProps() {
   await dbConnect()
   const mongoData = await StaticPage.find({}).lean()
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages")
   const wordpressData = await res.json()
-
   const combinedData = combineData(wordpressData, mongoData)
   return {
     props: {
