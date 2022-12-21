@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react"
 import { Switch } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import NavBar from "../../../components/layout/NavBar"
-import Footer from "../../../components/layout/Footer"
+import Footer from "../../../components/layout/Footer2"
 import StaticPage from "../../../lib/models/StaticPage"
-// import { PublicLayout2 } from "../../../components/layout/PublicLayout2"
 import dbConnect from "../../../lib/dbConnect"
 import axios from "axios"
 
@@ -78,8 +77,9 @@ export default function AllStaticPages({ combinedData }) {
           rows={staticPages}
           getRowId={(row) => row.wordpress_id}
         />
+        <Footer />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
