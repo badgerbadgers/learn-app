@@ -8,7 +8,6 @@ import dbConnect from "../../../lib/dbConnect"
 import axios from "axios"
 import { privateLayout } from "../../../components/layout/PrivateLayout2"
 
-// export default function AllStaticPages({ combinedData }) {
 const AllStaticPages = ({ combinedData }) => {
   const [staticPages, setStaticPages] = useState(combinedData)
   const [updatedPages, setUpdatedPages] = useState([])
@@ -78,11 +77,10 @@ const AllStaticPages = ({ combinedData }) => {
         gutterBottom
         color='primary'
         style={{
-          fontSize: "30px",
+          fontSize: "35px",
           position: "relative",
           top: "50px",
           left: "70px",
-          marginBottom: "70px",
         }}
       >
         {" "}
