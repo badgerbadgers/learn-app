@@ -6,9 +6,6 @@ export default async function handler(req, res) {
   const { method } = req
   await dbConnect()
   switch (method) {
-    case "PATCH":
-      await updateStaticPages(req, res)
-      return
     case "POST":
       await createStaticPages(req, res)
       return
