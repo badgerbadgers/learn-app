@@ -6,7 +6,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import AddIcon from "@mui/icons-material/Add";
 export default function Lesson({ title }) {
   return (
-    <Grid lg={10} sx={{ display: "flex", mb: "2em", ml: "5em" }}>
+    <Grid item lg={10} sx={{ display: "flex", mb: "2em", ml: "5em" }}>
       <Box
         sx={{
           border: "0.5px solid #D9D9D9",
