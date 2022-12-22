@@ -10,6 +10,9 @@ import Image from "next/image";
 
 export default function MenuHeader({ zoomLink }) {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
+  const logoStyle = {
+    marginRight: "50px",
+  };
   return (
     <Box component="div" sx={{ p: "1em" }}>
       {!isSmallScreen && (
@@ -19,16 +22,26 @@ export default function MenuHeader({ zoomLink }) {
             During this course you will sign up for a minimum of one mentor
             session a week
           </Typography>
-          <Stack sx={{ display: "flex", alignItems: "start" }}>
+          <Stack sx={{ display: "flex", alignItems: "start", mt: "1em" }}>
             <Button
               target="_blank"
               href={zoomLink}
               aria-label="zoom link"
               variant="text"
-              sx={{ color: "#338AAF", textTransform: "lowercase" }}
+              sx={{
+                color: "#338AAF",
+                p: "0",
+                my: ".2em",
+              }}
             >
-              <Image src={zoomLogo} alt="slack" width="50px" height="30px" />
-              zoom link
+              <Image
+                style={logoStyle}
+                src={zoomLogo}
+                alt="slack"
+                width="30"
+                height="30"
+              />
+              <Typography sx={{ ml: "10px", textTransform:"capitalize" }}>Zoom link</Typography>
             </Button>
 
             <Button
@@ -37,21 +50,22 @@ export default function MenuHeader({ zoomLink }) {
               variant="text"
               sx={{
                 color: "#338AAF",
-                textTransform: "lowercase",
                 whiteSpace: "no-wrap",
+                p: "0",
+                my: ".5em",
               }}
             >
-              <Image src={slackLogo} alt="slack" width="50px" height="50px" />
-              slack announcements
+              <Image src={slackLogo} alt="slack" width="25px" height="25px" />
+              <Typography sx={{ ml: "10px", textTransform:"capitalize" }}>Slack announcements</Typography>
             </Button>
-          </Stack>{" "}
+          </Stack>
         </Stack>
       )}
-      {/* TODO:fix mobile layout styling when team comes to concensus */}
+
       {isSmallScreen && (
-        <Stack sx={{ textAlign: "center" }}>
+        <Stack sx={{ textAlign: "left" }}>
           <Typography variant="h6">Mentor Sessions</Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" sx={{ maxWidth: "240px" }}>
             During this course you will sign up for a minimum of one mentor
             session a week
           </Typography>
@@ -59,20 +73,28 @@ export default function MenuHeader({ zoomLink }) {
           <Stack
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "flex-start",
               flexDirection: "row",
+              mt: "1em", 
+             
             }}
           >
-            <Button target="_blank" href={zoomLink} aria-label="zoom link">
-              <Image src={zoomLogo} alt="slack" width="60px" height="40px" />
+            <Button
+              target="_blank"
+              href={zoomLink}
+              aria-label="zoom link"
+              sx={{ p: "0px" }}
+            >
+              <Image src={zoomLogo} alt="slack" width="40px" height="40px" />
             </Button>
 
             <Button
               href="" //To Do: link comes from Mary Alice
               aria-label="slack announcements"
               target="_blank"
+              sx={{ m: "0px" }}
             >
-              <Image src={slackLogo} alt="slack" width="60px" height="60px" />
+              <Image src={slackLogo} alt="slack" width="30px" height="30px" />
             </Button>
           </Stack>
         </Stack>
