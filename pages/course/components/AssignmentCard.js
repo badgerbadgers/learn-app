@@ -54,9 +54,9 @@ export default function AssignmentCard({
         <Typography variant="h6" sx={{ pt: "1em", pb: "8px" }}>
           Mindset Assignment
         </Typography>
-        <Typography variant="body1">
+       
           <PrintMarkdown mindset={mindset} />
-        </Typography>
+        
       </CardContent>
 
       <CardActions sx={{ padding: "16px" }}>
@@ -64,7 +64,7 @@ export default function AssignmentCard({
           target="_blank"
           variant="contained"
           size="small"
-          sx={{ backgroundColor: "#6BDF77",p:"8px 10px", textAlign:"center"  }}
+          sx={{ backgroundColor: "submission.main",p:"8px 10px", textAlign:"center"  }}
           href={submit}
           aria-label="submit assignment button"
         >

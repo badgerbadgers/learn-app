@@ -3,6 +3,7 @@ import {unified} from "unified";
 import parse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react";  
+
 /*
 function parses mindset from markdown to be readable react 
 */
@@ -14,6 +15,6 @@ export default function PrintMarkdown({ mindset }) {
     .processSync(mindset).result; 
   
   return (
-    <div>{content}</div>
+    <>{content}</>
   )
 }

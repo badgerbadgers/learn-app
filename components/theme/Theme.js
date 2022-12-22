@@ -134,7 +134,11 @@ const darkTheme = createTheme({
     syllabus: {
       card: "#353638",
       primary: "#FFF",
-    },
+    }, 
+
+    submission: { 
+      main:"#5da364"
+    }
   },
 });
 
@@ -194,7 +198,10 @@ const lightTheme = createTheme({
     syllabus: {
       primary: "#000000",
       card: "#F4F5F7", //light gray
-    },
+    }, 
+    submission: { 
+      main:"#6BDF77"
+    }
   },
 });
 
