@@ -18,8 +18,7 @@ export default function Header({ courseTitle, allCourses }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log(allCourses);
-  // console.log("slug",allCourses)
+
   return (
     <Grid
       item
