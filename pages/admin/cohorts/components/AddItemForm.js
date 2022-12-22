@@ -36,7 +36,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
           autoFocus
           InputLabelProps={{ shrink: true }}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => {setContent(e.target.value)}}
           sx={{
             my: 4,
           }}
@@ -65,7 +65,7 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
                 color: "red",
               },
             }}
-            onClick={() => { saveItem(null, {}) }}  >
+            onClick={() => {saveItem(null, {}) }}  >
             <ClearIcon fontSize="small" />
           </IconButton>
         </Stack>
@@ -100,6 +100,11 @@ export default function AddItemForm({ saveItem, idx, sectionId, note, type }) {
         InputLabelProps={{ shrink: true }}
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onKeyDown={(e)=> { 
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          saveItem(null, {});
+   }}}
         sx={{
           pr: 2,
         }}

@@ -7,19 +7,21 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+import { useMediaQuery } from "@mui/material";
+
 export default function LessonHeader({
   courseName,
   cohortName,
-  title,
-  lessonOrder,
-  sectionOrder,
-  index,
-  lessonData,
+  scheduleData,
+  currentLesson,
+  weekLessonNumber,
 }) {
+  const isSmallScreen = useMediaQuery("(max-width:900px)");
+
   return (
     <Card sx={{ mb: "1em", boxShadow: "none" }}>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        {index !== 0 ? (
+        {weekLessonNumber !== 0 ? (
           <Button sx={{ color: "black" }} startIcon={<ArrowBackIcon />}>
             <Link
               href={{
@@ -29,17 +31,21 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index - 1].title,
+                  week: weekLessonNumber - 1,
+                  // since data structures for lesson and review are different need ternary operator
+                  lesson:
+                    scheduleData[weekLessonNumber - 1].lesson?.title ||
+                    scheduleData[weekLessonNumber - 1].type,
                 },
               }}
               shallow={true}
             >
-              Previous Lesson
+              {isSmallScreen ? "Back" : "Previous Lesson"}
             </Link>
           </Button>
         ) : null}
 
-        {index !== lessonData.length - 1 ? (
+        {weekLessonNumber !== scheduleData.length - 1 ? (
           <Button
             sx={{ color: "black", ml: "auto" }}
             endIcon={<ArrowForwardIcon />}
@@ -51,28 +57,34 @@ export default function LessonHeader({
                 query: {
                   course_name: courseName,
                   cohort_name: cohortName,
-                  lesson: lessonData[index + 1].title,
+                  week: weekLessonNumber + 1,
+                  lesson:
+                    scheduleData[weekLessonNumber + 1].lesson?.title ||
+                    scheduleData[weekLessonNumber + 1].type,
                 },
               }}
               shallow={true}
             >
-              Next Lesson
+              {isSmallScreen ? "Next" : "Next Lesson"}
             </Link>
           </Button>
         ) : null}
       </CardActions>
 
       <CardHeader
-        
-        title={`Lesson ${sectionOrder}.${lessonOrder}: ${title}`}
+        title={
+          currentLesson.lesson
+            ? `Lesson ${currentLesson.lesson.section.order}.${currentLesson.lesson.order}: ${currentLesson.lesson.title}`
+            : currentLesson.type
+        }
         titleTypographyProps={{
           variant: "h4",
           align: "center",
           color: "#FF5C35",
-          fontSize: "54px",
           position: "relative",
           top: "8px",
           gutterBottom: true,
+          textTransform: "capitalize",
         }}
       />
       {/* TODO: get dates from cohort */}

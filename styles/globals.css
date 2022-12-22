@@ -72,6 +72,10 @@ p {
   max-width: 1250px;
 }
 
+.MuiFormHelperText-root {
+  color: #D32F2F;
+}
+
 .main {
   flex: 1;
   display: flex;
