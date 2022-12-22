@@ -71,7 +71,6 @@ const AllStaticPages = ({ combinedData }) => {
   return (
     <Box sx={{ height: 650, width: "100%" }}>
       <NavBar />
-      {/* <h2>WordPress Pages</h2> */}
       <Typography
         variant='h4'
         gutterBottom
@@ -79,15 +78,14 @@ const AllStaticPages = ({ combinedData }) => {
         style={{
           fontSize: "35px",
           position: "relative",
-          top: "50px",
-          left: "70px",
+          top: "60px",
+          left: "80px",
         }}
       >
-        {" "}
         WordPress Pages
       </Typography>
       <DataGrid
-        sx={{ m: 8 }}
+        sx={{ m: 10 }}
         columns={columns}
         rows={staticPages}
         getRowId={(row) => row.wordpress_id}
