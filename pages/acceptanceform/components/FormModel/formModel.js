@@ -56,7 +56,7 @@ export default {
       label: "Country",
     },
     mailingSame: {
-      name: "mailingSame",
+      name: "mailing_same",
       label: "Same as physical address",
     },
     mailingZipcode: {

@@ -18,6 +18,7 @@ import { Formik, Form } from "formik";
 import validationSchema from "./FormModel/validationSchema";
 import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
+import axios from "axios";
 
 const steps = [
   "Personal Information",
@@ -63,6 +64,7 @@ function Wizard() {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     setActiveStep(activeStep + 1);
+    axios.post("/api/acceptanceform", { body: values });
     console.log("Values", values);
   }
 
