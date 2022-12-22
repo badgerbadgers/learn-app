@@ -49,7 +49,7 @@ const AllStaticPages = ({ combinedData }) => {
     },
     { field: "wordpress_id", headerName: "ID", width: 150 },
     {
-      field: "deleted_at",
+      field: "isShown",
       headerName: "Shown in Learn App",
       width: 150,
       renderCell: (params) => {
@@ -121,12 +121,10 @@ function combineData(wordpressData, mongoData) {
       slug: wpitem.slug,
       mongo_id: null,
     }
-    //find method needs to handle deleted pages? future question.
     let item = mongoData.find(
       (mongoitem) => wpitem.id === mongoitem.wordpress_id
     )
     if (item) {
-      //adds mongo_id empty string, if mongoDB id does not exist
       combinedObj.mongo_id = item._id + ""
     }
     combinedData.push(combinedObj)
