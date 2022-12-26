@@ -91,3 +91,10 @@ p {
 .extra-padding-on-top {
   padding-top: 80px;
 }
+
+/* styling for custom footer in static-page-management with mui datagrid */
+.Footer_footer__Tl1eP {
+  position: relative !important;
+  margin-top: 100px !important;
+  padding: 15px !important;
+}
