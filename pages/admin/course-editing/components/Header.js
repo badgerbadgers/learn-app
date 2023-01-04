@@ -50,7 +50,7 @@ export default function Header({ courseTitle, allCourses }) {
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
           endIcon={<ExpandMoreIcon />}
-          sx={{ textTransform: "capitalize" }}
+          sx={{ textTransform: "capitalize", m:"80px" }}
         >
           Courses
         </Button>

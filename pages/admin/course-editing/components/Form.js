@@ -22,7 +22,7 @@ export default function Form({ lessons }) {
   console.log(uniqueSectionArray);
   return (
     <Box sx={{ width: "100%", m: "2em" }}>
-      <Grid item md={10} lg={12} sx={{ ml: "3em", mb: "3em" }}>
+      <Grid item md={10} lg={12} sx={{ ml: "80px", mb: "3em" }}>
         <Stack>
           {uniqueSectionArray.map((section, index) => {
             const lessonComponent = lessons.map((lesson) => {
