@@ -2,6 +2,7 @@ import { getSession } from "next-auth/react";
 import clientPromise from "../../lib/mongodb";
 import User from "../../lib/models/User";
 import dbConnect from "../../lib/dbConnect";
+import Userprofile from "../../lib/models/Userprofile";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -9,32 +10,10 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       return await getUsers(req, res);
-    // case "POST":
-    //   return await updateUser(req, res);
     case "POST":
-      console.log("req.body post:", req.body.body);
       try {
         let userToDb = await sanitize(JSON.parse(req.body.body));
-        console.log("usertodb:", userToDb);
-
-        // const existingUserGithub = await User.findOne({
-        //   gh: userToDb.gh,
-        //   _id: id,
-        // });
-        // if (existingUserGithub.length) {
-        //   const error = {
-        //     error: "User github is not unique",
-        //   };
-        //   res.status(400).json({
-        //     success: false,
-        //     message: error,
-        //   });
-        //   return;
-        // }
-
-        const user = await User.create( userToDb);
-        // let user = await User.create(id, userToDb);
-        console.log("user:", user);
+        const user = await User.create(userToDb);
         if (!user) {
           return res.status(400).json({ success: false });
         }
@@ -63,6 +42,8 @@ const getUsers = async (req, res) => {
   try {
     users = await User.find({})
       .select("name email gh")
+      // .populate( { path: "gh", model: "Userprofile", select: "createdAt" });
+      // .populate("Userprofile");
     res.status(200).json({ success: true, data: JSON.stringify(users) });
   } catch (error) {
     console.error(error);
@@ -92,6 +73,8 @@ const updateUser = async (req, res) => {
       console.log(error, "error from createAndUpdateUser in api/users");
     }
   };
+
+
 
   
 

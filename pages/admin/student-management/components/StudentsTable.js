@@ -44,15 +44,32 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
+const fetchFilteredData = async (filterValue) => {
+  const response = await axios.get("/api/users", {
+    params: {
+      filter: filterValue,
+    },
+  });
+  return response.data;
+};
+
 export default function StudentsTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
   const router = useRouter();
+  const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
+
+  // useEffect(() => {
+  //   fetchFilteredData(filterValue).then((data) => {
+  //     setRows(data);
+  //   });
+  // }, [filterValue]);
+
 
   const deleteStudent = async (userId) => {
     axios
@@ -159,33 +176,33 @@ export default function StudentsTable({ loading, tableRows }) {
       editable: true,
       headerAlign: "center",
     },
-    // {
-    //   field: "recordCreated",
-    //   headerName: "Record Created",
-    //   type: "date",
-    //   flex: 1,
-    //   minWidth: 100,
-    //   editable: false,
-    //   headerAlign: "center",
-    // },
-    // {
-    //   field: "status",
-    //   headerName: "Status",
-    //   flex: 1,
-    //   width: 150,
-    //   editable: false,
-    //   headerAlign: "center",
-    //   align: "center",
-    // },
-    // {
-    //   field: "lastLogin",
-    //   headerName: "Last Login",
-    //   flex: 1,
-    //   width: 100,
-    //   editable: false,
-    //   headerAlign: "center",
-    //   align: "center",
-    // },
+    {
+      field: "recordCreated",
+      headerName: "Record Created",
+      type: "date",
+      flex: 1,
+      minWidth: 100,
+      editable: false,
+      headerAlign: "center",
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      width: 150,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "lastLogin",
+      headerName: "Last Login",
+      flex: 1,
+      width: 100,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
 
     {
       field: "actions",

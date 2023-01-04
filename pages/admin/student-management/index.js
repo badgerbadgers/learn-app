@@ -48,8 +48,10 @@ const StudentManagemant = () => {
   const [id, setId] = useState([]);
   const [cohorts, setCohorts] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState(["Mentor", "Student"]);
   const [searchInput, setSearchInput] = useState("");
+  const [filterValue, setFilterValue] = useState("");
+
 
   //sreate setFilter with callback
   // const setFilter = (filters) => {
@@ -107,12 +109,6 @@ const StudentManagemant = () => {
       email: student.email ? student.email : "",
       gh: student.gh ? student.gh : "",
       recordCreated: "counting",
-      // cohort: student.cohort ? student.cohort.cohort_name : "",
-      // cohortId: student.cohort ? student.cohort._id : "",
-      // currentCourse: student.cohort ? student.cohort.course.course_name : "",
-      // currentCourseId: student.cohort ? student.cohort.course._id : "",
-      // role: student.userId ? student.userId.roleIds : "",
-      // roleId: student.userId ? student.userId.roleIds : "",
       status: "counting",
       lastLogin: "counting",
     };
@@ -164,28 +160,7 @@ const StudentManagemant = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const url = "/api/roles";
-    const params = {};
-    try {
-      (async () => {
-        const response = await getData(params, url);
-        let roles = JSON.parse(response.data);
-        let localRoles = [];
-        if (roles) {
-          roles.map((role) => {
-            localRoles.push({
-              value: role._id,
-              label: role.name,
-            });
-          });
-        }
-        setRoles(localRoles);
-      })();
-    } catch (error) {
-      console.log("An error getData in /api/cohorts:", error);
-    }
-  }, []);
+  
 
   useEffect(() => {
     setLoading(true);
@@ -210,6 +185,12 @@ const StudentManagemant = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   fetchFilteredData(filterValue).then((data) => {
+  //     setTableRows(data);
+  //   });
+  // }, [filterValue]);
+
   return (
     <Container sx={{ textAlign: "center " }}>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
@@ -217,7 +198,9 @@ const StudentManagemant = () => {
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          {/* <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles.sort()} setFilter={setFilter} /> */}
+          <StudentsFilter cohorts={cohorts.sort()}  />
+          {/* <StudentsFilter filterValue={filterValue} setFilterValue={setFilterValue} /> */}
+          
         </Grid>
         <Grid item xs={2}>
           <TextField

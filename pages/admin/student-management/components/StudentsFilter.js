@@ -1,16 +1,22 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Grid } from "@mui/material";
 
-export default function StudentsFilter({ cohorts, courses, roles, setFilter }) {
-  const filters = useRef({ cohort: "", course: "", role: "" });
+export default function StudentsFilter({ cohorts }) {
+   const filters = useRef({ cohort: "", course: "", role: "" });
+ // const [filterValue, setFilterValue] = useState("");
 
   function handleFilterChange(event, key, selectedOption) {
     const newFilter = filters;
     filters.current[key] = !selectedOption ? "" : selectedOption.value;
     setFilter(filters.current);
   }
+  
+
+  // const handleFilterChange = (event) => {
+  //   setFilterValue(event.target.value);
+  // };
 
   return (
     <Grid container spasing={4}>
@@ -25,7 +31,7 @@ export default function StudentsFilter({ cohorts, courses, roles, setFilter }) {
         }}
       />
 
-      <Autocomplete
+      {/* <Autocomplete
         id="filter-course"
         options={courses}
         getOptionLabel={(option) => option.label}
@@ -45,7 +51,7 @@ export default function StudentsFilter({ cohorts, courses, roles, setFilter }) {
           handleFilterChange(event, "role", selectedOption);
         }}
         renderInput={(params) => <TextField {...params} label="All Roles" />}
-      />
+      /> */}
     </Grid>
   );
 }
