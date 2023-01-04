@@ -17,6 +17,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
+import { NewspaperTwoTone } from "@mui/icons-material";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -53,9 +54,9 @@ export default function StudentsTable({ loading, tableRows }) {
     setRows(tableRows);
   }, [tableRows]);
 
-  const deleteStudent = async (studentId) => {
+  const deleteStudent = async (userId) => {
     axios
-      .delete(`/api/students/${studentId}`, {
+      .delete(`/api/users/${userId}`, {
         headers: { "Content-Type": "application/json" },
       })
       .catch((error) => {
@@ -77,7 +78,7 @@ export default function StudentsTable({ loading, tableRows }) {
 
   const handleSaveClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    setRows([...rows]);
+    setRows([...rows,]);
   };
 
   const handleDeleteClick = (id) => () => {
@@ -98,24 +99,23 @@ export default function StudentsTable({ loading, tableRows }) {
   };
 
   const processRowUpdate = async (newRow, oldRow) => {
-    const url = "/api/students" + (newRow.isNew ? "" : `/${newRow.id}`);
+    // If the row is new, add it to the server. If the row is not new, update it on the server
+    const url = "/api/users" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
-      await axios
-        .post(url, {
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        })
-        .then((response) => {
-          updatedRow = {
-            ...newRow,
-            id: response.data.data._id,
-            isNew: false,
-            recordCreated: newRow.recordCreated ? format(new Date(newRow.recordCreated), "MMM dd, yyyy") : "",
-          };
-          setSnackbar({ children: "Student successfully saved", severity: "success" });
-          setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        });
+      await axios[newRow.isNew ? "post" : "put"](url, {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newRow),
+      }).then((response) => {
+        updatedRow = {
+          ...newRow,
+          id: response.data.data._id,
+          isNew: false,
+          //recordCreated: newRow.recordCreated ? format(new Date(newRow.recordCreated), "MMM dd, yyyy") : "",
+        };
+        setSnackbar({ children: "Student successfully saved", severity: "success" });
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+      });
     } catch (error) {
       const errorMessage = Object.values(error.response.data.message)[0];
       console.error("Error:", error.response.data);
@@ -129,10 +129,10 @@ export default function StudentsTable({ loading, tableRows }) {
     setSnackbar({ children: error.message, severity: "error" });
   }, []);
 
-  const handleClick = (e, url) => {
-    e.preventDefault();
-    router.push(url);
-  };
+  // const handleClick = (e, url) => {
+  //   e.preventDefault();
+  //   router.push(url);
+  // };
 
   const columns = [
     {
@@ -159,33 +159,33 @@ export default function StudentsTable({ loading, tableRows }) {
       editable: true,
       headerAlign: "center",
     },
-    {
-      field: "recordCreated",
-      headerName: "Record Created",
-      type: "date",
-      flex: 1,
-      minWidth: 100,
-      editable: true,
-      headerAlign: "center",
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      width: 150,
-      editable: false,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "lastLogin",
-      headerName: "Last Login",
-      flex: 1,
-      width: 100,
-      editable: false,
-      headerAlign: "center",
-      align: "center",
-    },
+    // {
+    //   field: "recordCreated",
+    //   headerName: "Record Created",
+    //   type: "date",
+    //   flex: 1,
+    //   minWidth: 100,
+    //   editable: false,
+    //   headerAlign: "center",
+    // },
+    // {
+    //   field: "status",
+    //   headerName: "Status",
+    //   flex: 1,
+    //   width: 150,
+    //   editable: false,
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
+    // {
+    //   field: "lastLogin",
+    //   headerName: "Last Login",
+    //   flex: 1,
+    //   width: 100,
+    //   editable: false,
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
 
     {
       field: "actions",
@@ -200,7 +200,11 @@ export default function StudentsTable({ loading, tableRows }) {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         if (isInEditMode) {
           return [
-            <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id, row)} key={id} />,
+            <GridActionsCellItem 
+              icon={<SaveIcon />} 
+              label="Save" 
+              onClick={handleSaveClick(id, row)} 
+              key={id} />,
             <GridActionsCellItem icon={<CancelIcon />} label="Cancel" className="textPrimary" onClick={handleCancelClick(id)} color="inherit" key={id} />,
           ];
         }

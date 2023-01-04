@@ -52,26 +52,26 @@ const StudentManagemant = () => {
   const [searchInput, setSearchInput] = useState("");
 
   //sreate setFilter with callback
-  const setFilter = (filters) => {
-    //create a subset of all students using the filters (set Tablerows and update)
-    const filteredRows = allStudents.current.filter((row) => {
-      if (!!filters.cohort && row.cohortId !== filters.cohort) {
-        return false;
-      }
+  // const setFilter = (filters) => {
+  //   //create a subset of all students using the filters (set Tablerows and update)
+  //   const filteredRows = allStudents.current.filter((row) => {
+  //     if (!!filters.cohort && row.cohortId !== filters.cohort) {
+  //       return false;
+  //     }
 
-      if (!!filters.course && row.currentCourseId !== filters.course) {
-        return false;
-      }
+  //     if (!!filters.course && row.currentCourseId !== filters.course) {
+  //       return false;
+  //     }
 
-      if (!!filters.role && !row.roleId.includes(filters.role)) {
-        return false;
-      }
+  //     if (!!filters.role && !row.roleId.includes(filters.role)) {
+  //       return false;
+  //     }
 
-      return true;
-    });
+  //     return true;
+  //   });
 
-    setTableRows(filteredRows);
-  };
+  //   setTableRows(filteredRows);
+  // };
 
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -80,10 +80,7 @@ const StudentManagemant = () => {
       if (!searchValue) {
         return true;
       }
-      if (row.firstName.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true;
-      }
-      if (row.lastName.toLowerCase().includes(searchValue.toLowerCase())) {
+      if (row.name.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       if (row.gh.toLowerCase().includes(searchValue.toLowerCase())) {
@@ -107,16 +104,15 @@ const StudentManagemant = () => {
     return {
       id: student._id,
       name: student.name ? student.name : "",
-      // lastName: student.lastName ? student.lastName : "",
       email: student.email ? student.email : "",
       gh: student.gh ? student.gh : "",
-      recordCreated: student.createdAt ? format(new Date(student.createdAt), "MMM dd, yyyy") : "",
-      cohort: student.cohort ? student.cohort.cohort_name : "",
-      cohortId: student.cohort ? student.cohort._id : "",
-      currentCourse: student.cohort ? student.cohort.course.course_name : "",
-      currentCourseId: student.cohort ? student.cohort.course._id : "",
-      role: student.userId ? student.userId.roleIds : "",
-      roleId: student.userId ? student.userId.roleIds : "",
+      recordCreated: "counting",
+      // cohort: student.cohort ? student.cohort.cohort_name : "",
+      // cohortId: student.cohort ? student.cohort._id : "",
+      // currentCourse: student.cohort ? student.cohort.course.course_name : "",
+      // currentCourseId: student.cohort ? student.cohort.course._id : "",
+      // role: student.userId ? student.userId.roleIds : "",
+      // roleId: student.userId ? student.userId.roleIds : "",
       status: "counting",
       lastLogin: "counting",
     };
@@ -221,7 +217,7 @@ const StudentManagemant = () => {
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles.sort()} setFilter={setFilter} />
+          {/* <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles.sort()} setFilter={setFilter} /> */}
         </Grid>
         <Grid item xs={2}>
           <TextField
