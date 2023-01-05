@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 }
 
 const createAcceptanceForm = async (req, res) => {
-  const body = req.body;
+  const body = req.body.body;
   const filter = {};
   const update = {
     first_name: body.first_name,
@@ -67,7 +67,8 @@ const createAcceptanceForm = async (req, res) => {
     work_commitment_consent: body.work_commitment_consent,
     leave_notice_consent: body.leave_notice_consent,
   };
-  const newuser = [];
+  // let newuser = [];
+  console.log("update", update);
   try {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
       upsert: true,

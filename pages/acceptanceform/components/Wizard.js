@@ -60,8 +60,8 @@ function Wizard() {
   };
 
   async function submitForm(values, actions) {
-    await sleep(1000);
-    alert(JSON.stringify(values, null, 2));
+    // await sleep(1000);
+    // alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     setActiveStep(activeStep + 1);
     axios.post("/api/acceptanceform", { body: values });
