@@ -38,18 +38,25 @@ export default async function handler(req, res) {
 }
 
 const getUsers = async (req, res) => {
+  
   let users = [];
   try {
-    users = await User.find({})
+    let filters = await getUserFilters(req.query)
+    users = await User.find(filters)
       .select("name email gh")
-      // .populate( { path: "gh", model: "Userprofile", select: "createdAt" });
-      // .populate("Userprofile");
     res.status(200).json({ success: true, data: JSON.stringify(users) });
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });
   }
     return res;
+}
+
+const getUserFilters = async (filters) => {
+  //extract filter from the parameters
+  //query cohorts collection to return relevant student and mentor ids
+  //return all ids get filter
+  return {}
 }
 
 const updateUser = async (req, res) => {

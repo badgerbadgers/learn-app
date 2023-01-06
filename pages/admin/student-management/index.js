@@ -50,7 +50,7 @@ const StudentManagemant = () => {
   const [courses, setCourses] = useState([]);
   const [roles, setRoles] = useState(["Mentor", "Student"]);
   const [searchInput, setSearchInput] = useState("");
-  const [filterValue, setFilterValue] = useState("");
+  const [filters, setFilters] = useState({});
 
 
   //sreate setFilter with callback
@@ -164,7 +164,7 @@ const StudentManagemant = () => {
 
   useEffect(() => {
     setLoading(true);
-    const params = {};
+    const params = {params: filters};
     try {
       (async () => {
         let response = await getData(params, url);
@@ -183,13 +183,20 @@ const StudentManagemant = () => {
     } catch (error) {
       console.log("An error from getData in /api/students", error);
     }
-  }, []);
+  }, [filters]);
 
   // useEffect(() => {
   //   fetchFilteredData(filterValue).then((data) => {
   //     setTableRows(data);
   //   });
   // }, [filterValue]);
+
+  const filterChangeHandler = (newFilters) => {
+    console.log(newFilters);
+    //call the api with a new filters
+    setFilters(newFilters);
+    //resopose update the list of students
+  };
 
   return (
     <Container sx={{ textAlign: "center " }}>
@@ -198,9 +205,8 @@ const StudentManagemant = () => {
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter cohorts={cohorts.sort()}  />
+          <StudentsFilter cohorts={cohorts.sort()} changeHandler={filterChangeHandler} />
           {/* <StudentsFilter filterValue={filterValue} setFilterValue={setFilterValue} /> */}
-          
         </Grid>
         <Grid item xs={2}>
           <TextField

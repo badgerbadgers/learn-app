@@ -3,14 +3,15 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Grid } from "@mui/material";
 
-export default function StudentsFilter({ cohorts }) {
-   const filters = useRef({ cohort: "", course: "", role: "" });
- // const [filterValue, setFilterValue] = useState("");
+export default function StudentsFilter({ cohorts, changeHandler }) {
+  const filters = useRef({ cohort: "", course: "", role: "" });
+  // const [filterValue, setFilterValue] = useState("");
 
   function handleFilterChange(event, key, selectedOption) {
     const newFilter = filters;
-    filters.current[key] = !selectedOption ? "" : selectedOption.value;
-    setFilter(filters.current);
+    filters.current[key] = !selectedOption ? "" : selectedOption.value; 
+   // console.log("current filter:", filters.current)
+    changeHandler(filters.current)
   }
   
 
