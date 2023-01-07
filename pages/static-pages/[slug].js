@@ -5,19 +5,16 @@ import StaticPage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";
 import { getSession } from "next-auth/react";
 
+//use the slug will be string when comparing to other strings no need to convert
 const Pages = ({ mongoPages, combinedData }) => {
   const [newPages, setNewPages] = useState(combinedData);
   console.log("new pages", newPages);
   const router = useRouter();
   //pulling id not slug need to fix
   const { slug } = router.query;
-  const numSlug = Number(slug);
-  console.log(typeof numSlug);
-  // console.log(slug);
-  // console.log(typeof mongoPages[0].wordpress_id);
   //reference for filter used in array iteration located in jsx statement
-  const filtered = mongoPages.filter((item) => item.wordpress_id === numSlug);
-  console.log("filtered", filtered);
+  // const filtered = mongoPages.filter((item) => item.wordpress_id === numSlug);
+  // console.log("filtered", filtered);
   return (
     <div>
       <p>Post: {slug}</p>
