@@ -14,31 +14,29 @@ export default async function handler(req, res) {
       try {
         // API won't return cohorts with time stapm in property deleted_at
         const cohort = await Cohort.findOne({ slug: slug })
-          .populate(
-            [
-              {
-                path: "course",
-                model: "Course",
-                select: "course_name",
-              },
-              {
-                path: "schedule",
+          .populate([
+            {
+              path: "course",
+              model: "Course",
+              select: "course_name",
+            },
+            {
+              path: "schedule",
+              model: "Section",
+              select: "title",
+              populate: {
+                path: "section",
                 model: "Section",
                 select: "title",
-                populate: {
-                  path: "section",
-                  model: "Section",
-                  select: "title",
-                },
               },
-              {
-                path: "students",
-                model: "Student",
-                select: "firstName lastName email",
-              },
-             
-            ]
-          ).exec();
+            },
+            {
+              path: "students.user",
+              model: "Student",
+              select: "firstName lastName email",
+            },
+          ])
+          .exec();
         res.status(200).json({ cohort: cohort })
        
       } catch (error) {
