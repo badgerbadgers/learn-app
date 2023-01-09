@@ -35,11 +35,12 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
         //TMP for MVP, needs to be changed when DB scema and Student model are ready
         if (cohort.students) {
           const localStudents = [];
-          cohort.students.map(st => {
-            st.id = st._id;
-            delete st._id;
-            localStudents.push(st)
-          })
+          cohort.students.map((st) => {
+            let student = st.user;
+            student.id = student._id;
+            delete student._id;
+            localStudents.push(student);
+          });
           await setStudents(localStudents)
         }
       })();
