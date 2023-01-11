@@ -48,7 +48,11 @@ const StudentManagemant = () => {
   const [id, setId] = useState([]);
   const [cohorts, setCohorts] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [roles, setRoles] = useState(["Mentor", "Student"]);
+  //const [roles, setRoles] = useState(["Mentor", "Student"]);
+  const [roles, setRoles] = useState([
+    { id: "1", label: "Mentor" },
+    { id: "2", label: "Student" },
+  ]);
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
 
@@ -164,7 +168,7 @@ const StudentManagemant = () => {
 
   useEffect(() => {
     setLoading(true);
-    const params = {params: filters};
+    const params = { params: filters };
     try {
       (async () => {
         let response = await getData(params, url);
@@ -185,7 +189,7 @@ const StudentManagemant = () => {
     }
   }, [filters]);
 
-  // useEffect(() => {
+  //  useEffect(() => {
   //   fetchFilteredData(filterValue).then((data) => {
   //     setTableRows(data);
   //   });
@@ -205,7 +209,7 @@ const StudentManagemant = () => {
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter cohorts={cohorts.sort()} changeHandler={filterChangeHandler} />
+          <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles} changeHandler={filterChangeHandler} />
           {/* <StudentsFilter filterValue={filterValue} setFilterValue={setFilterValue} /> */}
         </Grid>
         <Grid item xs={2}>

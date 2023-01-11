@@ -44,14 +44,14 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-const fetchFilteredData = async (filterValue) => {
-  const response = await axios.get("/api/users", {
-    params: {
-      filter: filterValue,
-    },
-  });
-  return response.data;
-};
+// const fetchFilteredData = async (filterValue) => {
+//   const response = await axios.get("/api/users", {
+//     params: {
+//       filter: filterValue,
+//     },
+//   });
+//   return response.data;
+// };
 
 export default function StudentsTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);

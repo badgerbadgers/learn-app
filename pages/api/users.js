@@ -2,7 +2,8 @@ import { getSession } from "next-auth/react";
 import clientPromise from "../../lib/mongodb";
 import User from "../../lib/models/User";
 import dbConnect from "../../lib/dbConnect";
-import Userprofile from "../../lib/models/Userprofile";
+//import Userprofile from "../../lib/models/Userprofile";
+import filterUsers from "../../lib/filterUsers";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -39,11 +40,12 @@ export default async function handler(req, res) {
 
 const getUsers = async (req, res) => {
   
-  let users = [];
+  //let users = [];
   try {
-    let filters = await getUserFilters(req.query)
-    users = await User.find(filters)
-      .select("name email gh")
+  
+    let users = await getUserFilters(req.query)
+    //users = await User.find(filters)
+    //  .select("name email gh")
     res.status(200).json({ success: true, data: JSON.stringify(users) });
   } catch (error) {
     console.error(error);
@@ -56,7 +58,12 @@ const getUserFilters = async (filters) => {
   //extract filter from the parameters
   //query cohorts collection to return relevant student and mentor ids
   //return all ids get filter
-  return {}
+  //return filterUsersByCohortId(filters)
+  // console.log("test")
+  const users = await filterUsers(filters);
+  //return {}
+  console.log('res:', users)
+  return users
 }
 
 const updateUser = async (req, res) => {
