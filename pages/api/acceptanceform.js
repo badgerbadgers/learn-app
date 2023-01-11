@@ -1,5 +1,6 @@
 import AcceptanceForm from "../../lib/models/AcceptanceForm.js";
 import dbConnect from "../../lib/dbConnect.js";
+import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -23,8 +24,11 @@ export default async function handler(req, res) {
 
 const createAcceptanceForm = async (req, res) => {
   const body = req.body.body;
-  const filter = {};
+  const session = await getSession({ req });
+  console.log("session", session);
+  const filter = { user: session.user.id };
   const update = {
+    user: session.user.id,
     first_name: body.first_name,
     last_name: body.last_name,
     email: body.email,
