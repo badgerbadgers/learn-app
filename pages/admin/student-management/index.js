@@ -50,12 +50,11 @@ const StudentManagemant = () => {
   const [courses, setCourses] = useState([]);
   //const [roles, setRoles] = useState(["Mentor", "Student"]);
   const [roles, setRoles] = useState([
-    { id: "1", label: "Mentor" },
-    { id: "2", label: "Student" },
+    { value: "mentors", label: "Mentor" },
+    { value: "students", label: "Student" },
   ]);
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
-
 
   //sreate setFilter with callback
   // const setFilter = (filters) => {
@@ -104,7 +103,6 @@ const StudentManagemant = () => {
   const clearSearch = () => {
     requestSearch("");
   };
-
 
   const makeRowfromStudent = (student) => {
     return {
@@ -164,9 +162,15 @@ const StudentManagemant = () => {
     }
   }, []);
 
-  
+  const filterChangeHandler = (newFilters) => {
+    console.log("filterChangeHandler CALLED");
+    //call the api with a new filters
+    setFilters(newFilters);
+    //resopose update the list of students
+  };
 
   useEffect(() => {
+    console.log('FILTER USE EFFECT CALLED');
     setLoading(true);
     const params = { params: filters };
     try {
@@ -195,12 +199,7 @@ const StudentManagemant = () => {
   //   });
   // }, [filterValue]);
 
-  const filterChangeHandler = (newFilters) => {
-    console.log(newFilters);
-    //call the api with a new filters
-    setFilters(newFilters);
-    //resopose update the list of students
-  };
+  
 
   return (
     <Container sx={{ textAlign: "center " }}>

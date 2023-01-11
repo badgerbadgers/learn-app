@@ -5,13 +5,13 @@ import { Grid } from "@mui/material";
 
 export default function StudentsFilter({ cohorts, courses, roles, changeHandler }) {
   const filters = useRef({ cohort: "", course: "", role: "" });
-  
+
   function handleFilterChange(event, key, selectedOption) {
     const newFilter = filters;
-    filters.current[key] = !selectedOption ? "" : selectedOption.value; 
-    changeHandler(filters.current)
+    filters.current[key] = !selectedOption ? "" : selectedOption.value;
+    changeHandler(filters.current);
   }
-  
+
   return (
     <Grid container spasing={4}>
       <Autocomplete
