@@ -6,48 +6,20 @@ import dbConnect from "../../lib/dbConnect";
 import { getSession } from "next-auth/react";
 
 //use the slug will be string when comparing to other strings no need to convert
-const Pages = ({ mongoPages, combinedData }) => {
-  const [newPages, setNewPages] = useState(combinedData);
-  console.log("new pages", newPages);
+const Pages = ({ wordpressPage, title, content }) => {
+  // const [newPages, setNewPages] = useState(combinedData);
+  // console.log("mongo slug", mongoPageSlug);
+  // console.log("new pages", newPages);
+  console.log("wordpress page", wordpressPage);
+  console.log("title", title);
   const router = useRouter();
-  //pulling id not slug need to fix
-  const { slug } = router.query;
-  //reference for filter used in array iteration located in jsx statement
-  // const filtered = mongoPages.filter((item) => item.wordpress_id === numSlug);
-  // console.log("filtered", filtered);
+  // const { slug } = router.query;
+
   return (
     <div>
-      <p>Post: {slug}</p>
-      {/* <h2>WordPress Pages</h2> */}
-      <ul>
-        {mongoPages.map((page) => {
-          if (page.wordpress_id === Number(slug)) {
-            return <div key={page._id}>{page.title}</div>;
-          }
-          // returns all pages
-          // return (
-          //   <li key={page._id + ""}>
-          //     <Link href={`/static-pages/${page.wordpress_id}`} key={page._id}>
-          //       <a>{page.title}</a>
-          //     </Link>
-          //   </li>
-          // );
-        })}
-        {/* {mongoPages.filter((page) => {
-          if (page.wordpress_id === numSlug) {
-            return (
-              <li key={page._id + ""}>
-                <Link
-                  href={`/static-pages/${page.wordpress_id}`}
-                  key={page._id}
-                >
-                  <a>{page.title}</a>
-                </Link>
-              </li>
-            );
-          }
-        })} */}
-      </ul>
+      <h2>{title}</h2>
+      <p>slug: {wordpressPage.slug}</p>
+      <p>{content}</p>
     </div>
   );
 };
@@ -55,52 +27,64 @@ export default Pages;
 
 export async function getServerSideProps(context) {
   await dbConnect();
-
+  console.log(context);
+  const contextSlug = context.query.slug;
+  console.log("context slug", contextSlug);
   const session = await getSession(context);
-  const mongoData = await StaticPage.find({}).lean();
-  // Fetch data from external API
-  const res = await fetch(`https://learn.codethedream.org/wp-json/wp/v2/pages`);
-  const wordpressData = await res.json();
-  // console.log("wpdata", data);
-  // console.log("mongo", mongoData);
-  //from wordpress pages need:
-  //data.content.rendered string
-  //data.meta(seo?)
-  //data.slug
-  //data.excerpt.rendered
-  //data.wp.attachment
 
-  const combinedData = combineData(wordpressData, mongoData);
-  console.log("combined", combinedData);
+  //update 1/10:
+  //no square brackets in slug(x)
+  //validate that real doc is found not empty result(x)
+  //if empty redirect to 404 (x)
+  //to redirect to 404 in getserversideprops, link (x)
+
+  //next steps:
+  //hit api on wp for this static page, use front or backend?
+  //backend: page will take longer, waits for call and res
+  //frontend: load empty(loading screen), do api call wp get then display
+  //backend staticprops and cache it?/use getstaticprops later after getserversideprops works
+
+  //fetch will be refactored fetch one page:
+  //add specific url in fetch grab specific page (https://learn.codethedream.org/wp-json/wp/v2/pages/369) (use wpid) (x)
+  //just gets content, parse? might display (unescape characters)
+  //content.rendered send this as a prop
+  //send to component
+  //then display it
+  const mongoPage = await StaticPage.findOne({
+    slug: contextSlug,
+  }).lean();
+  console.log("mongoPage wp id", mongoPage.wordpress_id);
+  // console.log("mongoData", mongoData);
+
+  // fetches specific wp page using wp-id
+  const res = await fetch(
+    `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
+  );
+  const wordpressPage = await res.json();
+  console.log("wp page", wordpressPage);
+
+  //The notFound boolean allows the page to return a 404 status and 404 Page
+  if (!wordpressPage) {
+    return {
+      notFound: true,
+    };
+  }
+  // console.log("wpdata", wordpressData);
+  // console.log("mongo", mongoData);
+
+  // console.log("combined", combinedData);
+
   // Pass data to the page via props
   return {
     props: {
-      mongoPages: JSON.parse(JSON.stringify(mongoData)),
+      title: wordpressPage.title.rendered,
+      content: wordpressPage.content.rendered,
+      // res: JSON.parse(JSON.stringify(res)),
+      wordpressPage: JSON.parse(JSON.stringify(wordpressPage)),
+      // mongoPages: JSON.parse(JSON.stringify(mongoData)),
       // wpPages: JSON.parse(JSON.stringify(data)),
-      combinedData: JSON.parse(JSON.stringify(combinedData)),
+      // combinedData: JSON.parse(JSON.stringify(combinedData)),
+      // mongoPageSlug: JSON.parse(JSON.stringify(mongoPage.slug)),
     },
   };
-}
-
-//need to refactor only create combined object if wordpressData property exists in mongoData (ie slug matches and exists in mongoData)
-function combineData(wordpressData, mongoData) {
-  const combinedData = [];
-  wordpressData.forEach((wpitem) => {
-    const combinedObj = {
-      content: wpitem.content.rendered,
-      excerpt: wpitem.excerpt.rendered,
-      // attachment: wpitem.wp.attachment,
-      title: wpitem.title.rendered,
-      slug: wpitem.slug,
-      mongo_id: null,
-    };
-    let item = mongoData.find(
-      (mongoitem) => wpitem.id === mongoitem.wordpress_id
-    );
-    if (item) {
-      combinedObj.mongo_id = item._id + "";
-    }
-    combinedData.push(combinedObj);
-  });
-  return combinedData;
 }
