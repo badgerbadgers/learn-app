@@ -19,7 +19,7 @@ const Pages = ({ wordpressPage, title, content }) => {
     <div>
       <h2>{title}</h2>
       <p>slug: {wordpressPage.slug}</p>
-      <p>{content}</p>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 };
