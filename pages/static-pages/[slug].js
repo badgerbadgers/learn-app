@@ -4,6 +4,7 @@ import dbConnect from "../../lib/dbConnect";
 import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
+import { getSession } from "next-auth/react";
 
 const WordPressStaticPage = ({ title, content }) => {
   return (
@@ -29,6 +30,25 @@ export async function getServerSideProps(context) {
   await dbConnect();
   const contextSlug = context.query.slug;
 
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  const { user } = session;
+  if (!user.hasProfile) {
+    return {
+      redirect: {
+        destination: "/signup",
+        permanent: false,
+      },
+    };
+  }
   const mongoPage = await StaticPage.findOne({
     slug: contextSlug,
   }).lean();
