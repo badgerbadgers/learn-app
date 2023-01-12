@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import StaticPage from "../../../lib/models/StaticPage";
 import dbConnect from "../../../lib/dbConnect";
 import axios from "axios";
-import { getSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 
 const AllStaticPages = ({ combinedData }) => {
@@ -101,8 +101,8 @@ AllStaticPages.getLayout = privateLayout;
 export async function getServerSideProps(context) {
   await dbConnect();
 
-  const session = await getSession(context);
-  console.log("session", session);
+  // const session = await getSession(context);
+  // console.log("session", session);
 
   const mongoData = await StaticPage.find({}).lean();
   const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages");
