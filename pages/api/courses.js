@@ -1,6 +1,6 @@
 import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";
-
+ 
 
 export default async function handler(req, res) {
     const { method } = req;

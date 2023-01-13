@@ -1,19 +1,24 @@
-import { Button, Grid, Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
+import CohortHeader from "./components/CohortHeader";
+import Grid from "@mui/material/Unstable_Grid2";
+import IndCohortGrid from "./components/IndCohortGrid";
 import ScheduleModal from "./components/ScheduleModal";
 import getData from "../../../lib/getData";
+import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { useRouter } from "next/router";
 
-const IndividualCohortPage = () => {
+const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
   const [cohort, setCohort] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [students, setStudents] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [schedule, setSchedule] = useState([]);
   const router = useRouter();
   const query = router.query;
-  const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     let cohort = {}
@@ -24,16 +29,31 @@ const IndividualCohortPage = () => {
         const response = await getData(params, url);
         cohort = response.cohort;
         setCohort(cohort);
+
         setSchedule(cohort.schedule);
         setLoading(false);
+        //TMP for MVP, needs to be changed when DB scema and Student model are ready
+        if (cohort.students) {
+          const localStudents = [];
+          cohort.students.map((st) => {
+            let student = st.user;
+            student.id = student._id;
+            delete student._id;
+            localStudents.push(student);
+          });
+          await setStudents(localStudents)
+        }
       })();
     } catch (error) {
       console.log("An error from getData in", url, error);
     }
   }, [])
 
+
+
+
   return (
-    <Fragment>
+    <Container>
       {!cohort && !loading && (
         <Grid>
           <Typography align="center" variant="body1" gutterBottom>
@@ -46,19 +66,22 @@ const IndividualCohortPage = () => {
           </Button>
         </Grid>
       )}
-      {cohort && (
-        <Grid>
-          <Typography variant="h2" align="center" gutterBottom>
-            {cohort.cohort_name}
-          </Typography>
-          <Button
-            color="secondary"
-            href="/admin/cohort-management"
-            sx={{ m: 5 }}>
-            Back to cohort management
-          </Button>
-          <Button align="center" onClick={() => setOpen(true)}>Change Schedule</Button>
+      {cohort && !loading && (
+        <Box>
 
+          <CohortHeader
+            title={cohort.cohort_name}
+            course={cohort.course}
+            setOpen={setOpen}
+            startDate={cohort.start_date}
+            scheduleLen={schedule.length}
+            prevCohort={prevCohort}
+            nextCohort={nextCohort}
+          />
+          <IndCohortGrid
+            loading={loading}
+            students={students}
+          />
           <ScheduleModal
             open={open}
             setOpen={setOpen}
@@ -68,9 +91,9 @@ const IndividualCohortPage = () => {
             schedule={schedule}
             setSchedule={setSchedule}
           />
-        </Grid>
+        </Box>
       )}
-    </Fragment>
+    </Container>
   )
 }
 
@@ -98,10 +121,13 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(context.params["slug"])) || null;
   return {
     props: {
       slug: context.params["slug"],
       user,
+      prevCohort,
+      nextCohort,
     },
   };
 }

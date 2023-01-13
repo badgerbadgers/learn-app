@@ -16,7 +16,7 @@ export default function LessonMaterialsCard({ materials }) {
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor:"syllabus.card",
         mb: "2em",
         padding:"1em",
         boxShadow: "none" 
@@ -24,7 +24,7 @@ export default function LessonMaterialsCard({ materials }) {
     >
       <CardHeader title="Lesson Materials" sx={{ mb: -2 }} />
       <CardContent sx={{ my: -2 }}>
-        <Typography variant="body1" component="div" sx={{}}>
+        <Typography variant="body1" component="div">
           Go to each link in this list and read through the content on that
           page. If there are links you are redirected to as you read/work
           through the content, follow those links as well and read the content
