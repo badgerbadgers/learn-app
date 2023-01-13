@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import StudentsTable from "./components/StudentsTable";
 import StudentsFilter from "./components/StudentsFilter";
 import { Container, Typography } from "@mui/material";
@@ -13,6 +13,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import makeStyles from "@mui/styles/makeStyles";
 import { createTheme } from "@mui/material/styles";
+import { ref } from "yup";
 
 const defaultTheme = createTheme();
 const useStyles = makeStyles(
@@ -56,27 +57,19 @@ const StudentManagemant = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
 
-  //sreate setFilter with callback
-  // const setFilter = (filters) => {
-  //   //create a subset of all students using the filters (set Tablerows and update)
-  //   const filteredRows = allStudents.current.filter((row) => {
-  //     if (!!filters.cohort && row.cohortId !== filters.cohort) {
-  //       return false;
-  //     }
+  // const currentStudents = useCallback(node => {
+  //   if(allStudents.current){
+  //     //Make sure to sleanup events/referecses added to the last instance
+  //   }
+  //   if(node){
+  //     //Check if a node is actually passed. Otherwise node woul be null.
+  //     // You can now da what you need to, addEventListeners, measure, tc
+  //   }
 
-  //     if (!!filters.course && row.currentCourseId !== filters.course) {
-  //       return false;
-  //     }
+  //   //Save a reference to the node
+  //   allStudents.current = node
 
-  //     if (!!filters.role && !row.roleId.includes(filters.role)) {
-  //       return false;
-  //     }
-
-  //     return true;
-  //   });
-
-  //   setTableRows(filteredRows);
-  // };
+  // }, [])
 
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -165,12 +158,19 @@ const StudentManagemant = () => {
   const filterChangeHandler = (newFilters) => {
     console.log("filterChangeHandler CALLED");
     //call the api with a new filters
-    setFilters(newFilters);
+    setFilters({ ...newFilters });
     //resopose update the list of students
   };
 
+  // const filterChangeHandler = useCallback((newFilters) => {
+  //   console.log("filterChangeHandler CALLED");
+  //     //call the api with a new filters
+  //     setFilters(newFilters);
+  //     //resopose update the list of students
+  // }, [])
+
   useEffect(() => {
-    console.log('FILTER USE EFFECT CALLED');
+    console.log("FILTER USE EFFECT CALLED");
     setLoading(true);
     const params = { params: filters };
     try {
@@ -185,21 +185,20 @@ const StudentManagemant = () => {
           });
         }
         allStudents.current = localRows;
-        setTableRows(localRows);
+        // setTableRows(localRows);
+        requestSearch(searchInput);
         setLoading(false);
       })();
     } catch (error) {
       console.log("An error from getData in /api/students", error);
     }
-  }, [filters]);
+  }, [filters, searchInput]);
 
   //  useEffect(() => {
   //   fetchFilteredData(filterValue).then((data) => {
   //     setTableRows(data);
   //   });
   // }, [filterValue]);
-
-  
 
   return (
     <Container sx={{ textAlign: "center " }}>
