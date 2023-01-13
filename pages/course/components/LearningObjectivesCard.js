@@ -14,7 +14,7 @@ export default function LearningObjectivesCard({ objectives }) {
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor: "syllabus.card",
         mb: "2em",
         padding: "1em",
         boxShadow: "none",
@@ -26,7 +26,7 @@ export default function LearningObjectivesCard({ objectives }) {
           {objectives.map((objective) => {
             return (
               <ListItem key={objective} sx={{ py: "0" }}>
-                <ListItemIcon sx={{ minWidth: "36px" }}>
+                <ListItemIcon sx={{ minWidth: "36px"}}>
                   <CircleIcon sx={{ width: "8px" }} />
                 </ListItemIcon>
                 <ListItemText sx={{ display: "block" }}>
