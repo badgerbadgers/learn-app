@@ -61,9 +61,7 @@ function Wizard() {
 
   async function submitForm(values, actions) {
     actions.setSubmitting(false);
-    setActiveStep(activeStep + 1);
     axios.post("/api/acceptanceform", { body: values });
-    console.log("Values", values);
   }
 
   const handleSubmit = (values, actions) => {

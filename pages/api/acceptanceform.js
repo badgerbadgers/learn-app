@@ -7,17 +7,11 @@ export default async function handler(req, res) {
   await dbConnect();
 
   switch (method) {
-    case "GET":
-      console.log("get", res.body);
-      // return await getAcceptanceForm(req, res);
-      return;
     case "POST":
-      console.log("post", req.body);
       await createAcceptanceForm(req, res);
       return;
     default:
-      res.setHeader("Allow", ["GET", "POST"]);
-
+      res.setHeader("Allow", ["POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
@@ -25,7 +19,6 @@ export default async function handler(req, res) {
 const createAcceptanceForm = async (req, res) => {
   const body = req.body.body;
   const session = await getSession({ req });
-  console.log("session", session);
   const filter = { user: session.user.id };
   const update = {
     user: session.user.id,
@@ -71,15 +64,12 @@ const createAcceptanceForm = async (req, res) => {
     work_commitment_consent: body.work_commitment_consent,
     leave_notice_consent: body.leave_notice_consent,
   };
-  // let newuser = [];
-  console.log("update", update);
   try {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
       upsert: true,
     });
     res.status(200).json({ success: true, data: JSON.stringify(newuser) });
   } catch (error) {
-    console.error(error);
     res.status(400).json({ success: false });
   }
 };
