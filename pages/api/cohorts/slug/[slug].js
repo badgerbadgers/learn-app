@@ -1,8 +1,8 @@
 import Cohort from "../../../../lib/models/Cohort";
 import Course from "../../../../lib/models/Course";
-import dbConnect from "../../../../lib/dbConnect";
 import Section from "../../../../lib/models/Section";
-import Lesson from "../../../../lib/models/Lesson";
+import Student from "../../../../lib/models/Student";
+import dbConnect from "../../../../lib/dbConnect";
 
 export default async function handler(req, res) { 
   
@@ -14,38 +14,29 @@ export default async function handler(req, res) {
       try {
         // API won't return cohorts with time stapm in property deleted_at
         const cohort = await Cohort.findOne({ slug: slug })
-          .populate(
-            [
-              {
-                path: "course",
-                model: "Course",
-                select: "course_name",
-              },
-              {
-                path: "schedule",
+          .populate([
+            {
+              path: "course",
+              model: "Course",
+              select: "course_name",
+            },
+            {
+              path: "schedule",
+              model: "Section",
+              select: "title",
+              populate: {
+                path: "section",
                 model: "Section",
                 select: "title",
-                populate: {
-                  path: "section",
-                  model: "Section",
-                  select: "title",
-                },
               },
-              {
-                path: "schedule",
-                model: "Lesson",
-                select: "title",
-                populate: {
-                  path: "lesson",
-                  model: "Lesson",
-                  select: "title", 
-                  populate: {
-                    path: "assignments materials section",
-                  },
-                }
-              },
-            ]
-          ).exec();
+            },
+            {
+              path: "students.user",
+              model: "Student",
+              select: "firstName lastName email",
+            },
+          ])
+          .exec();
         res.status(200).json({ cohort: cohort })
        
       } catch (error) {

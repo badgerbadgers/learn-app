@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 
 const {zonedTimeToUtc, format} = require('date-fns-tz')
 
-export default function CohortStartDatePicker({id, date, setDate, updateDate}) {
+export default function CohortStartDatePicker({date, setDate, updateDate}) {
   const defaultVal = date ? format(new Date(date), "yyyy-MM-dd") : "";
 
   return (
