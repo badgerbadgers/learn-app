@@ -1,6 +1,5 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
 import React, { useCallback, useEffect, useState } from "react";
-
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -17,7 +16,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
-import { NewspaperTwoTone } from "@mui/icons-material";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows } = props;
@@ -44,15 +42,6 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-// const fetchFilteredData = async (filterValue) => {
-//   const response = await axios.get("/api/users", {
-//     params: {
-//       filter: filterValue,
-//     },
-//   });
-//   return response.data;
-// };
-
 export default function StudentsTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -63,13 +52,6 @@ export default function StudentsTable({ loading, tableRows }) {
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
-
-  // useEffect(() => {
-  //   fetchFilteredData(filterValue).then((data) => {
-  //     setRows(data);
-  //   });
-  // }, [filterValue]);
-
 
   const deleteStudent = async (userId) => {
     axios
@@ -145,11 +127,6 @@ export default function StudentsTable({ loading, tableRows }) {
   const handleProcessRowUpdateError = useCallback((error) => {
     setSnackbar({ children: error.message, severity: "error" });
   }, []);
-
-  // const handleClick = (e, url) => {
-  //   e.preventDefault();
-  //   router.push(url);
-  // };
 
   const columns = [
     {

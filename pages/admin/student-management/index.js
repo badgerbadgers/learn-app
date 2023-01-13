@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import StudentsTable from "./components/StudentsTable";
 import StudentsFilter from "./components/StudentsFilter";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
 import getData from "../../../lib/getData";
-import { format } from "date-fns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,7 +12,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import makeStyles from "@mui/styles/makeStyles";
 import { createTheme } from "@mui/material/styles";
-import { ref } from "yup";
 
 const defaultTheme = createTheme();
 const useStyles = makeStyles(
@@ -49,27 +47,12 @@ const StudentManagemant = () => {
   const [id, setId] = useState([]);
   const [cohorts, setCohorts] = useState([]);
   const [courses, setCourses] = useState([]);
-  //const [roles, setRoles] = useState(["Mentor", "Student"]);
   const [roles, setRoles] = useState([
     { value: "mentors", label: "Mentor" },
     { value: "students", label: "Student" },
   ]);
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
-
-  // const currentStudents = useCallback(node => {
-  //   if(allStudents.current){
-  //     //Make sure to sleanup events/referecses added to the last instance
-  //   }
-  //   if(node){
-  //     //Check if a node is actually passed. Otherwise node woul be null.
-  //     // You can now da what you need to, addEventListeners, measure, tc
-  //   }
-
-  //   //Save a reference to the node
-  //   allStudents.current = node
-
-  // }, [])
 
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -156,21 +139,10 @@ const StudentManagemant = () => {
   }, []);
 
   const filterChangeHandler = (newFilters) => {
-    console.log("filterChangeHandler CALLED");
-    //call the api with a new filters
     setFilters({ ...newFilters });
-    //resopose update the list of students
   };
 
-  // const filterChangeHandler = useCallback((newFilters) => {
-  //   console.log("filterChangeHandler CALLED");
-  //     //call the api with a new filters
-  //     setFilters(newFilters);
-  //     //resopose update the list of students
-  // }, [])
-
   useEffect(() => {
-    console.log("FILTER USE EFFECT CALLED");
     setLoading(true);
     const params = { params: filters };
     try {
@@ -185,7 +157,6 @@ const StudentManagemant = () => {
           });
         }
         allStudents.current = localRows;
-        // setTableRows(localRows);
         requestSearch(searchInput);
         setLoading(false);
       })();
@@ -193,12 +164,6 @@ const StudentManagemant = () => {
       console.log("An error from getData in /api/students", error);
     }
   }, [filters, searchInput]);
-
-  //  useEffect(() => {
-  //   fetchFilteredData(filterValue).then((data) => {
-  //     setTableRows(data);
-  //   });
-  // }, [filterValue]);
 
   return (
     <Container sx={{ textAlign: "center " }}>
@@ -208,7 +173,6 @@ const StudentManagemant = () => {
       <Grid container spasing={2}>
         <Grid item xs={10}>
           <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles} changeHandler={filterChangeHandler} />
-          {/* <StudentsFilter filterValue={filterValue} setFilterValue={setFilterValue} /> */}
         </Grid>
         <Grid item xs={2}>
           <TextField

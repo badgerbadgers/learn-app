@@ -3,7 +3,6 @@ import dbConnect from "../../../lib/dbConnect";
 import { sanitize } from "../users";
 
 export default async function handler(req, res) {
-  console.log("handler cold:")
   const { method } = req;
   const { id } = req.query;
   await dbConnect();
