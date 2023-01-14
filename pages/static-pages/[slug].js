@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
   }).lean();
 
   //The notFound boolean allows the page to return a 404 status
-  if (!mongoPage) {
+  if (!mongoPage || mongoPage.isShown === false) {
     return {
       notFound: true,
     };
