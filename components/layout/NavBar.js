@@ -28,11 +28,6 @@ const NavBar = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  console.log("menu items", menuItems);
-  useEffect(() => {
-    axios.get("/api/staticpages").then((res) => setMenuItems(res.data.data));
-  }, []);
-
   const settings = [
     {
       href: status === "authenticated" ? `/portfolios/${session.user.gh}` : "/",
