@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -15,15 +15,23 @@ import {
   Tooltip,
   Avatar,
   Link,
+  Popover,
 } from "@mui/material/";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import axios from "axios";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [menuItems, setMenuItems] = useState("");
   const { mode, changeTheme } = useContext(ThemeContext);
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  console.log("menu items", menuItems);
+  useEffect(() => {
+    axios.get("/api/staticpages").then((res) => setMenuItems(res.data.data));
+  }, []);
 
   const settings = [
     {
@@ -45,6 +53,12 @@ const NavBar = () => {
       href: "/dashboard",
       target: "_self",
       title: "Dashboard",
+    },
+
+    {
+      href: "/resources",
+      target: "_self",
+      title: "Resources",
     },
 
     {
@@ -201,4 +215,3 @@ const NavBar = () => {
   );
 };
 export default NavBar;
-
