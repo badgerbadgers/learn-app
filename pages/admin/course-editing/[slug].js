@@ -30,14 +30,6 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
 
   const courseSlug = context.params["slug"];
   const courseData = await getCourseFromMongo(courseSlug);

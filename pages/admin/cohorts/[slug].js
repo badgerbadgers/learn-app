@@ -112,14 +112,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+
   const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(context.params["slug"])) || null;
   return {
     props: {
