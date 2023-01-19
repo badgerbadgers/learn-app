@@ -27,6 +27,9 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, user }) {
+      //update user's last visit timestamp
+      user.lastVisit = new Date();
+      //await user.replaceOne();
       return { ...session, user };
     },
     async signIn({ user }) {
@@ -89,7 +92,6 @@ export default NextAuth({
           gh: profile.login,
           url: profile.html_url,
           hasProfile: false,
-          roleIds: ["2"],
         };
       },
     }),
