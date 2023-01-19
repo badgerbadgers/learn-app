@@ -30,7 +30,6 @@ export default NextAuth({
       return { ...session, user };
     },
     async signIn({ user }) {
-
       const isAllowedToSignInArray = await getGitHubMembers();
       if (isAllowedToSignInArray.includes(user.gh)) {
         return true;
@@ -38,11 +37,10 @@ export default NextAuth({
         console.log("not allowed to login");
         return false;
       }
-    }
+    },
   },
   pages: {
     signIn: "/dashboard",
-    newUser: "/signup", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   adapter: MongoDBAdapter(clientPromise),
   providers: [
