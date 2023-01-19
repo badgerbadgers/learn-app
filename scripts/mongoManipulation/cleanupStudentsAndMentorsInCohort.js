@@ -1,10 +1,10 @@
 /*
-First cleanup Student and Mentors as empty array
+First cleanup Mentors as empty array in Cohort
 */
 
 const { mongoConnection, getConfigParam } = require("../utils.js");
 
-const cleanupStudentsAndMentorsIhCohort = async () => {
+const cleanupMentorsIhCohort = async () => {
   const confParam = await getConfigParam("MONGODB_DB");
   const client = await mongoConnection();
   const db = client.db(confParam);
@@ -14,7 +14,6 @@ const cleanupStudentsAndMentorsIhCohort = async () => {
       {},
       {
         $set: {
-          students: [],
           mentors: [],
         },
       }
@@ -25,7 +24,7 @@ const cleanupStudentsAndMentorsIhCohort = async () => {
   }
 };
 
-cleanupStudentsAndMentorsIhCohort().then(() => {
+cleanupMentorsIhCohort().then(() => {
   console.log("all done");
   process.exit(0);
 });
