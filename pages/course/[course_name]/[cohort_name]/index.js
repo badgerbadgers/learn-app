@@ -116,14 +116,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+
   //context.params contains the route parameters
   const slug = context.params["cohort_name"];
   const scheduleData = await Cohort.getBySlug(slug);
