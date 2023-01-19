@@ -180,14 +180,6 @@ export async function getServerSideProps(context) {
   }
   if (session) {
     const { user } = session;
-    if (!user.hasProfile) {
-      return {
-        redirect: {
-          destination: "/signup",
-          permanent: false,
-        },
-      };
-    }
     const data = await getResourceData();
     // Send the data as resources by minify data.
     return {
