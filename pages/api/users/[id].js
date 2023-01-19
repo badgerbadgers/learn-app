@@ -19,22 +19,6 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         let userToDb = await sanitize(JSON.parse(req.body.body));
-
-        //To check if the name of a GitHub repository is unique
-        const existingUserGithub = await User.findOne({
-          gh: userToDb.gh,
-          _id: id,
-        });
-        if (existingUserGithub.length) {
-          const error = {
-            error: "User github is not unique",
-          };
-          res.status(400).json({
-            success: false,
-            message: error,
-          });
-          return;
-        }
         
         let user = await User.findByIdAndUpdate(id, userToDb, { runValidators: true, new: true });
         if (!user) {

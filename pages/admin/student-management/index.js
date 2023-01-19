@@ -163,7 +163,7 @@ const StudentManagemant = () => {
     } catch (error) {
       console.log("An error from getData in /api/students", error);
     }
-  }, [filters, searchInput]);
+  }, [filters]);
 
   return (
     <Container sx={{ textAlign: "center " }}>
