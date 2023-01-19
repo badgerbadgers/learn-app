@@ -51,12 +51,6 @@ const NavBar = () => {
     },
 
     {
-      href: "/resources",
-      target: "_self",
-      title: "Resources",
-    },
-
-    {
       href: "#",
       target: "_parent",
       title: "Logout",
