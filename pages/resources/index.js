@@ -1,111 +1,68 @@
-import React, { useState, useEffect } from "react";
-import { Switch, Typography, Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-// import StaticPage from "../../../lib/models/StaticPage";
+import React, { useState } from "react";
+import {
+  Typography,
+  // Box,
+  // List,
+  // ListItem,
+  // ListItemButton,
+  // ListItemIcon,
+  // ListItemText,
+  // Divider,
+  // InboxIcon,
+  // DraftsIcon,
+} from "@mui/material";
 import StaticPage from "../../lib/models/StaticPage";
-// import dbConnect from "../../../lib/dbConnect";
 import dbConnect from "../../lib/dbConnect";
-import axios from "axios";
 import { getSession } from "next-auth/react";
-// import { privateLayout } from "../../../components/layout/PrivateLayout";
+import { PublicLayout } from "../../components/layout/PublicLayout";
+import NavBar from "../../components/layout/NavBar";
+import Footer from "../../components/layout/Footer";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const AllStaticPages = ({ shownPages }) => {
-  console.log("component shown pages", shownPages);
-  // const AllStaticPages = ({ combinedData }) => {
-  // const [staticPages, setStaticPages] = useState(combinedData);
-  const [updatedPages, setUpdatedPages] = useState([]);
-  // const [checked, setIsChecked] = useState(combinedData.checked);
-
-  // const handleChange = async (event) => {
-  //   const deleted = event.target.checked;
-  //   const id = JSON.parse(event.target.id);
-  //   const filteredByIdPage = staticPages.filter((page) => {
-  //     let wp_id = JSON.parse(page.wordpress_id);
-  //     return wp_id === id;
-  //   });
-
-  //   //toggled page will always be array index 0 from filter
-  //   const mongo_id = filteredByIdPage[0].mongo_id;
-  //   const title = filteredByIdPage[0].title;
-  //   const slug = filteredByIdPage[0].slug;
-
-  //   await axios.post(
-  //     "/api/staticpages",
-  //     {
-  //       wp_id: id,
-  //       isShown: deleted,
-  //       _id: mongo_id,
-  //       title: title,
-  //       slug: slug,
-  //     },
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  // };
-
-  // const columns = [
-  //   {
-  //     field: "title",
-  //     headerName: "Title",
-  //     width: 450,
-  //   },
-  //   { field: "wordpress_id", headerName: "ID", width: 150 },
-  //   // {
-  //   //   field: "isShown",
-  //   //   headerName: "Shown in Learn App",
-  //   //   width: 150,
-  //   //   renderCell: (params) => {
-  //   //     const id = params.id;
-  //   //     return (
-  //   //       <Switch
-  //   //         title={params.title}
-  //   //         id={id.toString()}
-  //   //         // checked={checked}
-  //   //         onChange={handleChange}
-  //   //         inputProps={{ "aria-label": "controlled" }}
-  //   //         // defaultChecked={!!params.row.mongo_id}
-  //   //       />
-  //   //     );
-  //   //   },
-  //   //},
-  // ];
+const IsShownResourcePages = ({ shownPages }) => {
+  const [shownStaticPages, setShownStaticPages] = useState(shownPages);
+  console.log("shownstaticpages", shownStaticPages);
+  // const router = useRouter();
+  // const slug = router.query.slug;
+  // console.log("router slug", slug);
 
   return (
-    <>resources</>
-    // <Box sx={{ height: 650, width: "100%" }}>
-    //   <Typography
-    //     variant="h4"
-    //     gutterBottom
-    //     color="primary"
-    //     style={{
-    //       fontSize: "35px",
-    //       position: "relative",
-    //       top: "60px",
-    //       left: "80px",
-    //     }}
-    //   >
-    //     WordPress Pages
-    //   </Typography>
-    //   <DataGrid
-    //     sx={{ m: 10 }}
-    //     columns={columns}
-    //     // rows={staticPages}
-    //     getRowId={(row) => row.wordpress_id}
-    //   />
-    // </Box>
+    <div>
+      <Typography variant="h5" gutterBottom color="primary">
+        Resources
+      </Typography>
+      {shownStaticPages.map((page) => {
+        return (
+          <div key={page._id}>
+            {/* <Link href={`/resources/${encodeURIComponent(page.slug)}`}> */}
+            <Link href={`/resources/` + `${page.slug}`}>
+              <a>{page.title}</a>
+              {/* <a>{page._id}</a> */}
+            </Link>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
-export default AllStaticPages;
+export default IsShownResourcePages;
 
-// AllStaticPages.getLayout = privateLayout;
+IsShownResourcePages.getLayout = function getLayout(pages) {
+  return (
+    <>
+      <NavBar />
+      <PublicLayout>{pages}</PublicLayout>
+      <Footer />
+    </>
+  );
+};
 
 export async function getServerSideProps(context) {
+  console.log("context", context);
   await dbConnect();
-
+  const contextSlug = context.query.slug;
   const session = await getSession(context);
 
   if (!session) {
@@ -125,16 +82,20 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const isShownMongoPages = await StaticPage.find({ isShown: true });
+  const isShownMongoPages = await StaticPage.find({
+    isShown: true,
+    // slug: contextSlug,
+  });
   console.log("is shown pages", isShownMongoPages);
-  // const mongoData = await StaticPage.find({}).lean();
-  // const res = await fetch("https://learn.codethedream.org/wp-json/wp/v2/pages");
-  // const wordpressData = await res.json();
-  // const combinedData = combineData(wordpressData, mongoData);
+  // const mongoPage = await StaticPage.findOne({
+  //   slug: contextSlug,
+  // }).lean();
+  // console.log("wp slug", mongoPage);
+
   return {
     props: {
       shownPages: JSON.parse(JSON.stringify(isShownMongoPages)),
-      // combinedData,
+      // content: wordpressPage.content.rendered,
     },
   };
 }
