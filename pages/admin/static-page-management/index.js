@@ -114,15 +114,7 @@ export async function getServerSideProps(context) {
       },
     }
   }
-  const { user } = session
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    }
-  }
+  const { user } = session;
 
   const mongoData = await StaticPage.find({}).lean()
   const res = await axios.get(
