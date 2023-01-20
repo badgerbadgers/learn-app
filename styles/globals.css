@@ -87,3 +87,7 @@ p {
   max-width: 2000px;
   margin: auto;
 }
+
+.extra-padding-on-top {
+  padding-top: 80px;
+}
