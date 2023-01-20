@@ -19,7 +19,7 @@ import {
 } from "@mui/material/";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import axios from "axios";
+// import axios from "axios";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -48,6 +48,12 @@ const NavBar = () => {
       href: "/dashboard",
       target: "_self",
       title: "Dashboard",
+    },
+
+    {
+      href: "/resources",
+      target: "_self",
+      title: "Resources",
     },
 
     {
@@ -87,6 +93,7 @@ const NavBar = () => {
         maxWidth={false}
         sx={{ mx: 0, maxWidth: "2000px", margin: "auto" }}
       >
+        {/* <Toolbar></Toolbar> */}
         <Toolbar disableGutters>
           {/* code for Logo */}
           <Avatar
@@ -109,7 +116,18 @@ const NavBar = () => {
           />
 
           {/* Box for the user Image and Menu */}
-
+          <Box
+            sx={{
+              flexGrow: 0,
+              marginLeft: "auto",
+              display: "flex",
+              width: "auto",
+              cursor: "pointer",
+              alignItems: "center",
+            }}
+          >
+            <Menu />
+          </Box>
           {session && (
             <Box
               sx={{
