@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import CohortHeader from "./components/CohortHeader";
 import Grid from "@mui/material/Unstable_Grid2";
 import IndCohortGrid from "./components/IndCohortGrid";
-import ScheduleModal from "./components/ScheduleModal";
-import getData from "../../../lib/getData";
 import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
