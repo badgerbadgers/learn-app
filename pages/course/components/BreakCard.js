@@ -8,7 +8,7 @@ export default function BreakCard({ content }) {
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor:"syllabus.card",
         mb: "2em",
         padding: "1em",
         boxShadow: "none",

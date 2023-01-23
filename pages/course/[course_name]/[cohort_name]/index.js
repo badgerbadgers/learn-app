@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { privateLayout } from "../../../../components/layout/PrivateLayout";
+
 import { getSession } from "next-auth/react";
 import Grid from "@mui/material/Grid";
 import Menu from "../../components/Menu";
@@ -7,9 +8,15 @@ import DisplayCards from "../../components/DisplayCards";
 import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import Cohort from "../../../../lib/models/Cohort";
-import dbConnect from "../../../../lib/dbConnect";
+import dbConnect from "../../../../lib/dbConnect"; 
+import { format, addDays } from "date-fns";
 
-export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
+export default function CurrentCoursePage({
+  user,
+  scheduleData,
+  zoomLink,
+  startDate,
+}) {
   const [weekLessonNumber, setweekLessonNumber] = useState(0);
 
   // if filteredScheduleData[0] exisits then get lesson of first week
@@ -48,10 +55,28 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
       setweekLessonNumber(newWeekLessonNumber);
       setCurrentLesson(scheduleData[newWeekLessonNumber]);
     }
-  }, [scheduleData, weekLessonNumber, router]);
+  }, [scheduleData, weekLessonNumber, router]); 
+
+  const lessonStartDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * weekLessonNumber),
+      "MMM dd, yyyy"
+    );
+  };
+
+  const lessonEndDate = () => {
+    return format(
+      addDays(new Date(startDate), 7 * (weekLessonNumber + 1) - 1),
+      "MMM dd, yyyy"
+    );
+  };
 
   return (
-    <Grid container spacing={3} sx={{ maxWidth: "100%" }}>
+    <Grid
+      container
+      spacing={3}
+      sx={{ maxWidth: "100%", mb:"24px"}}
+    >
       <Menu
         scheduleData={scheduleData}
         courseName={router.query["course_name"]}
@@ -68,6 +93,9 @@ export default function CurrentCoursePage({ user, scheduleData, zoomLink }) {
           scheduleData={scheduleData}
           weekLessonNumber={weekLessonNumber}
           currentLesson={currentLesson}
+          lessonStartDate={lessonStartDate()}
+          lessonEndDate={lessonEndDate()}
+
         />
       )}
     </Grid>
@@ -88,14 +116,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+
   //context.params contains the route parameters
   const slug = context.params["cohort_name"];
   const scheduleData = await Cohort.getBySlug(slug);
@@ -107,6 +128,7 @@ export async function getServerSideProps(context) {
       user,
       scheduleData: JSON.parse(JSON.stringify(scheduleData.schedule)),
       zoomLink: scheduleData.zoom_link,
+      startDate: JSON.parse(JSON.stringify(scheduleData.start_date)),
     },
   };
   // returning scheduleData as props in index
