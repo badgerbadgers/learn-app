@@ -8,8 +8,10 @@ import ScheduleModal from "./components/ScheduleModal";
 import getData from "../../../lib/getData";
 import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
-import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { useRouter } from "next/router";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
+import getData from "../../../lib/getData";
+import ScheduleModal from "./components/ScheduleModal";
 
 const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const [loading, setLoading] = useState(true);
@@ -21,8 +23,8 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
   const query = router.query;
 
   useEffect(() => {
-    let cohort = {}
-    const url = "/api/cohorts/slug/" + (`${query.slug}`);
+    let cohort = {};
+    const url = "/api/cohorts/slug/" + `${query.slug}`;
     const params = { slug: query.slug };
     try {
       (async () => {
@@ -59,9 +61,7 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
           <Typography align="center" variant="body1" gutterBottom>
             This cohort was not found
           </Typography>
-          <Button
-            href="/admin/cohort-management"
-            sx={{ m: 5 }}>
+          <Button href="/admin/cohort-management" sx={{ m: 5 }}>
             Back to cohort management
           </Button>
         </Grid>
@@ -98,7 +98,6 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
 }
 
 export default IndividualCohortPage;
-
 
 IndividualCohortPage.getLayout = privateLayout;
 export async function getServerSideProps(context) {
