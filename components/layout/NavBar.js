@@ -15,18 +15,20 @@ import {
   Tooltip,
   Avatar,
   Link,
-  Popover,
 } from "@mui/material/";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-// import axios from "axios";
+import axios from "axios";
+import { fetchData } from "next-auth/client/_utils";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [menuItems, setMenuItems] = useState("");
+  const [anchorElPages, setAnchorElPages] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [resourceMenuPages, setResourceMenuPages] = useState([]);
+  const [testPages, setTestPages] = useState(null);
 
   const settings = [
     {
@@ -51,12 +53,6 @@ const NavBar = () => {
     },
 
     {
-      href: "/resources",
-      target: "_self",
-      title: "Resources",
-    },
-
-    {
       href: "#",
       target: "_parent",
       title: "Logout",
@@ -69,16 +65,59 @@ const NavBar = () => {
     },
   ];
 
+  const staticPages = [
+    { title: "page 1", href: "#", target: "_self" },
+    { title: "page 2", href: "#", target: "_self" },
+  ];
+
+  const handlePagesMenuOpen = (event) => {
+    setAnchorElPages(event.currentTarget);
+  };
+
   // open the Menu when clicked on the avatar
-  const handleMenuOpen = (event) => {
+  const handleUserMenuOpen = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
   // close the Menu when you select any Menu item
   const handleMenuClose = () => {
     setAnchorElUser(null);
+    setAnchorElPages(null);
   };
 
+  // const mapped = resourceMenuPages.map((item) => item.title);
+
+  // console.log("mapped", mapped);
+  console.log("use effect wp pages", resourceMenuPages);
+  console.log("use effect test pages", testPages);
+
+  useEffect(() => {
+    try {
+      axios
+        .get(`/api/staticpages`, {
+          headers: { "Content-Type": "application/json" },
+        })
+        // .then((res) => res.json())
+        // .then((res) => console.log("nah", res.data.data));
+        .then((res) => setResourceMenuPages(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      axios
+        .get(`/api/staticpages`, {
+          headers: { "Content-Type": "application/json" },
+        })
+        // .then((res) => res.json())
+        // .then((res) => console.log("nah", res.data.data));
+        .then((res) => setTestPages(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <AppBar
       enableColorOnDark
@@ -93,7 +132,6 @@ const NavBar = () => {
         maxWidth={false}
         sx={{ mx: 0, maxWidth: "2000px", margin: "auto" }}
       >
-        {/* <Toolbar></Toolbar> */}
         <Toolbar disableGutters>
           {/* code for Logo */}
           <Avatar
@@ -116,18 +154,7 @@ const NavBar = () => {
           />
 
           {/* Box for the user Image and Menu */}
-          <Box
-            sx={{
-              flexGrow: 0,
-              marginLeft: "auto",
-              display: "flex",
-              width: "auto",
-              cursor: "pointer",
-              alignItems: "center",
-            }}
-          >
-            <Menu />
-          </Box>
+
           {session && (
             <Box
               sx={{
@@ -139,13 +166,70 @@ const NavBar = () => {
                 alignItems: "center",
               }}
             >
+              {/* Start Static Pages Menu */}
+              <Typography variant="h6" mr={1} onClick={handlePagesMenuOpen}>
+                Static Pages
+              </Typography>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElPages}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                keepMounted
+                open={Boolean(anchorElPages)}
+                onClose={handleMenuClose}
+              >
+                {/* {staticPages &&
+                  staticPages.map((page) => (
+                    <MenuItem
+                      key={page.title}
+                      onClick={() => {
+                        handleMenuClose;
+                      }}
+                      component={Link}
+                      href={page.href}
+                      target={page.target}
+                      rel="noopener noreferrer"
+                    >
+                      <Typography variant="body1" textAlign="center">
+                        {page.title}
+                      </Typography>
+                    </MenuItem>
+                  ))} */}
+                {/* {resourceMenuPages &&
+                  resourceMenuPages.map((page) => (
+                    <MenuItem
+                      key={page.title}
+                      onClick={() => {
+                        handleMenuClose;
+                      }}
+                      component={Link}
+                      href={page.href}
+                      target={page.target}
+                      rel="noopener noreferrer"
+                    >
+                      <Typography variant="body1" textAlign="center">
+                        {page.title}
+                      </Typography>
+                    </MenuItem>
+                  ))} */}
+              </Menu>
+              {/* End Static Pages Menu */}
+
+              {/* Start User Account Menu */}
               <Typography variant="h6" mr={1}>
                 {session.user.name || session.user.gh}
               </Typography>
 
               <Tooltip title="Open settings">
                 <IconButton
-                  onClick={handleMenuOpen}
+                  onClick={handleUserMenuOpen}
                   sx={{ p: 0 }}
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -213,6 +297,7 @@ const NavBar = () => {
                       )}
                     </MenuItem>
                   ))}
+                {/* End User Account Menu */}
               </Menu>
             </Box>
           )}
@@ -222,3 +307,32 @@ const NavBar = () => {
   );
 };
 export default NavBar;
+
+export async function getServerSideProps(context) {
+  console.log("context", context);
+  await dbConnect();
+  const contextSlug = context.query.slug;
+
+  // const isShownMongoPages = await StaticPage.find({
+  //   isShown: true,
+  //   slug: contextSlug,
+  // });
+  // console.log("is shown pages", isShownMongoPages);
+  const mongoPage = await StaticPage.findOne({
+    slug: contextSlug,
+  }).lean();
+  console.log("wp slug", mongoPage);
+
+  // fetches specific wp page using wordpress_id
+  const res = await fetch(
+    `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
+  );
+  const wordpressPage = await res.json();
+  console.log("wp", wordpressPage);
+  return {
+    props: {
+      isShownBySlugMongoPage: JSON.parse(JSON.stringify(mongoPage)),
+      content: wordpressPage.content.rendered,
+    },
+  };
+}
