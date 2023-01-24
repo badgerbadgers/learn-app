@@ -19,8 +19,7 @@ import {
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import axios from "axios";
-import { fetchData } from "next-auth/client/_utils";
-
+//trim to 30 characters add elipses (...)
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElPages, setAnchorElPages] = useState(null);
@@ -28,7 +27,6 @@ const NavBar = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [resourceMenuPages, setResourceMenuPages] = useState([]);
-  const [testPages, setTestPages] = useState(null);
 
   const settings = [
     {
@@ -65,11 +63,6 @@ const NavBar = () => {
     },
   ];
 
-  const staticPages = [
-    { title: "page 1", href: "#", target: "_self" },
-    { title: "page 2", href: "#", target: "_self" },
-  ];
-
   const handlePagesMenuOpen = (event) => {
     setAnchorElPages(event.currentTarget);
   };
@@ -85,35 +78,32 @@ const NavBar = () => {
     setAnchorElPages(null);
   };
 
-  // const mapped = resourceMenuPages.map((item) => item.title);
-
-  // console.log("mapped", mapped);
-  console.log("use effect wp pages", resourceMenuPages);
-  console.log("use effect test pages", testPages);
-
   useEffect(() => {
     try {
       axios
         .get(`/api/staticpages`, {
           headers: { "Content-Type": "application/json" },
         })
-        // .then((res) => res.json())
-        // .then((res) => console.log("nah", res.data.data));
-        .then((res) => setResourceMenuPages(res.data.data));
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      axios
-        .get(`/api/staticpages`, {
-          headers: { "Content-Type": "application/json" },
-        })
-        // .then((res) => res.json())
-        // .then((res) => console.log("nah", res.data.data));
-        .then((res) => setTestPages(res.data.data));
+        .then((res) => {
+          //refactor with catch (error) type code
+          if (!res.data.data) {
+            console.log("no data from static pages API");
+            return;
+          }
+          //we want to iterate over static pages data
+          const pages = res.data.data.map((item) => {
+            //change format to match menu item(s)
+            return {
+              href: "resources/" + item.slug,
+              target: "_self",
+              title: item.title,
+              wordpress_id: item.wordpress_id,
+              slug: item.slug,
+            };
+          });
+          //set resource menu pages as new data
+          setResourceMenuPages(pages);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -154,7 +144,6 @@ const NavBar = () => {
           />
 
           {/* Box for the user Image and Menu */}
-
           {session && (
             <Box
               sx={{
@@ -167,8 +156,8 @@ const NavBar = () => {
               }}
             >
               {/* Start Static Pages Menu */}
-              <Typography variant="h6" mr={1} onClick={handlePagesMenuOpen}>
-                Static Pages
+              <Typography variant="h7" mr={4} onClick={handlePagesMenuOpen}>
+                Student Resources
               </Typography>
               <Menu
                 id="menu-appbar"
@@ -185,24 +174,7 @@ const NavBar = () => {
                 open={Boolean(anchorElPages)}
                 onClose={handleMenuClose}
               >
-                {/* {staticPages &&
-                  staticPages.map((page) => (
-                    <MenuItem
-                      key={page.title}
-                      onClick={() => {
-                        handleMenuClose;
-                      }}
-                      component={Link}
-                      href={page.href}
-                      target={page.target}
-                      rel="noopener noreferrer"
-                    >
-                      <Typography variant="body1" textAlign="center">
-                        {page.title}
-                      </Typography>
-                    </MenuItem>
-                  ))} */}
-                {/* {resourceMenuPages &&
+                {resourceMenuPages &&
                   resourceMenuPages.map((page) => (
                     <MenuItem
                       key={page.title}
@@ -218,7 +190,7 @@ const NavBar = () => {
                         {page.title}
                       </Typography>
                     </MenuItem>
-                  ))} */}
+                  ))}
               </Menu>
               {/* End Static Pages Menu */}
 
@@ -307,32 +279,3 @@ const NavBar = () => {
   );
 };
 export default NavBar;
-
-export async function getServerSideProps(context) {
-  console.log("context", context);
-  await dbConnect();
-  const contextSlug = context.query.slug;
-
-  // const isShownMongoPages = await StaticPage.find({
-  //   isShown: true,
-  //   slug: contextSlug,
-  // });
-  // console.log("is shown pages", isShownMongoPages);
-  const mongoPage = await StaticPage.findOne({
-    slug: contextSlug,
-  }).lean();
-  console.log("wp slug", mongoPage);
-
-  // fetches specific wp page using wordpress_id
-  const res = await fetch(
-    `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
-  );
-  const wordpressPage = await res.json();
-  console.log("wp", wordpressPage);
-  return {
-    props: {
-      isShownBySlugMongoPage: JSON.parse(JSON.stringify(mongoPage)),
-      content: wordpressPage.content.rendered,
-    },
-  };
-}

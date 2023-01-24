@@ -44,10 +44,9 @@ const getShownStaticPages = async (req, res) => {
   const isShownMongoPages = [];
   try {
     const isShownMongoPages = await Staticpage.find({ isShown: true });
-    console.log("shown pages", isShownMongoPages);
     res.status(200).json({
       success: true,
-      data: JSON.stringify(isShownMongoPages),
+      data: isShownMongoPages,
     });
   } catch (error) {
     res.status(400).json({ success: false });
