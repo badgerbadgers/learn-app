@@ -33,7 +33,6 @@ const AllStaticPages = ({ combinedData }) => {
         _id: mongo_id,
         title: title,
         slug: slug,
-        slug: slug,
       },
       {
         headers: {
