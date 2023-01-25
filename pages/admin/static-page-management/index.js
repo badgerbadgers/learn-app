@@ -23,7 +23,7 @@ const AllStaticPages = ({ combinedData }) => {
     //toggled page will always be array index 0 from filter
     const mongo_id = filteredByIdPage[0].mongo_id
     const title = filteredByIdPage[0].title
-    const slug = filteredByIdPage[0].slug;
+    const slug = filteredByIdPage[0].slug 
 
     await axios.post(
       "/api/staticpages",
@@ -32,6 +32,7 @@ const AllStaticPages = ({ combinedData }) => {
         isShown: deleted,
         _id: mongo_id,
         title: title,
+        slug: slug,
         slug: slug,
       },
       {
