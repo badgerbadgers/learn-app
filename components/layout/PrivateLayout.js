@@ -10,4 +10,3 @@ export const PrivateLayout = ({ children }) => (
 );
 
 export const privateLayout = (page) => <PrivateLayout>{page}</PrivateLayout>;
-
