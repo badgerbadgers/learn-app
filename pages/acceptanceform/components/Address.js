@@ -192,7 +192,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <InputField
                 name={mailingZipcode.name}
                 label={mailingZipcode.label}
@@ -204,7 +204,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <InputField
                 name={mailingAddress1.name}
                 label={mailingAddress1.label}
@@ -216,7 +216,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <InputField
                 name={mailingAddress2.name}
                 label={mailingAddress2.label}
@@ -228,7 +228,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <InputField
                 name={mailingCity.name}
                 label={mailingCity.label}
@@ -240,7 +240,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <InputField
                 name={mailingState.name}
                 label={mailingState.label}
@@ -252,12 +252,12 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
-            {!values.mailingSame && (
+            {!values.mailing_same && (
               <Autocomplete
                 id="country-select-demo"
                 name={mailingCountry.name}
                 label={mailingCountry.label}
-                disabled={values.mailingSame ? true : false}
+                disabled={values.mailing_same ? true : false}
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
