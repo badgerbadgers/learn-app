@@ -85,11 +85,6 @@ const NavBar = () => {
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
-          //refactor with catch (error) type code
-          if (!res.data.data) {
-            console.log("no data from static pages API");
-            return;
-          }
           //we want to iterate over static pages data
           const pages = res.data.data.map((item) => {
             //change format to match menu item(s)
