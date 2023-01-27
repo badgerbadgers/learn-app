@@ -22,6 +22,11 @@ const replaceUsersprofileIdToUserId = async () => {
           },
         },
         {
+          $project: {
+            students: true,
+          },
+        },
+        {
           $unwind: {
             path: "$students",
           },
@@ -59,38 +64,11 @@ const replaceUsersprofileIdToUserId = async () => {
         {
           $group: {
             _id: "$_id",
-            cohort_name: {
-              $first: "$cohort_name",
-            },
-            start_date: {
-              $first: "$start_date",
-            },
-            zoom_link: {
-              $first: "$zoom_link",
-            },
-            status: {
-              $first: "$status",
-            },
             students: {
               $push: {
                 user: "$students.user",
                 added_at: "$students.added_at",
               },
-            },
-            mentors: {
-              $first: "$mentors",
-            },
-            seats: {
-              $first: "$seats",
-            },
-            slug: {
-              $first: "$slug",
-            },
-            course: {
-              $first: "$course",
-            },
-            schedule: {
-              $first: "$schedule",
             },
           },
         },
