@@ -19,8 +19,8 @@ import { useRouter } from "next/router";
 import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles({
-  blurColumn: {
-    filter: "blur(2px)",
+  disabled: {
+    opacity: 0.3,
   },
 });
 
@@ -170,7 +170,7 @@ export default function StudentsTable({ loading, tableRows }) {
       minWidth: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
       },
       headerAlign: "center",
     },
@@ -181,7 +181,7 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
       },
       headerAlign: "center",
       align: "center",
@@ -193,7 +193,7 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
       },
       headerAlign: "center",
       align: "center",
