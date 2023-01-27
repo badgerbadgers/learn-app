@@ -1,5 +1,5 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -55,17 +55,12 @@ export default function StudentsTable({ loading, tableRows }) {
   const [snackbar, setSnackbar] = useState(null);
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
-  const ageRef = useRef(null);
   const classes = useStyles();
 
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
 
-  useEffect(() => {
-    setRowModesModel(rowModesModel);
-    setRows(rows);
-  }, [rowModesModel, rows]);
 
   const deleteStudent = async (userId) => {
     axios
@@ -175,7 +170,7 @@ export default function StudentsTable({ loading, tableRows }) {
       minWidth: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={params.row.id in rowModesModel ? classes.blurColumn : null}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
       },
       headerAlign: "center",
     },
@@ -186,7 +181,7 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return <div className={params.row.id in rowModesModel ? classes.blurColumn : null}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
       },
       headerAlign: "center",
       align: "center",
@@ -198,7 +193,7 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={params.row.id in rowModesModel ? classes.blurColumn : ""}>{params.value}</div>;
+        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.blurColumn : null}>{params.value}</div>;
       },
       headerAlign: "center",
       align: "center",
