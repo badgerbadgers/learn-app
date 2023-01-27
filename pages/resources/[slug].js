@@ -45,7 +45,6 @@ export async function getStaticPaths() {
   return {
     paths,
     fallback: false, // can also be true or 'blocking'
-    revalidate: 600, // 10 mins
   };
 }
 
@@ -66,6 +65,7 @@ export async function getStaticProps(context) {
     props: {
       isShownBySlugMongoPage: JSON.parse(JSON.stringify(mongoPage)),
       content: wordpressPage.content.rendered,
+      revalidate: 600, // 10 mins
     },
   };
 }
