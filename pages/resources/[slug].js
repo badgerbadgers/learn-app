@@ -1,6 +1,5 @@
 import React from "react";
 import dbConnect from "../../lib/dbConnect";
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import StaticPage from "../../lib/models/StaticPage";
 import { Box } from "@mui/material";
@@ -32,29 +31,27 @@ Slug.getLayout = function getLayout(pages) {
   );
 };
 
-export async function getServerSideProps(context) {
+//If a page has Dynamic Routes and uses getStaticProps,
+//it needs to define a list of paths to be statically generated.
+export async function getStaticPaths() {
   await dbConnect();
-  const contextSlug = context.query.slug;
-  const session = await getSession(context);
-
-  if (!session) {
+  const mongoPages = await StaticPage.find({}).lean();
+  const paths = mongoPages.map((page) => {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
+      params: { slug: page.slug },
     };
-  }
-  const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+  });
 
+  return {
+    paths,
+    fallback: false, // can also be true or 'blocking'
+    revalidate: 600, // 10 mins
+  };
+}
+
+export async function getStaticProps(context) {
+  await dbConnect();
+  const contextSlug = context.params.slug;
   const mongoPage = await StaticPage.findOne({
     slug: contextSlug,
   }).lean();
@@ -64,6 +61,7 @@ export async function getServerSideProps(context) {
     `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
   );
   const wordpressPage = await res.json();
+
   return {
     props: {
       isShownBySlugMongoPage: JSON.parse(JSON.stringify(mongoPage)),
