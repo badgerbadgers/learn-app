@@ -10,34 +10,6 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
-import makeStyles from "@mui/styles/makeStyles";
-import { createTheme } from "@mui/material/styles";
-
-const defaultTheme = createTheme();
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      padding: theme.spacing(0.5, 0.5, 0),
-      justifyContent: "space-between",
-      display: "flex",
-      alignItems: "flex-start",
-      flexWrap: "wrap",
-    },
-    textField: {
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
-      margin: theme.spacing(1, 0.5, 1.5),
-      "& .MuiSvgIcon-root": {
-        marginRight: theme.spacing(0.5),
-      },
-      "& .MuiInput-underline:before": {
-        borderBottom: `1px solid ${theme.palette.divider}`,
-      },
-    },
-  }),
-  { defaultTheme }
-);
 
 const StudentManagemant = () => {
   const url = "/api/users";

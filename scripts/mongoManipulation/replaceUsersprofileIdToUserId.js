@@ -50,6 +50,13 @@ const replaceUsersprofileIdToUserId = async () => {
           $unset: "newobj",
         },
         {
+          $match: {
+            "students.user": {
+              $exists: true
+            }
+          },
+        },
+        {
           $group: {
             _id: "$_id",
             cohort_name: {
