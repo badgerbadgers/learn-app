@@ -7,8 +7,10 @@ import { privateLayout } from "../../components/layout/PrivateLayout";
 import Wizard from "./components/Wizard";
 import styles from "./components/AcceptanceForm.module.css";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AcceptanceFormModel from "../../lib/models/AcceptanceForm";
+import dbConnect from "../../lib/dbConnect";
 
-const AcceptanceForm = () => {
+const AcceptanceForm = ({previousData}) => {
   return (
     <Container className={styles.formContainer}>
       <Paper elevation={15} className={styles.paper}>
@@ -34,7 +36,7 @@ const AcceptanceForm = () => {
           </Typography>
         </div>
         <br></br>
-        <Wizard />
+        <Wizard previousData={previousData} />
       </Paper>
     </Container>
   );
@@ -45,6 +47,7 @@ export default AcceptanceForm;
 AcceptanceForm.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
+  await dbConnect();
   const session = await getSession(context);
 
   if (!session) {
@@ -57,7 +60,15 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
 
+  // search database for previous acceptance form for this user
+  // send previous data as prop to the page
+  let previousData = null;
+  if (user) {
+    previousData = await AcceptanceFormModel.findOne({user: user.id}).lean();
+    previousData = JSON.parse(JSON.stringify(previousData));
+  }
+
   return {
-    props: { user },
+    props: { user, previousData },
   };
 }

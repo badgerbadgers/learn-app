@@ -47,7 +47,7 @@ function renderStepContent(step) {
   }
 }
 
-function Wizard() {
+function Wizard({previousData}) {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
 
@@ -60,19 +60,15 @@ function Wizard() {
   };
 
   async function submitForm(values, actions) {
+    setActiveStep(activeStep + 1);
+    actions.setTouched({});
     actions.setSubmitting(false);
     axios.post("/api/acceptanceform", { body: values });
   }
 
-  const handleSubmit = (values, actions) => {
-    if (activeStep === steps.length - 1) {
-      submitForm(values, actions);
-    } else {
-      setActiveStep(activeStep + 1);
-      actions.setTouched({});
-      actions.setSubmitting(false);
-    }
-  };
+  if (!previousData) {
+    previousData = formInitialValues;
+  }
 
   const isSmallScreen = useMediaQuery("(max-width:700px)");
 
@@ -93,9 +89,10 @@ function Wizard() {
                   {activeStep < steps.length && (
                     <Fragment>
                       <Formik
-                        initialValues={formInitialValues}
+                        enableReinitialize
+                        initialValues={previousData}
                         validationSchema={currentValidationSchema}
-                        onSubmit={handleSubmit}
+                        onSubmit={submitForm}
                       >
                         {({ isSubmitting }) => (
                           <Form id={formId}>
@@ -115,7 +112,9 @@ function Wizard() {
                               >
                                 Back
                               </Button>
+
                               <Box sx={{ flex: "1 1 auto" }} />
+
                               <Button disabled={isSubmitting} type="submit">
                                 {activeStep === steps.length - 1
                                   ? "Submit"
@@ -135,7 +134,7 @@ function Wizard() {
         </Stepper>
       )}
 
-      {/* Renders submission confirmation fragment conditionally on the last step if a view port width is 700px or less */}
+      {/* Renders submitting confirmation fragment conditionally on the last step if a view port width is 700px or less */}
       {isSmallScreen && activeStep === steps.length && (
         <Fragment>
           <Typography sx={{ my: 10 }} className={styles.titleForm}>
@@ -170,9 +169,10 @@ function Wizard() {
       {!isSmallScreen && activeStep < steps.length && (
         <Fragment>
           <Formik
-            initialValues={formInitialValues}
+            enableReinitialize
+            initialValues={previousData}
             validationSchema={currentValidationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={submitForm}
           >
             {({ isSubmitting }) => (
               <Form id={formId}>
@@ -186,7 +186,9 @@ function Wizard() {
                   >
                     Back
                   </Button>
+
                   <Box sx={{ flex: "1 1 auto" }} />
+
                   <Button disabled={isSubmitting} type="submit">
                     {activeStep === steps.length - 1 ? "Submit" : "Next"}
                   </Button>
@@ -198,7 +200,7 @@ function Wizard() {
         </Fragment>
       )}
 
-      {/* Renders submission confirmation fragment on the last step conditionally if a view port width is more than 700px */}
+      {/* Renders submitting confirmation fragment on the last step conditionally if a view port width is more than 700px */}
       {!isSmallScreen && activeStep === steps.length && (
         <Fragment>
           <Typography sx={{ my: 10 }} className={styles.titleForm}>
