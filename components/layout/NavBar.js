@@ -89,7 +89,8 @@ const NavBar = () => {
           const pages = res.data.data.map((item) => {
             //change format to match menu item(s)
             return {
-              href: "../resources/" + item.slug,
+              href: "../../resources/" + item.slug,
+              // href: "../resources/" + item.slug,
               target: "_self",
               title: item.title,
               wordpress_id: item.wordpress_id,
@@ -181,9 +182,23 @@ const NavBar = () => {
                       target={page.target}
                       rel="noopener noreferrer"
                     >
-                      <Typography variant="body1" textAlign="center">
-                        {page.title}
-                      </Typography>
+                      <div
+                        zeroMinWidth
+                        style={{
+                          width: "10rem",
+                          padding: "2px 0 2px 0",
+                          margin: "2px",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          textAlign="center"
+                          style={{ whiteSpace: "normal" }}
+                        >
+                          {page.title}
+                        </Typography>
+                      </div>
                     </MenuItem>
                   ))}
               </Menu>
