@@ -183,11 +183,10 @@ const NavBar = () => {
                       rel="noopener noreferrer"
                     >
                       <div
-                        zeroMinWidth
                         style={{
-                          width: "10rem",
+                          width: "20rem",
                           padding: "2px 0 2px 0",
-                          margin: "2px",
+                          margin: "5px",
                           wordWrap: "break-word",
                         }}
                       >
