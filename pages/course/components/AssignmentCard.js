@@ -6,19 +6,29 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
+import PrintMarkdown from "./PrintMarkdown";
 
-export default function AssignmentCard({ mindset, assignments, submit }) {
+export default function AssignmentCard({
+  mindset,
+  assignments,
+  submit,
+  lessonEndDate,
+}) {
   return (
     <Card
       elevation={1}
       square
       sx={{
-        backgroundColor: "#F4F5F7",
+        backgroundColor: "syllabus.card",
         padding: "1em",
         boxShadow: "none",
       }}
     >
-      <CardHeader title="Assignments" subheader={<div>Due Date:</div>} />
+      <CardHeader
+        title="Assignments"
+        subheader={<div>Due Date: {lessonEndDate}</div>}
+        sx={{ lineHeight: "50px" }}
+      />
 
       <CardContent>
         <Typography variant="h6">Coding Assignment</Typography>
@@ -44,7 +54,9 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
         <Typography variant="h6" sx={{ pt: "1em", pb: "8px" }}>
           Mindset Assignment
         </Typography>
-        <Typography variant="body1">{mindset}</Typography>
+       
+          <PrintMarkdown mindset={mindset} />
+        
       </CardContent>
 
       <CardActions sx={{ padding: "16px" }}>
@@ -52,7 +64,7 @@ export default function AssignmentCard({ mindset, assignments, submit }) {
           target="_blank"
           variant="contained"
           size="small"
-          sx={{ backgroundColor: "#6BDF77" }}
+          sx={{ backgroundColor: "submission.main",p:"8px 10px", textAlign:"center"  }}
           href={submit}
           aria-label="submit assignment button"
         >
