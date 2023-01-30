@@ -22,6 +22,7 @@ const createStaticPages = async (req, res) => {
     wordpress_id: body.wp_id,
     isShown: body.isShown,
     title: body.title,
+    slug: body.slug,
   };
 
   const newpages = [];
