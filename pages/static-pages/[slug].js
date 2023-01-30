@@ -41,14 +41,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+
   const mongoPage = await StaticPage.findOne({
     slug: contextSlug,
   }).lean();
