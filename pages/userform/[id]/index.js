@@ -104,14 +104,6 @@ export async function getServerSideProps(context) {
   }
   if (session) {
     const { user } = session;
-    if(!user.hasProfile) {
-      return {
-        redirect: {
-          destination: '/signup',
-          permanent: false,
-        }
-      }
-    }
     return {
       props: { user },
     };
