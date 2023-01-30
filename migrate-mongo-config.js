@@ -2,7 +2,7 @@
 const env = require("@next/env");
 
 env.loadEnvConfig(process.cwd())
-//console.log('env', env)
+
 const config = {
   
   mongodb: {
@@ -35,5 +35,5 @@ const config = {
   // Don't change this, unless you know what you're doing
   moduleSystem: 'commonjs',
 };
-console.log('config', config);
+//console.log('config', config);****use this log to see current config data
 module.exports = config;
