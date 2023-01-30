@@ -19,7 +19,7 @@ import {
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import axios from "axios";
-//trim to 30 characters add elipses (...)
+
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElPages, setAnchorElPages] = useState(null);
