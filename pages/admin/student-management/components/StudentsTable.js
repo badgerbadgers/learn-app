@@ -187,8 +187,8 @@ export default function StudentsTable({ loading, tableRows }) {
       align: "center",
     },
     {
-      field: "lastLogin",
-      headerName: "Last Login",
+      field: "lastSeen",
+      headerName: "Last Seen",
       flex: 1,
       width: 100,
       editable: false,

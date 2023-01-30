@@ -37,7 +37,7 @@ export default NextAuth({
         try {
           await database
           .collection("users")
-          .findOneAndUpdate({gh: user.gh}, {$set: {"lastVisit": new Date()}})
+          .findOneAndUpdate({gh: user.gh}, {$set: {"lastSeen": new Date()}})
         } catch (error) {
           console.error(error, "error from last visit datetime session")
         }
@@ -102,7 +102,7 @@ export default NextAuth({
           image: profile.avatar_url,
           gh: profile.login,
           url: profile.html_url,
-          roleIds: ["2"],
+          
         };
       },
     }),

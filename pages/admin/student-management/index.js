@@ -10,6 +10,8 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
+import { formatDistance } from "date-fns";
+
 
 const StudentManagemant = () => {
   const url = "/api/users";
@@ -25,6 +27,8 @@ const StudentManagemant = () => {
   ]);
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
+  // const timeAgo = formatDistance(new Date(lastSeen), new Date(), { addSuffix: true });
+ 
 
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -60,7 +64,7 @@ const StudentManagemant = () => {
       gh: student.gh ? student.gh : "",
       recordCreated: "counting",
       status: "counting",
-      lastLogin: "counting",
+      lastSeen: "counting",
     };
   };
 
