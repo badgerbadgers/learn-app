@@ -64,7 +64,7 @@ const StudentManagemant = () => {
       gh: student.gh ? student.gh : "",
       recordCreated: "counting",
       status: "counting",
-      lastSeen: "counting",
+      lastSeen: student.lastSeen ? formatDistance(new Date(student.lastSeen), new Date(), { addSuffix: true }) : "",
     };
   };
 
