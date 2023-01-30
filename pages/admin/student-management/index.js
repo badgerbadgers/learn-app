@@ -12,7 +12,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import { formatDistance } from "date-fns";
 
-
 const StudentManagemant = () => {
   const url = "/api/users";
   const allStudents = useRef([]);
@@ -27,8 +26,6 @@ const StudentManagemant = () => {
   ]);
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({});
-  // const timeAgo = formatDistance(new Date(lastSeen), new Date(), { addSuffix: true });
- 
 
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
