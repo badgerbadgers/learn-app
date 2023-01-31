@@ -12,7 +12,7 @@ const nextConfig = {
   },
   env: {
     // customUrl: "my-value",
-    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
+    wordpressDomain: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
   },
 };
 
