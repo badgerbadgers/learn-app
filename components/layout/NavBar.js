@@ -89,7 +89,7 @@ const NavBar = () => {
           const pages = res.data.data.map((item) => {
             //change format to match menu item(s)
             return {
-              href: "../../resources/" + item.slug,
+              href: "resources/" + item.slug,
               target: "_self",
               title: item.title,
               wordpress_id: item.wordpress_id,
