@@ -53,9 +53,7 @@ export async function getServerSideProps(context) {
     };
   }
   // fetches specific wp page using wordpress_id
-  const res = await fetch(
-    `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
-  );
+  const res = await fetch(process.env.wordpressUrl + mongoPage.wordpress_id);
   const wordpressPage = await res.json();
 
   // Pass data to the page via props

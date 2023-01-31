@@ -105,8 +105,8 @@ export default AllStaticPages
 AllStaticPages.getLayout = privateLayout
 
 export async function getServerSideProps(context) {
-  await dbConnect()
-  const session = await getSession(context)
+  await dbConnect();
+  const session = await getSession(context);
 
   if (!session) {
     return {
@@ -114,23 +114,21 @@ export async function getServerSideProps(context) {
         destination: "/",
         permanent: false,
       },
-    }
+    };
   }
   const { user } = session;
 
-  const mongoData = await StaticPage.find({}).lean()
-  const res = await axios.get(
-    "https://learn.codethedream.org/wp-json/wp/v2/pages"
-  )
-  const wordpressData = await res.data
-  const combinedData = combineData(wordpressData, mongoData)
+  const mongoData = await StaticPage.find({}).lean();
+  const res = await axios.get(process.env.wordpressUrl);
+  const wordpressData = await res.data;
+  const combinedData = combineData(wordpressData, mongoData);
 
   return {
     props: {
       combinedData,
       user,
     },
-  }
+  };
 }
 
 //helper function combines wordPress data with mongoDB data, called in getServerSideProps

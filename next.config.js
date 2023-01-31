@@ -8,8 +8,12 @@ const nextConfig = {
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
-    swSrc: 'service-worker.js'
+    swSrc: "service-worker.js",
   },
-}
+  env: {
+    // customUrl: "my-value",
+    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
+  },
+};
 
 module.exports = withPWA(nextConfig)
