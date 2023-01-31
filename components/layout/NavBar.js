@@ -90,12 +90,11 @@ const NavBar = () => {
             //change format to match menu item(s)
             return {
               href: "../../resources/" + item.slug,
-              // href: "../resources/" + item.slug,
               target: "_self",
               title: item.title,
               wordpress_id: item.wordpress_id,
               slug: item.slug,
-            };
+            }
           });
           //set resource menu pages as new data
           setResourceMenuPages(pages);
