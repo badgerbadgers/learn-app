@@ -163,7 +163,7 @@ export default function StudentsTable({ loading, tableRows }) {
       headerAlign: "center",
     },
     {
-      field: "recordCreated",
+      field: "record_created",
       headerName: "Record Created",
       type: "date",
       flex: 1,
@@ -187,7 +187,7 @@ export default function StudentsTable({ loading, tableRows }) {
       align: "center",
     },
     {
-      field: "lastSeen",
+      field: "last_seen",
       headerName: "Last Seen",
       flex: 1,
       width: 100,

@@ -59,9 +59,9 @@ const StudentManagemant = () => {
       name: student.name ? student.name : "",
       email: student.email ? student.email : "",
       gh: student.gh ? student.gh : "",
-      recordCreated: "counting",
+      record_created: "counting",
       status: "counting",
-      lastSeen: student.lastSeen ? formatDistance(new Date(student.lastSeen), new Date(), { addSuffix: true }) : "",
+      last_seen: student.last_seen ? formatDistance(new Date(student.last_seen), new Date(), { addSuffix: true }) : "",
     };
   };
 
