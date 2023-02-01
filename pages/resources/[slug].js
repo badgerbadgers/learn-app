@@ -34,26 +34,7 @@ Slug.getLayout = function getLayout(pages) {
 
 export async function getServerSideProps(context) {
   await dbConnect();
-  const contextSlug = context.query.slug;
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  const { user } = session;
-  if (!user.hasProfile) {
-    return {
-      redirect: {
-        destination: "/signup",
-        permanent: false,
-      },
-    };
-  }
+  const contextSlug = context.query.slug
 
   const mongoPage = await StaticPage.findOne({
     slug: contextSlug,
