@@ -10,6 +10,3 @@ module.exports = {
     await db.collection('users').updateMany({}, {$set: {hasProfile: true}});
   }
 };
-
-
-
