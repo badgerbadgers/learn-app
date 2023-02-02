@@ -67,7 +67,6 @@ export async function getServerSideProps(context) {
     previousData = await AcceptanceFormModel.findOne({user: user.id}).lean();
     previousData = JSON.parse(JSON.stringify(previousData));
   }
-
   return {
     props: { user, previousData },
   };

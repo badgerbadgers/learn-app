@@ -63,6 +63,8 @@ const createAcceptanceForm = async (req, res) => {
     background_prior_coding_languages: body.background_prior_coding_languages,
     consent_work_commitment: body.consent_work_commitment,
     consent_leave_notice: body.consent_leave_notice,
+    active_step: body.active_step,
+    is_completed: body.is_completed,
   };
   try {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {

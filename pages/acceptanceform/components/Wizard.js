@@ -20,6 +20,7 @@ import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
 import axios from "axios";
 
+// order of stepper's steps
 const steps = [
   "Personal Information",
   "Address",
@@ -28,46 +29,58 @@ const steps = [
   "Learning Background",
 ];
 
+// Formik form model properties
 const { formId, formField } = formModel;
 
-function renderStepContent(step) {
-  switch (step) {
-    case 0:
-      return <PersonalInfo formField={formField} />;
-    case 1:
-      return <Address formField={formField} />;
-    case 2:
-      return <DemographicStats formField={formField} />;
-    case 3:
-      return <EmergencyContacts formField={formField} />;
-    case 4:
-      return <LearningBackground formField={formField} />;
-    default:
-      return <div>Not Found</div>;
-  }
-}
-
 function Wizard({previousData}) {
-  const [activeStep, setActiveStep] = useState(0);
+
+  // wizard steps components switcher function
+  function renderStepContent(step) {
+    switch (step) {
+      case 0:
+        return <PersonalInfo formField={formField} />;
+      case 1:
+        return <Address formField={formField} />;
+      case 2:
+        return <DemographicStats formField={formField} />;
+      case 3:
+        return <EmergencyContacts formField={formField} />;
+      case 4:
+        return <LearningBackground formField={formField} />;
+      default:
+        return <div>Not Found</div>;
+    }
+  }
+
+  // if a user moved to at least the second step in filling out the form but hasn't completed
+  // the entire form then upon the page reload it will show the step a user was interrupted at 
+  // in all other cases it will show the first step of the form
+  const [activeStep, setActiveStep] = useState((previousData && previousData.active_step >=0 && !previousData.is_completed) ? previousData.active_step + 1 : 0);
+
+  // if the user previously completed filling out of at least one step then upon the page reload
+  // the values they entered on the completed steps will be prepopulated those fields accordingly
+  if (!previousData) {
+    previousData = formInitialValues;
+  }
+
+  // picking a Yup validation block depends on the current step
   const currentValidationSchema = validationSchema[activeStep];
 
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
+  // handler for the Back button of the stepper
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  // handler for the Next and Submit button of the stepper
   async function submitForm(values, actions) {
     setActiveStep(activeStep + 1);
     actions.setTouched({});
     actions.setSubmitting(false);
-    axios.post("/api/acceptanceform", { body: values });
-  }
-
-  if (!previousData) {
-    previousData = formInitialValues;
+    if (activeStep + 1 === steps.length) {
+      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep, is_completed: true} });
+    } else {
+      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep} });
+    }
   }
 
   const isSmallScreen = useMediaQuery("(max-width:700px)");
