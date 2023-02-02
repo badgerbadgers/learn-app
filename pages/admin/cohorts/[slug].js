@@ -36,6 +36,9 @@ const IndividualCohortPage = ({ prevCohort, nextCohort }) => {
         if (cohort.students) {
           const localStudents = [];
           cohort.students.map((st) => {
+            if (!st.user) {
+              return;
+            }
             let student = st.user;
             student.id = student._id;
             delete student._id;
