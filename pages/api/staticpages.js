@@ -6,11 +6,14 @@ export default async function handler(req, res) {
   const { method } = req;
   await dbConnect();
   switch (method) {
+    case "GET":
+      await getShownStaticPages(req, res);
+      return;
     case "POST":
       await createStaticPages(req, res);
       return;
     default:
-      res.setHeader("Allow", ["PATCH", "POST"]);
+      res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
@@ -33,6 +36,19 @@ const createStaticPages = async (req, res) => {
     res.status(200).json({ success: true, data: JSON.stringify(newpages) });
   } catch (error) {
     console.error(error);
+    res.status(400).json({ success: false });
+  }
+};
+
+const getShownStaticPages = async (req, res) => {
+  const isShownMongoPages = [];
+  try {
+    const isShownMongoPages = await Staticpage.find({ isShown: true });
+    res.status(200).json({
+      success: true,
+      data: isShownMongoPages,
+    });
+  } catch (error) {
     res.status(400).json({ success: false });
   }
 };
