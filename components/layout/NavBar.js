@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ThemeContext } from "../theme/ThemeContextWrapper";
 import { useSession, signOut } from "next-auth/react";
@@ -18,12 +18,15 @@ import {
 } from "@mui/material/";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import axios from "axios";
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElPages, setAnchorElPages] = useState(null);
   const { mode, changeTheme } = useContext(ThemeContext);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [resourceMenuPages, setResourceMenuPages] = useState([]);
 
   const settings = [
     {
@@ -60,16 +63,46 @@ const NavBar = () => {
     },
   ];
 
+  const handlePagesMenuOpen = (event) => {
+    setAnchorElPages(event.currentTarget);
+  };
+
   // open the Menu when clicked on the avatar
-  const handleMenuOpen = (event) => {
+  const handleUserMenuOpen = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
   // close the Menu when you select any Menu item
   const handleMenuClose = () => {
     setAnchorElUser(null);
+    setAnchorElPages(null);
   };
 
+  useEffect(() => {
+    try {
+      axios
+        .get(`/api/staticpages`, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          //we want to iterate over static pages data
+          const pages = res.data.data.map((item) => {
+            //change format to match menu item(s)
+            return {
+              href: "/resources/" + item.slug,
+              target: "_self",
+              title: item.title,
+              wordpress_id: item.wordpress_id,
+              slug: item.slug,
+            }
+          });
+          //set resource menu pages as new data
+          setResourceMenuPages(pages);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <AppBar
       enableColorOnDark
@@ -106,7 +139,6 @@ const NavBar = () => {
           />
 
           {/* Box for the user Image and Menu */}
-
           {session && (
             <Box
               sx={{
@@ -118,13 +150,66 @@ const NavBar = () => {
                 alignItems: "center",
               }}
             >
+              {/* Start Static Pages Menu */}
+              <Typography variant="h7" mr={4} onClick={handlePagesMenuOpen}>
+                Student Resources
+              </Typography>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElPages}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                keepMounted
+                open={Boolean(anchorElPages)}
+                onClose={handleMenuClose}
+              >
+                {resourceMenuPages &&
+                  resourceMenuPages.map((page) => (
+                    <MenuItem
+                      key={page.title}
+                      onClick={() => {
+                        handleMenuClose;
+                      }}
+                      component={Link}
+                      href={page.href}
+                      target={page.target}
+                      rel="noopener noreferrer"
+                    >
+                      <div
+                        style={{
+                          width: "20rem",
+                          padding: "2px 0 2px 0",
+                          margin: "5px",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          textAlign="center"
+                          style={{ whiteSpace: "normal" }}
+                        >
+                          {page.title}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  ))}
+              </Menu>
+              {/* End Static Pages Menu */}
+
+              {/* Start User Account Menu */}
               <Typography variant="h6" mr={1}>
                 {session.user.name || session.user.gh}
               </Typography>
 
               <Tooltip title="Open settings">
                 <IconButton
-                  onClick={handleMenuOpen}
+                  onClick={handleUserMenuOpen}
                   sx={{ p: 0 }}
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -192,6 +277,7 @@ const NavBar = () => {
                       )}
                     </MenuItem>
                   ))}
+                {/* End User Account Menu */}
               </Menu>
             </Box>
           )}
@@ -201,4 +287,3 @@ const NavBar = () => {
   );
 };
 export default NavBar;
-
