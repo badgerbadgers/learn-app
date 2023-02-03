@@ -1,11 +1,10 @@
 import Cohort from "../../../../lib/models/Cohort";
 import Course from "../../../../lib/models/Course";
 import Section from "../../../../lib/models/Section";
-import Student from "../../../../lib/models/Student";
+import User from "../../../../lib/models/User";
 import dbConnect from "../../../../lib/dbConnect";
 
-export default async function handler(req, res) { 
-  
+export default async function handler(req, res) {
   const { method } = req;
   const slug = req.query.slug;
   await dbConnect();
@@ -32,17 +31,16 @@ export default async function handler(req, res) {
             },
             {
               path: "students.user",
-              model: "Student",
-              select: "firstName lastName email",
+              model: "User",
+              select: "name email",
             },
           ])
           .exec();
-        res.status(200).json({ cohort: cohort })
-       
+        res.status(200).json({ cohort: cohort });
       } catch (error) {
-        console.error(error)
-        res.status(400).json({ success: false })
+        console.error(error);
+        res.status(400).json({ success: false });
       }
-      break
+      break;
   }
 }
