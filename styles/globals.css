@@ -75,7 +75,10 @@ p {
 .MuiFormHelperText-root {
   color: #D32F2F;
 }
-
+/* cohort management page courses dropdown menu */
+.MuiMenuItem-root{
+  font-size: 0.9rem;
+}
 .main {
   flex: 1;
   display: flex;

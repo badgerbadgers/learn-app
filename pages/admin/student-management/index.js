@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
+import { formatDistance } from "date-fns";
 
 const StudentManagemant = () => {
   const url = "/api/users";
@@ -58,9 +59,9 @@ const StudentManagemant = () => {
       name: student.name ? student.name : "",
       email: student.email ? student.email : "",
       gh: student.gh ? student.gh : "",
-      recordCreated: "counting",
+      record_created: "counting",
       status: "counting",
-      lastLogin: "counting",
+      last_seen: student.last_seen ? formatDistance(new Date(student.last_seen), new Date(), { addSuffix: true }) : "",
     };
   };
 
