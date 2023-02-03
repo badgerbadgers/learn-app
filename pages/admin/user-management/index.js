@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import StudentsTable from "./components/StudentsTable";
-import StudentsFilter from "./components/StudentsFilter";
+import StudentsTable from "./components/UsersTable";
+import StudentsFilter from "./components/UsersFilter";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
@@ -140,11 +140,16 @@ const StudentManagemant = () => {
   return (
     <Container sx={{ textAlign: "center " }}>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
-        Student Management
+       User Management
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles} changeHandler={filterChangeHandler} />
+          <StudentsFilter
+            cohorts={cohorts.sort()}
+            courses={courses.sort()}
+            roles={roles}
+            changeHandler={filterChangeHandler}
+          />
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -155,7 +160,13 @@ const StudentManagemant = () => {
             InputProps={{
               startAdornment: <SearchIcon fontSize="small" />,
               endAdornment: (
-                <IconButton title="Clear" aria-label="Clear" size="small" onClick={clearSearch} style={{ visibility: searchInput ? "visible" : "hidden" }}>
+                <IconButton
+                  title="Clear"
+                  aria-label="Clear"
+                  size="small"
+                  onClick={clearSearch}
+                  style={{ visibility: searchInput ? "visible" : "hidden" }}
+                >
                   <ClearIcon fontSize="small" />
                 </IconButton>
               ),
@@ -163,7 +174,13 @@ const StudentManagemant = () => {
           />
         </Grid>
       </Grid>
-      <StudentsTable loading={loading} tableRows={tableRows} id={id} setId={setId} />
+      <StudentsTable
+        loading={loading}
+        tableRows={tableRows}
+        id={id}
+        setId={setId}
+        cohorts={cohorts.sort()}
+      />
     </Container>
   );
 };
