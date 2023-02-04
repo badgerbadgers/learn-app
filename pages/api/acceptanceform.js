@@ -65,6 +65,7 @@ const createAcceptanceForm = async (req, res) => {
     consent_leave_notice: body.consent_leave_notice,
     active_step: body.active_step,
     is_completed: body.is_completed,
+    completed_at: body.completed_at,
   };
   try {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {

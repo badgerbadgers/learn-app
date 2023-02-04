@@ -18,9 +18,10 @@ import { Formik, Form } from "formik";
 import validationSchema from "./FormModel/validationSchema";
 import formModel from "./FormModel/formModel";
 import formInitialValues from "./FormModel/formInitialValues";
+import { format } from "date-fns";
 import axios from "axios";
 
-// order of stepper's steps
+// order of wizard steps
 const steps = [
   "Personal Information",
   "Address",
@@ -77,7 +78,7 @@ function Wizard({previousData}) {
     actions.setTouched({});
     actions.setSubmitting(false);
     if (activeStep + 1 === steps.length) {
-      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep, is_completed: true} });
+      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep, is_completed: true, completed_at: new Date() } });
     } else {
       axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep} });
     }
