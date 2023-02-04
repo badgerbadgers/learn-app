@@ -14,14 +14,8 @@ export default function IndCohortGrid({ loading, students }) {
 
   const columns = [
     {
-      field: "firstName",
-      headerName: "First Name",
-      flex: 1,
-      editable: false,
-    },
-    {
-      field: "lastName",
-      headerName: "Last Name",
+      field: "name",
+      headerName: "Name",
       flex: 1,
       editable: false,
     },
@@ -63,7 +57,8 @@ export default function IndCohortGrid({ loading, students }) {
     {
       field: "notes",
       headerName: "Notes",
-    }];
+    },
+  ];
 
   return (
     <Box sx={{
