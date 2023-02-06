@@ -7,7 +7,7 @@ import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 
-const Slug = ({ isShownBySlugMongoPage, content }) => {
+const Slug = ({ dbPage, content }) => {
   const router = useRouter();
   const slug = router.query.slug;
 
@@ -64,7 +64,7 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      isShownBySlugMongoPage: JSON.parse(JSON.stringify(mongoPage)),
+      dbPage: JSON.parse(JSON.stringify(mongoPage)),
       content: wordpressPage.content.rendered,
       revalidate: 600, // 10 mins
     },
