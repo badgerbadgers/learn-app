@@ -35,7 +35,7 @@ Slug.getLayout = function getLayout(pages) {
 //it needs to define a list of paths to be statically generated.
 export async function getStaticPaths() {
   await dbConnect();
-  const mongoPages = await StaticPage.find({}).lean();
+  const mongoPages = await StaticPage.find({ isShown: true }).lean();
   const paths = mongoPages.map((page) => {
     return {
       params: { slug: page.slug },
