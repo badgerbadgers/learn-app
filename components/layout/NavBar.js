@@ -19,7 +19,7 @@ import {
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import axios from "axios";
-//trim to 30 characters add elipses (...)
+
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElPages, setAnchorElPages] = useState(null);
@@ -89,12 +89,12 @@ const NavBar = () => {
           const pages = res.data.data.map((item) => {
             //change format to match menu item(s)
             return {
-              href: "../../resources/" + item.slug,
+              href: "/resources/" + item.slug,
               target: "_self",
               title: item.title,
               wordpress_id: item.wordpress_id,
               slug: item.slug,
-            };
+            }
           });
           //set resource menu pages as new data
           setResourceMenuPages(pages);
@@ -181,9 +181,22 @@ const NavBar = () => {
                       target={page.target}
                       rel="noopener noreferrer"
                     >
-                      <Typography variant="body1" textAlign="center">
-                        {page.title}
-                      </Typography>
+                      <div
+                        style={{
+                          width: "20rem",
+                          padding: "2px 0 2px 0",
+                          margin: "5px",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          textAlign="center"
+                          style={{ whiteSpace: "normal" }}
+                        >
+                          {page.title}
+                        </Typography>
+                      </div>
                     </MenuItem>
                   ))}
               </Menu>

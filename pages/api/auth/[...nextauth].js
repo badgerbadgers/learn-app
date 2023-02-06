@@ -3,6 +3,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodb";
 import GitHubProvider from "next-auth/providers/github";
 import { getGitHubMembers } from "../../../lib/github";
+import { date } from "yup";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -27,6 +28,21 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, user }) {
+      //update user's last visit timestamp
+      if(user) {
+        const client = await clientPromise;
+        const database = client.db(process.env.MONGODB_DB);
+       
+
+        try {
+          await database
+          .collection("users")
+          .findOneAndUpdate({gh: user.gh}, {$set: {"last_seen": new Date()}})
+        } catch (error) {
+          console.error(error, "error from last visit datetime session")
+        }
+
+      }
       return { ...session, user };
     },
     async signIn({ user }) {
@@ -86,7 +102,7 @@ export default NextAuth({
           image: profile.avatar_url,
           gh: profile.login,
           url: profile.html_url,
-          roleIds: ["2"],
+          
         };
       },
     }),
