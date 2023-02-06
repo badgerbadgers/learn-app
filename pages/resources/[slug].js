@@ -53,6 +53,7 @@ export async function getStaticProps(context) {
   const contextSlug = context.params.slug;
   const mongoPage = await StaticPage.findOne({
     slug: contextSlug,
+    isShown: true,
   }).lean();
 
   // fetches specific wp page using wordpress_id
