@@ -13,7 +13,7 @@ const Slug = ({ dbPage, content }) => {
 
   return (
     <Box sx={{ width: "75%" }}>
-      <h2>{isShownBySlugMongoPage.title}</h2>
+      <h2>{dbPage.title}</h2>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </Box>
   );
