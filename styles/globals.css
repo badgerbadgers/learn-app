@@ -71,6 +71,7 @@ p,
 .MuiTablePagination-selectLabel, 
 .MuiTablePagination-displayedRows{
   font-family: "Montserrat";
+  font-size: 0.9rem;
 }
 
 .MuiGrid-container {
