@@ -33,6 +33,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
+
 const useStyles = makeStyles({
   disabled: {
     opacity: 0.3,
@@ -54,25 +55,39 @@ const EditToolbar = (props) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setCohortSelected(null);
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+ const handleCohortChange = (event, selectedOption) =>{
+    !selectedOption
+      ? setCohortSelected(null)
+      : setCohortSelected(selectedOption.value); 
+    
+  }
+
   //for add to cohort button
-  const cohortId = cohortSelected
-  const handleAddToCohort = async (cohortId) => {
+  
+  const handleAddToCohort = async () => {
+     const cohortId = cohortSelected;
+     console.log(cohortSelected);
     axios
       .put(`/api/cohorts/${cohortId}`, {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cohortId),
+        
+      }).then(res => {
+        console.log(res.data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-      setSnackbar({
-        children: "User successfully added to cohort",
-        severity: "success",
-      });
+      
+    setSnackbar({
+      children: "User successfully added to cohort",
+      severity: "success",
+    });
   };
 
   //for edit or update user
@@ -84,8 +99,10 @@ const EditToolbar = (props) => {
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "gh" },
     }));
   };
-  console.log("cohortSelected", cohortSelected);
-  console.log("radioGroupSelected", radioGroupSelected);
+  
+
+ //console.log("selectedOption", selectedOption);
+ console.log("cohortSelected", cohortSelected);
   return (
     <GridToolbarContainer
       sx={{ display: "flex", justifyContent: "space-between" }}
@@ -125,10 +142,7 @@ const EditToolbar = (props) => {
                 <TextField {...params} label="Choose Cohort" />
               )}
               onChange={(event, selectedOption) => {
-                if (selectedOption) {
-                  setCohortSelected(selectedOption.value);
-                  console.log("cohort: ", selectedOption.value);
-                }
+                handleCohortChange(event, selectedOption)
               }}
             />
             <Box sx={{ mt: 2 }}>
@@ -162,10 +176,7 @@ const EditToolbar = (props) => {
               {!cohortSelected ? (
                 <Button disabled>Add To Cohort</Button>
               ) : (
-                <Button
-                  variant="contained"
-                  onClick={console.log("add to cohort")}
-                >
+                <Button variant="contained" onClick={handleAddToCohort}>
                   Add To Cohort
                 </Button>
               )}
