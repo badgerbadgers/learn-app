@@ -5,7 +5,6 @@ body {
   position: relative;
   min-height: 100vh;
   margin: 0;
-
   font-family: "Montserrat", "gothamRoundedMedium", "gothamRoundedBold";
 }
 
@@ -64,8 +63,15 @@ h2 {
   font-family: "gothamRoundedMedium";
 }
 
-p {
+p, 
+.MuiDataGrid-cellContent, 
+.MuiDataGrid-columnHeaderTitle, 
+.MuiDataGrid-cell--withRenderer, 
+.MuiInputBase-input, 
+.MuiTablePagination-selectLabel, 
+.MuiTablePagination-displayedRows{
   font-family: "Montserrat";
+  font-size: 0.9rem;
 }
 
 .MuiGrid-container {

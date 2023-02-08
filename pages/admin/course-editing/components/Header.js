@@ -33,7 +33,7 @@ export default function Header({ courseTitle, allCourses }) {
       <Typography
         variant="h2"
         sx={{
-          fontFamily: "Gotham Rounded",
+          fontFamily: "gothamRoundedMedium",
           fontWeight: "100",
           color: "#FF5C35",
           fontSize: "36px",
@@ -50,7 +50,7 @@ export default function Header({ courseTitle, allCourses }) {
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
           endIcon={<ExpandMoreIcon />}
-          sx={{ textTransform: "capitalize", m:"80px" }}
+          sx={{ textTransform: "capitalize", m: "80px" }}
         >
           Courses
         </Button>
