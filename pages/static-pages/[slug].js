@@ -53,7 +53,7 @@ export async function getServerSideProps(context) {
     };
   }
   // fetches specific wp page using wordpress_id
-  const res = await fetch(process.env.wordpressDomain + mongoPage.wordpress_id);
+  const res = await fetch(process.env.wordpressUrl + mongoPage.wordpress_id);
   const wordpressPage = await res.json();
 
   // Pass data to the page via props
