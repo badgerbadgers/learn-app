@@ -1,46 +1,36 @@
 import React from "react";
 import { getSession } from "next-auth/react";
-import DashBoardCard from "./components/DashBoardCard";
-import CTDToolsCard from "./components/CTDToolsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/material";
-import { dashBoardInfo, cardStyles } from "../../lib/dashBoardCardsInfo";
-import DashBoardHeader from "./components/DashBoardHeader";
-import DashBoardCardsLayout from "./components/DashBoardCardsLayout";
 import { privateLayout } from "../../components/layout/PrivateLayout";
+import { getAllLinks } from "./components/AdminLinks";
+import { getUserLinks } from "./components/UserLinks";
+import Link from "next/link";
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ data }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
+  console.log(data);
   return (
     <Container
       sx={{ textAlign: "center", p: !matches && 1 }}
       className="extra-top-padding"
     >
-      <DashBoardHeader />
-      <DashBoardCardsLayout matches={matches}>
-        <CTDToolsCard style={cardStyles} user={user} />
-
-        {dashBoardInfo.map((info) => {
-          return (
-            <DashBoardCard
-              key={info.title}
-              title={info.title}
-              text={info.text}
-              icon={info.icon}
-              href={info.href}
-              style={cardStyles}
-            />
-          );
-        })}
-      </DashBoardCardsLayout>
+      <h2>Available links</h2>
+      <ul>
+        {data.map((link) => (
+          <li key={link.id} style={{ listStyle: "none" }}>
+            <Link href={link.url} target="_blank">
+              <a target="_blank">{link.name}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Container>
   );
 };
-
 export default Dashboard;
-
 Dashboard.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
@@ -55,9 +45,17 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
+  let data;
+  if (user.isAdmin === true) {
+    data = await getAllLinks();
+  } else {
+    data = await getUserLinks();
+  }
 
   return {
-    props: { user },
+    props: {
+      user,
+      data,
+    },
   };
 }
-
