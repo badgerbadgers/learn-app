@@ -74,9 +74,7 @@ export default async function handler(req, res) {
       break
 
     case "PUT":
-     
       const [key, val] = req.body
-       console.log("key val", key, val);
       const allowedFields = ["schedule", "start_date", "students", "mentors"]
      if (allowedFields.indexOf(key) == -1) {
         console.error(`Update not Allowed for field ${key}`);
