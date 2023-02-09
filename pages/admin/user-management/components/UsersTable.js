@@ -2,36 +2,21 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridRowModes,
-  GridToolbarContainer,
-  //GridSelectionModel,
 } from "@mui/x-data-grid";
 import React, { useCallback, useEffect, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
-import PropTypes from "prop-types";
 import SaveIcon from "@mui/icons-material/Save";
 import Snackbar from "@mui/material/Snackbar";
 import {  Stack } from "@mui/material";
 import axios from "axios";
-import { format } from "date-fns";
-import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import makeStyles from "@mui/styles/makeStyles";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Popover from "@mui/material/Popover";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import EditToolbar from "./EditToolbar";
 
 
 const useStyles = makeStyles({
@@ -39,160 +24,6 @@ const useStyles = makeStyles({
     opacity: 0.3,
   },  
 });
-
-const EditToolbar = (props) => {
-  const { setRows, setRowModesModel, rows, selectionModel, cohorts } = props;
-  const [snackbar, setSnackbar] = useState(null);
-  
-  //for Popover
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [cohortSelected, setCohortSelected] = useState(null);
-  const [radioGroupSelected, setRadioGroupSelected] = useState("student");
-  
-
-  const handleClickPopover = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-    setCohortSelected(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
- const handleCohortChange = (event, selectedOption) =>{
-    !selectedOption
-      ? setCohortSelected(null)
-      : setCohortSelected(selectedOption.value); 
-    
-  }
-
-  //for add to cohort button
-  
-  const handleAddToCohort = async () => {
-     const cohortId = cohortSelected;
-     console.log(cohortSelected);
-    axios
-      .put(`/api/cohorts/${cohortId}`, {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cohortId),
-        
-      }).then(res => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-      
-    setSnackbar({
-      children: "User successfully added to cohort",
-      severity: "success",
-    });
-  };
-
-  //for edit or update user
-  const handleClick = () => {
-    const id = uuidv4();
-    setRows((oldRows) => [...oldRows, { id, gh: "", isNew: true }]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "gh" },
-    }));
-  };
-  
-
- //console.log("selectedOption", selectedOption);
- console.log("cohortSelected", cohortSelected);
-  return (
-    <GridToolbarContainer
-      sx={{ display: "flex", justifyContent: "space-between" }}
-    >
-      <Button startIcon={<AddIcon />} onClick={handleClick}>
-        Add User
-      </Button>
-
-      <Box sx={{ m: 1 }}>
-        {selectionModel.length === 0 ? (
-          <Button disabled endIcon={<MoreHorizIcon />}>
-            Add Users To Cohorts
-          </Button>
-        ) : (
-          <Button onClick={handleClickPopover} endIcon={<MoreHorizIcon />}>
-            Add Users To Cohorts
-          </Button>
-        )}
-
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <Box sx={{ m: 2 }}>
-            <Autocomplete
-              id="filter-cohorts"
-              options={cohorts}
-              getOptionLabel={(option) => option.label}
-              sx={{ width: 180 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Choose Cohort" />
-              )}
-              onChange={(event, selectedOption) => {
-                handleCohortChange(event, selectedOption)
-              }}
-            />
-            <Box sx={{ mt: 2 }}>
-              <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                  Add as:
-                </FormLabel>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="student"
-                  name="radio-buttons-group"
-                  onChange={(event, value) => {
-                    setRadioGroupSelected(value);
-                    console.log("value", value);
-                  }}
-                >
-                  <FormControlLabel
-                    value="student"
-                    control={<Radio />}
-                    label="Student"
-                  />
-                  <FormControlLabel
-                    value="mentor"
-                    control={<Radio />}
-                    label="Mentor"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-            <Box textAlign="center">
-              {!cohortSelected ? (
-                <Button disabled>Add To Cohort</Button>
-              ) : (
-                <Button variant="contained" onClick={handleAddToCohort}>
-                  Add To Cohort
-                </Button>
-              )}
-            </Box>
-          </Box>
-        </Popover>
-      </Box>
-    </GridToolbarContainer>
-  );
-};
-
-EditToolbar.propTypes = {
-  setRowModesModel: PropTypes.func.isRequired,
-  setRows: PropTypes.func.isRequired,
-  setSelectionModel: PropTypes.func.isRequired,
-};
 
 export default function StudentsTable({ loading, tableRows, cohorts }) {
   const [rows, setRows] = useState([]);
@@ -355,7 +186,7 @@ export default function StudentsTable({ loading, tableRows, cohorts }) {
     },
     {
       field: "last_seen",
-      headerName: "Last Login",
+      headerName: "Last Seen",
       flex: 1,
       width: 100,
       editable: false,
@@ -437,7 +268,6 @@ export default function StudentsTable({ loading, tableRows, cohorts }) {
         checkboxSelection
         disableSelectionOnClick
         onSelectionModelChange={(newSelectionModel) => {
-          console.log(newSelectionModel);
           setSelectionModel(newSelectionModel);
         }}
         selectionModel={selectionModel}

@@ -3,6 +3,7 @@ import { createSchedule, sanitize } from "../cohorts";
 import Cohort from "../../../lib/models/Cohort";
 import Course from "../../../lib/models/Course";
 import dbConnect from "../../../lib/dbConnect";
+import User from "../../../lib/models/User";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -72,16 +73,33 @@ export default async function handler(req, res) {
       }
       break
 
-    case "PATCH":
+    case "PUT":
+     
       const [key, val] = req.body
-      const allowedFields = ["schedule", "start_date"]
-      if (allowedFields.indexOf(key) > -1) {
+       console.log("key val", key, val);
+      const allowedFields = ["schedule", "start_date", "students", "mentors"]
+     if (allowedFields.indexOf(key) == -1) {
+        console.error(`Update not Allowed for field ${key}`);
+        res.status(400).json({ success: false });
+        return
+      }
+      if (key == "schedule" || key == "start_date") {
         const data = {}
         data[key] = val;
         try {        
           await Cohort.updateOne({ _id: id }, data);
+          res.status(200).json({ success: true });
         } catch (error) {
           console.error("Update schedule error", error)
+          res.status(400).json({ success: false })
+        }
+        return   
+      }
+      if (key == "students" || key == "mentors") {
+        try {        
+          await addUsersToCohort(id, key, val);
+        } catch (error) {
+          console.error("Update cohort error", error)
           res.status(400).json({ success: false })
         }
         res.status(200).json({ success: true })
@@ -111,3 +129,23 @@ export default async function handler(req, res) {
   }
   return res;
 }
+
+const addUsersToCohort = async ( id, key, val) => {
+    const cohort = await Cohort.findById( id );
+    if(!cohort){
+      throw new Error("Cohort not found");
+    }
+    const users = await User.find({ _id: { $in: val } });
+    users.map((user) => {
+      if(!cohort[key].find(u => u.user == user._id)){
+        if( key == "students") {
+          cohort[key].push({ user: user._id, added_at: new Date() });       
+        } else {
+          cohort[key].push({ user: user._id });
+        }     
+      }     
+    });
+    const updatedCohort = await cohort.save();
+    return updatedCohort;
+  
+};
