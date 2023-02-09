@@ -11,7 +11,6 @@ const Dashboard = ({ data }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
-  console.log(data);
   return (
     <Container
       sx={{ textAlign: "center", p: !matches && 1 }}
@@ -46,6 +45,7 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
   let data;
+  //change to user.is_admin
   if (user.isAdmin === true) {
     data = await getAllLinks();
   } else {
