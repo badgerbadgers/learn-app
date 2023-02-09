@@ -45,8 +45,8 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
   let data;
-  //change to user.is_admin
-  if (user.isAdmin === true) {
+
+  if (user.is_admin === true) {
     data = await getAllLinks();
   } else {
     data = await getUserLinks();
