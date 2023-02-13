@@ -1,21 +1,21 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Static pages
-//  * /api/staticpages:
-//  *   get:
-//  *     description: Returns all staticpages
-//  *     tags: [Static pages] 
-//  *     responses:
-//  *       200:
-//  *         description: Get staticpages
-//  *   post:
-//  *     description: Create the staticpage
-//  *     tags: [Static pages]
-//  *     responses:
-//  *       200:
-//  *         description: Create the staticpage
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Static pages
+ * /api/staticpages:
+ *   get:
+ *     description: Returns all staticpages
+ *     tags: [Static pages] 
+ *     responses:
+ *       200:
+ *         description: Get staticpages
+ *   post:
+ *     description: Create the staticpage
+ *     tags: [Static pages]
+ *     responses:
+ *       200:
+ *         description: Create the staticpage
+ */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";
 

@@ -1,21 +1,43 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Cohorts 
-//  * /api/cohorts:
-//  *   get:
-//  *     description: Returns all cohorts
-//  *     tags: [Cohorts] 
-//  *     responses:
-//  *       200:
-//  *         description: Get cohorts
-//  *   post:
-//  *     description: Create the cohort
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Create the cohort
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Cohorts 
+ * /api/cohorts:
+ *   get:
+ *     description: Returns all cohorts
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Get cohorts
+ *   post:
+ *     description: Create the cohort
+ *     tags: [Cohorts]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             cohort_name: String
+ *             course: String
+ *             start_date: Date
+ *             seats: Number
+ *             slug: String
+ *             created_at: Date
+ *           example:
+ *             cohort_name: Gold fish
+ *             course: React
+ *             start_date: 2023-03-20
+ *             seats: 10
+ *             slug: gold-fish
+ *             created_at: 2023-03-20
+ *     responses:
+ *       200:
+ *         description: Create the cohort
+ *         content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Cohort'
+ *         
+ */
 const { ObjectId } = require("mongodb");
 
 import Cohort from "../../lib/models/Cohort";

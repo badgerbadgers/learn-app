@@ -1,25 +1,25 @@
-// /** 
-//  * @swagger
-//  * /api/users/[id]:
-//  *   get:
-//  *     description: Returns user by id
-//  *     tags: [Users]
-//  *     responses:
-//  *       200:
-//  *         description: user
-//  *   put:
-//  *     description: Update user by id
-//  *     tags: [Users]
-//  *     responses:
-//  *       200:
-//  *         description: update user
-//  *   delete:
-//  *     description: Delete user by id
-//  *     tags: [Users]
-//  *     responses:
-//  *       200:
-//  *         description: delete user
-//  */
+/** 
+ * @swagger
+ * /api/users/[id]:
+ *   get:
+ *     description: Returns user by id
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: user
+ *   put:
+ *     description: Update user by id
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: update user
+ *   delete:
+ *     description: Delete user by id
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: delete user
+ */
 import User from "../../../lib/models/User";
 import dbConnect from "../../../lib/dbConnect";
 import { sanitize } from "../users";

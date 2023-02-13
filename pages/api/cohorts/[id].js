@@ -1,31 +1,31 @@
-// /**
-//  * @swagger
-//  * /api/cohorts/[id]:
-//  *   get:
-//  *     description: Get cohort by id
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Get cohort
-//  *   post:
-//  *     description: Create cohort by id
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Create cohort by id
-//  *   patch:
-//  *     description: Update cohort by id
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Update cohort by id
-//  *   delete:
-//  *     description: Delete cohort by id
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Delete cohort by id
-//  */
+/**
+ * @swagger
+ * /api/cohorts/[id]:
+ *   get:
+ *     description: Get cohort by id
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Get cohort
+ *   post:
+ *     description: Create cohort by id
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Create cohort by id
+ *   patch:
+ *     description: Update cohort by id
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Update cohort by id
+ *   delete:
+ *     description: Delete cohort by id
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Delete cohort by id
+ */
 import { createSchedule, sanitize } from "../cohorts";
 
 import Cohort from "../../../lib/models/Cohort";

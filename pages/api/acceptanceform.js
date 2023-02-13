@@ -1,15 +1,15 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Acceptance form
-//  * /api/acceptanceform:
-//  *   post:
-//  *     description: Create the acceptance form
-//  *     tags: [Acceptance form]
-//  *     responses:
-//  *       200:
-//  *         description: Create the acceptance form
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Acceptance form
+ * /api/acceptanceform:
+ *   post:
+ *     description: Create the acceptance form
+ *     tags: [Acceptance form]
+ *     responses:
+ *       200:
+ *         description: Create the acceptance form
+ */
 import AcceptanceForm from "../../lib/models/AcceptanceForm.js";
 import dbConnect from "../../lib/dbConnect.js";
 import { getSession } from "next-auth/react";

@@ -1,13 +1,13 @@
-// /**
-//  * @swagger
-//  * /api/cohorts/[slug]:
-//  *   get:
-//  *     description: Get cohort by slug
-//  *     tags: [Cohorts]
-//  *     responses:
-//  *       200:
-//  *         description: Get cohort by slug
-//  */
+/**
+ * @swagger
+ * /api/cohorts/[slug]:
+ *   get:
+ *     description: Get cohort by slug
+ *     tags: [Cohorts]
+ *     responses:
+ *       200:
+ *         description: Get cohort by slug
+ */
 import Cohort from "../../../../lib/models/Cohort";
 import Course from "../../../../lib/models/Course";
 import Section from "../../../../lib/models/Section";

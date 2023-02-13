@@ -1,15 +1,15 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Courses
-//  * /api/courses:
-//  *   get:
-//  *     description: Returns all courses
-//  *     tags: [Courses] 
-//  *     responses:
-//  *       200:
-//  *         description: Get courses
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Courses
+ * /api/courses:
+ *   get:
+ *     description: Returns all courses
+ *     tags: [Courses] 
+ *     responses:
+ *       200:
+ *         description: Get courses
+ */
 import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";
 

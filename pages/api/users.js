@@ -1,25 +1,35 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Users
-//  * /api/users:
-//  *   get:
-//  *     description: Returns all users
-//  *     tags: [Users]
-//  *     responses:
-//  *       200:
-//  *         description: users
-//  *   post:
-//  *     description: Create
-//  *     tags: [Users]
-//  *     parameters:
-//  *          name:
-//  *     requestBody:
-//  *       required: true
-//  *     responses:
-//  *       200:
-//  *         description: The created user
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ * /api/users:
+ *   get:
+ *     description: Returns all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: users
+ *   post:
+ *     description: Add a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             name: string
+ *           example:
+ *             name: Jon
+ *     responses:
+ *       200:
+ *         description: The created user
+ *         content:
+ *           application/json:
+ *             schema: 
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ */
 
 import { getSession } from "next-auth/react";
 import clientPromise from "../../lib/mongodb";
