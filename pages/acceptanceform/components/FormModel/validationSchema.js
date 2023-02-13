@@ -1,4 +1,3 @@
-import { Schema } from "@mui/icons-material";
 import * as Yup from "yup";
 import formModel from "./formModel";
 const {
@@ -59,9 +58,14 @@ export default [
     [genderIdentity.name]: Yup.array()
       .min(1, `${genderIdentity.requiredErrorMsg}`)
       .nullable(),
-    [genderIdentitySelf.name]: Yup.string().when(genderIdentity.name, (genderIdentity.name, schhema) => {
-      return genderIdentity.name.includes("Other") ? Yup.string().min(1, `${genderIdentitySelf.requiredErrorMsg}`) : console.log("doesn't contain Other")
-    }),
+    [genderIdentitySelf.name]: Yup.string().when(
+      genderIdentity.name,
+      (genderIdentity) => {
+        return genderIdentity.includes("Other")
+          ? Yup.string().required(`${genderIdentitySelf.requiredErrorMsg}`)
+          : undefined;
+      }
+    ),
     [raceEthnicity.name]: Yup.string().required(
       `${raceEthnicity.requiredErrorMsg}`
     ),
