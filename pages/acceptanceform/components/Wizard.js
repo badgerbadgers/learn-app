@@ -55,7 +55,11 @@ function Wizard({previousData}) {
   // if a user moved to at least the second step in filling out the form but hasn't completed
   // the entire form then upon the page reload it will show the step a user was interrupted at 
   // in all other cases it will show the first step of the form
-  const [activeStep, setActiveStep] = useState((previousData && previousData.active_step >=0 && !previousData.is_completed) ? previousData.active_step + 1 : 0);
+  const [activeStep, setActiveStep] = useState(
+    previousData && !previousData.is_completed
+      ? previousData.active_step + 1
+      : 0
+  );
 
   // if the user previously completed filling out of at least one step then upon the page reload
   // the values they entered on the completed steps will be prepopulated those fields accordingly
@@ -77,9 +81,18 @@ function Wizard({previousData}) {
     actions.setTouched({});
     actions.setSubmitting(false);
     if (activeStep + 1 === steps.length) {
-      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep, is_completed: true, completed_at: new Date() } });
+      axios.post("/api/acceptanceform", {
+        body: {
+          ...values,
+          active_step: activeStep,
+          is_completed: true,
+          completed_at: new Date(),
+        },
+      });
     } else {
-      axios.post("/api/acceptanceform", { body: {...values, active_step: activeStep} });
+      axios.post("/api/acceptanceform", {
+        body: { ...values, active_step: activeStep },
+      });
     }
   }
 
