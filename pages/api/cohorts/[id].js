@@ -129,19 +129,21 @@ export default async function handler(req, res) {
 }
 
 const addUsersToCohort = async ( id, key, val) => {
-    const cohort = await Cohort.findById( id );
+    const cohort = await Cohort.findById(id);
     if(!cohort){
       throw new Error("Cohort not found");
     }
     const users = await User.find({ _id: { $in: val } });
     users.map((user) => {
-      if(!cohort[key].find(u => u.user == user._id)){
+      if(!cohort[key].find(u => u.user.toString() === user._id.toString())){
         if( key == "students") {
           cohort[key].push({ user: user._id, added_at: new Date() });       
         } else {
           cohort[key].push({ user: user._id });
         }     
       }     
+      
+           
     });
     const updatedCohort = await cohort.save();
     return updatedCohort;
