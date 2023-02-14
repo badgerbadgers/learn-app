@@ -77,22 +77,31 @@ function Wizard({previousData}) {
 
   // handler for the Next and Submit button of the stepper
   async function submitForm(values, actions) {
-    setActiveStep(activeStep + 1);
     actions.setTouched({});
     actions.setSubmitting(false);
     if (activeStep + 1 === steps.length) {
-      axios.post("/api/acceptanceform", {
-        body: {
-          ...values,
-          active_step: activeStep,
-          is_completed: true,
-          completed_at: new Date(),
-        },
-      });
+      axios
+        .post("/api/acceptanceform", {
+          body: {
+            ...values,
+            active_step: activeStep,
+            is_completed: true,
+            completed_at: new Date(),
+          },
+        })
+        .then((response) => {
+          setActiveStep(activeStep + 1);
+        })
+        .catch((error) => console.log(error));
     } else {
-      axios.post("/api/acceptanceform", {
-        body: { ...values, active_step: activeStep },
-      });
+      axios
+        .post("/api/acceptanceform", {
+          body: { ...values, active_step: activeStep },
+        })
+        .then((response) => {
+          setActiveStep(activeStep + 1);
+        })
+        .catch((error) => console.log(error));
     }
   }
 
