@@ -16,19 +16,15 @@
  *       content:
  *         application/json:
  *           schema:
- *             cohort_name: String
- *             course: String
- *             start_date: Date
- *             seats: Number
- *             slug: String
- *             created_at: Date
+ *             cohortName: Integer
+ *             courseName: String
+ *             startDate: Date
+ *             isNew: Boolen
  *           example:
- *             cohort_name: Gold fish
- *             course: React
- *             start_date: 2023-03-20
- *             seats: 10
- *             slug: gold-fish
- *             created_at: 2023-03-20
+ *             cohortName: Whale2
+ *             courseName: 62e056cee6daad619e5cc2c3
+ *             isNew: true
+ *             startDate: 2023-02-21T08:00:00.000Z
  *     responses:
  *       200:
  *         description: Create the cohort
@@ -75,7 +71,8 @@ const getCohorts = async (req, res) => {
 
 const createCohort = async (req, res) => {
   try {
-    const cohortToDb = await sanitize(JSON.parse(req.body.body));
+    console.log("body", req.body)
+    const cohortToDb = await sanitize(req.body);
     const existingCohortName = await Cohort.findOne({
       cohort_name: cohortToDb.cohort_name,
     });

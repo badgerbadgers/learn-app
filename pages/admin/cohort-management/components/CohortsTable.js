@@ -114,9 +114,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     const updatedRow = {};
     try {
       await axios
-        .post(url, {
+        .post(url, 
+          newRow,
+          {
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
         })
         .then((response) => {
           const course = courses.find(
