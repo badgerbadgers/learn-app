@@ -1,4 +1,4 @@
-const allLinks = [
+const adminLinks = [
   {
     id: 1,
     url: "/admin/cohort-management",
@@ -24,23 +24,8 @@ const allLinks = [
     url: "/admin/static-page-management",
     name: "Static page management",
   },
-  {
-    id: 6,
-    url: "/acceptanceform",
-    name: "Acceptance Form",
-  },
-  {
-    id: 7,
-    url: "/course/intro/brain-slug",
-    name: "Course page [intro]",
-  },
-  {
-    id: 8,
-    url: "/resources/deer-node",
-    name: "Student resources/static-pages [Deer: Node/Express Class]",
-  },
 ];
 
-export function getAllLinks() {
-  return allLinks;
+export function getAdminLinks() {
+  return adminLinks;
 }

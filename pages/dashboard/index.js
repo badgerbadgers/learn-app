@@ -3,11 +3,11 @@ import { getSession } from "next-auth/react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/material";
 import { privateLayout } from "../../components/layout/PrivateLayout";
-import { getAllLinks } from "./components/AdminLinks";
+import { getAdminLinks } from "./components/AdminLinks";
 import { getUserLinks } from "./components/UserLinks";
 import Link from "next/link";
 
-const Dashboard = ({ data }) => {
+const Dashboard = ({ data, isAdmin }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
 
@@ -16,22 +16,32 @@ const Dashboard = ({ data }) => {
       sx={{ textAlign: "center", p: !matches && 1 }}
       className="extra-top-padding"
     >
-      <h2>Available links</h2>
-      <ul>
-        {data.map((link) => (
-          <li key={link.id} style={{ listStyle: "none" }}>
-            <Link href={link.url} target="_blank">
-              <a target="_blank">{link.name}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div>
+        <h2>User Data</h2>
+        <ul>
+          {data[0].map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+        {isAdmin ? (
+          <div>
+            <h2>Admin Data</h2>
+            <ul>
+              {data[1].map((item) => (
+                <li key={item.id}>{item.name}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
     </Container>
   );
 };
 export default Dashboard;
 Dashboard.getLayout = privateLayout;
-
+function checkIfUserIsAdmin(user) {
+  return user.is_admin === true;
+}
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
@@ -44,17 +54,19 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  let data;
 
-  if (user.is_admin === true) {
-    data = await getAllLinks();
+  const isAdmin = checkIfUserIsAdmin(user);
+  let data;
+  if (isAdmin) {
+    data = await Promise.all([getUserLinks(), getAdminLinks()]);
   } else {
-    data = await getUserLinks();
+    data = await [getUserLinks()];
   }
 
   return {
     props: {
       user,
+      isAdmin,
       data,
     },
   };
