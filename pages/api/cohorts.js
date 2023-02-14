@@ -21,10 +21,9 @@
  *             startDate: Date
  *             isNew: Boolen
  *           example:
- *             cohortName: Whale2
+ *             cohortName: Blue Whale
  *             courseName: 62e056cee6daad619e5cc2c3
- *             isNew: true
- *             startDate: 2023-02-21T08:00:00.000Z
+ *             startDate: 2023-02-21
  *     responses:
  *       200:
  *         description: Create the cohort

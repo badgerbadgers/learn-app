@@ -8,8 +8,21 @@
  *       200:
  *         description: Get cohort
  *   post:
- *     description: Create cohort by id
+ *     description: Create the cohort by id
  *     tags: [Cohorts]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             cohortName: Integer
+ *             courseName: String
+ *             startDate: Date
+ *             isNew: Boolen
+ *           example:
+ *             cohortName: Blue Fish
+ *             courseName: 62e056cee6daad619e5cc2c3
+ *             isNew: true
+ *             startDate: 2023-02-21T08:00:00.000Z
  *     responses:
  *       200:
  *         description: Create cohort by id
