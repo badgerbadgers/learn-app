@@ -192,104 +192,86 @@ function Address(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <InputField
-                name={mailingZipcode.name}
-                label={mailingZipcode.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingZipcode.name}
+              label={mailingZipcode.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <InputField
-                name={mailingAddress1.name}
-                label={mailingAddress1.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingAddress1.name}
+              label={mailingAddress1.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <InputField
-                name={mailingAddress2.name}
-                label={mailingAddress2.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingAddress2.name}
+              label={mailingAddress2.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <InputField
-                name={mailingCity.name}
-                label={mailingCity.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingCity.name}
+              label={mailingCity.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <InputField
-                name={mailingState.name}
-                label={mailingState.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingState.name}
+              label={mailingState.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
-            {!values.address_mailing_same && (
-              <Autocomplete
-                id="country-select-demo"
-                name={mailingCountry.name}
-                label={mailingCountry.label}
-                disabled={values.mailing_same ? true : false}
-                options={countries}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => (
-                  <Box
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...props}
-                  >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                      alt=""
-                    />
-                    {option.label} ({option.code})
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Choose a country"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: "new-password", // disable autocomplete and autofill
-                    }}
+            <Autocomplete
+              id="country-select-demo"
+              name={mailingCountry.name}
+              label={mailingCountry.label}
+              disabled={values.mailing_same ? true : false}
+              options={countries}
+              autoHighlight
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option) => (
+                <Box
+                  component="li"
+                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                  {...props}
+                >
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                    alt=""
                   />
-                )}
-              />
-            )}
+                  {option.label} ({option.code})
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose a country"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password", // disable autocomplete and autofill
+                  }}
+                />
+              )}
+            />
           </Grid>
         </Grid>
       </Grid>
