@@ -42,6 +42,13 @@
  *   delete:
  *     description: Delete cohort by id
  *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 632e0184290d23ac4c005e27
  *     responses:
  *       200:
  *         description: Delete cohort by id

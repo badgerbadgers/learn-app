@@ -23,6 +23,13 @@
  *   delete:
  *     description: Delete user by id
  *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 62d1cdeb70f32c8f947ee2ba
  *     responses:
  *       200:
  *         description: delete user
