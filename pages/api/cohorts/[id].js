@@ -1,12 +1,19 @@
 /**
  * @swagger
- * /api/cohorts/[id]:
+ * /api/cohorts/{id}:
  *   get:
  *     description: Get cohort by id
  *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 635841bd9be844015c74719a
  *     responses:
  *       200:
- *         description: Get cohort
+ *         description: Get cohort by id
  *   post:
  *     description: Create the cohort by id
  *     tags: [Cohorts]

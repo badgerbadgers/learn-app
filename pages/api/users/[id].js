@@ -1,9 +1,16 @@
 /** 
  * @swagger
- * /api/users/[id]:
+ * /api/users/{id}:
  *   get:
  *     description: Returns user by id
  *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 62b22b42f4da59dbea98071b
  *     responses:
  *       200:
  *         description: user

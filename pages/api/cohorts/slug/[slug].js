@@ -1,9 +1,16 @@
 /**
  * @swagger
- * /api/cohorts/[slug]:
+ * /api/cohorts/slug/{slug}:
  *   get:
  *     description: Get cohort by slug
  *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: mobile-view
  *     responses:
  *       200:
  *         description: Get cohort by slug
