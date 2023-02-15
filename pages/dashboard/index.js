@@ -66,9 +66,9 @@ export async function getServerSideProps(context) {
   const isAdmin = checkIfUserIsAdmin(user);
   let data;
   if (isAdmin) {
-    data = await Promise.all([getUserLinks(), getAdminLinks()]);
+    data = [getUserLinks(), getAdminLinks()];
   } else {
-    data = await [getUserLinks()];
+    data = [getUserLinks()];
   }
 
   return {
