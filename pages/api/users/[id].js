@@ -17,6 +17,24 @@
  *   put:
  *     description: Update user by id
  *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 62ac7ea1e0fbc232e6e4271c
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             name: string
+ *             email: string
+ *             gh: string
+ *           example:
+ *             name: Jon Snow
+ *             email: jon@gmail.com
+ *             gh: Jon
  *     responses:
  *       200:
  *         description: update user
@@ -54,7 +72,8 @@ export default async function handler(req, res) {
 
     case "PUT":
       try {
-        let userToDb = await sanitize(JSON.parse(req.body.body));
+        console.log("body", req.body);
+        let userToDb = await sanitize(req.body);
 
         let user = await User.findByIdAndUpdate(id, userToDb, {
           runValidators: true,

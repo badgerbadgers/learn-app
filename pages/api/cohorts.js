@@ -16,10 +16,9 @@
  *       content:
  *         application/json:
  *           schema:
- *             cohortName: Integer
- *             courseName: String
- *             startDate: Date
- *             isNew: Boolen
+ *             cohortName: integer
+ *             courseName: string
+ *             startDate: date
  *           example:
  *             cohortName: Blue Whale
  *             courseName: 62e056cee6daad619e5cc2c3

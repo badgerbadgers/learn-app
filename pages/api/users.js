@@ -17,18 +17,19 @@
  *         application/json:
  *           schema:
  *             name: string
+ *             email: string
+ *             gh: string
  *           example:
- *             name: Jon
- *     responses:
- *       200:
- *         description: The created user
- *         content:
- *           application/json:
- *             schema: 
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
+ *             name: Jon Snow
+ *             email: jon@gmail.com
+ *             gh: Jon
+ *   responses:
+ *     200:
+ *       description: Create the user
+ *       content: 
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  */
 
 import { getSession } from "next-auth/react";
@@ -45,7 +46,7 @@ export default async function handler(req, res) {
       return await getUsers(req, res);
     case "POST":
       try {
-        let userToDb = await sanitize(JSON.parse(req.body.body));
+        let userToDb = await sanitize(req.body);
         const user = await User.create(userToDb);
         if (!user) {
           return res.status(400).json({ success: false });

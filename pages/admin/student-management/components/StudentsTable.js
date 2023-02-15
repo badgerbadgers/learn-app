@@ -111,9 +111,8 @@ export default function StudentsTable({ loading, tableRows }) {
     const url = "/api/users" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
-      await axios[newRow.isNew ? "post" : "put"](url, {
+      await axios[newRow.isNew ? "post" : "put"](url, newRow, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newRow),
       }).then((response) => {
         updatedRow = {
           ...newRow,
@@ -121,7 +120,10 @@ export default function StudentsTable({ loading, tableRows }) {
           isNew: false,
           //recordCreated: newRow.recordCreated ? format(new Date(newRow.recordCreated), "MMM dd, yyyy") : "",
         };
-        setSnackbar({ children: "Student successfully saved", severity: "success" });
+        setSnackbar({
+          children: "Student successfully saved",
+          severity: "success",
+        });
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
     } catch (error) {
