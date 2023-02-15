@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import { useState, useEffect, useRef } from "react";
 import CohortsTable from "./components/CohortsTable";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -7,14 +6,46 @@ import { format } from "date-fns";
 import getData from "../../../lib/getData";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const CohortManagement = () => {
   const url = "/api/cohorts";
+  const allCohorts = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
   const [id, setId] = useState(0);
   const [courses, setCourses] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
+  const requestSearch = (searchValue) => {
+    setSearchInput(searchValue);
+
+    const searchedRows = allCohorts.current.filter((row) => {
+      if (!searchValue) {
+        return true;
+      }
+      if (row.cohortName.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      if (row.courseName.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      if (row.courseId.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      return false;
+    });
+
+    setTableRows(searchedRows);
+  };
+
+  const clearSearch = () => {
+    requestSearch("");
+  };
 
   const makeRowfromCohort = (cohort) => {
     return {
@@ -27,7 +58,10 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(new Date(cohort.end_date, cohort.schedule.length), "MMM dd, yyyy")
+        ? format(
+            new Date(cohort.end_date, cohort.schedule.length),
+            "MMM dd, yyyy"
+          )
         : "",
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
@@ -40,6 +74,7 @@ const CohortManagement = () => {
       scheduleLen: cohort.schedule.length,
     };
   };
+
   useEffect(() => {
     const url = "/api/courses";
     const params = {};
@@ -64,6 +99,7 @@ const CohortManagement = () => {
   }, []);
 
   useEffect(() => {
+    const url = "/api/cohorts";
     setLoading(true);
     const params = {};
     try {
@@ -78,6 +114,8 @@ const CohortManagement = () => {
           });
         }
         setTableRows(localRows);
+        allCohorts.current = localRows;
+        requestSearch(searchInput);
         setLoading(false);
       })();
     } catch (error) {
@@ -90,7 +128,31 @@ const CohortManagement = () => {
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
         Cohort Management
       </Typography>
-
+      <Grid container spacing={2}>
+        <Grid item xs={10}></Grid>
+        <Grid item xs={2}>
+          <TextField
+            id="input-with-icon-textfield"
+            variant="outlined"
+            value={searchInput}
+            onChange={(e) => requestSearch(e.target.value)}
+            InputProps={{
+              startAdornment: <SearchIcon fontSize="small" />,
+              endAdornment: (
+                <IconButton
+                  title="Clear"
+                  aria-label="Clear"
+                  size="small"
+                  onClick={clearSearch}
+                  style={{ visibility: searchInput ? "visible" : "hidden" }}
+                >
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              ),
+            }}
+          />
+        </Grid>
+      </Grid>
       <CohortsTable
         loading={loading}
         tableRows={tableRows}
@@ -123,4 +185,3 @@ export async function getServerSideProps(context) {
     props: { user },
   };
 }
-
