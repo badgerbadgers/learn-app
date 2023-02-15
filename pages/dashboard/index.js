@@ -19,16 +19,24 @@ const Dashboard = ({ data, isAdmin }) => {
       <div>
         <h2>User Data</h2>
         <ul>
-          {data[0].map((item) => (
-            <li key={item.id}>{item.name}</li>
+          {data[0].map((link) => (
+            <li key={link.id} style={{ listStyle: "none" }}>
+              <Link href={link.url}>
+                <a target="_blank">{link.name}</a>
+              </Link>
+            </li>
           ))}
         </ul>
         {isAdmin ? (
           <div>
             <h2>Admin Data</h2>
             <ul>
-              {data[1].map((item) => (
-                <li key={item.id}>{item.name}</li>
+              {data[1].map((link) => (
+                <li key={link.id} style={{ listStyle: "none" }}>
+                  <Link href={link.url}>
+                    <a target="_blank">{link.name}</a>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
