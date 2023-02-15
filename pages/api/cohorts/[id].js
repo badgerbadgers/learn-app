@@ -15,6 +15,7 @@
  *       200:
  *         description: Get cohort by id
  *   post:
+ *     summary: Not sure about this method
  *     description: Create the cohort by id
  *     tags: [Cohorts]
  *     requestBody:
@@ -34,7 +35,8 @@
  *       200:
  *         description: Create cohort by id
  *   patch:
- *     description: Update cohort by id
+ *     summary: later
+ *     description: Added schedule and start_date to the cohort
  *     tags: [Cohorts]
  *     responses:
  *       200:

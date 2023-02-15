@@ -23,13 +23,13 @@
  *             name: Jon Snow
  *             email: jon@gmail.com
  *             gh: Jon
- *   responses:
- *     200:
- *       description: Create the user
- *       content: 
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Create the user
+ *         content: 
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  */
 
 import { getSession } from "next-auth/react";
