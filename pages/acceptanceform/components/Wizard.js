@@ -60,32 +60,39 @@ function Wizard() {
   };
 
   async function submitForm(values, actions) {
-    actions.setSubmitting(false);
-    axios.post("/api/acceptanceform", { body: values });
-  }
-
-  async function submitForm(values, actions) {
     actions.setTouched({});
     actions.setSubmitting(false);
     if (activeStep + 1 === steps.length) {
       axios
-        .post("/api/acceptanceform", {
-          body: {
-            ...values,
-            active_step: activeStep,
-            is_completed: true,
-            completed_at: new Date(),
+        .post(
+          "/api/acceptanceform",
+          {
+            body: {
+              ...values,
+              active_step: activeStep,
+              is_completed: true,
+              completed_at: new Date(),
+            },
           },
-        })
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
         .then((response) => {
           setActiveStep(activeStep + 1);
         })
         .catch((error) => console.log(error));
     } else {
       axios
-        .post("/api/acceptanceform", {
-          body: { ...values, active_step: activeStep },
-        })
+        .post(
+          "/api/acceptanceform",
+          {
+            body: { ...values, active_step: activeStep },
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
         .then((response) => {
           setActiveStep(activeStep + 1);
         })
