@@ -71,7 +71,6 @@ const getCohorts = async (req, res) => {
 
 const createCohort = async (req, res) => {
   try {
-    console.log("body", req.body)
     const cohortToDb = await sanitize(req.body);
     const existingCohortName = await Cohort.findOne({
       cohort_name: cohortToDb.cohort_name,

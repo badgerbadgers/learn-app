@@ -78,9 +78,7 @@ export default async function handler(req, res) {
 
     case "PUT":
       try {
-        console.log("body", req.body);
         let userToDb = await sanitize(req.body);
-
         let user = await User.findByIdAndUpdate(id, userToDb, {
           runValidators: true,
           new: true,
