@@ -10,8 +10,18 @@
  *       200:
  *         description: Get staticpages
  *   post:
+ *     summary: in Progress
  *     description: Create the staticpage
  *     tags: [Static pages]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             wordpress_id: number
+ *             isShown: boolean
+ *           example:
+ *             wordpress_id: 2196
+ *             isShown: true
  *     responses:
  *       200:
  *         description: Create the staticpage

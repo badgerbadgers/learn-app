@@ -61,7 +61,7 @@ function Wizard() {
 
   async function submitForm(values, actions) {
     actions.setSubmitting(false);
-    axios.post("/api/acceptanceform", { body: values });
+    axios.post("/api/acceptanceform", values, { headers: { "Content-Type": "application/json" }, });
   }
 
   const handleSubmit = (values, actions) => {

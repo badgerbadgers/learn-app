@@ -6,6 +6,45 @@
  *   post:
  *     description: Create the acceptance form
  *     tags: [Acceptance form]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             first_name: string
+ *             last_name: string
+ *             email: string
+ *             github: string
+ *             phone: string
+ *             physical_zipcode: string
+ *             dob: date
+ *             gender_identity: array
+ *             low_income: string
+ *             emergency_contact_1_name: string
+ *             emergency_contact_1_relationship: string
+ *             emergency_contact_1_phone: string
+ *             emergency_contact_2_name: string
+ *             emergency_contact_2_relationship: string
+ *             emergency_contact_2_phone: string
+ *             work_commitment_consent: boolean
+ *             leave_notice_consent: boolean
+ *           example:
+ *             first_name: Jon
+ *             last_name: Snow
+ *             email: jonsnow@gmail.com
+ *             github: jonsnow
+ *             phone: 1234556789
+ *             physical_zipcode: 98116
+ *             dob: 2022-12-01T08:00:00.000Z
+ *             gender_identity: [Man/Male]
+ *             low_income: no
+ *             emergency_contact_1_name: OIK
+ *             emergency_contact_1_relationship: Parent
+ *             emergency_contact_1_phone: 1234567890
+ *             emergency_contact_2_name: T
+ *             emergency_contact_2_relationship: Sibling
+ *             emergency_contact_2_phone: 13567946423
+ *             work_commitment_consent: true
+ *             leave_notice_consent: true
  *     responses:
  *       200:
  *         description: Create the acceptance form
@@ -29,7 +68,7 @@ export default async function handler(req, res) {
 }
 
 const createAcceptanceForm = async (req, res) => {
-  const body = req.body.body;
+  const body = req.body;
   const session = await getSession({ req });
   const filter = { user: session.user.id };
   const update = {
@@ -80,7 +119,7 @@ const createAcceptanceForm = async (req, res) => {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
       upsert: true,
     });
-    res.status(200).json({ success: true, data: JSON.stringify(newuser) });
+    res.status(200).json({ success: true, data: newuser });
   } catch (error) {
     res.status(400).json({ success: false });
   }
