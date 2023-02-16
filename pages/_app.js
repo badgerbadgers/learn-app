@@ -1,6 +1,5 @@
 import ThemeContextWrapper from "../components/theme/ThemeContextWrapper";
 import { SessionProvider } from "next-auth/react";
-import { StateProvider } from "../store";
 import "../styles/globals.css";
 import Head from "next/head";
 
@@ -12,13 +11,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <Head>
         <title>Learn</title>
       </Head>
-      <StateProvider>
         <SessionProvider session={session}>
           <ThemeContextWrapper>
             {getLayout(<Component {...pageProps} />)}
           </ThemeContextWrapper>
         </SessionProvider>
-      </StateProvider>
     </>
   );
 }
