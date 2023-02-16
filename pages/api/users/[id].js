@@ -14,6 +14,8 @@
  *     responses:
  *       200:
  *         description: user
+ *       400:
+ *         description: error
  *   put:
  *     description: Update user by id
  *     tags: [Users]
@@ -38,6 +40,8 @@
  *     responses:
  *       200:
  *         description: update user
+ *       400:
+ *         description: error
  *   delete:
  *     description: Delete user by id
  *     tags: [Users]
@@ -51,6 +55,8 @@
  *     responses:
  *       200:
  *         description: delete user
+ *       400:
+ *         description: error
  */
 import User from "../../../lib/models/User";
 import dbConnect from "../../../lib/dbConnect";

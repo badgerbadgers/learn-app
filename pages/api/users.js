@@ -9,6 +9,8 @@
  *     responses:
  *       200:
  *         description: users
+ *       400:
+ *         description: error
  *   post:
  *     description: Add a new user
  *     tags: [Users]
@@ -28,8 +30,8 @@
  *         description: Create the user
  *         content: 
  *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: error
  */
 
 import { getSession } from "next-auth/react";

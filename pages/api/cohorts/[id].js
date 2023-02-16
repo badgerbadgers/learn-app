@@ -14,8 +14,10 @@
  *     responses:
  *       200:
  *         description: Get cohort by id
+ *       400:
+ *         description: error
  *   post:
- *     summary: Not sure about this method
+ *     summary: in Progress
  *     description: Create the cohort by id
  *     tags: [Cohorts]
  *     requestBody:
@@ -35,12 +37,14 @@
  *       200:
  *         description: Create cohort by id
  *   patch:
- *     summary: later
+ *     summary: in Progress
  *     description: Added schedule and start_date to the cohort
  *     tags: [Cohorts]
  *     responses:
  *       200:
  *         description: Update cohort by id
+ *       400:
+ *         description: error
  *   delete:
  *     description: Delete cohort by id
  *     tags: [Cohorts]
@@ -54,6 +58,8 @@
  *     responses:
  *       200:
  *         description: Delete cohort by id
+ *       400:
+ *         description: error
  */
 import { createSchedule, sanitize } from "../cohorts";
 

@@ -9,6 +9,8 @@
  *     responses:
  *       200:
  *         description: Get cohorts
+ *       400:
+ *         description: error
  *   post:
  *     description: Create the cohort
  *     tags: [Cohorts]
@@ -28,8 +30,8 @@
  *         description: Create the cohort
  *         content: 
  *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Cohort'
+ *       400:
+ *         description: error
  *         
  */
 const { ObjectId } = require("mongodb");

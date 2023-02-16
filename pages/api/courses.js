@@ -9,6 +9,8 @@
  *     responses:
  *       200:
  *         description: Get courses
+ *       400:
+ *         description: error
  */
 import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";

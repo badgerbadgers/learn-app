@@ -14,6 +14,8 @@
  *     responses:
  *       200:
  *         description: Get cohort by slug
+ *       400:
+ *         description: error
  */
 import Cohort from "../../../../lib/models/Cohort";
 import Course from "../../../../lib/models/Course";
