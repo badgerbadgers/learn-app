@@ -203,7 +203,7 @@ const NavBar = () => {
               {/* End Static Pages Menu */}
 
               {/* Start User Account Menu */}
-              <Typography variant="h6" mr={1}>
+              <Typography variant="h6" mr={1} onClick={handleUserMenuOpen}>
                 {session.user.name || session.user.gh}
               </Typography>
 
