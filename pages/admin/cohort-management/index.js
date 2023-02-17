@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import CohortsTable from "./components/CohortsTable";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -9,12 +8,10 @@ import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 
 const CohortManagement = () => {
-  const url = "/api/cohorts";
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
   const [id, setId] = useState(0);
   const [courses, setCourses] = useState([]);
-
 
   const makeRowfromCohort = (cohort) => {
     return {
@@ -27,15 +24,15 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(new Date(cohort.end_date, cohort.schedule.length), "MMM dd, yyyy")
+        ? format(
+            new Date(cohort.end_date, cohort.schedule.length),
+            "MMM dd, yyyy"
+          )
         : "",
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
-      mentors:
-        cohort.mentors && cohort.mentors[0] && cohort.mentors[1]
-          ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`
-          : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+      mentors: cohort.mentors[0] ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug: cohort.slug,
       scheduleLen: cohort.schedule.length,
     };
@@ -64,6 +61,7 @@ const CohortManagement = () => {
   }, []);
 
   useEffect(() => {
+    const url = "/api/cohorts";
     setLoading(true);
     const params = {};
     try {
@@ -123,4 +121,3 @@ export async function getServerSideProps(context) {
     props: { user },
   };
 }
-
