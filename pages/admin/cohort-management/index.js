@@ -11,16 +11,26 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+
+const options = [
+  { label: "All", value: "all" },
+  { label: "Intro to programming", value: "intro to programming" },
+  { label: "React", value: "react" },
+  { label: "Rails", value: "rails" },
+];
 
 const CohortManagement = () => {
-  const url = "/api/cohorts";
   const allCohorts = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
   const [id, setId] = useState(0);
   const [courses, setCourses] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("all");
 
+  //Search Cohort
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
 
@@ -29,12 +39,6 @@ const CohortManagement = () => {
         return true;
       }
       if (row.cohortName.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true;
-      }
-      if (row.courseName.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true;
-      }
-      if (row.courseId.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       return false;
@@ -46,7 +50,21 @@ const CohortManagement = () => {
   const clearSearch = () => {
     requestSearch("");
   };
+  //Filter Courses
+  useEffect(() => {
+    if (selectedOption === "all") {
+      setFilteredRows(allCohorts.current);
+    } else {
+      const filtered = allCohorts.current.filter(
+        (row) => row.courseName.toLowerCase() === selectedOption
+      );
+      setFilteredRows(filtered);
+    }
+  }, [selectedOption]);
 
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -129,7 +147,18 @@ const CohortManagement = () => {
         Cohort Management
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={10}></Grid>
+        <Grid item xs={10}>
+          <FormControl>
+            <InputLabel>Filter</InputLabel>
+            <Select value={selectedOption} onChange={handleOptionChange}>
+              {options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
         <Grid item xs={2}>
           <TextField
             id="input-with-icon-textfield"
@@ -159,6 +188,7 @@ const CohortManagement = () => {
         courses={courses.sort()} // sort to get it in alphabetical order in the dropdown
         id={id}
         setId={setId}
+        filteredRows={filteredRows}
       />
     </Container>
   );

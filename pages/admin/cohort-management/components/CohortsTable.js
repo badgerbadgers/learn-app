@@ -53,7 +53,12 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-export default function CohortsTable({ loading, tableRows, courses }) {
+export default function CohortsTable({
+  loading,
+  tableRows,
+  courses,
+  filteredRows,
+}) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
@@ -63,6 +68,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
+  //Filter courses
+  useEffect(() => {
+    setRows(filteredRows);
+  }, [filteredRows]);
 
   const deleteCohort = async (cohortId) => {
     axios
