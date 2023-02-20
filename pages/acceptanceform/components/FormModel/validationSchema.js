@@ -10,7 +10,9 @@ const {
     physicalZipcode,
     dob,
     genderIdentity,
+    genderIdentitySelf,
     raceEthnicity,
+    raceEthnicitySelf,
     lowIncome,
     emergencyContact1Name,
     emergencyContact1Relationship,
@@ -45,19 +47,32 @@ export default [
   }),
 
   Yup.object().shape({
-    [dob.name]: Yup.string()
+    [dob.name]: Yup.date()
       .nullable()
       .required(`${dob.requiredErrorMsg}`)
-      .max(
-        new Date(Date.now() - 567648000000),
-        "You must be at least 18 years"
-      ),
+      .test("age", "You must be 18 or older", function (birthdate) {
+        const cutoff = new Date();
+        cutoff.setFullYear(cutoff.getFullYear() - 18);
+        return birthdate <= cutoff;
+      }),
     [genderIdentity.name]: Yup.array()
       .min(1, `${genderIdentity.requiredErrorMsg}`)
       .nullable(),
+    [genderIdentitySelf.name]: Yup.string().when(
+      genderIdentity.name,
+      (genderIdentity) => {
+        return genderIdentity.includes("Other")
+          ? Yup.string().required(`${genderIdentitySelf.requiredErrorMsg}`)
+          : undefined;
+      }
+    ),
     [raceEthnicity.name]: Yup.string().required(
       `${raceEthnicity.requiredErrorMsg}`
     ),
+    [raceEthnicitySelf.name]: Yup.string().when(raceEthnicity.name, {
+      is: "Other",
+      then: Yup.string().required(`${raceEthnicitySelf.requiredErrorMsg}`),
+    }),
     [lowIncome.name]: Yup.string().required(`${lowIncome.requiredErrorMsg}`),
   }),
 

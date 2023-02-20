@@ -32,7 +32,7 @@ export default function RadioButtonGroup(props) {
 
   return (
     <FormControl {...rest}>
-      <RadioGroup {...field} onChange={onChange} row value={field.checked}>
+      <RadioGroup {...field} onChange={onChange} row value={field.value}>
         <FormControlLabel
           value="yes"
           control={<Radio size="small" />}

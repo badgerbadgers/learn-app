@@ -12,6 +12,7 @@ import CheckboxField from "./FormFields/CheckboxField";
 import { useFormikContext } from "formik";
 
 function Address(props) {
+
   const {
     formField: {
       USResident,
@@ -35,13 +36,13 @@ function Address(props) {
 
   // When the checkbox is checked all physical address values already entered at that moment
   // are being copied into the respective mailing address values
-  if (values.mailing_same) {
-    values.mailing_zipcode = values.physical_zipcode;
-    values.mailing_address_1 = values.physical_address_1;
-    values.mailing_address_2 = values.physical_address_2;
-    values.mailing_city = values.physical_city;
-    values.mailing_state = values.physical_state;
-    values.mailing_country = values.physical_country;
+  if (values.address_mailing_same) {
+    values.address_mailing_zipcode = values.address_physical_zipcode;
+    values.address_mailing_street1 = values.address_physical_street1;
+    values.address_mailing_street2 = values.address_physical_street2;
+    values.address_mailing_city = values.address_physical_city;
+    values.address_mailing_state = values.address_physical_state;
+    values.address_mailing_country = values.address_physical_country;
   }
 
   return (
@@ -126,7 +127,7 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
-            {values.USResident === "no" && (
+            {values.address_USResident === "no" && (
               <Autocomplete
                 id="country-select-demo"
                 name={physicalCountry.name}
@@ -191,104 +192,86 @@ function Address(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <InputField
-                name={mailingZipcode.name}
-                label={mailingZipcode.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingZipcode.name}
+              label={mailingZipcode.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <InputField
-                name={mailingAddress1.name}
-                label={mailingAddress1.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingAddress1.name}
+              label={mailingAddress1.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <InputField
-                name={mailingAddress2.name}
-                label={mailingAddress2.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingAddress2.name}
+              label={mailingAddress2.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <InputField
-                name={mailingCity.name}
-                label={mailingCity.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingCity.name}
+              label={mailingCity.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the input field if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <InputField
-                name={mailingState.name}
-                label={mailingState.label}
-                variant="outlined"
-                fullWidth
-              />
-            )}
+            <InputField
+              name={mailingState.name}
+              label={mailingState.label}
+              variant="outlined"
+              fullWidth
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} width="100%">
-            {/* Conditionally renders the country list if "Same as physical address" checkbox is checked */}
-            {!values.mailing_same && (
-              <Autocomplete
-                id="country-select-demo"
-                name={mailingCountry.name}
-                label={mailingCountry.label}
-                disabled={values.mailing_same ? true : false}
-                options={countries}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => (
-                  <Box
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...props}
-                  >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                      alt=""
-                    />
-                    {option.label} ({option.code})
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Choose a country"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: "new-password", // disable autocomplete and autofill
-                    }}
+            <Autocomplete
+              id="country-select-demo"
+              name={mailingCountry.name}
+              label={mailingCountry.label}
+              disabled={values.mailing_same ? true : false}
+              options={countries}
+              autoHighlight
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option) => (
+                <Box
+                  component="li"
+                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                  {...props}
+                >
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                    alt=""
                   />
-                )}
-              />
-            )}
+                  {option.label} ({option.code})
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose a country"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password", // disable autocomplete and autofill
+                  }}
+                />
+              )}
+            />
           </Grid>
         </Grid>
       </Grid>

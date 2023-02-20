@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
+=======
+import React, { useEffect, useState } from "react";
+>>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
 import CohortsTable from "./components/CohortsTable";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -27,7 +31,10 @@ const statusOptions = [
   { label: "Completed", value: "completed" },
 ];
 const CohortManagement = () => {
+<<<<<<< HEAD
   const allCohorts = useRef([]);
+=======
+>>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
   const [id, setId] = useState(0);
@@ -42,6 +49,7 @@ const CohortManagement = () => {
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
 
+<<<<<<< HEAD
     const searchedRows = allCohorts.current.filter((row) => {
       if (!searchValue) {
         return true;
@@ -87,6 +95,8 @@ const CohortManagement = () => {
   const handleOptionChange2 = (event) => {
     setSelectedOption2(event.target.value);
   };
+=======
+>>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -106,10 +116,7 @@ const CohortManagement = () => {
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
-      mentors:
-        cohort.mentors && cohort.mentors[0] && cohort.mentors[1]
-          ? `${cohort.mentors[0].length} / ${cohort.mentors[1].length}`
-          : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+      mentors: cohort.mentors[0] ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug: cohort.slug,
       scheduleLen: cohort.schedule.length,
     };
