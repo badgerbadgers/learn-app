@@ -150,7 +150,7 @@ function DemographicStats(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally shows the input field if "Other" in the previous Select is chosen */}
-            {values.gender_identity.includes("Other") && (
+            {values.demographics_gender_identity.includes("Other") && (
               <InputField
                 name={genderIdentitySelf.name}
                 label={genderIdentitySelf.label}
@@ -171,7 +171,7 @@ function DemographicStats(props) {
 
           {/* Conditionally shows the input field if "Some other race, ethnicity, or origin" in the previous Select is chosen */}
           <Grid item xs={12} sm={6} width="100%">
-            {values.race_ethnicity === "Other" && (
+            {values.demographics_race_ethnicity === "Other" && (
               <InputField
                 name={raceEthnicitySelf.name}
                 label={raceEthnicitySelf.label}
