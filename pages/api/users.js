@@ -22,9 +22,9 @@
  *             email: string
  *             gh: string
  *           example:
- *             name: Jon Snow
- *             email: jon@gmail.com
- *             gh: Jon
+ *             name: Jon Black
+ *             email: jonblack@gmail.com
+ *             gh: Jonblack
  *     responses:
  *       200:
  *         description: Create the user

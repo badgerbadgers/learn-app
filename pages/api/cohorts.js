@@ -30,9 +30,10 @@
  *         description: Create the cohort
  *         content: 
  *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
  *       400:
  *         description: error
- *         
  */
 const { ObjectId } = require("mongodb");
 
