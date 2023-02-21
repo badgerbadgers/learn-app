@@ -9,10 +9,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import InputField from "./FormFields/InputField";
 import RadioButtonGroup from "./FormFields/RadioButtonGroup";
 import CheckboxField from "./FormFields/CheckboxField";
-import { useFormikContext } from "formik";
+import { formik, useFormikContext } from "formik";
 
 function Address(props) {
-
   const {
     formField: {
       USResident,
@@ -129,12 +128,15 @@ function Address(props) {
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
             {values.address_USResident === "no" && (
               <Autocomplete
-                id="country-select-demo"
+                id="physicalCountry"
                 name={physicalCountry.name}
                 label={physicalCountry.label}
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
+                onChange={(event, value) =>
+                  (values.address_physical_country = value)
+                }
                 renderOption={(props, option) => (
                   <Box
                     component="li"
@@ -238,13 +240,16 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <Autocomplete
-              id="country-select-demo"
+              id="mailingCountry"
               name={mailingCountry.name}
               label={mailingCountry.label}
               disabled={values.mailing_same ? true : false}
               options={countries}
               autoHighlight
               getOptionLabel={(option) => option.label}
+              onChange={(event, value) =>
+                (values.address_mailing_country = value)
+              }
               renderOption={(props, option) => (
                 <Box
                   component="li"
