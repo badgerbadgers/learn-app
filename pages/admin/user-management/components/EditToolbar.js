@@ -59,10 +59,10 @@ const EditToolbar = (props) => {
         body: JSON.stringify(payload),
       });
       handleClose();
-      setSnackbar({
-        children: "User successfully added to cohort",
-        severity: "success",
-      });
+      // setSnackbar({
+      //   children: "User successfully added to cohort",
+      //   severity: "success",
+      // });
     } catch (error) {
       console.error("Error:", error);
     }

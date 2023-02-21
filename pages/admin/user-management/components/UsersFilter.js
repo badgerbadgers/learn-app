@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Grid } from "@mui/material";
 
-export default function StudentsFilter({ cohorts, courses, roles, changeHandler }) {
+export default function UsersFilter({ cohorts, courses, roles, changeHandler }) {
   const filters = useRef({ cohort: "", course: "", role: "" });
 
   function handleFilterChange(event, key, selectedOption) {

@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },  
 });
 
-export default function StudentsTable({ loading, tableRows, cohorts }) {
+export default function UsersTable({ loading, tableRows, cohorts }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);

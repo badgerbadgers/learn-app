@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import StudentsTable from "./components/UsersTable";
-import StudentsFilter from "./components/UsersFilter";
+import UsersTable from "./components/UsersTable";
+import UsersFilter from "./components/UsersFilter";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
@@ -12,7 +12,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import { formatDistance } from "date-fns";
 
-const StudentManagemant = () => {
+const UserManagemant = () => {
   const url = "/api/users";
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
@@ -145,7 +145,7 @@ const StudentManagemant = () => {
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter
+          <UsersFilter
             cohorts={cohorts.sort()}
             courses={courses.sort()}
             roles={roles}
@@ -175,7 +175,7 @@ const StudentManagemant = () => {
           />
         </Grid>
       </Grid>
-      <StudentsTable
+      <UsersTable
         loading={loading}
         tableRows={tableRows}
         id={id}
@@ -186,9 +186,9 @@ const StudentManagemant = () => {
   );
 };
 
-export default StudentManagemant;
+export default UserManagemant;
 
-StudentManagemant.getLayout = privateLayout;
+UserManagemant.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
