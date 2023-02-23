@@ -67,10 +67,7 @@ const EditToolbar = (props) => {
       const errorMessage = Object.values(error.response.data.message)[0];
       console.error("Error:", error.response.data);
       throw new Error(errorMessage);
-      setSnackbar({
-        children: "Add user to cohort error",
-        severity: "error",
-      });
+      setSnackbar({ children: error.message, severity: "error" });
     }
   };
 
