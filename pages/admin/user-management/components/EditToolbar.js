@@ -69,7 +69,7 @@ const EditToolbar = (props) => {
       throw new Error(errorMessage);
       setSnackbar({
         children: "Add user to cohort error",
-        severity: "false",
+        severity: "error",
       });
     }
   };
