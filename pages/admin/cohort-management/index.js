@@ -46,7 +46,7 @@ const CohortManagement = () => {
     try {
       (async () => {
         const response = await getData(params, url);
-        let courses = JSON.parse(response.data);
+        let courses = response.data;
         let localCourses = [];
         if (courses) {
           courses.map((course) => {
@@ -69,7 +69,7 @@ const CohortManagement = () => {
     try {
       (async () => {
         let response = await getData(params, url);
-        const cohorts = JSON.parse(response.data);
+        const cohorts = response.data;
         let localRows = [];
         if (cohorts) {
           cohorts.map(async (cohort) => {

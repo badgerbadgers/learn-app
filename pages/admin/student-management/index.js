@@ -71,7 +71,7 @@ const StudentManagemant = () => {
     try {
       (async () => {
         const response = await getData(params, url);
-        let cohorts = JSON.parse(response.data);
+        let cohorts = response.data;
         let localCohorts = [];
         if (cohorts) {
           cohorts.map((cohort) => {
@@ -94,7 +94,7 @@ const StudentManagemant = () => {
     try {
       (async () => {
         const response = await getData(params, url);
-        let courses = JSON.parse(response.data);
+        let courses = response.data;
         let localCourses = [];
         if (courses) {
           courses.map((course) => {
@@ -121,7 +121,7 @@ const StudentManagemant = () => {
     try {
       (async () => {
         let response = await getData(params, url);
-        const students = JSON.parse(response.data);
+        const students = response.data;
         let localRows = [];
         if (students) {
           students.map(async (student) => {

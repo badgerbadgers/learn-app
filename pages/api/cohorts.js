@@ -62,7 +62,7 @@ const getCohorts = async (req, res) => {
     cohorts = await Cohort.find({})
       .populate("course", "_id course_name")
       .exec();
-    res.status(200).json({ success: true, data: JSON.stringify(cohorts) });
+    res.status(200).json({ success: true, data: cohorts });
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });

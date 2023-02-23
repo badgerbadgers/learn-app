@@ -36,6 +36,8 @@
  *     responses:
  *       200:
  *         description: Create cohort by id
+ *       400:
+ *         description: error
  *   patch:
  *     summary: in Progress
  *     description: Added schedule and start_date to the cohort

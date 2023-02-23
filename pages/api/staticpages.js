@@ -9,6 +9,8 @@
  *     responses:
  *       200:
  *         description: Get staticpages
+ *       400:
+ *         description: error
  *   post:
  *     summary: in Progress
  *     description: Create the staticpage
@@ -25,6 +27,8 @@
  *     responses:
  *       200:
  *         description: Create the staticpage
+ *       400:
+ *         description: error
  */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";

@@ -76,7 +76,7 @@ export default async function handler(req, res) {
 const getUsers = async (req, res) => {
   try {
     let users = await getUserFilters(req.query);
-    res.status(200).json({ success: true, data: JSON.stringify(users) });
+    res.status(200).json({ success: true, data: users });
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });
