@@ -13,9 +13,9 @@
  *         description: 62b22b42f4da59dbea98071b
  *     responses:
  *       200:
- *         description: user
+ *         description: Get the user by id
  *       400:
- *         description: error
+ *         description: Error messages
  *   put:
  *     description: Update user by id
  *     tags: [Users]
@@ -39,9 +39,9 @@
  *             gh: Jon
  *     responses:
  *       200:
- *         description: update user
+ *         description: Update the user by id
  *       400:
- *         description: error
+ *         description: Error messages
  *   delete:
  *     description: Delete user by id
  *     tags: [Users]
@@ -54,9 +54,9 @@
  *         description: 62d1cdeb70f32c8f947ee2ba
  *     responses:
  *       200:
- *         description: delete user
+ *         description: Delete the user
  *       400:
- *         description: error
+ *         description: Error messages
  */
 import User from "../../../lib/models/User";
 import dbConnect from "../../../lib/dbConnect";

@@ -10,11 +10,12 @@
  *       200:
  *         description: Get cohorts
  *       400:
- *         description: error
+ *         description: Error messages
  *   post:
  *     description: Create the cohort
  *     tags: [Cohorts]
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -28,12 +29,8 @@
  *     responses:
  *       200:
  *         description: Create the cohort
- *         content: 
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/User'
  *       400:
- *         description: error
+ *         description: Error messages
  */
 const { ObjectId } = require("mongodb");
 

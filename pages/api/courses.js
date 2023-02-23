@@ -10,7 +10,7 @@
  *       200:
  *         description: Get courses
  *       400:
- *         description: error
+ *         description: Error messages
  */
 import Course from "../../lib/models/Course";
 import dbConnect from "../../lib/dbConnect";

@@ -5,12 +5,12 @@
  * /api/users:
  *   get:
  *     description: Returns all users
- *     tags: [Users]
+ *     tags: [Users]    
  *     responses:
  *       200:
- *         description: users
+ *         description: Get users
  *       400:
- *         description: error
+ *         description: Error messages
  *   post:
  *     description: Add a new user
  *     tags: [Users]
@@ -28,10 +28,8 @@
  *     responses:
  *       200:
  *         description: Create the user
- *         content: 
- *           application/json:
  *       400:
- *         description: error
+ *         description: Error messages
  */
 
 import { getSession } from "next-auth/react";

@@ -2,7 +2,7 @@
  * @swagger
  * /api/cohorts/slug/{slug}:
  *   get:
- *     description: Get cohort by slug
+ *     description: Get the cohort by slug
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -13,9 +13,9 @@
  *         description: mobile-view
  *     responses:
  *       200:
- *         description: Get cohort by slug
+ *         description: Get the cohort by slug
  *       400:
- *         description: error
+ *         description: Error messages
  */
 import Cohort from "../../../../lib/models/Cohort";
 import Course from "../../../../lib/models/Course";

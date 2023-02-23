@@ -49,7 +49,7 @@
  *       200:
  *         description: Create the acceptance form
  *       400:
- *         description: error
+ *         description: Error messages
  */
 import AcceptanceForm from "../../lib/models/AcceptanceForm.js";
 import dbConnect from "../../lib/dbConnect.js";

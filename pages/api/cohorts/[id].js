@@ -2,7 +2,7 @@
  * @swagger
  * /api/cohorts/{id}:
  *   get:
- *     description: Get cohort by id
+ *     description: Get the cohort by id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -13,9 +13,9 @@
  *         description: 635841bd9be844015c74719a
  *     responses:
  *       200:
- *         description: Get cohort by id
+ *         description: Get the cohort by id
  *       400:
- *         description: error
+ *         description: Error messages
  *   post:
  *     summary: in Progress
  *     description: Create the cohort by id
@@ -27,28 +27,26 @@
  *             cohortName: integer
  *             courseName: string
  *             startDate: date
- *             isNew: boolen
  *           example:
  *             cohortName: Blue Fish
  *             courseName: 62e056cee6daad619e5cc2c3
- *             isNew: true
  *             startDate: 2023-02-21T08:00:00.000Z
  *     responses:
  *       200:
- *         description: Create cohort by id
+ *         description: Create the cohort by id
  *       400:
- *         description: error
+ *         description: Error messages
  *   patch:
  *     summary: in Progress
  *     description: Added schedule and start_date to the cohort
  *     tags: [Cohorts]
  *     responses:
  *       200:
- *         description: Update cohort by id
+ *         description: Update the cohort by id
  *       400:
- *         description: error
+ *         description: Error messages
  *   delete:
- *     description: Delete cohort by id
+ *     description: Delete the cohort by id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -58,10 +56,10 @@
  *         required: true
  *         description: 632e0184290d23ac4c005e27
  *     responses:
- *       200:
- *         description: Delete cohort by id
+ *       201:
+ *         description: Delete the cohort by id
  *       400:
- *         description: error
+ *         description: Error messages
  */
 import { createSchedule, sanitize } from "../cohorts";
 
