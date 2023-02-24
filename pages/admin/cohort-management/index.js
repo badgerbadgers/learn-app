@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
-=======
-import React, { useEffect, useState } from "react";
->>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
 import CohortsTable from "./components/CohortsTable";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -15,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import { MenuItem, FormControl, Select } from "@mui/material";
 
 const courseOptions = [
   { label: "All courses", value: "all courses" },
@@ -24,17 +20,8 @@ const courseOptions = [
   { label: "Rails", value: "rails" },
 ];
 
-const statusOptions = [
-  { label: "Any status", value: "any status" },
-  { label: "Upcoming", value: "upcoming" },
-  { label: "In progress", value: "in progress" },
-  { label: "Completed", value: "completed" },
-];
 const CohortManagement = () => {
-<<<<<<< HEAD
   const allCohorts = useRef([]);
-=======
->>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
   const [id, setId] = useState(0);
@@ -43,13 +30,13 @@ const CohortManagement = () => {
   const [filteredRows, setFilteredRows] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all courses");
   const [selectedOption2, setSelectedOption2] = useState("any status");
-  console.log("ALL COHORTS.CURRENT", allCohorts.current);
-  console.log("Filtered", filteredRows);
+  // console.log("ALL COHORTS.CURRENT", allCohorts.current);
+  // console.log("Filtered", filteredRows);
+  // console.log("COURSES", courses);
   //Search Cohort
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
 
-<<<<<<< HEAD
     const searchedRows = allCohorts.current.filter((row) => {
       if (!searchValue) {
         return true;
@@ -80,23 +67,10 @@ const CohortManagement = () => {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
-  //Filter Cohorts by Status
-  useEffect(() => {
-    if (selectedOption2 === "any status") {
-      setFilteredRows(allCohorts.current);
-    } else {
-      const filtered = allCohorts.current.filter(
-        (row) => row.status.toLowerCase() === selectedOption2
-      );
-      setFilteredRows(filtered);
-    }
-  }, [selectedOption2]);
 
   const handleOptionChange2 = (event) => {
     setSelectedOption2(event.target.value);
   };
-=======
->>>>>>> 4161d57b8419fcea4220ae51d30a10ba278ba462
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -180,15 +154,6 @@ const CohortManagement = () => {
           <FormControl>
             <Select value={selectedOption} onChange={handleOptionChange}>
               {courseOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <Select value={selectedOption2} onChange={handleOptionChange2}>
-              {statusOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
