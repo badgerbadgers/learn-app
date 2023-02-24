@@ -131,9 +131,9 @@ function Address(props) {
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
             {values.address_USResident === "no" && (
               <Autocomplete
-                id="address_physical_country"
-                name={values.address_physical_country}
-                label={values.address_physical_country.label}
+                id="country-select-demo"
+                name={physicalCountry.name}
+                label={physicalCountry.label}
                 value={values.address_physical_country}
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value
@@ -247,14 +247,13 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             <Autocomplete
-              id="address_mailing_country"
-              name={values.address_mailing_country}
-              label={values.address_mailing_country.label}
+              id="country-select-demo"
+              name={mailingCountry.name}
+              label={mailingCountry.label}
               value={values.address_mailing_country}
               isOptionEqualToValue={(option, value) =>
                 option.value === value.value
               }
-              disabled={values.mailing_same ? true : false}
               options={countries}
               autoHighlight
               getOptionLabel={(option) => option.label}
