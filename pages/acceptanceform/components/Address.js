@@ -135,6 +135,9 @@ function Address(props) {
                 name={values.address_physical_country}
                 label={values.address_physical_country.label}
                 value={values.address_physical_country}
+                isOptionEqualToValue={(option, value) =>
+                  option.value === value.value
+                }
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) => option.label}
@@ -248,6 +251,9 @@ function Address(props) {
               name={values.address_mailing_country}
               label={values.address_mailing_country.label}
               value={values.address_mailing_country}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
               disabled={values.mailing_same ? true : false}
               options={countries}
               autoHighlight
