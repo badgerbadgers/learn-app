@@ -1,5 +1,5 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -10,13 +10,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
 import PropTypes from "prop-types";
 import SaveIcon from "@mui/icons-material/Save";
-import Snackbar from "@mui/material/Snackbar";
 import { Stack } from "@mui/material";
 import axios from "axios";
-import { format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import makeStyles from "@mui/styles/makeStyles";
+import { useSnackbar } from "material-ui-snackbar-provider";
 
 const useStyles = makeStyles({
   disabled: {
@@ -25,6 +24,7 @@ const useStyles = makeStyles({
 });
 
 const EditToolbar = (props) => {
+  const snackbar = useSnackbar();
   const { setRows, setRowModesModel, rows } = props;
   const handleClick = () => {
     const id = uuidv4();
@@ -33,6 +33,16 @@ const EditToolbar = (props) => {
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "gh" },
     }));
+    snackbar.showMessage(
+      <Alert
+        severity="info"
+        sx={{
+          width: 300,
+        }}
+      >
+        Add a student
+      </Alert>
+    );
   };
 
   return (
@@ -52,15 +62,14 @@ EditToolbar.propTypes = {
 export default function StudentsTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  const [snackbar, setSnackbar] = useState(null);
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const classes = useStyles();
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
-
 
   const deleteStudent = async (userId) => {
     axios
@@ -121,7 +130,16 @@ export default function StudentsTable({ loading, tableRows }) {
           isNew: false,
           //recordCreated: newRow.recordCreated ? format(new Date(newRow.recordCreated), "MMM dd, yyyy") : "",
         };
-        setSnackbar({ children: "Student successfully saved", severity: "success" });
+        snackbar.showMessage(
+          <Alert
+            severity="success"
+            sx={{
+              width: 300,
+            }}
+          >
+            Student successfully saved
+          </Alert>
+        );
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
     } catch (error) {
@@ -132,10 +150,18 @@ export default function StudentsTable({ loading, tableRows }) {
     return updatedRow;
   };
 
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const handleProcessRowUpdateError = useCallback((error) => {
-    setSnackbar({ children: error.message, severity: "error" });
-  }, []);
+  const handleProcessRowUpdateError = () => {
+    snackbar.showMessage(
+      <Alert
+        severity="error"
+        sx={{
+          width: 300,
+        }}
+      >
+        Error adding student
+      </Alert>
+    );
+  };
 
   const columns = [
     {
@@ -170,7 +196,17 @@ export default function StudentsTable({ loading, tableRows }) {
       minWidth: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
+        return (
+          <div
+            className={
+              rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                ? classes.disabled
+                : null
+            }
+          >
+            {params.value}
+          </div>
+        );
       },
       headerAlign: "center",
     },
@@ -181,7 +217,17 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
+        return (
+          <div
+            className={
+              rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                ? classes.disabled
+                : null
+            }
+          >
+            {params.value}
+          </div>
+        );
       },
       headerAlign: "center",
       align: "center",
@@ -193,7 +239,17 @@ export default function StudentsTable({ loading, tableRows }) {
       width: 100,
       editable: false,
       renderCell: (params) => {
-        return <div className={rowModesModel[params.row.id]?.mode === GridRowModes.Edit ? classes.disabled : null}>{params.value}</div>;
+        return (
+          <div
+            className={
+              rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                ? classes.disabled
+                : null
+            }
+          >
+            {params.value}
+          </div>
+        );
       },
       headerAlign: "center",
       align: "center",
@@ -212,14 +268,39 @@ export default function StudentsTable({ loading, tableRows }) {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         if (isInEditMode) {
           return [
-            <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id, row)} key={id} />,
-            <GridActionsCellItem icon={<CancelIcon />} label="Cancel" className="textPrimary" onClick={handleCancelClick(id)} color="inherit" key={id} />,
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              onClick={handleSaveClick(id, row)}
+              key={id}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+              key={id}
+            />,
           ];
         }
 
         return [
-          <GridActionsCellItem icon={<EditIcon />} label="Edit" className="textPrimary" onClick={handleEditClick(id, row)} color="inherit" key={id} />,
-          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={handleDeleteClick(id)} color="inherit" key={id} />,
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id, row)}
+            color="inherit"
+            key={id}
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+            key={id}
+          />,
         ];
       },
     },
@@ -260,11 +341,6 @@ export default function StudentsTable({ loading, tableRows }) {
         }}
         experimentalFeatures={{ newEditingApi: true }}
       />
-      {!!snackbar && (
-        <Snackbar open anchorOrigin={{ vertical: "bottom", horizontal: "center" }} onClose={handleCloseSnackbar} autoHideDuration={6000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Box>
   );
 }
