@@ -9,7 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import InputField from "./FormFields/InputField";
 import RadioButtonGroup from "./FormFields/RadioButtonGroup";
 import CheckboxField from "./FormFields/CheckboxField";
-import { formik, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 
 function Address(props) {
   const {
@@ -43,9 +43,6 @@ function Address(props) {
     values.address_mailing_state = values.address_physical_state;
     values.address_mailing_country = values.address_physical_country;
   }
-
-  console.log("physical country", values.address_physical_country);
-  console.log("mailing country", values.address_mailing_country);
 
   return (
     <FormControl>
