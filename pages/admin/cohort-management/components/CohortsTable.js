@@ -39,16 +39,7 @@ const EditToolbar = (props) => {
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohortName" },
     }));
-    snackbar.showMessage(
-      <Alert
-        severity="info"
-        sx={{
-          width: 300,
-        }}
-      >
-        Add a student
-      </Alert>
-    );
+    snackbar.showMessage(<Alert severity="info">Add a student</Alert>);
   };
 
   return (
@@ -150,14 +141,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             scheduleLen: response.data.data.schedule.length,
           };
           snackbar.showMessage(
-            <Alert
-              severity="success"
-              sx={{
-                width: 300,
-              }}
-            >
-              Cohort sucessfully saved.
-            </Alert>
+            <Alert severity="success">Cohort sucessfully saved.</Alert>
           );
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         });
@@ -170,16 +154,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   };
 
   const handleProcessRowUpdateError = () => {
-    snackbar.showMessage(
-      <Alert
-        severity="error"
-        sx={{
-          width: 300,
-        }}
-      >
-        Error adding cohort
-      </Alert>
-    );
+    snackbar.showMessage(<Alert severity="error">Error adding cohort</Alert>);
   };
 
   const handleClick = (e, url) => {
