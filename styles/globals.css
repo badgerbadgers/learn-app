@@ -103,7 +103,7 @@ p,
 
 /* styling for snackbar notification alignment on the page */
 .MuiSnackbar-root {
-  padding: 0px 250px 0px 500px;
+  padding-left: 40%;
 }
 
 .MuiSnackbarContent-root {
