@@ -15,7 +15,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <SessionProvider session={session}>
         <ThemeContextWrapper>
           <SnackbarProvider SnackbarProps={{ autoHideDuration: 6000 }}>
-            {/* <SnackbarProvider> */}
             {getLayout(<Component {...pageProps} />)}
           </SnackbarProvider>
         </ThemeContextWrapper>
