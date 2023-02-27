@@ -33,16 +33,6 @@ const EditToolbar = (props) => {
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "gh" },
     }));
-    snackbar.showMessage(
-      <Alert
-        severity="info"
-        sx={{
-          width: 300,
-        }}
-      >
-        Add a student
-      </Alert>
-    );
   };
 
   return (

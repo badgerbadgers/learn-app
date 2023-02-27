@@ -39,7 +39,6 @@ const EditToolbar = (props) => {
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohortName" },
     }));
-    snackbar.showMessage(<Alert severity="info">Add a cohort</Alert>);
   };
 
   return (
