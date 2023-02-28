@@ -29,10 +29,7 @@ const CohortManagement = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredRows, setFilteredRows] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all courses");
-  const [selectedOption2, setSelectedOption2] = useState("any status");
-  // console.log("ALL COHORTS.CURRENT", allCohorts.current);
-  // console.log("Filtered", filteredRows);
-  // console.log("COURSES", courses);
+
   //Search Cohort
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -46,7 +43,6 @@ const CohortManagement = () => {
       }
       return false;
     });
-
     setTableRows(searchedRows);
   };
 
@@ -64,13 +60,11 @@ const CohortManagement = () => {
       setFilteredRows(filtered);
     }
   }, [selectedOption]);
+
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  const handleOptionChange2 = (event) => {
-    setSelectedOption2(event.target.value);
-  };
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -82,11 +76,9 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(
-            new Date(cohort.end_date, cohort.schedule.length),
-            "MMM dd, yyyy"
-          )
+        ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
+      status: cohort.status,
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,

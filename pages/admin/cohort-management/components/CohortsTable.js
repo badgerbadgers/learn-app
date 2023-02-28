@@ -1,6 +1,5 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
 import React, { useCallback, useEffect, useState } from "react";
-import { add, differenceInWeeks } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -222,14 +221,6 @@ export default function CohortsTable({
       type: "date",
       width: 125,
       headerAlign: "center",
-      valueGetter: (params) => {
-        let endDate = add(new Date(params.row.startDate), {
-          weeks: params.row.scheduleLen,
-        });
-        return params.row.startDate
-          ? format(new Date(endDate), "MMM dd, yyyy")
-          : "";
-      },
       renderCell: (params) => {
         return (
           <div
@@ -253,22 +244,6 @@ export default function CohortsTable({
       headerAlign: "center",
       editable: false,
       renderCell: (params) => {
-        const startDate = new Date(params.row.startDate);
-        const endDate = add(new Date(params.row.startDate), {
-          weeks: params.row.scheduleLen,
-        });
-        if (!startDate || new Date() < startDate || new Date() > endDate)
-          return (
-            <div
-              className={
-                rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                  ? classes.disabled
-                  : null
-              }
-            >
-              {""}
-            </div>
-          );
         return (
           <div
             className={
@@ -277,7 +252,7 @@ export default function CohortsTable({
                 : null
             }
           >
-            {differenceInWeeks(new Date(), startDate) + 1}
+            {params.row.scheduleLen}
           </div>
         );
       },
@@ -293,48 +268,17 @@ export default function CohortsTable({
       renderCell: (params) => {
         if (!params.row.startDate) return "TBD";
         else {
-          let endDate = add(new Date(params.row.startDate), {
-            weeks: params.row.scheduleLen,
-          });
-          if (
-            new Date(params.row.startDate) <= new Date() &&
-            new Date() <= new Date(endDate)
-          )
-            return (
-              <div
-                className={
-                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                    ? classes.disabled
-                    : null
-                }
-              >
-                in progress
-              </div>
-            );
-          else if (new Date() < new Date(params.row.startDate))
-            return (
-              <div
-                className={
-                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                    ? classes.disabled
-                    : null
-                }
-              >
-                upcoming
-              </div>
-            );
-          else if (new Date() > new Date(endDate))
-            return (
-              <div
-                className={
-                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                    ? classes.disabled
-                    : null
-                }
-              >
-                completed
-              </div>
-            );
+          return (
+            <div
+              className={
+                rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                  ? classes.disabled
+                  : null
+              }
+            >
+              {params.value}
+            </div>
+          );
         }
       },
     },
