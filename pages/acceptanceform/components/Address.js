@@ -31,17 +31,23 @@ function Address(props) {
     },
   } = props;
 
-  const { values } = useFormikContext();
+  const formikProps = useFormikContext();
 
   // When the checkbox is checked all physical address values already entered at that moment
   // are being copied into the respective mailing address values
-  if (values.address_mailing_same) {
-    values.address_mailing_zipcode = values.address_physical_zipcode;
-    values.address_mailing_street1 = values.address_physical_street1;
-    values.address_mailing_street2 = values.address_physical_street2;
-    values.address_mailing_city = values.address_physical_city;
-    values.address_mailing_state = values.address_physical_state;
-    values.address_mailing_country = values.address_physical_country;
+  if (formikProps.values.address_mailing_same) {
+    formikProps.values.address_mailing_zipcode =
+      formikProps.values.address_physical_zipcode;
+    formikProps.values.address_mailing_street1 =
+      formikProps.values.address_physical_street1;
+    formikProps.values.address_mailing_street2 =
+      formikProps.values.address_physical_street2;
+    formikProps.values.address_mailing_city =
+      formikProps.values.address_physical_city;
+    formikProps.values.address_mailing_state =
+      formikProps.values.address_physical_state;
+    formikProps.values.address_mailing_country =
+      formikProps.values.address_physical_country;
   }
 
   return (
@@ -126,21 +132,35 @@ function Address(props) {
 
           <Grid item xs={12} sm={6} width="100%">
             {/* Conditionally renders the country list if US resident radio button selected "Yes" */}
-            {values.address_USResident === "no" && (
+            {formikProps.values.address_USResident === "no" && (
               <Autocomplete
                 id="country-select-demo"
                 name={physicalCountry.name}
                 label={physicalCountry.label}
-                value={values.address_physical_country}
-                isOptionEqualToValue={(option, value) =>
-                  option.value === value.value
-                }
+                value={formikProps.values.address_physical_country}
+                // isOptionEqualToValue={(option, value) =>
+                //   option.value === value.value
+                // }
                 options={countries}
                 autoHighlight
-                getOptionLabel={(option) => option.label}
-                onChange={(event, value) =>
-                  (values.address_physical_country = value)
+                getOptionLabel={(option) =>
+                  typeof option.label === "string" || option instanceof String
+                    ? option.label
+                    : ""
                 }
+                onChange={(event, selected) => {
+                  console.log("selected", selected.value);
+                  console.log(
+                    "initial",
+                    formikProps.values.address_physical_country
+                  );
+                  formikProps.setFieldValue(
+                    "address_physical_country",
+                    selected.value !== null
+                      ? selected.value
+                      : formikProps.values.address_physical_country
+                  );
+                }}
                 renderOption={(props, option) => (
                   <Box
                     component="li"
@@ -158,18 +178,22 @@ function Address(props) {
                   </Box>
                 )}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Choose a country"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: "new-password", // disable autocomplete and autofill
-                    }}
-                  />
+                  console.log("params", params),
+                  (
+                    <TextField
+                      {...params}
+                      label="Choose a country"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: "new-password", // disable autocomplete and autofill
+                      }}
+                    />
+                  )
                 )}
               />
             )}
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -247,16 +271,21 @@ function Address(props) {
               id="country-select-demo"
               name={mailingCountry.name}
               label={mailingCountry.label}
-              value={values.address_mailing_country}
-              isOptionEqualToValue={(option, value) =>
-                option.value === value.value
-              }
+              value={formikProps.values.address_mailing_country}
+              // isOptionEqualToValue={(option, value) =>
+              //   option.value === value.value
+              // }
               options={countries}
               autoHighlight
-              getOptionLabel={(option) => option.label}
-              onChange={(event, value) =>
-                (values.address_mailing_country = value)
+              getOptionLabel={(option) =>
+                typeof option.label === "string" || option instanceof String
+                  ? option.label
+                  : ""
               }
+              onChange={(event, value) => {
+                console.log("value", value);
+                formikProps.values.address_mailing_country = value;
+              }}
               renderOption={(props, option) => (
                 <Box
                   component="li"
