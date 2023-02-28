@@ -143,7 +143,6 @@ const NavBar = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
-                // cursor: "pointer",
                 alignItems: "center",
               }}
             >
