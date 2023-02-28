@@ -53,11 +53,10 @@ const EditToolbar = (props) => {
     const url = `/api/cohorts/${cohortId}`;
     try {
       await axios
-      .put(url, {
+      .put(url, payload, {
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        },      
       });
       handleClose();
       setSnackbar({
@@ -65,10 +64,8 @@ const EditToolbar = (props) => {
         severity: "success",
       });
     } catch (error) {
-      const errorMessage = Object.values(error.response.data.message)[0];
       console.error("Error:", error.response.data);
-      throw new Error(errorMessage);
-      setSnackbar({ children: error.message, severity: "error" });
+      setSnackbar({ children: "Error adding user to cohort", severity: "error" });
     }
   };
 
