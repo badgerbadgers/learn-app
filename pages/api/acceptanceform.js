@@ -70,7 +70,7 @@ export default async function handler(req, res) {
 }
 
 const createAcceptanceForm = async (req, res) => {
-  const body = req.body;
+  const body = req.body.body;
   const session = await getSession({ req });
   const filter = { user: session.user.id };
   const update = {
@@ -124,7 +124,7 @@ const createAcceptanceForm = async (req, res) => {
     const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
       upsert: true,
     });
-    res.status(200).json({ success: true, data: newuser });
+    res.status(200).json({ success: true, data: JSON.stringify(newuser) });
   } catch (error) {
     res.status(400).json({ success: false });
   }

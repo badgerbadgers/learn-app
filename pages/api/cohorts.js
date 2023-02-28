@@ -56,10 +56,8 @@ export default async function handler(req, res) {
 const getCohorts = async (req, res) => {
   let cohorts = [];
   try {
-    cohorts = await Cohort.find({})
-      .populate("course", "_id course_name")
-      .exec();
-    res.status(200).json({ success: true, data: cohorts });
+    cohorts = await Cohort.find({}).populate("course", "_id course_name").exec();
+    res.status(200).json({ success: true, data: JSON.stringify(cohorts) });
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });
@@ -69,7 +67,7 @@ const getCohorts = async (req, res) => {
 
 const createCohort = async (req, res) => {
   try {
-    const cohortToDb = await sanitize(req.body);
+    const cohortToDb = await sanitize(JSON.parse(req.body.body));
     const existingCohortName = await Cohort.findOne({
       cohort_name: cohortToDb.cohort_name,
     });
@@ -145,16 +143,15 @@ export const createSchedule = async (courseId) => {
       "lessons"
     );
     lessonsInCourse = lessonsInCourse.lessons;
-    const sortedLessons = await Lesson.find({ _id: { $in: lessonsInCourse } })
+    const sortedLessons = await Lesson
+      .find({ _id: { $in: lessonsInCourse } })
       .select({ _id: 1, order: 1, section: 1 })
       .sort({ order: 1 });
-    sortedLessons.map((l) =>
-      schedule.push({
+    sortedLessons.map((l) => schedule.push({
         lesson: l._id,
         type: "lesson",
         section: l.section,
-      })
-    );
+      }));
   } catch (error) {
     console.log(error, "Can't fetch lessons from course");
   }

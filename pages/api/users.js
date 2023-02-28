@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       return await getUsers(req, res);
     case "POST":
       try {
-        let userToDb = await sanitize(req.body);
+        let userToDb = await sanitize(JSON.parse(req.body.body));
         const user = await User.create(userToDb);
         if (!user) {
           return res.status(400).json({ success: false });
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 const getUsers = async (req, res) => {
   try {
     let users = await getUserFilters(req.query);
-    res.status(200).json({ success: true, data: users });
+    res.status(200).json({ success: true, data: JSON.stringify(users) });
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });
