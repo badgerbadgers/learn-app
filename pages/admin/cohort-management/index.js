@@ -20,6 +20,12 @@ const courseOptions = [
   { label: "Rails", value: "rails" },
 ];
 
+const statusOptions = [
+  { label: "Any", value: "any" },
+  { label: "Past", value: "past" },
+  { label: "Active", value: "active" },
+  { label: "Future", value: "future" },
+];
 const CohortManagement = () => {
   const allCohorts = useRef([]);
   const [loading, setLoading] = useState(true);
@@ -28,8 +34,8 @@ const CohortManagement = () => {
   const [courses, setCourses] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredRows, setFilteredRows] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("all courses");
-
+  const [courseOption, setCourseOption] = useState("all courses");
+  const [statusOption, setStatusOption] = useState("any");
   //Search Cohort
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -51,18 +57,34 @@ const CohortManagement = () => {
   };
   //Filter Cohort by Course
   useEffect(() => {
-    if (selectedOption === "all courses") {
+    if (courseOption === "all courses") {
       setFilteredRows(allCohorts.current);
     } else {
       const filtered = allCohorts.current.filter(
-        (row) => row.courseName.toLowerCase() === selectedOption
+        (row) => row.courseName.toLowerCase() === courseOption
       );
       setFilteredRows(filtered);
     }
-  }, [selectedOption]);
+  }, [courseOption]);
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleCourseChange = (event) => {
+    setCourseOption(event.target.value);
+  };
+
+  //Filter Cohort by status
+  useEffect(() => {
+    if (statusOption === "any") {
+      setFilteredRows(allCohorts.current);
+    } else {
+      const filtered = allCohorts.current.filter(
+        (row) => row.status.toLowerCase() === statusOption
+      );
+      setFilteredRows(filtered);
+    }
+  }, [statusOption]);
+
+  const handleStatusChange = (event) => {
+    setStatusOption(event.target.value);
   };
 
   const makeRowfromCohort = (cohort) => {
@@ -144,8 +166,17 @@ const CohortManagement = () => {
       <Grid container>
         <Grid item xs={10} sx={{ textAlign: "start" }}>
           <FormControl>
-            <Select value={selectedOption} onChange={handleOptionChange}>
+            <Select value={courseOption} onChange={handleCourseChange}>
               {courseOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <Select value={statusOption} onChange={handleStatusChange}>
+              {statusOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>

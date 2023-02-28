@@ -67,7 +67,7 @@ export default function CohortsTable({
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
-  //Filter courses
+  //Filter
   useEffect(() => {
     setRows(filteredRows);
   }, [filteredRows]);
