@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { MenuItem, FormControl, Select } from "@mui/material";
+import CohortsFilter from "./components/CohortsFilter";
 
 const courseOptions = [
   { label: "All courses", value: "all courses" },
@@ -36,6 +36,7 @@ const CohortManagement = () => {
   const [filteredRows, setFilteredRows] = useState([]);
   const [courseOption, setCourseOption] = useState("all courses");
   const [statusOption, setStatusOption] = useState("any");
+
   //Search Cohort
   const requestSearch = (searchValue) => {
     setSearchInput(searchValue);
@@ -164,25 +165,15 @@ const CohortManagement = () => {
         Cohort Management
       </Typography>
       <Grid container>
-        <Grid item xs={10} sx={{ textAlign: "start" }}>
-          <FormControl>
-            <Select value={courseOption} onChange={handleCourseChange}>
-              {courseOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <Select value={statusOption} onChange={handleStatusChange}>
-              {statusOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Grid item xs={10}>
+          <CohortsFilter
+            courseOption={courseOption}
+            courseOptions={courseOptions}
+            statusOption={statusOption}
+            statusOptions={statusOptions}
+            handleCourseChange={handleCourseChange}
+            handleStatusChange={handleStatusChange}
+          />
         </Grid>
         <Grid item xs={2}>
           <TextField
