@@ -137,7 +137,7 @@ function Address(props) {
                 id="country-select-demo"
                 name={physicalCountry.name}
                 label={physicalCountry.label}
-                value={formikProps.values.address_physical_country}
+                value={formikProps.values.address_physical_country || null}
                 // isOptionEqualToValue={(option, value) =>
                 //   option.value === value.value
                 // }
@@ -271,7 +271,7 @@ function Address(props) {
               id="country-select-demo"
               name={mailingCountry.name}
               label={mailingCountry.label}
-              value={formikProps.values.address_mailing_country}
+              value={formikProps.values.address_mailing_country || null}
               // isOptionEqualToValue={(option, value) =>
               //   option.value === value.value
               // }
