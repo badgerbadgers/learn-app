@@ -25,7 +25,7 @@ const CohortManagement = () => {
         : "",
       endDate: cohort.end_date
         ? format(
-            new Date(cohort.end_date, cohort.schedule.length),
+            new Date(cohort.end_date),
             "MMM dd, yyyy"
           )
         : "",
