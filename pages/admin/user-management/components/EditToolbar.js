@@ -19,6 +19,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import axios from "axios";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows, selectionModel, cohorts } = props;
@@ -51,8 +52,8 @@ const EditToolbar = (props) => {
     const cohortId = cohortSelected;
     const url = `/api/cohorts/${cohortId}`;
     try {
-      await fetch(url, {
-        method: "PUT",
+      await axios
+      .put(url, {
         headers: {
           "Content-Type": "application/json",
         },
