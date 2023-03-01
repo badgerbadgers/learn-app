@@ -113,10 +113,7 @@ const NavBar = () => {
         width: "100%",
       }}
     >
-      <Container
-        maxWidth={false}
-        sx={{ mx: 0, maxWidth: "2000px", margin: "auto" }}
-      >
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           {/* code for Logo */}
           <Avatar
@@ -128,7 +125,7 @@ const NavBar = () => {
                 : "/img/logo/BookLogoGradient.png"
             }
             sx={{
-              mr: 3,
+              mr: 0.125,
               display: "flex",
               width: "auto",
               cursor: "pointer",
@@ -142,16 +139,20 @@ const NavBar = () => {
           {session && (
             <Box
               sx={{
-                flexGrow: 0,
-                marginLeft: "auto",
+                margin: "20px",
                 display: "flex",
-                width: "auto",
-                cursor: "pointer",
+                justifyContent: "space-between",
+                width: "100%",
                 alignItems: "center",
               }}
             >
               {/* Start Static Pages Menu */}
-              <Typography variant="h7" mr={4} onClick={handlePagesMenuOpen}>
+              <Typography
+                variant="h7"
+                mr={4}
+                onClick={handlePagesMenuOpen}
+                sx={{ cursor: "pointer" }}
+              >
                 Student Resources
               </Typography>
               <Menu
@@ -201,84 +202,90 @@ const NavBar = () => {
                   ))}
               </Menu>
               {/* End Static Pages Menu */}
-
-              {/* Start User Account Menu */}
-              <Typography variant="h6" mr={1}>
-                {session.user.name || session.user.gh}
-              </Typography>
-
-              <Tooltip title="Open settings">
-                <IconButton
-                  onClick={handleUserMenuOpen}
-                  sx={{ p: 0 }}
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                >
-                  <Avatar alt="User Image" src={session.user.image} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  alignContent: "center",
                 }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}
-                keepMounted
-                open={Boolean(anchorElUser)}
-                onClose={handleMenuClose}
               >
-                {settings &&
-                  settings.map((setting) => (
-                    <MenuItem
-                      key={setting.title}
-                      onClick={() => {
-                        handleMenuClose;
-                        setting.title === "Logout" && signOut();
-                        setting.name === "mode" && changeTheme(mode);
-                      }}
-                      component={Link}
-                      href={setting.href}
-                      target={setting.target}
-                      rel="noopener noreferrer"
-                    >
-                      {setting.name === "mode" ? (
-                        // Dark Mode switch
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          title={
-                            mode === "dark"
-                              ? "Go to Light Mode"
-                              : "Go to Dark Mode"
-                          }
-                          sx={{
-                            minWidth: "35px",
-                            width: "20px",
-                            borderRadius: "24px",
-                          }}
-                        >
-                          {mode === "dark" ? (
-                            <LightModeIcon />
-                          ) : (
-                            <DarkModeIcon />
-                          )}
-                        </Button>
-                      ) : (
-                        // For other Links
-                        <Typography variant="body1" textAlign="center">
-                          {setting.title}
-                        </Typography>
-                      )}
-                    </MenuItem>
-                  ))}
-                {/* End User Account Menu */}
-              </Menu>
+                {/* Start User Account Menu */}
+                <Tooltip title="Open settings">
+                  <IconButton
+                    onClick={handleUserMenuOpen}
+                    sx={{ p: 0 }}
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                  >
+                    <Typography variant="h6" mr={1}>
+                      {session.user.name || session.user.gh}
+                    </Typography>
+                    <Avatar alt="User Image" src={session.user.image} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                  keepMounted
+                  open={Boolean(anchorElUser)}
+                  onClose={handleMenuClose}
+                >
+                  {settings &&
+                    settings.map((setting) => (
+                      <MenuItem
+                        key={setting.title}
+                        onClick={() => {
+                          handleMenuClose;
+                          setting.title === "Logout" && signOut();
+                          setting.name === "mode" && changeTheme(mode);
+                        }}
+                        component={Link}
+                        href={setting.href}
+                        target={setting.target}
+                        rel="noopener noreferrer"
+                      >
+                        {setting.name === "mode" ? (
+                          // Dark Mode switch
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            title={
+                              mode === "dark"
+                                ? "Go to Light Mode"
+                                : "Go to Dark Mode"
+                            }
+                            sx={{
+                              minWidth: "35px",
+                              width: "20px",
+                              borderRadius: "24px",
+                            }}
+                          >
+                            {mode === "dark" ? (
+                              <LightModeIcon />
+                            ) : (
+                              <DarkModeIcon />
+                            )}
+                          </Button>
+                        ) : (
+                          // For other Links
+                          <Typography variant="body1" textAlign="center">
+                            {setting.title}
+                          </Typography>
+                        )}
+                      </MenuItem>
+                    ))}
+                  {/* End User Account Menu */}
+                </Menu>
+              </Box>
             </Box>
           )}
         </Toolbar>
