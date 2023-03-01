@@ -88,15 +88,14 @@ const EditToolbar = (props) => {
       </Button>
 
       <Box sx={{ m: 1 }}>
-        {selectionModel.length === 0 ? (
-          <Button disabled endIcon={<MoreHorizIcon />}>
-            Add Users To Cohorts
-          </Button>
-        ) : (
-          <Button onClick={handleClickPopover} endIcon={<MoreHorizIcon />}>
-            Add Users To Cohorts
-          </Button>
-        )}
+        <Button
+          disabled={selectionModel.length === 0}
+          onClick={handleClickPopover}
+          endIcon={<MoreHorizIcon />}
+        >
+          Add Users To Cohorts
+        </Button>
+        {/* )} */}
 
         <Popover
           id={id}
