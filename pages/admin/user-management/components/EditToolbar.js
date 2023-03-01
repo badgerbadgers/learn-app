@@ -93,7 +93,7 @@ const EditToolbar = (props) => {
           onClick={handleClickPopover}
           endIcon={<MoreHorizIcon />}
         >
-          Add Users To Cohorts
+          Add Users To Cohort
         </Button>
         {/* )} */}
 
