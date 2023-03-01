@@ -35,7 +35,7 @@ const updateDate = (date) => {
   const updateCohortField = async (payload) => {
     const url = "/api/cohorts/";
     await fetch(url + id, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

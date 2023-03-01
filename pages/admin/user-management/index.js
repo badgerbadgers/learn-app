@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import StudentsTable from "./components/StudentsTable";
-import StudentsFilter from "./components/StudentsFilter";
+import UsersTable from "./components/UsersTable";
+import UsersFilter from "./components/UsersFilter";
 import { Container, Typography } from "@mui/material";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getSession } from "next-auth/react";
@@ -12,7 +12,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import { formatDistance } from "date-fns";
 
-const StudentManagemant = () => {
+const UserManagemant = () => {
   const url = "/api/users";
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
@@ -141,11 +141,16 @@ const StudentManagemant = () => {
   return (
     <Container sx={{ textAlign: "center " }}>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
-        Student Management
+       User Management
       </Typography>
       <Grid container spasing={2}>
         <Grid item xs={10}>
-          <StudentsFilter cohorts={cohorts.sort()} courses={courses.sort()} roles={roles} changeHandler={filterChangeHandler} />
+          <UsersFilter
+            cohorts={cohorts.sort()}
+            courses={courses.sort()}
+            roles={roles}
+            changeHandler={filterChangeHandler}
+          />
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -156,7 +161,13 @@ const StudentManagemant = () => {
             InputProps={{
               startAdornment: <SearchIcon fontSize="small" />,
               endAdornment: (
-                <IconButton title="Clear" aria-label="Clear" size="small" onClick={clearSearch} style={{ visibility: searchInput ? "visible" : "hidden" }}>
+                <IconButton
+                  title="Clear"
+                  aria-label="Clear"
+                  size="small"
+                  onClick={clearSearch}
+                  style={{ visibility: searchInput ? "visible" : "hidden" }}
+                >
                   <ClearIcon fontSize="small" />
                 </IconButton>
               ),
@@ -164,14 +175,20 @@ const StudentManagemant = () => {
           />
         </Grid>
       </Grid>
-      <StudentsTable loading={loading} tableRows={tableRows} id={id} setId={setId} />
+      <UsersTable
+        loading={loading}
+        tableRows={tableRows}
+        id={id}
+        setId={setId}
+        cohorts={cohorts.sort()}
+      />
     </Container>
   );
 };
 
-export default StudentManagemant;
+export default UserManagemant;
 
-StudentManagemant.getLayout = privateLayout;
+UserManagemant.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

@@ -5,6 +5,7 @@ import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 import { getSession } from "next-auth/react";
+import axios from "axios";
 
 const WordPressStaticPage = ({ title, content }) => {
   return (
@@ -53,14 +54,15 @@ export async function getServerSideProps(context) {
     };
   }
   // fetches specific wp page using wordpress_id
-  const res = await fetch(process.env.wordpressUrl + mongoPage.wordpress_id);
-  const wordpressPage = await res.json();
+  const wordpressPage = await axios.get(
+    process.env.wordpressUrl + mongoPage.wordpress_id
+  );
 
   // Pass data to the page via props
   return {
     props: {
-      title: wordpressPage.title.rendered,
-      content: wordpressPage.content.rendered,
+      title: wordpressPage.data.title.rendered,
+      content: wordpressPage.data.content.rendered,
     },
   };
 }

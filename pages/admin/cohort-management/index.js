@@ -99,7 +99,10 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(new Date(cohort.end_date), "MMM dd, yyyy")
+        ? format(
+            new Date(cohort.end_date),
+            "MMM dd, yyyy"
+          )
         : "",
       status: cohort.status,
       students:
