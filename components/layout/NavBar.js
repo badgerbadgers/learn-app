@@ -143,12 +143,16 @@ const NavBar = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
-                cursor: "pointer",
                 alignItems: "center",
               }}
             >
               {/* Start Static Pages Menu */}
-              <Typography variant="h7" mr={4} onClick={handlePagesMenuOpen}>
+              <Typography
+                variant="h7"
+                mr={4}
+                onClick={handlePagesMenuOpen}
+                sx={{ cursor: "pointer" }}
+              >
                 Student Resources
               </Typography>
               <Menu
@@ -205,10 +209,7 @@ const NavBar = () => {
                   alignContent: "center",
                 }}
               >
-                <Typography variant="h6" mr={1}>
-                  {session.user.name || session.user.gh}
-                </Typography>
-
+                {/* Start User Account Menu */}
                 <Tooltip title="Open settings">
                   <IconButton
                     onClick={handleUserMenuOpen}
@@ -217,6 +218,9 @@ const NavBar = () => {
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
                   >
+                    <Typography variant="h6" mr={1}>
+                      {session.user.name || session.user.gh}
+                    </Typography>
                     <Avatar alt="User Image" src={session.user.image} />
                   </IconButton>
                 </Tooltip>
@@ -282,7 +286,6 @@ const NavBar = () => {
                   {/* End User Account Menu */}
                 </Menu>
               </Box>
-              {/* Start User Account Menu */}
             </Box>
           )}
         </Toolbar>
