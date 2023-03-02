@@ -78,7 +78,7 @@ const CohortManagement = () => {
       setFilteredRows(allCohorts.current);
     } else {
       const filtered = allCohorts.current.filter(
-        (row) => row.status.toLowerCase() === statusOption
+        (row) => row.status === statusOption
       );
       setFilteredRows(filtered);
     }
@@ -99,10 +99,7 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(
-            new Date(cohort.end_date),
-            "MMM dd, yyyy"
-          )
+        ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
       status: cohort.status,
       students:
