@@ -24,15 +24,12 @@ const CohortManagement = () => {
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
-        ? format(
-            new Date(cohort.end_date),
-            "MMM dd, yyyy"
-          )
+        ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
       students:
         cohort.students && cohort.students.length ? cohort.students.length : 0,
       seats: cohort.seats,
-      mentors: cohort.mentors[0] ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
+      mentors: Array.isArray(cohort.mentors) ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug: cohort.slug,
       scheduleLen: cohort.schedule.length,
     };

@@ -244,6 +244,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       headerAlign: "center",
       editable: false,
       renderCell: (params) => {
+        if (!params.row.scheduleLen) return "";
         const startDate = new Date(params.row.startDate);
         const endDate = add(new Date(params.row.startDate), {
           weeks: params.row.scheduleLen,
