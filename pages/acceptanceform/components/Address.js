@@ -12,7 +12,6 @@ import CheckboxField from "./FormFields/CheckboxField";
 import { useFormikContext } from "formik";
 
 function Address(props) {
-
   const {
     formField: {
       USResident,
@@ -32,7 +31,7 @@ function Address(props) {
     },
   } = props;
 
-  const { values } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
 
   // When the checkbox is checked all physical address values already entered at that moment
   // are being copied into the respective mailing address values
@@ -132,9 +131,23 @@ function Address(props) {
                 id="country-select-demo"
                 name={physicalCountry.name}
                 label={physicalCountry.label}
+                value={values.address_physical_country || null}
+                isOptionEqualToValue={(option, value) =>
+                  option.value === value.value
+                }
                 options={countries}
                 autoHighlight
-                getOptionLabel={(option) => option.label}
+                getOptionLabel={(option) =>
+                  typeof option.label === "string" || option instanceof String
+                    ? option.label
+                    : ""
+                }
+                onChange={(event, value) =>
+                  setFieldValue(
+                    "address_physical_country",
+                    value !== null ? value : values.address_physical_country
+                  )
+                }
                 renderOption={(props, option) => (
                   <Box
                     component="li"
@@ -164,6 +177,7 @@ function Address(props) {
               />
             )}
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -241,10 +255,23 @@ function Address(props) {
               id="country-select-demo"
               name={mailingCountry.name}
               label={mailingCountry.label}
-              disabled={values.mailing_same ? true : false}
+              value={values.address_mailing_country || null}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
               options={countries}
               autoHighlight
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) =>
+                typeof option.label === "string" || option instanceof String
+                  ? option.label
+                  : ""
+              }
+              onChange={(event, value) =>
+                setFieldValue(
+                  "address_mailing_country",
+                  value !== null ? value : values.address_mailing_country
+                )
+              }
               renderOption={(props, option) => (
                 <Box
                   component="li"

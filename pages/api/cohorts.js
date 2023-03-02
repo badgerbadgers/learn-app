@@ -130,6 +130,8 @@ export const sanitize = async (obj) => {
     seats: obj.seats || 0,
     slug: obj.cohortName.trim().replaceAll(" ", "-").toLowerCase(),
     created_at: obj.created_at ? obj.created_at : new Date(),
+    students: obj.students ? obj.students : null,
+    mentors: obj.mentors ? obj.mentors : null,
   };
 };
 

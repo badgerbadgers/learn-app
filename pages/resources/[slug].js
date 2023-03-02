@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
+import axios from "axios";
 
 const Slug = ({ dbPage, content }) => {
   const router = useRouter();
@@ -57,15 +58,14 @@ export async function getStaticProps(context) {
   }).lean();
 
   // fetches specific wp page using wordpress_id
-  const res = await fetch(
+  const wordpressPage = await axios.get(
     `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
   );
-  const wordpressPage = await res.json();
 
   return {
     props: {
       dbPage: JSON.parse(JSON.stringify(mongoPage)),
-      content: wordpressPage.content.rendered,
+      content: wordpressPage.data.content.rendered,
       revalidate: 600, // 10 mins
     },
   };
