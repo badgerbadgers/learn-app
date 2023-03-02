@@ -36,7 +36,7 @@
  *         description: Create the cohort by id
  *       400:
  *         description: Error messages
- *   patch:
+ *   put:
  *     summary: in Progress
  *     description: Added schedule and start_date to the cohort
  *     tags: [Cohorts]
