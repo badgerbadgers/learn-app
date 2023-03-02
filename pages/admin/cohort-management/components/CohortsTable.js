@@ -268,17 +268,44 @@ export default function CohortsTable({
       renderCell: (params) => {
         if (!params.row.startDate) return "TBD";
         else {
-          return (
-            <div
-              className={
-                rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                  ? classes.disabled
-                  : null
-              }
-            >
-              {params.value}
-            </div>
-          );
+          if (params.row.status === "past") {
+            return (
+              <div
+                className={
+                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                    ? classes.disabled
+                    : null
+                }
+              >
+                Completed
+              </div>
+            );
+          } else if (params.row.status === "active") {
+            return (
+              <div
+                className={
+                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                    ? classes.disabled
+                    : null
+                }
+              >
+                In progress
+              </div>
+            );
+          } else if (params.row.status === "future") {
+            return (
+              <div
+                className={
+                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                    ? classes.disabled
+                    : null
+                }
+              >
+                Upcoming
+              </div>
+            );
+          }
+          
         }
       },
     },

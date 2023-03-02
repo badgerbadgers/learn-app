@@ -22,9 +22,9 @@ const courseOptions = [
 
 const statusOptions = [
   { label: "Any", value: "any" },
-  { label: "Past", value: "past" },
-  { label: "Active", value: "active" },
-  { label: "Future", value: "future" },
+  { label: "Completed", value: "past" },
+  { label: "In progress", value: "active" },
+  { label: "Upcoming", value: "future" },
 ];
 const CohortManagement = () => {
   const allCohorts = useRef([]);
