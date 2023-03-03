@@ -51,8 +51,7 @@ const getUsers = async (req, res) => {
 
 const getUserFilters = async (filters) => {
   const users = await filterUsers(filters);
-  const usersNotDeleted = users.filter(user => !user.deleted_at)
-  return usersNotDeleted
+  return users
 }
 
 const updateUser = async (req, res) => {
