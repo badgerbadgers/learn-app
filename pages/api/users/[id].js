@@ -19,44 +19,9 @@
  *   put:
  *     description: Update user by id
  *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: 62ac7ea1e0fbc232e6e4271c
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             name: string
- *             email: string
- *             gh: string
- *           example:
- *             name: Jon Snow
- *             email: jon@gmail.com
- *             gh: Jon
- *     responses:
- *       200:
- *         description: Update the user by id
- *       400:
- *         description: Error messages
  *   delete:
  *     description: Delete user by id
  *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: 62d1cdeb70f32c8f947ee2ba
- *     responses:
- *       200:
- *         description: Delete the user
- *       400:
- *         description: Error messages
  */
 import User from "../../../lib/models/User";
 import dbConnect from "../../../lib/dbConnect";

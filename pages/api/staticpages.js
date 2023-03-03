@@ -15,20 +15,6 @@
  *     summary: in Progress
  *     description: Create the staticpage
  *     tags: [Static pages]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             wordpress_id: number
- *             isShown: boolean
- *           example:
- *             wordpress_id: 2196
- *             isShown: true
- *     responses:
- *       200:
- *         description: Create the static page
- *       400:
- *         description: Error messages
  */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";

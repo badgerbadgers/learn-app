@@ -17,49 +17,14 @@
  *       400:
  *         description: Error messages
  *   post:
- *     summary: in Progress
  *     description: Create the cohort by id
  *     tags: [Cohorts]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             cohortName: integer
- *             courseName: string
- *             startDate: date
- *           example:
- *             cohortName: Blue Fish
- *             courseName: 62e056cee6daad619e5cc2c3
- *             startDate: 2023-02-21T08:00:00.000Z
- *     responses:
- *       200:
- *         description: Create the cohort by id
- *       400:
- *         description: Error messages
  *   put:
- *     summary: in Progress
  *     description: Added schedule and start_date to the cohort
  *     tags: [Cohorts]
- *     responses:
- *       200:
- *         description: Update the cohort by id
- *       400:
- *         description: Error messages
  *   delete:
  *     description: Delete the cohort by id
  *     tags: [Cohorts]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: 632e0184290d23ac4c005e27
- *     responses:
- *       201:
- *         description: Delete the cohort by id
- *       400:
- *         description: Error messages
  */
 import { createSchedule, sanitize } from "../cohorts";
 

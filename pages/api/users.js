@@ -14,22 +14,7 @@
  *   post:
  *     description: Add a new user
  *     tags: [Users]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             name: string
- *             email: string
- *             gh: string
- *           example:
- *             name: Jon Black
- *             email: jonblack@gmail.com
- *             gh: Jonblack
- *     responses:
- *       200:
- *         description: Create the user
- *       400:
- *         description: Error messages
+ *     
  */
 
 import { getSession } from "next-auth/react";

@@ -14,23 +14,6 @@
  *   post:
  *     description: Create the cohort
  *     tags: [Cohorts]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             cohortName: integer
- *             courseName: string
- *             startDate: date
- *           example:
- *             cohortName: Blue Whale
- *             courseName: 62e056cee6daad619e5cc2c3
- *             startDate: 2023-02-21
- *     responses:
- *       200:
- *         description: Create the cohort
- *       400:
- *         description: Error messages
  */
 const { ObjectId } = require("mongodb");
 
