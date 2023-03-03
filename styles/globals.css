@@ -100,3 +100,24 @@ p,
 .extra-padding-on-top {
   padding-top: 80px;
 }
+
+/* styling for snackbar notification alignment on the page */
+.MuiSnackbar-root {
+  padding-left: 40%;
+}
+
+.MuiSnackbarContent-root {
+  padding: 0px;
+}
+
+/* removes large dark border around snackbar alerts */
+.MuiSnackbarContent-message {
+  padding: 0px;
+}
+
+.MuiAlert-root {
+  width: 300px;
+  margin: 0px;
+  padding: 6px 12px;
+  border-radius: 2%;
+}
