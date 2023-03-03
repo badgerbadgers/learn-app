@@ -14,7 +14,6 @@ export default async function handler(req, res) {
 
   try {
     for await (const cohort of Cohort.find()) {
-      cohort.calculateStatus();
       await cohort.save();
     }
 
