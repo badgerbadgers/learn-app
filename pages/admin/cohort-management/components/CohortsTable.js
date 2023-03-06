@@ -1,5 +1,6 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { add, differenceInWeeks } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -10,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
 import PropTypes from "prop-types";
 import SaveIcon from "@mui/icons-material/Save";
-import Snackbar from "@mui/material/Snackbar";
+import { useSnackbar } from "material-ui-snackbar-provider";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import { format } from "date-fns";
@@ -24,6 +25,8 @@ const useStyles = makeStyles({
   },
 });
 const EditToolbar = (props) => {
+  const snackbar = useSnackbar();
+
   const { setRows, setRowModesModel, rows } = props;
   const handleClick = () => {
     const id = uuidv4();
@@ -60,7 +63,7 @@ export default function CohortsTable({
 }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  const [snackbar, setSnackbar] = useState(null);
+  const snackbar = useSnackbar();
   const router = useRouter();
   const classes = useStyles();
 
@@ -145,10 +148,9 @@ export default function CohortsTable({
             slug: response.data.data.slug,
             scheduleLen: response.data.data.schedule.length,
           };
-          setSnackbar({
-            children: "Cohort successfully saved",
-            severity: "success",
-          });
+          snackbar.showMessage(
+            <Alert severity="success">Cohort sucessfully saved.</Alert>
+          );
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         });
     } catch (error) {
@@ -159,10 +161,9 @@ export default function CohortsTable({
     return updatedRow;
   };
 
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const handleProcessRowUpdateError = useCallback((error) => {
-    setSnackbar({ children: error.message, severity: "error" });
-  }, []);
+  const handleProcessRowUpdateError = () => {
+    snackbar.showMessage(<Alert severity="error">Error adding cohort</Alert>);
+  };
 
   const handleClick = (e, url) => {
     e.preventDefault();
@@ -491,16 +492,6 @@ export default function CohortsTable({
           },
         }}
       />
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}
-        >
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Box>
   );
 }
