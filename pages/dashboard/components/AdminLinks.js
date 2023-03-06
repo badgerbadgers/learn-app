@@ -24,6 +24,11 @@ const adminLinks = [
     url: "/admin/static-page-management",
     name: "Static page management",
   },
+  {
+    id: 6,
+    url: "/admin/acceptanceform-reports",
+    name: "Acceptance form reports",
+  },
 ];
 
 export function getAdminLinks() {
