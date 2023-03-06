@@ -7,11 +7,11 @@ import getData from "../../../lib/getData";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import CohortsFilter from "./components/CohortsFilter";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 
 const courseOptions = [
   { label: "All courses", value: "all courses" },
@@ -21,7 +21,7 @@ const courseOptions = [
 ];
 
 const statusOptions = [
-  { label: "Any", value: "any" },
+  { label: "Any status", value: "any status" },
   { label: "Completed", value: "past" },
   { label: "In progress", value: "active" },
   { label: "Upcoming", value: "future" },
@@ -35,59 +35,38 @@ const CohortManagement = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredRows, setFilteredRows] = useState([]);
   const [courseOption, setCourseOption] = useState("all courses");
-  const [statusOption, setStatusOption] = useState("any");
-
-  //Search Cohort
-  const requestSearch = (searchValue) => {
-    setSearchInput(searchValue);
-
-    const searchedRows = allCohorts.current.filter((row) => {
-      if (!searchValue) {
-        return true;
-      }
-      if (row.cohortName.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true;
-      }
-      return false;
-    });
-    setTableRows(searchedRows);
-  };
-
-  const clearSearch = () => {
-    requestSearch("");
-  };
-  //Filter Cohort by Course
+  const [statusOption, setStatusOption] = useState("any status");
+  console.log("Cohorts", allCohorts.current);
   useEffect(() => {
-    if (courseOption === "all courses") {
-      setFilteredRows(allCohorts.current);
-    } else {
-      const filtered = allCohorts.current.filter(
+    let filteredData = allCohorts.current;
+    if (courseOption !== "all courses") {
+      filteredData = filteredData.filter(
         (row) => row.courseName.toLowerCase() === courseOption
       );
-      setFilteredRows(filtered);
     }
-  }, [courseOption]);
+    if (statusOption !== "any status") {
+      filteredData = filteredData.filter((row) => row.status === statusOption);
+    }
+    if (searchInput !== "") {
+      filteredData = filteredData.filter((row) =>
+        row.cohortName.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    }
+    setFilteredRows(filteredData);
+  }, [courseOption, statusOption, searchInput]);
 
   const handleCourseChange = (event) => {
     setCourseOption(event.target.value);
   };
-
-  //Filter Cohort by status
-  useEffect(() => {
-    if (statusOption === "any") {
-      setFilteredRows(allCohorts.current);
-    } else {
-      const filtered = allCohorts.current.filter(
-        (row) => row.status === statusOption
-      );
-      setFilteredRows(filtered);
-    }
-  }, [statusOption]);
-
   const handleStatusChange = (event) => {
     setStatusOption(event.target.value);
   };
-
+  const handleSearchTextChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+  const clearSearch = () => {
+    setSearchInput("");
+  };
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
@@ -151,7 +130,6 @@ const CohortManagement = () => {
         }
         setTableRows(localRows);
         allCohorts.current = localRows;
-        requestSearch(searchInput);
         setLoading(false);
       })();
     } catch (error) {
@@ -165,22 +143,41 @@ const CohortManagement = () => {
         Cohort Management
       </Typography>
       <Grid container>
-        <Grid item xs={10}>
-          <CohortsFilter
-            courseOption={courseOption}
-            courseOptions={courseOptions}
-            statusOption={statusOption}
-            statusOptions={statusOptions}
-            handleCourseChange={handleCourseChange}
-            handleStatusChange={handleStatusChange}
-          />
+        <Grid item xs={10} sx={{ textAlign: "start" }}>
+          <TextField
+            id="outlined-course-filter"
+            select
+            value={courseOption}
+            onChange={handleCourseChange}
+            sx={{ width: 180 }}
+          >
+            {courseOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-status-filter"
+            select
+            value={statusOption}
+            onChange={handleStatusChange}
+            sx={{ width: 180 }}
+          >
+            {statusOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
         <Grid item xs={2}>
           <TextField
-            id="input-with-icon-textfield"
+            id="outlined-search"
             variant="outlined"
+            label="Search by cohort"
             value={searchInput}
-            onChange={(e) => requestSearch(e.target.value)}
+            onChange={handleSearchTextChange}
             InputProps={{
               startAdornment: <SearchIcon fontSize="small" />,
               endAdornment: (
