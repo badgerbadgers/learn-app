@@ -245,6 +245,23 @@ export default function CohortsTable({
       headerAlign: "center",
       editable: false,
       renderCell: (params) => {
+        if (!params.row.scheduleLen) return "";
+        const startDate = new Date(params.row.startDate);
+        const endDate = add(new Date(params.row.startDate), {
+          weeks: params.row.scheduleLen,
+        });
+        if (!startDate || new Date() < startDate || new Date() > endDate)
+          return (
+            <div
+              className={
+                rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                  ? classes.disabled
+                  : null
+              }
+            >
+              {""}
+            </div>
+          );
         return (
           <div
             className={
