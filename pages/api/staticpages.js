@@ -1,3 +1,21 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Static pages
+ * /api/staticpages:
+ *   get:
+ *     description: Returns all staticpages
+ *     tags: [Static pages] 
+ *     responses:
+ *       200:
+ *         description: Get static pages
+ *       400:
+ *         description: Error messages
+ *   post:
+ *     summary: in Progress
+ *     description: Create the staticpage
+ *     tags: [Static pages]
+ */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";
 

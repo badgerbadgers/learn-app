@@ -32,8 +32,8 @@ const steps = [
 // Formik form model properties
 const { formId, formField } = formModel;
 
-function Wizard({previousData}) {
-
+function Wizard({ previousData }) {
+  
   // wizard steps components switcher function
   function renderStepContent(step) {
     switch (step) {
@@ -53,7 +53,7 @@ function Wizard({previousData}) {
   }
 
   // if a user moved to at least the second step in filling out the form but hasn't completed
-  // the entire form then upon the page reload it will show the step a user was interrupted at 
+  // the entire form then upon the page reload it will show the step a user was interrupted at
   // in all other cases it will show the first step of the form
   const [activeStep, setActiveStep] = useState(
     previousData && !previousData.is_completed
