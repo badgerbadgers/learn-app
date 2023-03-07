@@ -15,12 +15,8 @@ export default async function handler(req, res) {
   try {
     let count = 0;
     for await (const cohort of Cohort.find()) {
-      try {
-        await cohort.save();
-        count++;
-      } catch (e) {
-        console.error(`received error "${e.message} for cohort ${cohort._id}"`);
-      }
+      await cohort.save();
+      count++;
     }
 
     res.status(200).json({ message: `updated ${count} cohorts` });
