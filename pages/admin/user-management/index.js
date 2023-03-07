@@ -121,7 +121,7 @@ const UserManagemant = () => {
     try {
       (async () => {
         let response = await getData(params, url);
-        const students = JSON.parse(response.data);
+        const students = response.data;
         let localRows = [];
         if (students) {
           students.map(async (student) => {
