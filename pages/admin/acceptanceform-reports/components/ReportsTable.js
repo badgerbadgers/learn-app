@@ -49,7 +49,7 @@ const EditToolbar = (props) => {
   return (
     <GridToolbarContainer>
       <Button color="primary" onClick={handleExportButtonClick}>
-        Export Report to CSV
+        Download report in CSV file
       </Button>
     </GridToolbarContainer>
   );
