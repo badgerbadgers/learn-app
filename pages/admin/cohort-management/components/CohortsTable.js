@@ -55,7 +55,12 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-export default function CohortsTable({ loading, tableRows, courses }) {
+export default function CohortsTable({
+  loading,
+  tableRows,
+  courses,
+  filteredRows,
+}) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const snackbar = useSnackbar();
@@ -65,6 +70,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
+  //Filter
+  useEffect(() => {
+    setRows(filteredRows);
+  }, [filteredRows]);
 
   const deleteCohort = async (cohortId) => {
     axios
@@ -213,14 +222,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       type: "date",
       width: 125,
       headerAlign: "center",
-      valueGetter: (params) => {
-        let endDate = add(new Date(params.row.startDate), {
-          weeks: params.row.scheduleLen,
-        });
-        return params.row.startDate
-          ? format(new Date(endDate), "MMM dd, yyyy")
-          : "";
-      },
       renderCell: (params) => {
         return (
           <div
@@ -244,6 +245,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       headerAlign: "center",
       editable: false,
       renderCell: (params) => {
+        if (!params.row.scheduleLen) return "";
         const startDate = new Date(params.row.startDate);
         const endDate = add(new Date(params.row.startDate), {
           weeks: params.row.scheduleLen,
@@ -268,7 +270,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                 : null
             }
           >
-            {differenceInWeeks(new Date(), startDate) + 1}
+            {params.row.scheduleLen}
           </div>
         );
       },
@@ -284,13 +286,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       renderCell: (params) => {
         if (!params.row.startDate) return "TBD";
         else {
-          let endDate = add(new Date(params.row.startDate), {
-            weeks: params.row.scheduleLen,
-          });
-          if (
-            new Date(params.row.startDate) <= new Date() &&
-            new Date() <= new Date(endDate)
-          )
+          if (params.row.status === "past") {
             return (
               <div
                 className={
@@ -299,10 +295,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                in progress
+                Completed
               </div>
             );
-          else if (new Date() < new Date(params.row.startDate))
+          } else if (params.row.status === "active") {
             return (
               <div
                 className={
@@ -311,10 +307,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                upcoming
+                In progress
               </div>
             );
-          else if (new Date() > new Date(endDate))
+          } else if (params.row.status === "future") {
             return (
               <div
                 className={
@@ -323,9 +319,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                completed
+                Upcoming
               </div>
             );
+          }
+          
         }
       },
     },
