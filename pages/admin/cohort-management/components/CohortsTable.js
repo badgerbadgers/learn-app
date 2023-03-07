@@ -1,5 +1,5 @@
 import { DataGrid, GridActionsCellItem, GridRowModes, GridToolbarContainer, } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { add, differenceInWeeks } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "@mui/material/Alert";
@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
 import PropTypes from "prop-types";
 import SaveIcon from "@mui/icons-material/Save";
-import Snackbar from "@mui/material/Snackbar";
+import { useSnackbar } from "material-ui-snackbar-provider";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import { format } from "date-fns";
@@ -25,6 +25,8 @@ const useStyles = makeStyles({
   },
 });
 const EditToolbar = (props) => {
+  const snackbar = useSnackbar();
+
   const { setRows, setRowModesModel, rows } = props;
   const handleClick = () => {
     const id = uuidv4();
@@ -53,16 +55,25 @@ EditToolbar.propTypes = {
   setRows: PropTypes.func.isRequired,
 };
 
-export default function CohortsTable({ loading, tableRows, courses }) {
+export default function CohortsTable({
+  loading,
+  tableRows,
+  courses,
+  filteredRows,
+}) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  const [snackbar, setSnackbar] = useState(null);
+  const snackbar = useSnackbar();
   const router = useRouter();
   const classes = useStyles();
 
   useEffect(() => {
     setRows(tableRows);
   }, [tableRows]);
+  //Filter
+  useEffect(() => {
+    setRows(filteredRows);
+  }, [filteredRows]);
 
   const deleteCohort = async (cohortId) => {
     axios
@@ -137,10 +148,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
             slug: response.data.data.slug,
             scheduleLen: response.data.data.schedule.length,
           };
-          setSnackbar({
-            children: "Cohort successfully saved",
-            severity: "success",
-          });
+          snackbar.showMessage(
+            <Alert severity="success">Cohort sucessfully saved.</Alert>
+          );
           setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         });
     } catch (error) {
@@ -151,10 +161,9 @@ export default function CohortsTable({ loading, tableRows, courses }) {
     return updatedRow;
   };
 
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const handleProcessRowUpdateError = useCallback((error) => {
-    setSnackbar({ children: error.message, severity: "error" });
-  }, []);
+  const handleProcessRowUpdateError = () => {
+    snackbar.showMessage(<Alert severity="error">Error adding cohort</Alert>);
+  };
 
   const handleClick = (e, url) => {
     e.preventDefault();
@@ -213,14 +222,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       type: "date",
       width: 125,
       headerAlign: "center",
-      valueGetter: (params) => {
-        let endDate = add(new Date(params.row.startDate), {
-          weeks: params.row.scheduleLen,
-        });
-        return params.row.startDate
-          ? format(new Date(endDate), "MMM dd, yyyy")
-          : "";
-      },
       renderCell: (params) => {
         return (
           <div
@@ -244,6 +245,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       headerAlign: "center",
       editable: false,
       renderCell: (params) => {
+        if (!params.row.scheduleLen) return "";
         const startDate = new Date(params.row.startDate);
         const endDate = add(new Date(params.row.startDate), {
           weeks: params.row.scheduleLen,
@@ -268,7 +270,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                 : null
             }
           >
-            {differenceInWeeks(new Date(), startDate) + 1}
+            {params.row.scheduleLen}
           </div>
         );
       },
@@ -284,13 +286,7 @@ export default function CohortsTable({ loading, tableRows, courses }) {
       renderCell: (params) => {
         if (!params.row.startDate) return "TBD";
         else {
-          let endDate = add(new Date(params.row.startDate), {
-            weeks: params.row.scheduleLen,
-          });
-          if (
-            new Date(params.row.startDate) <= new Date() &&
-            new Date() <= new Date(endDate)
-          )
+          if (params.row.status === "past") {
             return (
               <div
                 className={
@@ -299,10 +295,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                in progress
+                Completed
               </div>
             );
-          else if (new Date() < new Date(params.row.startDate))
+          } else if (params.row.status === "active") {
             return (
               <div
                 className={
@@ -311,10 +307,10 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                upcoming
+                In progress
               </div>
             );
-          else if (new Date() > new Date(endDate))
+          } else if (params.row.status === "future") {
             return (
               <div
                 className={
@@ -323,9 +319,11 @@ export default function CohortsTable({ loading, tableRows, courses }) {
                     : null
                 }
               >
-                completed
+                Upcoming
               </div>
             );
+          }
+          
         }
       },
     },
@@ -511,16 +509,6 @@ export default function CohortsTable({ loading, tableRows, courses }) {
           },
         }}
       />
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}
-        >
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Box>
   );
 }

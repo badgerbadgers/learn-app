@@ -1,3 +1,28 @@
+/** 
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     description: Returns user by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 62b22b42f4da59dbea98071b
+ *     responses:
+ *       200:
+ *         description: Get the user by id
+ *       400:
+ *         description: Error messages
+ *   put:
+ *     description: Update user by id
+ *     tags: [Users]
+ *   delete:
+ *     description: Delete user by id
+ *     tags: [Users]
+ */
 import User from "../../../lib/models/User";
 import dbConnect from "../../../lib/dbConnect";
 import { sanitize } from "../users";
@@ -19,8 +44,10 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         let userToDb = await sanitize(JSON.parse(req.body.body));
-        
-        let user = await User.findByIdAndUpdate(id, userToDb, { runValidators: true, new: true });
+        let user = await User.findByIdAndUpdate(id, userToDb, {
+          runValidators: true,
+          new: true,
+        });
         if (!user) {
           return res.status(400).json({ success: false });
         }
@@ -40,11 +67,15 @@ export default async function handler(req, res) {
 
     case "DELETE":
       try {
-        const deletedUser = await User.findByIdAndUpdate(id, { deleted_at: new Date() });
+        const deletedUser = await User.findByIdAndUpdate(id, {
+          deleted_at: new Date(),
+        });
         if (!deletedUser) {
           return res.status(400).json({ success: false });
         }
-        res.status(201).json({ success: true, data: { deleted: deletedUser.deletedCount } });
+        res
+          .status(201)
+          .json({ success: true, data: { deleted: deletedUser.deletedCount } });
       } catch (error) {
         res.status(400).json({ success: false });
       }

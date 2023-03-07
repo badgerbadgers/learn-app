@@ -60,7 +60,7 @@ const baseTheme = responsiveFontSizes(
           tooltip: {
             fontSize: "1em",
             backgroundColor: "black",
-            color: "white",
+            color: "#FFF",
           },
         },
       },
@@ -150,19 +150,19 @@ const lightTheme = createTheme({
     primary: {
       main: "#FF5C35", //original orange from CTD
       yellowCard: "#F3C300", //original yellow from ctd pallete
-      contrastText: "#fff", //white
+      contrastText: "#FFF", //white
       greenCard: "#8BC34A", // light green
     },
     secondary: {
       main: "#12284C", //original blue from CTD
       light: "#F3C300", //original yellow from ctd pallete
-      contrastText: "#fff",
+      contrastText: "#FFF",
     },
     text: {
       primary: "#31393C", //black
     },
     background: {
-      default: "white",
+      default: "#FFF",
       dbpaper: "#F4F5F7",
       card: "#DFE2E8",
       ctdcard: "#FFF",
@@ -198,10 +198,10 @@ const lightTheme = createTheme({
     syllabus: {
       primary: "#000000",
       card: "#F4F5F7", //light gray
-    }, 
-    submission: { 
-      main:"#6BDF77"
-    }
+    },
+    submission: {
+      main: "#6BDF77",
+    },
   },
 });
 
