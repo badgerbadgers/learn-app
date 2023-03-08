@@ -18,6 +18,7 @@
  */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";
+import altFindOneAndUpdate from "../../lib/models/altFindAndUpdate";
 
 var mongoose = require("mongoose");
 export default async function handler(req, res) {
@@ -48,13 +49,15 @@ const createStaticPages = async (req, res) => {
 
   const newpages = [];
   try {
-    const newpages = await Staticpage.findOneAndUpdate(filter, update, {
+    const newpages = await Staticpage.altFindOneAndUpdate(filter, update, {
       upsert: true,
     });
     res.status(200).json({ success: true, data: JSON.stringify(newpages) });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false });
+    res
+      .status(400)
+      .json({ "Please check ensure all your fields have valid data": error });
   }
 };
 
