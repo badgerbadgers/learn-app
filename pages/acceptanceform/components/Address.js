@@ -138,14 +138,16 @@ function Address(props) {
                 options={countries}
                 autoHighlight
                 getOptionLabel={(option) =>
-                  typeof option.label === "string" || option instanceof String
-                    ? option.label
+                  typeof option === "string" || option instanceof String
+                    ? option
                     : ""
                 }
                 onChange={(event, value) =>
                   setFieldValue(
                     "address_physical_country",
-                    value !== null ? value : values.address_physical_country
+                    value !== null
+                      ? value.label
+                      : values.address_physical_country
                   )
                 }
                 renderOption={(props, option) => (
@@ -262,14 +264,14 @@ function Address(props) {
               options={countries}
               autoHighlight
               getOptionLabel={(option) =>
-                typeof option.label === "string" || option instanceof String
-                  ? option.label
+                typeof option === "string" || option instanceof String
+                  ? option
                   : ""
               }
               onChange={(event, value) =>
                 setFieldValue(
                   "address_mailing_country",
-                  value !== null ? value : values.address_mailing_country
+                  value !== null ? value.label : values.address_mailing_country
                 )
               }
               renderOption={(props, option) => (
