@@ -73,28 +73,6 @@ const getUserFilters = async (filters) => {
   return usersNotDeleted
 }
 
-const updateUser = async (req, res) => {
-  //connect to database
-  const client = await clientPromise;
-  const database = client.db(process.env.MONGODB_DB);
-
-  //get user ObjectId and image from session
-  const session = await getSession({ req });
-  const userGh = session.user.gh;
-
-  //data object from submit form
-  let data = req.body;
-
-  try {
-    await database
-      .collection("users")
-      .findOneAndUpdate({ gh: userGh }, { $set: data }, { upsert: true });
-    res.status(200).json({ message: `create and update User ${userGh}` });
-  } catch (error) {
-    console.log(error, "error from createAndUpdateUser in api/users");
-  }
-};
-
 export const sanitize = async (obj) => {
   return {
     name: obj.name,
