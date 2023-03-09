@@ -173,7 +173,7 @@ const NavBar = () => {
                 {resourceMenuPages &&
                   resourceMenuPages.map((page) => (
                     <MenuItem
-                      key={page.title}
+                      key={page.wordpress_id}
                       onClick={() => {
                         handleMenuClose;
                       }}
