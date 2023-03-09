@@ -1,3 +1,31 @@
+/**
+ * @swagger
+ * /api/cohorts/{id}:
+ *   get:
+ *     description: Get the cohort by id
+ *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 635841bd9be844015c74719a
+ *     responses:
+ *       200:
+ *         description: Get the cohort by id
+ *       400:
+ *         description: Error messages
+ *   post:
+ *     description: Create the cohort by id
+ *     tags: [Cohorts]
+ *   put:
+ *     description: Added schedule and start_date to the cohort
+ *     tags: [Cohorts]
+ *   delete:
+ *     description: Delete the cohort by id
+ *     tags: [Cohorts]
+ */
 import { createSchedule, sanitize } from "../cohorts";
 
 import Cohort from "../../../lib/models/Cohort";
@@ -12,12 +40,12 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const cohort = await Cohort.findById(id).exec();    // API won't return cohorts with time stapm in property deleted_at        
-        res.status(200).json({ cohort: cohort })
+        const cohort = await Cohort.findById(id).exec(); // API won't return cohorts with time stapm in property deleted_at
+        res.status(200).json({ cohort: cohort });
       } catch (error) {
-        res.status(400).json({ success: false })
+        res.status(400).json({ success: false });
       }
-      break
+      break;
 
     case "POST":
       try {
@@ -28,50 +56,53 @@ export default async function handler(req, res) {
         });
         if (existingCohortName.lenght) {
           const error = {
-            error: "Cohort name is not unique"
-          }
+            error: "Cohort name is not unique",
+          };
           res.status(400).json({
             success: false,
-            message: error
+            message: error,
           });
           return;
         }
 
-        const checkCourseId = await Course.findById(cohortToDb.course)
+        const checkCourseId = await Course.findById(cohortToDb.course);
         if (!checkCourseId) {
           const error = {
-            error: "Course does not exist"
-          }
+            error: "Course does not exist",
+          };
           res.status(400).json({
             success: false,
-            message: error
+            message: error,
           });
           return;
         }
-        // if this ever becomes a bottleneck consider replasing the below findByIdAndUpdate 
+        // if this ever becomes a bottleneck consider replasing the below findByIdAndUpdate
         // with proper cohort attributes update and call oldCohort.save()
-        const oldCohort = await Cohort.findById(id)
+        const oldCohort = await Cohort.findById(id);
         if (oldCohort.course.toString() !== cohortToDb.course.toString()) {
           cohortToDb.schedule = await createSchedule(cohortToDb.course);
         }
-        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, { runValidators: true, new: true });
+        const cohort = await Cohort.findByIdAndUpdate(id, cohortToDb, {
+          runValidators: true,
+          new: true,
+        });
 
         if (!cohort) {
-          return res.status(400).json({ success: false })
+          return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: cohort })
+        res.status(200).json({ success: true, data: cohort });
       } catch (error) {
         console.log(error);
         const errors = {};
         Object.entries(error.errors).forEach(([k, v]) => {
-          errors[k] = v.message
-        })
+          errors[k] = v.message;
+        });
         return res.status(400).json({
           success: false,
           message: errors,
         });
       }
-      break
+      break;
 
     case "PUT":
       const [key, val] = req.body
@@ -84,21 +115,12 @@ export default async function handler(req, res) {
       if (key == "schedule" || key == "start_date") {
         const data = {}
         data[key] = val;
-        try {        
+        try {
           await Cohort.updateOne({ _id: id }, data);
           res.status(200).json({ success: true });
         } catch (error) {
-          console.error("Update schedule error", error)
-          res.status(400).json({ success: false })
-        }
-        return   
-      }
-      if (key == "students" || key == "mentors") {
-        try {        
-          await addUsersToCohort(id, key, val);
-        } catch (error) {
-          console.error("Update cohort error", error)
-          res.status(400).json({ success: false })
+          console.error("Update schedule error", error);
+          res.status(400).json({ success: false });
         }
         res.status(200).json({ success: true })
         break
@@ -107,23 +129,29 @@ export default async function handler(req, res) {
         success: false,
         message: `Not allowed to update "${key}"`,
       });
-      break
-      
+      break;
 
     case "DELETE":
       try {
-        const deletedCohort = await Cohort.findByIdAndUpdate(id, { deleted_at: new Date() });
+        const deletedCohort = await Cohort.findByIdAndUpdate(id, {
+          deleted_at: new Date(),
+        });
         if (!deletedCohort) {
-          return res.status(400).json({ success: false })
-        };
-        res.status(201).json({ success: true, data: { deleted: deletedCohort.deletedCount } })
+          return res.status(400).json({ success: false });
+        }
+        res
+          .status(201)
+          .json({
+            success: true,
+            data: { deleted: deletedCohort.deletedCount },
+          });
       } catch (error) {
-        res.status(400).json({ success: false })
+        res.status(400).json({ success: false });
       }
-      break
+      break;
     default:
-      res.status(400).json({ success: false })
-      break
+      res.status(400).json({ success: false });
+      break;
   }
   return res;
 }
