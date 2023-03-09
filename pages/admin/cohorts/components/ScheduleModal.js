@@ -1,7 +1,7 @@
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { addDays, format } from "date-fns"
-
+import axios from "axios";
 import AddItemForm from "./AddItemForm";
 import CloseIcon from "@mui/icons-material/Close";
 import CohortStartDatePicker from "./CohortStartDatePicker";
@@ -11,16 +11,23 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ScheduleItemBreak from "./ScheduleItemBreak";
 import ScheduleItemLesson from "./ScheduleItemLesson";
 
-export default function ScheduleModal({ open, setOpen, id, cohortName, startDate, schedule, setSchedule }) {
-
+export default function ScheduleModal({
+  open,
+  setOpen,
+  id,
+  cohortName,
+  startDate,
+  schedule,
+  setSchedule,
+}) {
   const [loading, setLoading] = useState(true);
   const [showFormIdx, setShowFormIdx] = useState(null);
   const [showFormType, setShowFormType] = useState();
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState(null);
   const matches_sx = useMediaQuery("(max-width: 600px)");
 
   useEffect(() => {
-    setLoading(false)
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -28,27 +35,25 @@ export default function ScheduleModal({ open, setOpen, id, cohortName, startDate
     setDate(startDate);
   }, [schedule]);
 
-const updateDate = (date) => {
-  updateCohortField(["start_date", date])
-}
+  const updateDate = (date) => {
+    updateCohortField(["start_date", date]);
+  };
 
   const updateCohortField = async (payload) => {
     const url = "/api/cohorts/";
-    await fetch(url + id, {
-      method: "PUT",
+    await axios.put(url + id, payload, {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload)
-    })
-  }
+    });
+  };
 
   const removeItem = (idx) => {
     let newItems = [...schedule];
     newItems.splice(idx, 1);
     setSchedule(newItems);
     updateCohortField(["schedule", newItems]);
-  }
+  };
 
   const insertItem = (idx, newItem) => {
     let newItems = [...schedule];
@@ -56,19 +61,19 @@ const updateDate = (date) => {
     setShowFormIdx(null);
     setSchedule(newItems);
     updateCohortField(["schedule", newItems]);
-  }
+  };
 
   const updateItem = (idx, item) => {
     let newItems = [...schedule];
     newItems[idx] = item;
     setSchedule(newItems);
     updateCohortField(["schedule", newItems]);
-  }
+  };
 
   const handleShowForm = (idx, formType) => {
     setShowFormIdx(idx);
     setShowFormType(formType);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
