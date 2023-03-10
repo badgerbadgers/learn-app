@@ -82,12 +82,10 @@ function Wizard({ previousData }) {
     if (activeStep + 1 === steps.length) {
       axios
         .post("/api/acceptanceform", {
-          body: {
-            ...values,
-            active_step: activeStep,
-            is_completed: true,
-            completed_at: new Date(),
-          },
+          ...values,
+          active_step: activeStep,
+          is_completed: true,
+          completed_at: new Date(),
         })
         .then((response) => {
           setActiveStep(activeStep + 1);
@@ -95,9 +93,7 @@ function Wizard({ previousData }) {
         .catch((error) => console.log(error));
     } else {
       axios
-        .post("/api/acceptanceform", {
-          body: { ...values, active_step: activeStep },
-        })
+        .post("/api/acceptanceform", { ...values, active_step: activeStep })
         .then((response) => {
           setActiveStep(activeStep + 1);
         })
