@@ -86,9 +86,9 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
     const url = "/api/users" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
-      await axios[newRow.isNew ? "post" : "put"](url, {
+      await axios[newRow.isNew ? "post" : "put"](url, newRow, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newRow),
+       
       }).then((response) => {
         updatedRow = {
           ...newRow,
