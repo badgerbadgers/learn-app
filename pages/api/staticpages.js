@@ -18,7 +18,6 @@
  */
 import Staticpage from "../../lib/models/StaticPage";
 import dbConnect from "../../lib/dbConnect";
-import altFindOneAndUpdate from "../../lib/models/altFindAndUpdate";
 
 var mongoose = require("mongoose");
 export default async function handler(req, res) {
