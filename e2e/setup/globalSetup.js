@@ -3,6 +3,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { chromium } from "@playwright/test";
 import { MongoClient } from "mongodb";
 import path from "node:path";
+import { promises as fs } from "fs";
 
 async function globalSetup() {
   process.env.NODE_ENV = "test";
@@ -71,8 +72,12 @@ async function globalSetup() {
     });
   })();
 
+  //this is the file we'll be saving the cookie in
+  const storagePath = path.resolve(__dirname, "../.storage/storageState.json");
+  // make sure the file exists, if not create it with an empty object
+  fs.readFile(storagePath).catch(() => fs.writeFile(storagePath, "{}"));
+
   // launch a browser and get a new context
-  const storagePath = path.resolve(__dirname, "storageState.json");
   const browser = await chromium.launch();
   const context = await browser.newContext({ storageState: storagePath });
 
