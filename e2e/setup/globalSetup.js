@@ -5,18 +5,23 @@ import { MongoClient } from "mongodb";
 import path from "node:path";
 
 async function globalSetup() {
+  process.env.NODE_ENV = "test";
   //load env file
   const projectDir = process.cwd();
   loadEnvConfig(projectDir);
 
   //create a in-memory mongo db and override
   //process envs to load it
-  console.log(process.env.NODE_ENV);
   const dbName = process.env.MONGODB_DB;
   const port = process.env.MONGODB_PORT;
-  console.log(dbName, port);
-  const mongod = await MongoMemoryServer.create({ dbName, port });
+  console.log(`SETTING UP DB ${dbName} ON PORT ${port}`);
+
+  const mongod = await MongoMemoryServer.create({
+    instance: { dbName: dbName, port: parseInt(port) },
+  });
   const uri = mongod.getUri();
+  console.log("SETUP MONGODB FOR TESTING AT URI: " + uri);
+
   process.env.TEST_SESSION_TOKEN = "04456e41-ec3b-4edf-92c1-48c14e57cacd2";
 
   //get an expiry time to set the session to
@@ -39,9 +44,12 @@ async function globalSetup() {
       is_admin: true,
     };
 
-    const res = client.db(dbName).collection("users").insertOne(admin_user);
+    const res = await client
+      .db(dbName)
+      .collection("users")
+      .insertOne(admin_user);
 
-    admin_user.id = (await res).insertedId;
+    admin_user.id = res.insertedId;
     process.env.TEST_USER = JSON.stringify(admin_user);
     console.log("created admin user with id " + admin_user.id);
 
