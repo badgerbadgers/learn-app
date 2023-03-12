@@ -50,7 +50,6 @@ async function globalSetup() {
       .insertOne(admin_user);
 
     admin_user.id = res.insertedId;
-    process.env.TEST_USER = JSON.stringify(admin_user);
     console.log("created admin user with id " + admin_user.id);
 
     //session
