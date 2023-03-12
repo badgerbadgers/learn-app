@@ -45,7 +45,7 @@ const config = {
     //   ignoreHTTPSErrors: true,
     // },
 
-    storageState: "./e2e/.storage/storageState.json",
+    // storageState: "./e2e/.storage/storageState.json",
   },
 
   projects: [
