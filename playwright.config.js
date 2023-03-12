@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig, devices } from "@playwright/test";
+import { devices } from "@playwright/test";
 import path from "path";
 
 // Use process.env.PORT by default and fallback to port 3000
@@ -18,7 +18,9 @@ const config = {
   // Artifacts folder where screenshots, videos, and traces are stored.
   outputDir: "test-results/",
 
-  testIgnore: "/.next/**",
+  testIgnore: ["/.next/**", "/e2e/fixtures/**"],
+
+  globalSetup: "./e2e/setup/globalSetup.js",
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
@@ -42,6 +44,8 @@ const config = {
     // contextOptions: {
     //   ignoreHTTPSErrors: true,
     // },
+
+    storageState: "./e2e/setup/storageState.json",
   },
 
   projects: [
