@@ -3,7 +3,7 @@ import {
   GridActionsCellItem,
   GridRowModes,
 } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CancelIcon from "@mui/icons-material/Close";
@@ -41,10 +41,14 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
     axios
       .delete(`/api/users/${userId}`, {
         headers: { "Content-Type": "application/json" },
-      })
+      })   
       .catch((error) => {
         console.error("Error:", error);
+        snackbar.showMessage(<Alert severity="error">Error deleting user</Alert>);
       });
+      snackbar.showMessage(
+        <Alert severity="success">User successfully deleted.</Alert>
+      );
   };
 
   const handleRowEditStart = (params, event) => {
