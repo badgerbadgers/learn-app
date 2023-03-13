@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "e2e/fixtures/testAsAdmin";
 
 test.describe("example of testing API", () => {
   test("should get the list of users", async ({ request }) => {
