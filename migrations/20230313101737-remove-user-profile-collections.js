@@ -5,7 +5,6 @@ module.exports = {
   },
 
   async down(db, client) {
-    await db.createCollection("userprofiles");
-    await db.createCollection("usersprofile");
+    console.log("No rollback needed for this migration");
   },
 };
