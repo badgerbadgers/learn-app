@@ -41,6 +41,8 @@ export const test = base.extend({
     const db = mongo.db(process.env.MONGODB_DB);
     db.resetData = resetData;
     await use(db);
-    await db.resetData();
+    //TODO: should we reset data between every test?
+    //It makes sense on the surface, but can get dicey with running multiple tests in parallel.
+    // await db.resetData();
   },
 });
