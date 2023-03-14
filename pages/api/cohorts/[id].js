@@ -113,7 +113,7 @@ export default async function handler(req, res) {
         return
       }
       if (key == "schedule" || key == "start_date") {
-        const data = {}
+        const data = {};
         data[key] = val;
         try {
           await Cohort.updateOne({ _id: id }, data);
@@ -122,13 +122,23 @@ export default async function handler(req, res) {
           console.error("Update schedule error", error);
           res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true })
-        break
+        return;
       }
-      return res.status(400).json({
+      if (key == "students" || key == "mentors") {
+        try {
+          await addUsersToCohort(id, key, val);
+        } catch (error) {
+          console.error("Update cohort error", error);
+          res.status(400).json({ success: false });
+        }
+        res.status(200).json({ success: true });
+        return;
+      }
+      res.status(400).json({
         success: false,
         message: `Not allowed to update "${key}"`,
       });
+      return;
       break;
 
     case "DELETE":
