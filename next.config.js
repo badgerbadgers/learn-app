@@ -7,7 +7,7 @@ const nextConfig = {
     dest: "public",
     register: true,
     skipWaiting: true,
-    disable: process.env.NODE_ENV === "development",
+    disable: process.env.NODE_ENV !== "production",
     swSrc: "service-worker.js",
   },
   env: {
