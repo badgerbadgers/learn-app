@@ -10,6 +10,7 @@ import InputField from "./FormFields/InputField";
 import RadioButtonGroup from "./FormFields/RadioButtonGroup";
 import CheckboxField from "./FormFields/CheckboxField";
 import { useFormikContext } from "formik";
+// import { v4 as uuid } from "uuid";
 
 function Address(props) {
   const {
@@ -137,11 +138,17 @@ function Address(props) {
                 }
                 options={countries}
                 autoHighlight
-                getOptionLabel={(option) =>
-                  typeof option === "string" || option instanceof String
-                    ? option
-                    : ""
-                }
+                getOptionLabel={(option) => {
+                  if (typeof option === "string" || option instanceof String) {
+                    return option;
+                  }
+                  else if (typeof option === "object" && !!option.label) {
+                    return option.label;
+                  }
+                  else {
+                  return "";
+                  }
+                }}
                 onChange={(event, value) =>
                   setFieldValue(
                     "address_physical_country",
@@ -150,6 +157,7 @@ function Address(props) {
                       : values.address_physical_country
                   )
                 }
+                key={Math.random()}
                 renderOption={(props, option) => (
                   <Box
                     component="li"
@@ -263,11 +271,17 @@ function Address(props) {
               }
               options={countries}
               autoHighlight
-              getOptionLabel={(option) =>
-                typeof option === "string" || option instanceof String
-                  ? option
-                  : ""
-              }
+              getOptionLabel={(option) => {
+                if (typeof option === "string" || option instanceof String) {
+                  return option;
+                }
+                else if (typeof option === "object" && !!option.label) {
+                  return option.label;
+                }
+                else {
+                return "";
+                }
+              }}
               onChange={(event, value) =>
                 setFieldValue(
                   "address_mailing_country",
