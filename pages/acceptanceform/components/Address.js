@@ -150,14 +150,9 @@ function Address(props) {
                   }
                 }}
                 onChange={(event, value) =>
-                  setFieldValue(
-                    "address_physical_country",
-                    value !== null
-                      ? value.label
-                      : values.address_physical_country
-                  )
+                  setFieldValue("address_physical_country",
+                    value !== null ? value.label : values.address_physical_country)
                 }
-                key={Math.random()}
                 renderOption={(props, option) => (
                   <Box
                     component="li"
@@ -283,10 +278,8 @@ function Address(props) {
                 }
               }}
               onChange={(event, value) =>
-                setFieldValue(
-                  "address_mailing_country",
-                  value !== null ? value.label : values.address_mailing_country
-                )
+                setFieldValue("address_mailing_country",
+                value !== null ? value.label : values.address_mailing_country)
               }
               renderOption={(props, option) => (
                 <Box
