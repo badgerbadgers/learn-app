@@ -8,7 +8,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
-import Snackbar from "@mui/material/Snackbar";
+import { useSnackbar } from "material-ui-snackbar-provider";
 import { v4 as uuidv4 } from "uuid";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Popover from "@mui/material/Popover";
@@ -23,7 +23,7 @@ import axios from "axios";
 
 const EditToolbar = (props) => {
   const { setRows, setRowModesModel, rows, selectionModel, cohorts } = props;
-  const [snackbar, setSnackbar] = useState(null);
+  const snackbar = useSnackbar();
 
   //For Popover
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,7 +45,6 @@ const EditToolbar = (props) => {
       ? setCohortSelected(null)
       : setCohortSelected(selectedOption.value);
   };
-  const handleCloseSnackbar = () => setSnackbar(null);
 
   // For Add To Cohort Button
   const handleAddUsersToCohort = async (payload) => {
@@ -59,13 +58,12 @@ const EditToolbar = (props) => {
         },      
       });
       handleClose();
-      setSnackbar({
-        children: "User successfully added to cohort",
-        severity: "success",
-      });
+      snackbar.showMessage(
+        <Alert severity="success">User successfully added to cohort.</Alert>
+      );
     } catch (error) {
       console.error("Error:", error.response.data);
-      setSnackbar({ children: "Error adding user to cohort", severity: "error" });
+      snackbar.showMessage(<Alert severity="error">Error adding user to cohort</Alert>);
     }
   };
 
@@ -162,16 +160,6 @@ const EditToolbar = (props) => {
             </Box>
           </Box>
         </Popover>
-        {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
-            <Alert {...snackbar} onClose={handleCloseSnackbar} />
-          </Snackbar>
-        )}
       </Box>
     </GridToolbarContainer>
   );

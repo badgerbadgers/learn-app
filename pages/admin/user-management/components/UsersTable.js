@@ -3,7 +3,7 @@ import {
   GridActionsCellItem,
   GridRowModes,
 } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CancelIcon from "@mui/icons-material/Close";
@@ -11,7 +11,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
 import SaveIcon from "@mui/icons-material/Save";
-import Snackbar from "@mui/material/Snackbar";
+import { useSnackbar } from "material-ui-snackbar-provider";
 import {  Stack } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 export default function UsersTable({ loading, tableRows, cohorts }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  const [snackbar, setSnackbar] = useState(null);
+  const snackbar = useSnackbar();
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const classes = useStyles();
@@ -41,10 +41,14 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
     axios
       .delete(`/api/users/${userId}`, {
         headers: { "Content-Type": "application/json" },
-      })
+      })   
       .catch((error) => {
         console.error("Error:", error);
+        snackbar.showMessage(<Alert severity="error">Error deleting user</Alert>);
       });
+      snackbar.showMessage(
+        <Alert severity="success">User successfully deleted.</Alert>
+      );
   };
 
   const handleRowEditStart = (params, event) => {
@@ -96,10 +100,9 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
           isNew: false,
           //recordCreated: newRow.recordCreated ? format(new Date(newRow.recordCreated), "MMM dd, yyyy") : "",
         };
-        setSnackbar({
-          children: "Student successfully saved",
-          severity: "success",
-        });
+        snackbar.showMessage(
+          <Alert severity="success">User successfully saved.</Alert>
+        );
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       });
     } catch (error) {
@@ -110,10 +113,9 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
     return updatedRow;
   };
 
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const handleProcessRowUpdateError = useCallback((error) => {
-    setSnackbar({ children: error.message, severity: "error" });
-  }, []);
+  const handleProcessRowUpdateError = () => {
+    snackbar.showMessage(<Alert severity="error">Error adding user</Alert>);
+  };
 
   const columns = [
     {
@@ -304,16 +306,6 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
         }}
         experimentalFeatures={{ newEditingApi: true }}
       />
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}
-        >
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Box>
   );
 }
