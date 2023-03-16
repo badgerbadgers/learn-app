@@ -13,12 +13,13 @@ export default async function handler(req, res) {
   await dbConnect();
 
   try {
+    let count = 0;
     for await (const cohort of Cohort.find()) {
-      cohort.calculateStatus();
       await cohort.save();
+      count++;
     }
 
-    res.status(200).json({ message: `updated cohorts` });
+    res.status(200).json({ message: `updated ${count} cohorts` });
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
