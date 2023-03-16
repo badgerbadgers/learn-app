@@ -132,8 +132,11 @@ test.describe("withMongo Fixture", () => {
   test("resetData drops all other collections", async ({ db }) => {
     await db.resetData();
     let collections;
-    const getCollections = async () =>
-      (await db.listCollections().toArray()).map((c) => c.name);
+    const getCollections = async () => {
+      const allCollections = await db.listCollections().toArray();
+      return await Promise.all(allCollections.map((c) => c.name));
+    };
+
 
     //check we have only 3 collections to start with, and that they are the ones we expect
     const expectedCollections = ["users", "accounts", "sessions"];
