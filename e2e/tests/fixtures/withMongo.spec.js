@@ -143,8 +143,11 @@ test.describe("withMongo Fixture", () => {
 
     //add a bunch of collections
     const collectionsToAdd = ["coll1", "coll2", "coll3", "coll4"];
-    collectionsToAdd.map(
-      async (c) => await db.collection(c).insertOne({ test: true })
+
+    await Promise.all(
+      collectionsToAdd.map(
+        async (c) => await db.collection(c).insertOne({ test: true })
+      )
     );
 
     //make sure they were added
