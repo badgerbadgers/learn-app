@@ -1,4 +1,4 @@
-import { test as base, Page, Browser } from "@playwright/test";
+import { test as base } from "./withMongo";
 
 export * from "@playwright/test";
 export const test = base.extend({
