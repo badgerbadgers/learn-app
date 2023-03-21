@@ -5,7 +5,7 @@ import axios from "axios";
 const ReportButton = () => {
   const handleExportButtonClick = async () => {
     try {
-      const response = await axios.get("/api/acceptanceformReports", {
+      const response = await axios.get("/api/acceptanceform", {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: "text/csv" });
