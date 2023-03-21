@@ -24,7 +24,6 @@ const downloadReport = async (req, res) => {
       stream.write(doc);
     });
     stream.end();
-    mongoose.connection.close();
   } catch (error) {
     res.status(400).json({ success: false });
     console.error(error);
