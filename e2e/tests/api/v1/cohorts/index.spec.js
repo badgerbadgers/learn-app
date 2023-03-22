@@ -1,5 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-import { ObjectID } from "mongodb";
+import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/cohorts", () => {
   test("returns an empty array when there are no cohorts", async ({
@@ -22,19 +22,19 @@ test.describe("/api/v1/cohorts", () => {
         cohort_name: "cohort 1",
         slug: "cohort-1",
         start_date: new Date(),
-        course: new ObjectID(courseId),
+        course: new ObjectId(courseId),
       },
       {
         cohort_name: "cohort 2",
         slug: "cohort-2",
         start_date: new Date(),
-        course: new ObjectID(courseId),
+        course: new ObjectId(courseId),
       },
       {
         cohort_name: "cohort 3",
         slug: "cohort-3",
         start_date: new Date(),
-        course: new ObjectID(courseId),
+        course: new ObjectId(courseId),
       },
     ];
     await db.collection("cohorts").insertMany(mockCohorts);
@@ -43,7 +43,7 @@ test.describe("/api/v1/cohorts", () => {
       cohort_name: "deleted cohort",
       slug: "deleted-cohort",
       start_date: new Date(),
-      course: new ObjectID(courseId),
+      course: new ObjectId(courseId),
       deleted_at: new Date(),
     };
     await db.collection("cohorts").insertOne(mockDeletedCohort);
