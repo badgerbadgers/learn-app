@@ -13,7 +13,7 @@
  *        - name: status
  *          type: string
  *          required: false
- *          examples: past, future, active
+ *          example: past, future, active
  *        - name: deleted
  *          type: boolean
  *          required: false
@@ -25,8 +25,6 @@
  */
 
 import Cohort from "lib/models/Cohort";
-// import Course from "../../lib/models/Course";
-// import Lesson from "../../lib/models/Lesson";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {

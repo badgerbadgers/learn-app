@@ -1,5 +1,7 @@
 import { test as base, Page, Browser } from "@playwright/test";
 import { MongoClient, MongoNotConnectedError } from "mongodb";
+import path from "node:path";
+import { Seeder } from "mongo-seeding";
 
 const resetData = async function () {
   //grab userids for automatically created users
@@ -28,21 +30,49 @@ const resetData = async function () {
     //if the collection name is not users, accounts or sessions
     if (collsToSkip.indexOf(c) === -1) {
       //drop it
-      this.collection(c).drop();
+      await this.collection(c).drop();
     }
   }
+};
+
+const loadData = async function (pathToData = "e2e/setup/data") {
+  const collections = await this.seeder.readCollectionsFromPath(
+    path.resolve(pathToData)
+    // collectionReadingOptions,
+  );
+  try {
+    await this.seeder.import(collections);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getCollections = async function () {
+  const allCollections = await this.listCollections().toArray();
+  return await Promise.all(allCollections.map((c) => c.name));
 };
 
 export * from "@playwright/test";
 export const test = base.extend({
   db: async ({}, use) => {
+    //prepare a mongo client using the test db
     const mongo = new MongoClient(process.env.MONGODB_URI);
     await mongo.connect();
     const db = mongo.db(process.env.MONGODB_DB);
+
+    db.getCollections = getCollections;
+    //add custom method for returning data to minimal
     db.resetData = resetData;
+
+    //prepare seeder for easily loading data into mongo
+    //(see https://github.com/pkosiec/mongo-seeding)
+    const seederConfig = {
+      database: process.env.MONGODB_URI,
+      dropDatabase: false, //we don't want to drop the db, as we want to keep our basic user data
+    };
+    db.seeder = new Seeder(seederConfig);
+    db.loadData = loadData;
+
     await use(db);
-    //TODO: should we reset data between every test?
-    //It makes sense on the surface, but can get dicey with running multiple tests in parallel.
-    // await db.resetData();
   },
 });

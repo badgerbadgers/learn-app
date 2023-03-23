@@ -5,6 +5,7 @@ import { MongoClient } from "mongodb";
 import path from "node:path";
 import { promises as fs } from "fs";
 import crypto from "crypto";
+import { Seeder } from "mongo-seeding";
 
 async function globalSetup() {
   process.env.NODE_ENV = "test";
@@ -27,9 +28,25 @@ async function globalSetup() {
     throw Error("Could not create DB at " + process.env.MONGODB_URI);
   }
 
-  //populate db with one admin
+  //populate db with one admin and one user
   await prepareUser("user");
   await prepareUser("admin", true);
+
+  //populate db with seed data
+  const seederConfig = {
+    database: process.env.MONGODB_URI,
+    dropDatabase: false, //we don't want to drop the db, as we want to keep our basic user data
+  };
+  const seeder = new Seeder(seederConfig);
+  const collections = await seeder.readCollectionsFromPath(
+    path.resolve("e2e/setup/data")
+    // collectionReadingOptions,
+  );
+  try {
+    await seeder.import(collections);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 const prepareUser = async (name, isAdmin = false) => {
