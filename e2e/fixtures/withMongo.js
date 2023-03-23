@@ -1,7 +1,7 @@
 import { test as base, Page, Browser } from "@playwright/test";
 import { MongoClient, MongoNotConnectedError } from "mongodb";
-import { Seeder } from "mongo-seeding";
 import path from "node:path";
+import { Seeder } from "mongo-seeding";
 
 const resetData = async function () {
   //grab userids for automatically created users
@@ -30,7 +30,7 @@ const resetData = async function () {
     //if the collection name is not users, accounts or sessions
     if (collsToSkip.indexOf(c) === -1) {
       //drop it
-      this.collection(c).drop();
+      await this.collection(c).drop();
     }
   }
 };
@@ -47,6 +47,11 @@ const loadData = async function (pathToData = "e2e/setup/data") {
   }
 };
 
+const getCollections = async function () {
+  const allCollections = await this.listCollections().toArray();
+  return await Promise.all(allCollections.map((c) => c.name));
+};
+
 export * from "@playwright/test";
 export const test = base.extend({
   db: async ({}, use) => {
@@ -55,6 +60,7 @@ export const test = base.extend({
     await mongo.connect();
     const db = mongo.db(process.env.MONGODB_DB);
 
+    db.getCollections = getCollections;
     //add custom method for returning data to minimal
     db.resetData = resetData;
 
@@ -68,8 +74,5 @@ export const test = base.extend({
     db.loadData = loadData;
 
     await use(db);
-    //TODO: should we reset data between every test?
-    //It makes sense on the surface, but can get dicey with running multiple tests in parallel.
-    // await db.resetData();
   },
 });
