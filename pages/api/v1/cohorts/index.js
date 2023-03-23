@@ -25,8 +25,6 @@
  */
 
 import Cohort from "lib/models/Cohort";
-// import Course from "../../lib/models/Course";
-// import Lesson from "../../lib/models/Lesson";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
