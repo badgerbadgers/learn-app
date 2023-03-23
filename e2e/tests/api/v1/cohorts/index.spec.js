@@ -1,7 +1,10 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-import { ObjectId } from "mongodb";
+import { faker } from "@faker-js/faker";
+import { ObjectId } from "bson";
 
 test.describe("/api/v1/cohorts", () => {
+  //GET TESTS
+
   test("returns all cohorts", async ({ request, db }) => {
     //populate the database with some cohorts
 
@@ -84,5 +87,78 @@ test.describe("/api/v1/cohorts", () => {
     expect((await response.json()).data).toHaveLength(0);
   });
 
-  test.fixme("gracefully handles errors", async ({ request }) => {});
+  //POST TESTS
+  test("creates a cohort when all fields are properly given", async ({
+    request,
+    db,
+  }) => {
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newCohort);
+
+    expect(responseData._id).toBeDefined();
+
+    expect(responseData.schedule).toBeDefined();
+    expect(responseData.schedule.length).toBeGreaterThan(0);
+
+    //TODO: improve test to confirm schedule is the same as the course schedule
+
+    //TODO: what's up with the slug?
+
+    await db
+      .collection("cohorts")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
+
+  test("does not create a cohort when any required fields are missing", async ({
+    request,
+  }) => {
+    const newCohort = {
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our cohort has not been created
+    const getResponse = await request.get(`/api/v1/cohorts`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const cohorts = (await getResponse.json()).data;
+    expect(cohorts).not.toContainEqual(
+      expect.objectContaining({ start_date: newCohort.start_date })
+    );
+  });
+
+  test.fixme(
+    "does not save into the database extra fields that are sent",
+    async ({ request }) => {}
+  );
+
+  test.fixme(
+    "does not allow creating a cohort with a non-unique name",
+    async ({ request }) => {}
+  );
+
+  test.fixme(
+    "handles well the case where a non-existing course id is given",
+    async ({ request }) => {}
+  );
 });
