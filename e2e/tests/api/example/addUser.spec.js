@@ -13,9 +13,11 @@ test.describe("Users API", () => {
     //check getUsers to make sure user has been added
     const getResponse = await request.get(`/api/users`);
     expect(getResponse).toBeOK();
-    //we're expecting 2 users as the DB is seeded with 2 test users
+
     const users = (await getResponse.json()).data;
-    expect(users).toHaveLength(2);
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ gh: "new_user" })
+    );
 
     //make sure the list of users does not includes the new user we just added
     expect(users).not.toContainEqual(
@@ -23,7 +25,7 @@ test.describe("Users API", () => {
     );
   });
 
-  test("should allow adding a user", async ({ request }) => {
+  test("should allow adding a user", async ({ request, db }) => {
     const data = {
       name: "new user",
       email: "new@codethedream.org",
@@ -48,7 +50,7 @@ test.describe("Users API", () => {
     expect(getResponse).toBeOK();
     //we're expecting 3 users as the DB is seeded with 2 test users
     const users = (await getResponse.json()).data;
-    expect(users).toHaveLength(3);
+    expect(users).toContainEqual(expect.objectContaining({ gh: "new_user" }));
 
     //make sure the list of users includes the new user we just added
     expect(users).toContainEqual(
@@ -58,5 +60,7 @@ test.describe("Users API", () => {
     expect(users).toContainEqual(
       expect.objectContaining({ email: "new@codethedream.org" })
     );
+
+    await db.collection("users").deleteOne({ email: "new@codethedream.org" });
   });
 });
