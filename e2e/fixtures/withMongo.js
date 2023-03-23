@@ -35,7 +35,7 @@ const resetData = async function () {
   }
 };
 
-const loadData = async function (pathToData) {
+const loadData = async function (pathToData = "e2e/setup/data") {
   const collections = await this.seeder.readCollectionsFromPath(
     path.resolve(pathToData)
     // collectionReadingOptions,

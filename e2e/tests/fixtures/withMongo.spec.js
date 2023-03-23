@@ -172,7 +172,7 @@ test.describe("withMongo Fixture", () => {
 
   test("loadData is working", async ({ db }) => {
     await db.resetData();
-    await db.loadData("e2e/setup/data");
+    await db.loadData();
 
     const courses = await db.collection("courses").find().toArray();
     expect(courses.length).toEqual(3);
