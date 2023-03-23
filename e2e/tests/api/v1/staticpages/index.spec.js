@@ -30,27 +30,27 @@ test.describe("/api/v1/staticpages", () => {
     let result = await db.collection("staticpages").insertOne(mockStaticPage);
     const staticPageId = result.insertedId;
 
-    const mockStaticPages = [
-      {
-        wordpress_id: 1111,
-        slug: "ctd-resource-1",
-        title: "ctd-resource1",
-        isShown: true,
-      },
-      {
-        wordpress_id: 3333,
-        slug: "ctd-resource-3",
-        title: "ctd-resource3",
-        isShown: true,
-      },
-      {
-        wordpress_id: 4444,
-        slug: "ctd-resource-4",
-        title: "ctd-resource4",
-        isShown: true,
-      },
-    ];
-    await db.collection("staticpages").insertMany(mockStaticPages);
+    //   const mockStaticPages = [
+    //     {
+    //       wordpress_id: 1111,
+    //       slug: "ctd-resource-1",
+    //       title: "ctd-resource1",
+    //       isShown: true,
+    //     },
+    //     {
+    //       wordpress_id: 3333,
+    //       slug: "ctd-resource-3",
+    //       title: "ctd-resource3",
+    //       isShown: true,
+    //     },
+    //     {
+    //       wordpress_id: 4444,
+    //       slug: "ctd-resource-4",
+    //       title: "ctd-resource4",
+    //       isShown: true,
+    //     },
+    //   ];
+    //   await db.collection("staticpages").insertMany(mockStaticPages);
   });
 
   //returns array with isShown false
