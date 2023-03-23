@@ -137,7 +137,6 @@ test.describe("withMongo Fixture", () => {
       return await Promise.all(allCollections.map((c) => c.name));
     };
 
-
     //check we have only 3 collections to start with, and that they are the ones we expect
     const expectedCollections = ["users", "accounts", "sessions"];
     collections = await getCollections();
@@ -169,5 +168,18 @@ test.describe("withMongo Fixture", () => {
     collections = await getCollections();
     expect(collections).toHaveLength(expectedCollections.length);
     expect(collections.sort()).toEqual(expectedCollections.sort());
+  });
+
+  test("loadData is working", async ({ db }) => {
+    await db.resetData();
+    await db.loadData("e2e/setup/data");
+
+    const courses = await db.collection("courses").find().toArray();
+    expect(courses.length).toEqual(3);
+
+    const users = await db.collection("users").find().toArray();
+    expect(users.length).toEqual(12);
+
+    await db.resetData();
   });
 });
