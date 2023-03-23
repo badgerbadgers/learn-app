@@ -13,7 +13,7 @@
  *        - name: status
  *          type: string
  *          required: false
- *          examples: past, future, active
+ *          example: past, future, active
  *        - name: deleted
  *          type: boolean
  *          required: false
