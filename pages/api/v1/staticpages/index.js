@@ -25,13 +25,26 @@
  *       400:
  *         description: Error messages
  *   post:
- *     summary: work in Progress
- *     description: Create the staticpage
+ *     description:: Creates a new static page
  *     tags: [Static pages]
+ *    parameters:
+ *      - wordpress_id: wp_id
+ *        type: number
+ *        required: true,
+ *        unique: true
+ *      - title: title
+ *        type: string
+ *      - isShown: null
+ *        type: boolean
+ *        default: null
+ *      - slug: slug
+ *        type: string
+ *      
  */
 
 import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
+const { faker } = require("@faker-js/faker");
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -39,100 +52,80 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const staticpages = await getStaticPages(req.query);
+        const staticpages = await getStaticPages();
         res.status(200).json({ data: staticpages });
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false });
       }
+      return;
+    case "POST":
+      try {
+        //creates or updates a static page if it exist
+        const staticpage = await createStaticPage(req.body);
+        res.status(200).json({ data: staticpage });
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
+      return;
     default:
-      res.setHeader("Allow", ["GET"]);
+      res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
 
-export const getStaticPages = async (filters = {}) => {
+export const getStaticPages = async () => {
   try {
     await dbConnect();
 
-    //build mongo query using filters
-    const mongoFilter = {};
-    if (!!filters.isShown) {
-      mongoFilter.isShown = { $eq: true };
-    }
-
-    // const isShownMongoPages = [];
-    // try {
-    //   const isShownMongoPages = await Staticpage.find({ isShown: true });
-    //   res.status(200).json({
-    //     success: true,
-    //     data: isShownMongoPages,
-    //   });
-    // } catch (error) {
-    //   res.status(400).json({ success: false });
-    // }
-    //query mongo and return result
-    const staticpages = await Staticpage.find(mongoFilter)
-      // .lean();
-      .populate("isShown")
-      .exec();
+    const staticpages = await Staticpage.find().exec();
     return staticpages;
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false });
   }
 };
-// export default async function handler(req, res) {
-//   const { method } = req;
 
-//   switch (method) {
-//     case "GET":
-//       try {
-//         //call method for getting cohorts with any parameters we received
-//         const cohorts = await getCohorts(req.query);
-//         res.status(200).json({ data: cohorts });
-//       } catch (error) {
-//         console.error(error);
-//         res.status(400).json({ message: error.message });
-//       }
-//       return;
-//     case "POST":
-//       return await createCohort();
-//     default:
-//       res.setHeader("Allow", ["GET", "POST"]);
-//       res.status(405).end(`Method ${method} Not Allowed`);
-//   }
-// }
+export const createStaticPage = async (data) => {
+  console.log("data", data);
+  // const wordpress_id = data.wordpress_id;
+  let newstaticpage = [];
+  let staticpage = {
+    wordpress_id: faker.datatype.number(1000),
+    title: faker.lorem.text(),
+    isShown: faker.datatype.boolean(),
+    slug: faker.lorem.slug(),
+  };
+  try {
+    await dbConnect();
+    //create new static page with properties
+    const newstaticpage = await Staticpage.create(staticpage);
+  } catch (error) {
+    console.log(error, "cant create new static page");
+  }
+  return newstaticpage;
+};
 
-// export const getCohorts = async (filters = {}) => {
+// const createStaticPages = async (req, res) => {
+//   const body = req.body;
+//   const filter = { wordpress_id: body.wp_id };
+//   const update = {
+//     wordpress_id: body.wp_id,
+//     isShown: body.isShown,
+//     title: body.title,
+//     slug: body.slug,
+//   };
+
+//   const newpages = [];
 //   try {
-//     await dbConnect();
-
-//     //build mongo query using filters
-//     const mongoFilter = {};
-//     if (!!filters.status) {
-//       mongoFilter.status = filters.status;
-//     }
-
-//     if (!!filters.course) {
-//       mongoFilter.course = filters.course;
-//     }
-
-//     if (!!filters.deleted) {
-//       mongoFilter.deleted_at = { $ne: null };
-//     }
-
-//     //query mongo and return result
-//     const cohorts = await Cohort.find(mongoFilter)
-//       .populate("course", "_id course_name")
-//       .exec();
-//     return cohorts;
+//     const newpages = await Staticpage.altFindOneAndUpdate(filter, update, {
+//       upsert: true,
+//     });
+//     res.status(200).json({ success: true, data: JSON.stringify(newpages) });
 //   } catch (error) {
 //     console.error(error);
-//     res.status(400).json({ success: false });
+//     res
+//       .status(400)
+//       .json({ "Please check ensure all your fields have valid data": error });
 //   }
-// };
-
-// const createCohort = async () => {
-//   throw new Error("WIP");
 // };

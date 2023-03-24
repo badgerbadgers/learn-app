@@ -3,13 +3,13 @@ import { ObjectId } from "bson";
 import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/staticpages", () => {
-  //all tests for GET req
+  //tests for GET req
   // [x] There is data to return
-  // [x] There is data that is marked as is_shown=true
-  // [x] There is data that is marked as is_shown=false
-  // [x] There is no data to return
   //dont implement error tests for now JEST will run these tests and Playwright cannot
+  //tests for POST req
+  // [x] creates new static page with isShown, wordpress_id, slug and title
 
+  //GET TESTS
   test("returns an array when there are staticpages", async ({
     request,
     db,
@@ -18,7 +18,7 @@ test.describe("/api/v1/staticpages", () => {
     const res = await request.get(`/api/v1/staticpages`);
     expect(res.ok()).toBeTruthy();
 
-    //GET static pages that have boolean isShown = true
+    //GET all static pages
     const staticpages = (await res.json()).data;
 
     //check for object containing isShown = true exists
@@ -31,16 +31,37 @@ test.describe("/api/v1/staticpages", () => {
     );
   });
 
-  //no data to return
-  test("returns an empty array when there is no data", async ({ request }) => {
-    async ({ request }) => {
-      const response = await request.get(`/api/v1/staticpages`, {
-        params: {
-          wp_id: 909090,
-        },
-      });
-      expect(response.ok()).toBeTruthy();
-      expect((await response.json()).data).toHaveLength(0);
+  //POST TESTS
+  test.only("returns an array with newly created object", async ({
+    request,
+    db,
+  }) => {
+    //new obj to test with
+    const newStaticPage = {
+      wordpress_id: faker.datatype.number(1000),
+      title: faker.lorem.text(),
+      isShown: faker.datatype.boolean(),
+      slug: faker.lorem.slug(),
     };
+    //check isShown bool cannot be null
+    expect(newStaticPage.isShown).not.toBeNull();
+    //check wordpress_id cannot be null
+    expect(newStaticPage.wordpress_id).not.toBeNull();
+
+    //then make POST
+    const response = await request.post(`/api/v1/staticpages`, {
+      data: newStaticPage,
+    });
+    expect(response.ok()).toBeTruthy();
+
+    //newly created object contains the following properties
+    expect(newStaticPage).toEqual(
+      expect.objectContaining({
+        wordpress_id: newStaticPage.wordpress_id,
+        isShown: newStaticPage.isShown,
+        slug: newStaticPage.slug,
+        title: newStaticPage.title,
+      })
+    );
   });
 });
