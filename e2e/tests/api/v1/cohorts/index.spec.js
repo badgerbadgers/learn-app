@@ -147,7 +147,7 @@ test.describe("/api/v1/cohorts", () => {
     );
   });
 
-  test.only("does not create a cohort when course is missing", async ({
+  test("does not create a cohort when course is missing", async ({
     request,
   }) => {
     const newCohort = {
