@@ -30,7 +30,10 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const cohort = await Cohort.findById(id).exec(); // API does return deleted cohort (with timestamp in property deleted_at)
+        const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
+
+        const allCohorts = await Cohort.find({}).exec();
+
         res.status(200).json({ data: cohort });
       } catch (error) {
         res.status(400).json({ message: error.message });

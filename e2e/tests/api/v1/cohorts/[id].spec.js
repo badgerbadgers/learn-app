@@ -1,58 +1,44 @@
-// import { test, expect } from 'e2e/fixtures/testAsAdmin';
-// import { faker } from '@faker-js/faker';
-// import { ObjectId } from 'bson';
+import { test, expect } from 'e2e/fixtures/testAsAdmin';
 
-// test.describe('/api/v1/cohorts/[id]', () => {
-//   //GET TESTS
+test.describe('/api/v1/cohorts/[id]', () => {
+  //GET TESTS
 
-//   test('returns a cohort by id', async ({ request, db }) => {
-//     //call GET and get the non-deleted cohort by id
-//     const response = await request.get(`/api/v1/cohorts`);
-//     console.log(response);
-//     expect(response.ok()).toBeTruthy();
+  test('returns only not deleted a cohort by id', async ({ request, db }) => {
+    const randomNotDeletedCohort = await db.collection('cohorts').findOne({
+      deleted_at: { $eq: null },
+    });
+    //call GET and get the non-deleted cohort by id
+    const response = await request.get(
+      `/api/v1/cohorts/${randomNotDeletedCohort._id}`
+    );
 
-//     const cohorts = (await response.json()).data;
-//     // expect(cohorts).toHaveLength(mockCohorts.length);
+    const data = (await response.json()).data;
+    // check if response is OK
+    expect(response.ok()).toBeTruthy();
+    // check if one cohort is returned and it is not deleted
+    expect(data).toMatchObject({ deleted_at: null });
+    // check if returned data is an object and not an array
+    expect(data && typeof data === 'object').toBe(true);
+  });
 
-//     //check that all cohorts don't have a deleted_at set
-//     // for (const c of cohorts) {
-//     //   expect(c).toMatchObject({ deleted_at: null });
-//     // }
+  test('does not return a deleted cohort when supplied with deleted cohort id', async ({
+    request,
+    db,
+  }) => {
+    const cohorts = await db.collection('cohorts');
+    // find random deleted cohort in db
+    const randomDeletedCohort = await cohorts.findOne({
+      deleted_at: { $ne: null },
+    });
 
-//     //check that we get cohorts in all statuses
-//     // expect(cohorts).toContainEqual(expect.objectContaining({ status: 'past' }));
-//     // expect(cohorts).toContainEqual(
-//     //   expect.objectContaining({ status: 'future' })
-//     // );
-//     // expect(cohorts).toContainEqual(
-//     //   expect.objectContaining({ status: 'active' })
-//     // );
-//   });
-
-//   test.skip('supports deleted filter', async ({ request }) => {
-//     const response = await request.get('/api/v1/cohorts', {
-//       params: {
-//         deleted: true,
-//       },
-//     });
-//     expect(response.ok()).toBeTruthy();
-
-//     const cohorts = (await response.json()).data;
-
-//     for (const c of cohorts) {
-//       expect(c.deleted_at).not.toBeNull();
-//     }
-//   });
-
-//   test.skip('returns an empty array when there are no results', async ({
-//     request,
-//   }) => {
-//     const response = await request.get(`/api/v1/cohorts`, {
-//       params: {
-//         course: 'nosuchcourse',
-//       },
-//     });
-//     expect(response.ok()).toBeTruthy();
-//     expect((await response.json()).data).toHaveLength(0);
-//   });
-// });
+    //call GET and get a cohort by id
+    const response = await request.get(
+      `/api/v1/cohorts/${randomDeletedCohort._id}`
+    );
+    const data = (await response.json()).data;
+    // check if response is OK
+    expect(response.ok()).toBeTruthy();
+    // check if  returned data is null
+    expect(data).toBeNull();
+  });
+});
