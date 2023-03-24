@@ -88,7 +88,7 @@ test.describe("/api/v1/cohorts", () => {
   });
 
   //POST TESTS
-  test("creates a cohort when all fields are properly given", async ({
+  test.only("creates a cohort when all fields are properly given", async ({
     request,
     db,
   }) => {
@@ -112,10 +112,10 @@ test.describe("/api/v1/cohorts", () => {
 
     expect(responseData.schedule).toBeDefined();
     expect(responseData.schedule.length).toBeGreaterThan(0);
-
     //TODO: improve test to confirm schedule is the same as the course schedule
 
-    //TODO: what's up with the slug?
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
 
     await db
       .collection("cohorts")
