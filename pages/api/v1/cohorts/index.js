@@ -139,7 +139,7 @@ export const createCohort = async (data) => {
   newCohort.schedule = await createSchedule(newCohort.course);
 
   //save the new cohort
-  newCohort.save();
+  await newCohort.save();
 
   return newCohort;
 };
