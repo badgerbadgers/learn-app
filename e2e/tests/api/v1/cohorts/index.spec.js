@@ -88,7 +88,7 @@ test.describe("/api/v1/cohorts", () => {
   });
 
   //POST TESTS
-  test.only("creates a cohort when all fields are properly given", async ({
+  test("creates a cohort when all fields are properly given", async ({
     request,
     db,
   }) => {
