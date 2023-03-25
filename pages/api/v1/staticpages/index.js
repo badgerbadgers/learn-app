@@ -87,14 +87,12 @@ export const getStaticPages = async () => {
 };
 
 export const createStaticPage = async (data) => {
-  console.log("data", data);
-  // const wordpress_id = data.wordpress_id;
   let newstaticpage = [];
   let staticpage = {
-    wordpress_id: faker.datatype.number(1000),
-    title: faker.lorem.text(),
-    isShown: faker.datatype.boolean(),
-    slug: faker.lorem.slug(),
+    wordpress_id: data.wordpress_id,
+    title: data.title,
+    isShown: data.isShown,
+    slug: data.slug,
   };
   try {
     await dbConnect();
