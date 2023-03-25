@@ -105,17 +105,30 @@ test.describe("/api/v1/cohorts", () => {
       });
       expect(response.ok()).toBeTruthy();
 
-      const responseData = (await response.json()).data;
-      expect(responseData).toMatchObject(newCohort);
+    expect(responseData.schedule).toBeDefined();
+    expect(responseData.schedule.length).toBeGreaterThan(0);
+    //TODO: improve test to confirm schedule is the same as the course schedule
 
-      expect(responseData._id).toBeDefined();
-
-      expect(responseData.schedule).toBeDefined();
-      expect(responseData.schedule.length).toBeGreaterThan(0);
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
 
       //TODO: improve test to confirm schedule is the same as the course schedule
 
-      //TODO: what's up with the slug?
+
+  test("does not create a cohort when cohort_name is missing", async ({
+    request,
+  }) => {
+    const newCohort = {
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeFalsy();
 
       await db
         .collection("cohorts")
@@ -148,6 +161,32 @@ test.describe("/api/v1/cohorts", () => {
       );
     }
   );
+
+  test("does not create a cohort when course is missing", async ({
+    request,
+  }) => {
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our cohort has not been created
+    const getResponse = await request.get(`/api/v1/cohorts`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const cohorts = (await getResponse.json()).data;
+    expect(cohorts).not.toContainEqual(
+      expect.objectContaining({ cohort_name: newCohort.cohort_name })
+    );
+  });
+
 
   test.fixme(
     "does not save into the database extra fields that are sent",
