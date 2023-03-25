@@ -63,7 +63,7 @@ export default async function handler(req, res) {
         const cohorts = await getCohorts(req.query);
         res.status(200).json({ data: cohorts });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         res.status(400).json({ message: error.message });
       }
       return;
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         const cohort = await createCohort(req.body);
         res.status(200).json({ data: cohort });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         res.status(400).json({ message: error.message });
       }
       return;
@@ -139,7 +139,7 @@ export const createCohort = async (data) => {
   newCohort.schedule = await createSchedule(newCohort.course);
 
   //save the new cohort
-  newCohort.save();
+  await newCohort.save();
 
   return newCohort;
 };
