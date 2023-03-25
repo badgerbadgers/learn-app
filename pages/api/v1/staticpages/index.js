@@ -98,32 +98,9 @@ export const createStaticPage = async (data) => {
     await dbConnect();
     //create new static page with properties
     const newstaticpage = await Staticpage.create(staticpage);
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error, "cant create new static page");
   }
   return newstaticpage;
 };
-
-// const createStaticPages = async (req, res) => {
-//   const body = req.body;
-//   const filter = { wordpress_id: body.wp_id };
-//   const update = {
-//     wordpress_id: body.wp_id,
-//     isShown: body.isShown,
-//     title: body.title,
-//     slug: body.slug,
-//   };
-
-//   const newpages = [];
-//   try {
-//     const newpages = await Staticpage.altFindOneAndUpdate(filter, update, {
-//       upsert: true,
-//     });
-//     res.status(200).json({ success: true, data: JSON.stringify(newpages) });
-//   } catch (error) {
-//     console.error(error);
-//     res
-//       .status(400)
-//       .json({ "Please check ensure all your fields have valid data": error });
-//   }
-// };
