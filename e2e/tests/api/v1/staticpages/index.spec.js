@@ -1,5 +1,4 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-import { ObjectId } from "bson";
 import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/staticpages", () => {
@@ -10,10 +9,7 @@ test.describe("/api/v1/staticpages", () => {
   // [x] creates new static page with isShown, wordpress_id, slug and title
 
   //GET TESTS
-  test("returns an array when there are staticpages", async ({
-    request,
-    db,
-  }) => {
+  test("returns an array when there are staticpages", async ({ request }) => {
     //GET request all static pages
     const res = await request.get(`/api/v1/staticpages`);
     expect(res.ok()).toBeTruthy();
@@ -32,10 +28,7 @@ test.describe("/api/v1/staticpages", () => {
   });
 
   //POST TESTS
-  test.only("returns an array with newly created object", async ({
-    request,
-    db,
-  }) => {
+  test("returns an array with newly created object", async ({ request }) => {
     //new obj to test with
     const newStaticPage = {
       wordpress_id: faker.datatype.number(1000),
