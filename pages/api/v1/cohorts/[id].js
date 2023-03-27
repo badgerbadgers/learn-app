@@ -1,3 +1,4 @@
+// TODO check 4** error responses options
 /**
  * @swagger
  *  tags:
@@ -12,13 +13,30 @@
  *         schema:
  *           type: string
  *         required: true
- *         description: 635841bd9be844015c74719a
+ *         example: 635841bd9be844015c74719a
  *     responses:
  *       200:
  *         description: Provides a cohort data
  *       400:
  *         description: Error messages
+ *   delete:
+ *     description: Delete a cohort by id
+ *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         example: 635841bd9be844015c74719a
+ *     responses:
+ *       200:
+ *         description: Deletes cohort by id, return null
+ *       400:
+ *         description: Error messages
  */
+
+// TODO - swager - what returns from DELETED request
 
 import Cohort from 'lib/models/Cohort';
 import dbConnect from 'lib/dbConnect';
@@ -35,6 +53,24 @@ export default async function handler(req, res) {
         const allCohorts = await Cohort.find({}).exec();
 
         res.status(200).json({ data: cohort });
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
+      break;
+
+    case 'DELETE':
+      try {
+        const deletedCohort = await Cohort.findByIdAndUpdate(id, {
+          deleted_at: new Date(),
+        });
+        if (!deletedCohort) {
+          res.status(404).json({
+            message: `Failed to delete cohort with id ${id}. Cohort not found`,
+          });
+          return;
+        }
+        // 204 (No Content)
+        res.status(204).json({ success: true });
       } catch (error) {
         res.status(400).json({ message: error.message });
       }

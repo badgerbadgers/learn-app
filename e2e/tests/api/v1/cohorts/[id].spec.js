@@ -1,4 +1,5 @@
 import { test, expect } from 'e2e/fixtures/testAsAdmin';
+import { faker } from '@faker-js/faker';
 
 test.describe('/api/v1/cohorts/[id]', () => {
   //GET TESTS
@@ -40,5 +41,41 @@ test.describe('/api/v1/cohorts/[id]', () => {
     expect(response.ok()).toBeTruthy();
     // check if  returned data is null
     expect(data).toBeNull();
+  });
+
+  // DELETE TESTS
+  test('deletes a cohort by id by changing deleted_at property', async ({
+    request,
+    db,
+  }) => {
+    const randomCohort = await db.collection('cohorts').findOne();
+    //call DELETE to delete a cohort by id
+    const response = await request.delete(
+      `/api/v1/cohorts/${randomCohort._id}`
+    );
+
+    // check if response is OK
+    expect(response.ok()).toBeTruthy();
+
+    // check db if the cohort with given id has property deleted_at set to a Date object after deletion operation
+    const deletedCohort = await db
+      .collection('cohorts')
+      .findOne({ _id: randomCohort._id });
+
+    expect(deletedCohort.deleted_at instanceof Date).toBeTruthy();
+  });
+
+  // TODO  - do we need a test like that?
+  test('returns 404 if cohort to delete is not found', async ({
+    request,
+  }) => {
+    // check if response is falsy if cohort not found
+    const nonExistedId = faker.database.mongodbObjectId();
+    //call DELETE to delete a cohort by id
+    const response = await request.delete(`/api/v1/cohorts/${nonExistedId}`);
+
+    // check if response is NOT OK if the cohort not found in db
+    expect(response.ok()).toBeFalsy();
+    expect(response.status()).toBe(404);
   });
 });
