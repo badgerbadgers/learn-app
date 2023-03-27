@@ -112,17 +112,17 @@ test.describe("/api/v1/cohorts", () => {
 
     expect(responseData.schedule).toBeDefined();
     expect(responseData.schedule.length).toBeGreaterThan(0);
-
     //TODO: improve test to confirm schedule is the same as the course schedule
 
-    //TODO: what's up with the slug?
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
 
     await db
       .collection("cohorts")
       .deleteOne({ _id: ObjectId(responseData._id) });
   });
 
-  test("does not create a cohort when any required fields are missing", async ({
+  test("does not create a cohort when cohort_name is missing", async ({
     request,
   }) => {
     const newCohort = {
@@ -146,6 +146,32 @@ test.describe("/api/v1/cohorts", () => {
       expect.objectContaining({ start_date: newCohort.start_date })
     );
   });
+
+  test("does not create a cohort when course is missing", async ({
+    request,
+  }) => {
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our cohort has not been created
+    const getResponse = await request.get(`/api/v1/cohorts`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const cohorts = (await getResponse.json()).data;
+    expect(cohorts).not.toContainEqual(
+      expect.objectContaining({ cohort_name: newCohort.cohort_name })
+    );
+  });
+
 
   test.fixme(
     "does not save into the database extra fields that are sent",
