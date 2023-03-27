@@ -5,7 +5,7 @@ import { ObjectId } from "bson";
 test.describe("/api/v1/cohorts", () => {
   //GET TESTS
 
-  test.fixme("returns all cohorts", async ({ request, db }) => {
+  test("returns all cohorts", async ({ request, db }) => {
     //populate the database with some cohorts
 
     //call GET and get all the non-deleted cohorts
@@ -30,7 +30,7 @@ test.describe("/api/v1/cohorts", () => {
     );
   });
 
-  test.fixme("supports deleted filter", async ({ request }) => {
+  test("supports deleted filter", async ({ request }) => {
     const response = await request.get("/api/v1/cohorts", {
       params: {
         deleted: true,
@@ -45,7 +45,7 @@ test.describe("/api/v1/cohorts", () => {
     }
   });
 
-  test.fixme("supports status filter", async ({ request }) => {
+  test("supports status filter", async ({ request }) => {
     const response = await request.get("/api/v1/cohorts", {
       params: {
         status: "active",
@@ -60,7 +60,7 @@ test.describe("/api/v1/cohorts", () => {
     }
   });
 
-  test.fixme("supports course filter", async ({ request }) => {
+  test("supports course filter", async ({ request }) => {
     const response = await request.get("/api/v1/cohorts", {
       params: {
         course: "62e056cee6daad619e5cc2c5",
@@ -75,35 +75,40 @@ test.describe("/api/v1/cohorts", () => {
     }
   });
 
-  test.fixme(
-    "returns an empty array when there are no results",
-    async ({ request }) => {
-      const response = await request.get(`/api/v1/cohorts`, {
-        params: {
-          course: "nosuchcourse",
-        },
-      });
-      expect(response.ok()).toBeTruthy();
-      expect((await response.json()).data).toHaveLength(0);
-    }
-  );
+  test("returns an empty array when there are no results", async ({
+    request,
+  }) => {
+    const response = await request.get(`/api/v1/cohorts`, {
+      params: {
+        course: "nosuchcourse",
+      },
+    });
+    expect(response.ok()).toBeTruthy();
+    expect((await response.json()).data).toHaveLength(0);
+  });
 
   //POST TESTS
-  test.fixme(
-    "creates a cohort when all fields are properly given",
-    async ({ request, db }) => {
-      const newCohort = {
-        cohort_name: faker.lorem.words(),
-        course: "62e056cee6daad619e5cc2c5",
-        seats: faker.datatype.number({ min: 5, max: 100 }),
-        start_date: faker.date.future(1).toISOString(),
-        zoom_link: faker.internet.url(),
-      };
+  test("creates a cohort when all fields are properly given", async ({
+    request,
+    db,
+  }) => {
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
 
-      const response = await request.post(`/api/v1/cohorts`, {
-        data: newCohort,
-      });
-      expect(response.ok()).toBeTruthy();
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newCohort);
+
+    expect(responseData._id).toBeDefined();
 
     expect(responseData.schedule).toBeDefined();
     expect(responseData.schedule.length).toBeGreaterThan(0);
@@ -112,8 +117,10 @@ test.describe("/api/v1/cohorts", () => {
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
 
-      //TODO: improve test to confirm schedule is the same as the course schedule
-
+    await db
+      .collection("cohorts")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
 
   test("does not create a cohort when cohort_name is missing", async ({
     request,
@@ -130,37 +137,15 @@ test.describe("/api/v1/cohorts", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-      await db
-        .collection("cohorts")
-        .deleteOne({ _id: ObjectId(responseData._id) });
-    }
-  );
+    //confirm our cohort has not been created
+    const getResponse = await request.get(`/api/v1/cohorts`);
+    expect(getResponse.ok()).toBeTruthy();
 
-  test.fixme(
-    "does not create a cohort when any required fields are missing",
-    async ({ request }) => {
-      const newCohort = {
-        course: "62e056cee6daad619e5cc2c5",
-        seats: faker.datatype.number({ min: 5, max: 100 }),
-        start_date: faker.date.future(1).toISOString(),
-        zoom_link: faker.internet.url(),
-      };
-
-      const response = await request.post(`/api/v1/cohorts`, {
-        data: newCohort,
-      });
-      expect(response.ok()).toBeFalsy();
-
-      //confirm our cohort has not been created
-      const getResponse = await request.get(`/api/v1/cohorts`);
-      expect(getResponse.ok()).toBeTruthy();
-
-      const cohorts = (await getResponse.json()).data;
-      expect(cohorts).not.toContainEqual(
-        expect.objectContaining({ start_date: newCohort.start_date })
-      );
-    }
-  );
+    const cohorts = (await getResponse.json()).data;
+    expect(cohorts).not.toContainEqual(
+      expect.objectContaining({ start_date: newCohort.start_date })
+    );
+  });
 
   test("does not create a cohort when course is missing", async ({
     request,
@@ -186,7 +171,6 @@ test.describe("/api/v1/cohorts", () => {
       expect.objectContaining({ cohort_name: newCohort.cohort_name })
     );
   });
-
 
   test.fixme(
     "does not save into the database extra fields that are sent",

@@ -44,7 +44,6 @@
 
 import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
-const { faker } = require("@faker-js/faker");
 
 export default async function handler(req, res) {
   const { method } = req;
