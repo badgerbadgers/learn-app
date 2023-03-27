@@ -63,9 +63,10 @@ export default async function handler(req, res) {
         const deletedCohort = await Cohort.findByIdAndUpdate(id, {
           deleted_at: new Date(),
         }); // TODO - add { new: true } if need to return deleted cohort in response
+        console.log(deletedCohort)
         if (!deletedCohort) {
           res.status(404).json({
-            message: `Failed to delete cohort ${deletedCohort.cohort_name} with id ${id}. Cohort not found`,
+            message: `Failed to delete cohort with id ${id}. Cohort not found`,
           });
           return;
         }
@@ -73,6 +74,7 @@ export default async function handler(req, res) {
         // 204 (No Content)
         res.status(204).json({ success: true });
       } catch (error) {
+        console.log(error)
         res.status(400).json({ message: error.message });
       }
       break;

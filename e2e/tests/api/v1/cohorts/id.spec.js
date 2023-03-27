@@ -73,7 +73,7 @@ test.describe('/api/v1/cohorts/[id]', () => {
     const nonExistedId = faker.database.mongodbObjectId();
     //call DELETE to delete a cohort by id
     const response = await request.delete(`/api/v1/cohorts/${nonExistedId}`);
-
+    console.log(response);
     // check if response is NOT OK if the cohort not found in db
     expect(response.ok()).toBeFalsy();
     expect(response.status()).toBe(404);
