@@ -4,7 +4,7 @@
  *   name: Static pages
  * /api/v1/staticpages:
  *   get:
- *     description: Returns all staticpages with isShown = true
+ *     description: Returns all staticpages
  *     tags: [Static pages]
  *     parameters:
  *        - name: wordpress_id
