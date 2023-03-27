@@ -31,12 +31,14 @@
  *         example: 635841bd9be844015c74719a
  *     responses:
  *       200:
- *         description: Deletes cohort by id, return null
+ *         description: Deletes cohort by id, returns no content
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error messages if cohort to delete not found
  */
 
-// TODO - swager - what returns from DELETED request
+// TODO - swagger - what returns from DELETED request
 
 import Cohort from 'lib/models/Cohort';
 import dbConnect from 'lib/dbConnect';
