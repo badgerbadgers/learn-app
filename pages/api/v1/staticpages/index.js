@@ -39,7 +39,11 @@
  *        default: null
  *      - slug: slug
  *        type: string
- *      
+ *       *     responses:
+ *       200:
+ *         description: Provides an object of a new static page
+ *       400:
+ *         description: Error messages
  */
 
 import Staticpage from "/lib/models/StaticPage";
