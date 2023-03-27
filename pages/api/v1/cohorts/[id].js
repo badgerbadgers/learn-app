@@ -35,10 +35,10 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error messages if cohort to delete not found
+ *         description: Error messages if cohort to be deleted not found
  */
 
-// TODO - swagger - what returns from DELETED request
+// TODO - swagger - change description if anything returns from DELETED request
 
 import Cohort from 'lib/models/Cohort';
 import dbConnect from 'lib/dbConnect';
@@ -52,8 +52,6 @@ export default async function handler(req, res) {
       try {
         const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
 
-        const allCohorts = await Cohort.find({}).exec();
-
         res.status(200).json({ data: cohort });
       } catch (error) {
         res.status(400).json({ message: error.message });
@@ -64,13 +62,14 @@ export default async function handler(req, res) {
       try {
         const deletedCohort = await Cohort.findByIdAndUpdate(id, {
           deleted_at: new Date(),
-        });
+        }); // TODO - add { new: true } if need to return deleted cohort in response
         if (!deletedCohort) {
           res.status(404).json({
-            message: `Failed to delete cohort with id ${id}. Cohort not found`,
+            message: `Failed to delete cohort ${deletedCohort.cohort_name} with id ${id}. Cohort not found`,
           });
           return;
         }
+        // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
         // 204 (No Content)
         res.status(204).json({ success: true });
       } catch (error) {
