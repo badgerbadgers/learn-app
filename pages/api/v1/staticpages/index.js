@@ -4,46 +4,57 @@
  *   name: Static pages
  * /api/v1/staticpages:
  *   get:
- *     description: Returns all staticpages
+ *     summary: Gets all static pages
+ *     description: Gets all static pages
  *     tags: [Static pages]
  *     parameters:
- *        - name: wordpress_id
- *          type: number
- *          required: true
- *        - name: isShown
- *          type: boolean
+ *        - name: title
+ *          type: string
  *          required: false
  *        - name: slug
  *          type: string
  *          required: false
- *        - name: title
- *          type: string
+ *        - name: isShown
+ *          type: boolean
  *          required: false
+ *          schema:
+ *            default: null
+ *          allowEmptyValue: false
+ *        - name: wordpress_id
+ *          required: false
+ *          schema:
+ *            type: integer
+ *          allowEmptyValue: false
  *     responses:
  *       200:
- *         description: Provides an array of static pages
+ *         description: Get static pages
  *       400:
  *         description: Error messages
  *   post:
- *     description:: Creates a new static page
+ *     summary: Creates a new static page
+ *     description: Creates a new static page
  *     tags: [Static pages]
- *    parameters:
- *      - wordpress_id: wp_id
- *        type: number
- *        required: true,
- *        unique: true
- *      - title: title
- *        type: string
- *      - isShown: null
- *        type: boolean
- *        default: null
- *      - slug: slug
- *        type: string
- *       *     responses:
+ *     parameters:
+ *       - name: title
+ *         type: string
+ *         required: false
+ *       - name: slug
+ *         type: string
+ *         required: false
+ *       - name: wordpress_id
+ *         required: false
+ *         schema:
+ *           type: integer
+ *       - name: isShown
+ *         type: boolean
+ *         required: false
+ *         allowEmptyValue: false
+ *     responses:
  *       200:
- *         description: Provides an object of a new static page
+ *         description: Created a new static page
  *       400:
  *         description: Error messages
+ *  
  */
 
 import Staticpage from "/lib/models/StaticPage";
@@ -90,7 +101,7 @@ export const getStaticPages = async () => {
 };
 
 export const createStaticPage = async (data) => {
-  let newstaticpage = [];
+  console.log("data", data);
   let staticpage = {
     wordpress_id: data.wordpress_id,
     title: data.title,
@@ -101,9 +112,8 @@ export const createStaticPage = async (data) => {
     await dbConnect();
     //create new static page with properties
     const newstaticpage = await Staticpage.create(staticpage);
-    res.status(200).json({ success: true });
+    return newstaticpage;
   } catch (error) {
     console.log(error, "cant create new static page");
   }
-  return newstaticpage;
 };
