@@ -80,7 +80,7 @@ export default async function handler(req, res) {
           res.status(204).json();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(400).json({ message: error.message });
       }
       break;
@@ -108,6 +108,6 @@ export const deleteCohortById = async (id) => {
     }); // TODO - add { new: true } if need to return deleted cohort in response
     return deletedCohort;
   } catch (err) {
-    console.log(error);
+    console.error(error);
   }
 };

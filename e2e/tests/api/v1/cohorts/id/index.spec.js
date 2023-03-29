@@ -36,11 +36,9 @@ test.describe('/api/v1/cohorts/[id]', () => {
     const response = await request.get(
       `/api/v1/cohorts/${randomDeletedCohort._id}`
     );
-    const data = (await response.json()).data;
-    // check if response is OK
-    expect(response.ok()).toBeTruthy();
-    // check if  returned data is null
-    expect(data).toBeNull();
+    // check if response is 404
+    expect(response.status()).toEqual(404);
+   
   });
 
   // DELETE TESTS
