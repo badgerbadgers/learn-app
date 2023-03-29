@@ -66,9 +66,7 @@ test.describe('/api/v1/cohorts/[id]', () => {
   });
 
   // TODO  - do we need a test like that?
-  test.only('returns 404 if cohort to delete is not found', async ({
-    request,
-  }) => {
+  test('returns 404 if cohort to delete is not found', async ({ request }) => {
     // check if response is falsy if cohort not found
     const nonExistedId = faker.database.mongodbObjectId();
     //call DELETE to delete a cohort by id
