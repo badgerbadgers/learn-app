@@ -19,6 +19,8 @@
  *         description: Provides a cohort data
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error messages if cohort to be deleted not found
  *   delete:
  *     description: Delete a cohort by id
  *     tags: [Cohorts]
@@ -50,31 +52,35 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
-
-        res.status(200).json({ data: cohort });
+        const cohort = await getCohortById(id);
+        if (!cohort) {
+          res
+            .status(404)
+            .json({ message: `Failed to find cohort with id ${id} ` });
+        } else {
+          res.status(200).json({ data: cohort });
+        }
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status).json({ message: error.message });
       }
       break;
 
     case 'DELETE':
       try {
-        const deletedCohort = await Cohort.findByIdAndUpdate(id, {
-          deleted_at: new Date(),
-        }); // TODO - add { new: true } if need to return deleted cohort in response
-        console.log(deletedCohort)
+        const deletedCohort = await deleteCohortById(id);
         if (!deletedCohort) {
           res.status(404).json({
             message: `Failed to delete cohort with id ${id}. Cohort not found`,
           });
           return;
+        } else {
+          // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
+          // 204 (No Content)
+          res.status(204).json();
         }
-        // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-        // 204 (No Content)
-        res.status(204).json({ success: true });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(400).json({ message: error.message });
       }
       break;
@@ -84,3 +90,24 @@ export default async function handler(req, res) {
   }
   return res;
 }
+
+export const getCohortById = async (id) => {
+  try {
+    const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
+
+    return cohort;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteCohortById = async (id) => {
+  try {
+    const deletedCohort = await Cohort.findByIdAndUpdate(id, {
+      deleted_at: new Date(),
+    }); // TODO - add { new: true } if need to return deleted cohort in response
+    return deletedCohort;
+  } catch (err) {
+    console.log(error);
+  }
+};
