@@ -25,12 +25,20 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
+  await dbConnect();
   switch (method) {
     case "PATCH":
       //check body for update field
       const updates = req.body;
 
+      //Prevent changing cohort_name if it already exists
+      const cohortNameExists = await Cohort.findOne({
+        cohort_name: updates.cohort_name,
+      });
+
+      if (cohortNameExists) {
+        return res.status(400).json({ message: "Cohort name already exists" });
+      }
       if (Object.keys(updates).length > 0) {
         //handle slug
         if ("cohort_name" in updates) {
@@ -41,7 +49,6 @@ export default async function handler(req, res) {
         }
         //update
         try {
-          await dbConnect();
           await Cohort.updateOne({ _id: id }, updates);
         } catch (error) {
           console.error("Update cohort error", error);
