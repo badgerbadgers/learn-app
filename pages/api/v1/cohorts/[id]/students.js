@@ -19,6 +19,8 @@
  *         description: Provides a cohort's students list
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort or it's students not found
  *   patch:
  *     description: Updates a cohort's students list by the cohort's id
  *     tags: [Cohorts]
@@ -72,10 +74,10 @@
  */
 
 // TODO - swagger - change description if anything returns from DELETED request
-import User from 'lib/models/User';
+import User from 'lib/models/User'; // this import is needed for successful population
 import Cohort from 'lib/models/Cohort';
 import dbConnect from 'lib/dbConnect';
-import { ObjectId } from 'mongodb';
+
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
@@ -83,10 +85,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const data = await Cohort.findById(id, 'students')
-          .populate('students.user')
-          .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
-        console.log(data);
+        const data = await getCohortStudents(id);
         if (data) {
           res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
         } else {
@@ -125,3 +124,15 @@ export default async function handler(req, res) {
   }
   return res;
 }
+
+export const getCohortStudents = async (id) => {
+  try {
+    const data = await Cohort.findById(id, 'students')
+      .populate('students.user')
+      .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

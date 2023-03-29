@@ -4,14 +4,17 @@ import { faker } from '@faker-js/faker';
 test.describe('/api/v1/cohorts/[id]/students', () => {
   //GET TESTS
 
-  test.only('returns all students of a not deleted cohort by cohort id', async ({
+  test('returns all students of a not deleted cohort by cohort id', async ({
     request,
     db,
   }) => {
     // find a random cohort that has students in students field
     const randomCohort = await db.collection('cohorts').findOne({
-      deleted_at: { $eq: null },
-      students: { $ne: [] },
+      $and: [
+        { deleted_at: { $eq: null } },
+        { students: { $ne: [] } },
+        { students: { $ne: null } },
+      ],
     });
 
     //call GET and get the non-deleted cohort by id
@@ -20,6 +23,7 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     );
 
     const data = (await response.json()).data;
+
     // check if response is OK
     expect(response.ok()).toBeTruthy();
     // check if returned data is an array
@@ -32,10 +36,10 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
       expect(student).toHaveProperty('added_at');
     });
 
-    const randomCohortWithNoStudents = await db.collection('cohorts').findOne({
-      deleted_at: { $eq: null },
-      students: { $eq: [] },
-    });
+    const randomCohortWithNoStudents = await db
+      .collection('cohorts')
+      .findOne({ deleted_at: { $eq: null }, students: { $eq: [] } });
+
     const responseNoStudents = await request.get(
       `/api/v1/cohorts/${randomCohortWithNoStudents._id}/students`
     );
@@ -44,40 +48,22 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(responseNoStudents.ok()).toBeTruthy();
     // check an empty array is returned
     expect(noStudentsData).toHaveLength(0);
+  });
 
+  test.only('does not return students of a deleted cohort', async ({
+    request,
+    db,
+  }) => {
     const randomDeletedCohort = await db.collection('cohorts').findOne({
       deleted_at: { $ne: null },
     });
     const responseDeletedCohort = await request.get(
       `/api/v1/cohorts/${randomDeletedCohort._id}/students`
     );
+    // test if api does not return ok response if cohort is deleted
     expect(responseDeletedCohort.ok()).not.toBeTruthy();
-
-    // const noCohortData = (await responseDeletedCohort.json()).data;
-    // // check if null is returned if cohort is not found or deleted (if cohort not found or has timestamp in property deleted_at)
-    // expect(noCohortData).toBeNull();
+    expect(responseDeletedCohort.status()).toBe(404);
   });
-
-  //   test('does not return a deleted cohort when supplied with deleted cohort id', async ({
-  //     request,
-  //     db,
-  //   }) => {
-  //     const cohorts = await db.collection('cohorts');
-  //     // find random deleted cohort in db
-  //     const randomDeletedCohort = await cohorts.findOne({
-  //       deleted_at: { $ne: null },
-  //     });
-
-  //     //call GET and get a cohort by id
-  //     const response = await request.get(
-  //       `/api/v1/cohorts/${randomDeletedCohort._id}`
-  //     );
-  //     const data = (await response.json()).data;
-  //     // check if response is OK
-  //     expect(response.ok()).toBeTruthy();
-  //     // check if  returned data is null
-  //     expect(data).toBeNull();
-  //   });
 
   // DELETE TESTS
   //   test('deletes a cohort by id by changing deleted_at property', async ({
