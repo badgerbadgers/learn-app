@@ -141,7 +141,6 @@ export const createStaticPage = async (data) => {
     isShown: data.isShown,
     slug: data.slug,
   };
-  console.log("static", staticpage);
   try {
     await dbConnect();
     //create new static page with properties
