@@ -8,25 +8,44 @@
  *     tags: [Static pages]
  *     parameters:
  *        - name: title
- *          type: string
  *          required: false
+ *          schema:
+ *            type: string
  *        - name: slug
- *          type: string
  *          required: false
+ *          schema:
+ *            type: string
  *        - name: isShown
- *          type: boolean
  *          required: false
  *          schema:
- *            default: null
+ *            type: boolean
  *          allowEmptyValue: false
+ *          example: true, false
  *        - name: wordpress_id
- *          required: false
+ *          required: true
  *          schema:
- *            type: integer
- *          allowEmptyValue: false
+ *            type: number
+ *          allowEmptyValue: true
  *     responses:
  *       200:
  *         description: Get static pages
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isShown:
+ *                   type: boolean
+ *                   description: bool to show page
+ *                 wordpress_id:
+ *                   type: number
+ *                   description: static page id
+ *                 slug:
+ *                   type: string
+ *                   description: static page slug
+ *                 title:
+ *                   type: string
+ *                   description: static page title
  *       400:
  *         description: Error messages
  *   post:
@@ -34,22 +53,41 @@
  *     tags: [Static pages]
  *     parameters:
  *       - name: title
- *         type: string
- *         required: false
- *       - name: slug
- *         type: string
- *         required: false
- *       - name: wordpress_id
  *         required: false
  *         schema:
- *           type: integer
- *       - name: isShown
- *         type: boolean
+ *           type: string
+ *       - name: slug
  *         required: false
+ *         schema:
+ *           type: string
+ *       - name: wordpress_id
+ *         schema:
+ *           type: number
+ *       - name: isShown
+ *         required: false
+ *         schema:
+ *           type: boolean
  *         allowEmptyValue: false
  *     responses:
  *       200:
- *         description: Created a new static page
+ *         description: ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isShown:
+ *                   type: boolean
+ *                   description: boolean to show page in app
+ *                 wordpress_id:
+ *                   type: integer
+ *                   description: static page id
+ *                 slug:
+ *                   type: string
+ *                   description: static page slug
+ *                 title:
+ *                   type: string
+ *                   description: static page title
  *       400:
  *         description: Error messages
  *  
@@ -59,8 +97,6 @@ import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
-  // console.log("req", req);
-  console.log("res", res);
   const { method } = req;
 
   switch (method) {
@@ -75,7 +111,6 @@ export default async function handler(req, res) {
       return;
     case "POST":
       try {
-        //creates a static page if it exist
         const staticpage = await createStaticPage(req.body);
         res.status(200).json({ data: staticpage });
       } catch (error) {
@@ -100,16 +135,19 @@ export const getStaticPages = async () => {
 };
 
 export const createStaticPage = async (data) => {
-  let staticpage = {
+  const staticpage = {
     wordpress_id: data.wordpress_id,
     title: data.title,
     isShown: data.isShown,
     slug: data.slug,
   };
+  console.log("static", staticpage);
   try {
     await dbConnect();
     //create new static page with properties
-    const newstaticpage = await Staticpage.create(staticpage);
+    // const newstaticpage = await Staticpage.create(staticpage);
+    const newstaticpage = new Staticpage(staticpage);
+    await newstaticpage.save();
     return newstaticpage;
   } catch (error) {
     console.log(error, "cant create new static page");
