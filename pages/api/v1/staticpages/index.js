@@ -22,7 +22,6 @@
  *          allowEmptyValue: false
  *          example: true, false
  *        - name: wordpress_id
- *          required: true
  *          schema:
  *            type: number
  *          allowEmptyValue: true
