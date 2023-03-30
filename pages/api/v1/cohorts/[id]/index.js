@@ -56,13 +56,15 @@ export default async function handler(req, res) {
         if (!cohort) {
           res
             .status(404)
-            .json({ message: `Failed to find cohort with id ${id} ` });
+            .json({ message: `Failed to find cohort with id ${id}` });
         } else {
           res.status(200).json({ data: cohort });
         }
       } catch (error) {
         console.error(error);
-        res.status(error.status).json({ message: error.message });
+        res
+          .status(error.status || error.code || 400)
+          .json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
       }
       break;
 
@@ -81,7 +83,9 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.error(error);
-        res.status(400).json({ message: error.message });
+        res
+          .status(error.status || error.code || 400)
+          .json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
       }
       break;
     default:
@@ -99,6 +103,7 @@ export const getCohortById = async (id) => {
     return cohort;
   } catch (error) {
     console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -109,7 +114,8 @@ export const deleteCohortById = async (id) => {
       deleted_at: new Date(),
     }); // TODO - add { new: true } if need to return deleted cohort in response
     return deletedCohort;
-  } catch (err) {
+  } catch (error) {
     console.error(error);
+    throw new Error(error);
   }
 };
