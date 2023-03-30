@@ -57,4 +57,52 @@ test.describe("/api/v1/staticpages", () => {
       })
     );
   });
+
+  //FAIL TESTS WONT POST IF MISSING FIELDS
+  test("does not create static page if isShown is missing", async ({
+    request,
+  }) => {
+    const newstaticpage = {
+      wordpress_id: faker.datatype.number(1000),
+      title: faker.lorem.text(),
+      slug: faker.lorem.slug(),
+    };
+    const res = await request.post(`/api/v1/staticpages`, {
+      data: newstaticpage,
+    });
+
+    const getRes = await request.get(`/api/v1/staticpages`);
+    expect(getRes.ok()).toBeTruthy();
+
+    const staticpages = (await getRes.json()).data;
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({
+        isShown: newstaticpage.isShown,
+      })
+    );
+  });
+
+  //
+  test("does not create static page if wordpress_id is missing", async ({
+    request,
+  }) => {
+    const newstaticpage = {
+      isShown: faker.datatype.boolean(),
+      title: faker.lorem.text(),
+      slug: faker.lorem.slug(),
+    };
+    const res = await request.post(`/api/v1/staticpages`, {
+      data: newstaticpage,
+    });
+
+    const getRes = await request.get(`/api/v1/staticpages`);
+    expect(getRes.ok()).toBeTruthy();
+
+    const staticpages = (await getRes.json()).data;
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({
+        wordpress_id: newstaticpage.wordpress_id,
+      })
+    );
+  });
 });

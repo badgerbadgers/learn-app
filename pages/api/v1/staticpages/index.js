@@ -143,12 +143,14 @@ export const createStaticPage = async (data) => {
   };
   try {
     await dbConnect();
-    //create new static page with properties
-    // const newstaticpage = await Staticpage.create(staticpage);
+    //create new static page
     const newstaticpage = new Staticpage(staticpage);
     await newstaticpage.save();
     return newstaticpage;
   } catch (error) {
-    console.log(error, "cant create new static page");
+    console.log(
+      error,
+      "Error creating new static page, ensure all fields have correct values."
+    );
   }
 };
