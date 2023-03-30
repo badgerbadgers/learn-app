@@ -81,23 +81,31 @@ import dbConnect from 'lib/dbConnect';
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
+
   await dbConnect();
   switch (method) {
     case 'GET':
       try {
         const data = await getCohortStudents(id);
-        if (data) {
-          res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
-        } else {
-          res.status(404).json({
-            message: `Could not find cohort with id ${id} or it's students`,
-          });
-        }
+
+        res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(error.code || 400).json({ message: error.message });
       }
       break;
-
+    case 'PATCH':
+      const { students } = req.body;
+      try {
+        const updatedCohort = await addUsersToCohort(id, 'students', students);
+        const updatedCohortPopulate = await updatedCohort.populate(
+          'students.user'
+        );
+        res.status(200).json({ data: updatedCohortPopulate.students });
+      } catch (error) {
+        console.error(error);
+        res.status(error.code || 400).json({ message: error.message });
+      }
+      break;
     case 'DELETE':
       //   try {
       //     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
@@ -126,13 +134,51 @@ export default async function handler(req, res) {
 }
 
 export const getCohortStudents = async (id) => {
-  try {
-    const data = await Cohort.findById(id, 'students')
-      .populate('students.user')
-      .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error(error);
+  const data = await Cohort.findById(id, 'students')
+    .populate('students.user')
+    .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
+  if (!data) {
+    //throw new Error(`Cohort with id of ${id} not found`);
+    const error = new Error();
+    error.code = 404;
+    error.message = `Could not find cohort with id ${id} `;
+    throw error;
   }
+  return data;
+};
+
+const addUsersToCohort = async (id, field, value) => {
+  const cohort = await Cohort.findById(id);
+  if (!cohort) {
+    //throw new Error(`Cohort with id of ${id} not found`); 
+    const error = new Error();
+    error.code = 404;
+    error.message = `Could not find cohort with id ${id} `;
+    throw error;
+  }
+
+  // find which of the provided users exist in users database
+  const users = await User.find({ _id: { $in: value } });
+
+  // add field if cohort has set it to null
+  if (!cohort[field]) {
+    cohort[field] = [];
+  }
+
+  users.forEach((user) => {
+    // if the user not in the field already, add them
+    const isExistingUser = cohort[field].find(
+      (u) => u.user?.toString() === user._id.toString()
+    );
+
+    if (!isExistingUser) {
+      // check if the field is 'student' to add 'added_at' property
+      if (field === 'students') {
+        cohort[field].push({ user: user._id, added_at: new Date() });
+      } else {
+        cohort[field].push({ user: user._id });
+      }
+    }
+  });
+  return await cohort.save();
 };
