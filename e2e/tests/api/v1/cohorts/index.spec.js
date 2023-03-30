@@ -178,10 +178,46 @@ test.describe("/api/v1/cohorts", () => {
     async ({ request }) => {}
   );
 
-  test.fixme(
-    "does not allow creating a cohort with a non-unique name",
-    async ({ request }) => {}
-  );
+  test("does not allow creating a cohort with a non-unique name", async ({
+    request,
+  }) => {
+    //call GET and get all the non-deleted cohorts
+    const getCohorts = await request.get(`/api/v1/cohorts`);
+    expect(getCohorts.ok()).toBeTruthy();
+
+    const notDeletedCohorts = (await getCohorts.json()).data;
+
+    // filter to get all the cohort_names in array of Cohort objects
+    const cohortNames = notDeletedCohorts.map((cohort) => cohort.cohort_name);
+
+    // pick a random cohort name
+    const randomExistingCohortName =
+      cohortNames[Math.floor(Math.random() * cohortNames.length)];
+
+    //Cohort with existing name
+    const newCohort = {
+      cohort_name: randomExistingCohortName,
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    // Send POST request to create cohort with non unique name
+    const response = await request.post("/api/v1/cohorts", {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    // Check that the POST request was NOT successful
+    const getResponse = await request.get(`/api/v1/cohorts`);
+    expect(getResponse.ok()).toBeTruthy();
+    // Check that the array of cohorts don't contain newCohort
+    const cohorts = (await getResponse.json()).data;
+    expect(cohorts).not.toContainEqual(
+      expect.objectContaining({ start_date: newCohort.start_date })
+    );
+  });
 
   test.fixme(
     "handles well the case where a non-existing course id is given",
