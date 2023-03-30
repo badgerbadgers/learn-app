@@ -7,24 +7,11 @@
  *     description: Gets all static pages
  *     tags: [Static pages]
  *     parameters:
- *        - name: title
- *          required: false
- *          schema:
- *            type: string
- *        - name: slug
- *          required: false
- *          schema:
- *            type: string
- *        - name: isShown
- *          required: false
- *          schema:
- *            type: boolean
- *          allowEmptyValue: false
- *          example: true, false
- *        - name: wordpress_id
- *          schema:
- *            type: number
- *          allowEmptyValue: true
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         example: bass-practicum
  *     responses:
  *       200:
  *         description: Get static pages
@@ -75,6 +62,7 @@ export const getStaticPageSlug = async (req) => {
   const slug = req.body.slug;
 
   try {
+    await dbConnect();    
     const staticPageSlug = await StaticPage.findOne({
       slug: slug,
     }).lean();
