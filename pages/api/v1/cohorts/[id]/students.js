@@ -13,7 +13,7 @@
  *         schema:
  *           type: string
  *         required: true
- *         example: 635841bd9be844015c74719a
+ *         example: 62db592a4101934c0011b357
  *     responses:
  *       200:
  *         description: Provides a cohort's students list
@@ -31,7 +31,7 @@
  *         schema:
  *           type: string
  *         required: true
- *         example: 635841bd9be844015c74719a
+ *         example: 62db592a4101934c0011b357
  *       - in: body
  *         description: Array of students' mongo ids
  *         name: students
@@ -82,12 +82,10 @@ export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
 
-  await dbConnect();
   switch (method) {
     case 'GET':
       try {
         const data = await getCohortStudents(id);
-
         res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
       } catch (error) {
         res.status(error.code || 400).json({ message: error.message });
@@ -134,6 +132,7 @@ export default async function handler(req, res) {
 }
 
 export const getCohortStudents = async (id) => {
+  await dbConnect();
   const data = await Cohort.findById(id, 'students')
     .populate('students.user')
     .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
@@ -148,9 +147,10 @@ export const getCohortStudents = async (id) => {
 };
 
 const addUsersToCohort = async (id, field, value) => {
+  await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
-    //throw new Error(`Cohort with id of ${id} not found`); 
+    //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
     error.code = 404;
     error.message = `Could not find cohort with id ${id} `;
