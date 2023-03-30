@@ -75,21 +75,28 @@ test.describe("/api/v1/cohorts/id", () => {
     db,
   }) => {
     //call GET and get all the non-deleted cohorts
-    const response = await request.get(`/api/v1/cohorts`);
-    expect(response.ok()).toBeTruthy();
+    const getCohorts = await request.get(`/api/v1/cohorts`);
+    expect(getCohorts.ok()).toBeTruthy();
 
-    // I want to prevent rename Albatross to Mobile View because
-    // Mobile View name already exists in cohorts
+    const notDeletedCohorts = (await getCohorts.json()).data;
+
+    // filter to get all the cohort_names in array of Cohort objects
+    const cohortNames = notDeletedCohorts.map((cohort) => cohort.cohort_name);
+
+    // pick a random cohort name
+    const randomExistingCohortName =
+      cohortNames[Math.floor(Math.random() * cohortNames.length)];
+
+    // I want to prevent rename Albatross to random existing cohort_name from Cohorts arr
     const cohortId = "62db592a4101934c0011b356"; //Albatross id
     const originalName = "Albatross";
-    const newCohortName = "Mobile View";
 
     // Send PATCH request to change cohort name
     const patchResponse = await request.patch("/api/v1/cohorts/" + cohortId, {
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify({ cohort_name: newCohortName }),
+      data: JSON.stringify({ cohort_name: randomExistingCohortName }),
     });
 
     // Check that the PATCH request was NOT successful
@@ -99,7 +106,6 @@ test.describe("/api/v1/cohorts/id", () => {
     const notUpdatedResponse = await request.get(`/api/v1/cohorts`);
     const notUpdatedCohorts = (await notUpdatedResponse.json()).data;
 
-    // Check that the cohort name was updated correctly
     const notUpdatedCohort = notUpdatedCohorts.find(
       (cohort) => cohort._id === cohortId
     );
