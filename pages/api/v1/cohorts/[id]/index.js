@@ -48,7 +48,7 @@ import dbConnect from 'lib/dbConnect';
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-  await dbConnect();
+
   switch (method) {
     case 'GET':
       try {
@@ -93,6 +93,7 @@ export default async function handler(req, res) {
 
 export const getCohortById = async (id) => {
   try {
+    await dbConnect();
     const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
 
     return cohort;
@@ -103,6 +104,7 @@ export const getCohortById = async (id) => {
 
 export const deleteCohortById = async (id) => {
   try {
+    await dbConnect();
     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
       deleted_at: new Date(),
     }); // TODO - add { new: true } if need to return deleted cohort in response
