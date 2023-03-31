@@ -4,89 +4,68 @@
  *   name: Static pages
  * /api/v1/staticpages:
  *   get:
- *     description: Gets all static pages
+ *     description: Gets all static pages from database
  *     tags: [Static pages]
- *     parameters:
- *        - name: title
- *          required: false
- *          schema:
- *            type: string
- *        - name: slug
- *          required: false
- *          schema:
- *            type: string
- *        - name: isShown
- *          required: false
- *          schema:
- *            type: boolean
- *          allowEmptyValue: false
- *          example: true, false
- *        - name: wordpress_id
- *          schema:
- *            type: number
- *          allowEmptyValue: true
  *     responses:
  *       200:
- *         description: Get static pages
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               type: object
  *               properties:
- *                 isShown:
- *                   type: boolean
- *                   description: bool to show page
- *                 wordpress_id:
- *                   type: number
- *                   description: static page id
- *                 slug:
- *                   type: string
- *                   description: static page slug
- *                 title:
- *                   type: string
- *                   description: static page title
- *       400:
- *         description: Error messages
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     wordpress_id:
+ *                       type: number
+ *                     isShown:
+ *                       type: boolean
+ *                     slug:
+ *                       type: string
+ *                     title:
+ *                       type: string
+ *                       
  *   post:
- *     description: Creates a new static page
+ *     description: Creates a new static page in database
  *     tags: [Static pages]
  *     parameters:
- *       - name: title
- *         required: false
- *         schema:
- *           type: string
- *       - name: slug
- *         required: false
- *         schema:
- *           type: string
- *       - name: wordpress_id
+ *       - in: query
+ *         name: wordpress_id
  *         schema:
  *           type: number
- *       - name: isShown
- *         required: false
+ *         required: true
+ *         example: 3401
+ *       - in: query
+ *         name: isShown
  *         schema:
  *           type: boolean
- *         allowEmptyValue: false
+ *         example: true
+ *       - in: query
+ *         name: slug
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: ok
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               type: object
  *               properties:
- *                 isShown:
- *                   type: boolean
- *                   description: boolean to show page in app
- *                 wordpress_id:
- *                   type: integer
- *                   description: static page id
- *                 slug:
- *                   type: string
- *                   description: static page slug
- *                 title:
- *                   type: string
- *                   description: static page title
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     wordpress_id:
+ *                       type: number
+ *                     isShown:
+ *                       type: boolean
+ *                     slug:
+ *                       type: string
+ *                     title:
+ *                       type: string
  *       400:
  *         description: Error messages
  *  
@@ -127,9 +106,16 @@ export const getStaticPages = async () => {
     await dbConnect();
 
     const staticpages = await Staticpage.find().exec();
+    if (!staticpages) {
+      throw new Error("No static pages found");
+    }
     return staticpages;
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    throw new Error(
+      "Error creating new static page, ensure all fields have correct values.",
+      error.message
+    );
   }
 };
 
@@ -140,16 +126,21 @@ export const createStaticPage = async (data) => {
     isShown: data.isShown,
     slug: data.slug,
   };
+  if (
+    staticpage.isShown === undefined ||
+    staticpage.wordpress_id === undefined
+  ) {
+    throw new Error(`Please ensure all fields contain valid values.`);
+  }
+
   try {
     await dbConnect();
-    //create new static page
     const newstaticpage = new Staticpage(staticpage);
     await newstaticpage.save();
     return newstaticpage;
   } catch (error) {
-    console.log(
-      error,
-      "Error creating new static page, ensure all fields have correct values."
-    );
+    //gives specific error message
+    console.log(error.message);
+    throw new Error(error.message);
   }
 };

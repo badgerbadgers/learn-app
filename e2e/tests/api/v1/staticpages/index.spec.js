@@ -36,10 +36,6 @@ test.describe("/api/v1/staticpages", () => {
       isShown: faker.datatype.boolean(),
       slug: faker.lorem.slug(),
     };
-    //check isShown bool cannot be null
-    expect(newStaticPage.isShown).not.toBeNull();
-    //check wordpress_id cannot be null
-    expect(newStaticPage.wordpress_id).not.toBeNull();
 
     //then make POST
     const response = await request.post(`/api/v1/staticpages`, {
@@ -47,15 +43,15 @@ test.describe("/api/v1/staticpages", () => {
     });
     expect(response.ok()).toBeTruthy();
 
-    //newly created object contains the following properties
-    expect(newStaticPage).toEqual(
-      expect.objectContaining({
-        wordpress_id: newStaticPage.wordpress_id,
-        isShown: newStaticPage.isShown,
-        slug: newStaticPage.slug,
-        title: newStaticPage.title,
-      })
-    );
+    const resData = (await response.json()).data;
+
+    expect(resData).toMatchObject(newStaticPage);
+
+    //wordpress id not null
+    expect(resData.wordpress_id).toBeDefined();
+
+    //isShown no null
+    expect(resData.isShown).toBeDefined();
   });
 
   //FAIL TESTS WONT POST IF MISSING FIELDS
@@ -82,7 +78,6 @@ test.describe("/api/v1/staticpages", () => {
     );
   });
 
-  //
   test("does not create static page if wordpress_id is missing", async ({
     request,
   }) => {
