@@ -47,7 +47,7 @@
  *       400:
  *         description: Error messages
  *   delete:
- *     description: Deletes a students from a cohort by cohort's id
+ *     description: Deletes students from a cohort by cohort's id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -68,7 +68,7 @@
  *           example: ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]
  *     responses:
  *       200:
- *         description: Deletes a cohort's students by the cohort's id, returns no content (???)
+ *         description: Deletes a cohort's students by the cohort's id, returns no content
  *       400:
  *         description: Error messages
  */
@@ -77,6 +77,7 @@
 import User from 'lib/models/User'; // this import is needed for successful population
 import Cohort from 'lib/models/Cohort';
 import dbConnect from 'lib/dbConnect';
+import { ObjectId } from 'bson';
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -92,37 +93,49 @@ export default async function handler(req, res) {
       }
       break;
     case 'PATCH':
-      const { students } = req.body;
       try {
-        const updatedCohort = await addUsersToCohort(id, 'students', students);
-        const updatedCohortPopulate = await updatedCohort.populate(
-          'students.user'
-        );
-        res.status(200).json({ data: updatedCohortPopulate.students });
+        if (!req.body.students) {
+          // this will prevent executing the api for presentation in swagger
+          res
+            .status(400)
+            .json({ message: 'Student ids to add are not provided' });
+        } else {
+          // TODO - make sure calculating/updating 'seats' property is taken care  of in Cohort data model to prevent students from exceeding allowed number
+          const updatedCohort = await addUsersToCohort(
+            id,
+            'students',
+            req.body.students
+          );
+          const updatedCohortPopulate = await updatedCohort.populate(
+            'students.user'
+          );
+          res.status(200).json({ data: updatedCohortPopulate.students });
+        }
       } catch (error) {
         console.error(error);
         res.status(error.code || 400).json({ message: error.message });
       }
+
       break;
     case 'DELETE':
-      //   try {
-      //     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
-      //       deleted_at: new Date(),
-      //     }); // TODO - add { new: true } if need to return deleted cohort in response
-      //     console.log(deletedCohort)
-      //     if (!deletedCohort) {
-      //       res.status(404).json({
-      //         message: `Failed to delete cohort with id ${id}. Cohort not found`,
-      //       });
-      //       return;
-      //     }
-      //     // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-      //     // 204 (No Content)
-      //     res.status(204).json({ success: true });
-      //   } catch (error) {
-      //     console.log(error)
-      //     res.status(400).json({ message: error.message });
-      //   }
+      try {
+        if (!req.body.students) {
+          // this will prevent executing the api for presentation in swagger
+          res
+            .status(400)
+            .json({ message: 'Student ids to delete are not provided' });
+        } else {
+          await deleteStudentsFromCohort(id, 'students', req.body.students);
+          // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
+          // 204 (No Content)
+          res.status(204).json();
+        }
+      } catch (error) {
+        console.log(error);
+        res
+          .status(error.status || error.code || 400)
+          .json({ message: error.message });
+      }
       break;
     default:
       res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
@@ -146,7 +159,7 @@ export const getCohortStudents = async (id) => {
   return data;
 };
 
-const addUsersToCohort = async (id, field, value) => {
+export const addUsersToCohort = async (id, field, value) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
@@ -181,4 +194,26 @@ const addUsersToCohort = async (id, field, value) => {
     }
   });
   return await cohort.save();
+};
+
+export const deleteStudentsFromCohort = async (id, field, value) => {
+  await dbConnect();
+  try {
+    const parsedValues = value.map((studentId) => ObjectId(studentId));
+
+    const cohort = await Cohort.findByIdAndUpdate(
+      { _id: id },
+      { $pull: { [field]: { user: { $in: parsedValues } } } }
+      //  { new: true }
+    );
+    if (!cohort) {
+      const error = new Error();
+      error.code = 404;
+      error.message = `Could not find cohort with id ${id} `;
+      throw error;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 };
