@@ -14,16 +14,20 @@
  *             schema:
  *               properties:
  *                 data:
- *                   type: object
- *                   properties:
- *                     wordpress_id:
- *                       type: number
- *                     isShown:
- *                       type: boolean
- *                     slug:
- *                       type: string
- *                     title:
- *                       type: string
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       wordpress_id:
+ *                         type: number
+ *                       isShown:
+ *                         type: boolean
+ *                       slug:
+ *                         type: string
+ *                       title:
+ *                         type: string
  *                       
  *   post:
  *     description: Creates a new static page in database
@@ -34,7 +38,7 @@
  *         schema:
  *           type: number
  *         required: true
- *         example: 3401
+ *         
  *       - in: query
  *         name: isShown
  *         schema:
@@ -90,6 +94,7 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const staticpage = await createStaticPage(req.body);
+        console.log(req.body);
         res.status(200).json({ data: staticpage });
       } catch (error) {
         res.status(400).json({ message: error.message });
