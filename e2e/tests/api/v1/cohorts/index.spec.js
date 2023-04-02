@@ -219,8 +219,69 @@ test.describe("/api/v1/cohorts", () => {
     );
   });
 
-  test.fixme(
-    "handles well the case where a non-existing course id is given",
-    async ({ request }) => {}
-  );
+  test("handles well the case where a non-existing course id is given", async ({
+    request,
+  }) => {
+    //creates a cohort where a non-existing course id is given
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      course: "62e056cee6daad619e5cc2c8",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+    // Send POST request to create cohort with non-existing course id
+    const response = await request.post("/api/v1/cohorts", {
+      data: newCohort,
+    });
+
+    // Verify that the response is falsy
+    expect(response.ok()).toBeFalsy();
+    expect(response.status()).toBe(400);
+
+    // Verify that the response body contains an error message
+    const json = await response.json();
+    expect(json).toEqual({ message: "Can't fetch lessons from course" });
+  });
+  //////////////////////////////////////////////////////////////////
+  test("create a new cohort when existing course_id is given", async ({
+    request,
+    db,
+  }) => {
+    const existingCourseIds = [
+      "62e056cee6daad619e5cc2c5",
+      "62e056cee6daad619e5cc2c3",
+      "62e056cee6daad619e5cc2c4",
+    ];
+    // Pick a random existing course_id
+    const randomCourse =
+      existingCourseIds[Math.floor(Math.random() * existingCourseIds.length)];
+
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      course: randomCourse,
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newCohort);
+
+    expect(responseData._id).toBeDefined();
+
+    expect(responseData.schedule).toBeDefined();
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+
+    await db
+      .collection("cohorts")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
 });
