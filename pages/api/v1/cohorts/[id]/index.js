@@ -3,16 +3,29 @@
  * tags:
  *   name: Cohorts
  * /api/v1/cohorts/{id}:
- *   patch:
- *     description: Update cohort fields
- *     tags: [Cohorts]
- *     parameters:
- *        - name: cohort_name
- *          type: string
- *          required: false
- *        - name: start_date
- *          type: date
- *          required: false
+*   patch:
+*     description: Update cohort fields
+*     tags: [Cohorts]
+*     parameters:
+*       - in: path
+*         name: id
+*         description: Cohort id
+*         schema:
+*           type: string
+*         required: true
+*         example: 62db592a4101934c0011b357
+*       - in: body
+*         description: Cohort data to update
+*         name: cohort
+*         schema:
+*           type: object
+*           properties:
+*             cohort_name:
+*               type: string
+*             start_date:
+*               type: string
+*               format: date-time
+*               example: 2025-04-04T04:00:00.000+00:00
  *     responses:
  *       200:
  *         description: Updated cohort fields
