@@ -186,7 +186,7 @@ test.describe("/api/v1/cohorts", () => {
       zoom_link: faker.internet.url(),
       extra_field: "This field should not be saved",
     };
-    // Send the filtered cohort object to the API endpoint using POST method
+    // Send the cohort object to the API endpoint using POST method
     const response = await request.post(`/api/v1/cohorts`, {
       data: newCohort,
     });
@@ -239,9 +239,9 @@ test.describe("/api/v1/cohorts", () => {
     const response = await request.post("/api/v1/cohorts", {
       data: newCohort,
     });
+    // Check that the POST request was NOT successful
     expect(response.ok()).toBeFalsy();
 
-    // Check that the POST request was NOT successful
     const getResponse = await request.get(`/api/v1/cohorts`);
     expect(getResponse.ok()).toBeTruthy();
     // Check that the array of cohorts don't contain newCohort
