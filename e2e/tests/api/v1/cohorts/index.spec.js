@@ -173,10 +173,42 @@ test.describe("/api/v1/cohorts", () => {
   });
 
 
-  test.fixme(
-    "does not save into the database extra fields that are sent",
-    async ({ request }) => {}
-  );
+  test("does not save into the database extra fields that are sent", async ({
+    request,
+    db,
+  }) => {
+    // Generate a new cohort object with an extra field
+    const newCohort = {
+      cohort_name: faker.lorem.words(),
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+      extra_field: "This field should not be saved",
+    };
+    // Send the filtered cohort object to the API endpoint using POST method
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    // Check that the response status code is 200 OK
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    // Check that the cohort object in the response body does not contain the extra_field property
+    expect(responseData).not.toHaveProperty("extra_field");
+
+    expect(responseData._id).toBeDefined();
+
+    expect(responseData.schedule).toBeDefined();
+    expect(responseData.schedule.length).toBeGreaterThan(0);
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+
+    await db
+      .collection("cohorts")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
 
   test("does not allow creating a cohort with a non-unique name", async ({
     request,
