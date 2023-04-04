@@ -20,14 +20,19 @@
  *                     properties:
  *                       _id:
  *                         type: string
+ *                         example: 75ge23c42f9b73c474826693
  *                       wordpress_id:
  *                         type: number
+ *                         example: 4232
  *                       isShown:
  *                         type: boolean
+ *                         example: false
  *                       slug:
  *                         type: string
+ *                         example: giraffe-intro
  *                       title:
  *                         type: string
+ *                         example: Giraffe Intro
  *                       
  *   post:
  *     description: Creates a new static page in database
@@ -64,12 +69,16 @@
  *                   properties:
  *                     wordpress_id:
  *                       type: number
+ *                       example: 2999
  *                     isShown:
  *                       type: boolean
+ *                       example: true
  *                     slug:
  *                       type: string
+ *                       example: bright-dolphin
  *                     title:
  *                       type: string
+ *                       example: Bright Dolphin
  *       400:
  *         description: Error messages
  *  
