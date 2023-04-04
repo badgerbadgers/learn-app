@@ -4,7 +4,7 @@
  *   name: Static pages
  * /api/v1/staticpages/{slug}:
  *   get:
- *     description: Gets all static pages
+ *     description: Gets all static pages from database
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
@@ -14,27 +14,28 @@
  *         example: bass-practicum
  *     responses:
  *       200:
- *         description: Get static pages
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               type: object
  *               properties:
- *                 isShown:
- *                   type: boolean
- *                   description: bool to show page
- *                 wordpress_id:
- *                   type: number
- *                   description: static page id
- *                 slug:
- *                   type: string
- *                   description: static page slug
- *                 title:
- *                   type: string
- *                   description: static page title
- *       400:
- *         description: Error messages
- *  
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: number
+ *                       wordpress_id:
+ *                         type: number
+ *                       isShown:
+ *                         type: boolean
+ *                       slug:
+ *                         type: string
+ *                         example: bass-practicum
+ *                       title:
+ *                         type: string
+ *                       
  */
 
 import StaticPage from "lib/models/StaticPage";
@@ -47,27 +48,32 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const staticpage = await getStaticPageSlug(req, res);
-        res.status(200).json({ data: staticpage });
+        if (!staticpage) {
+          res.status(404).json({
+            message: `${staticpage} is not a valid slug. Please enter a valid slug`,
+          });
+          return;
+        }
+        return res.status(200).json({ data: staticpage });
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
       }
-      return;
     default:
-      res.setHeader("Allow", ["GET", "POST"]);
+      res.setHeader("Allow", ["GET"]);
       res.status(405).rendered(`Method ${method} Not Allow`);
   }
 }
 
 export const getStaticPageSlug = async (req) => {
-  const slug = req.body.slug;
-
+  const slug = req.query.slug;
   try {
-    await dbConnect();    
+    await dbConnect();
     const staticPageSlug = await StaticPage.findOne({
       slug: slug,
-    }).lean();
+    }).exec();
     return staticPageSlug;
   } catch (error) {
     console.log(error);
+    throw new Error(error.message);
   }
 };
