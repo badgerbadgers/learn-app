@@ -26,15 +26,19 @@
  *                     properties:
  *                       _id:
  *                         type: number
+ *                         example: 63fd39c51e0a85c474927702
  *                       wordpress_id:
  *                         type: number
+ *                         example: 2334
  *                       isShown:
  *                         type: boolean
+ *                         example: true
  *                       slug:
  *                         type: string
- *                         example: bass-practicum
+ *                         example: grasshopper-rails
  *                       title:
  *                         type: string
+ *                         example: Grasshopper Rails
  *                       
  */
 
