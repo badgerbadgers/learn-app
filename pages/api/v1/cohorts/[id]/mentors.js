@@ -1,4 +1,3 @@
-// TODO check 4** error responses options
 /**
  * @swagger
  *  tags:
@@ -33,9 +32,9 @@
  *         required: true
  *         example: 62db592a4101934c0011b357
  *       - in: body
+ *         name: mentors
  *         description: An object with property 'mentor' and a value of array of mentors' mongo ids
  *         required: true
- *         name: mentors
  *         schema:
  *           type: object
  *           required:
@@ -67,9 +66,9 @@
  *         required: true
  *         example: 62db592a4101934c0011b357
  *       - in: body
+ *         name: mentors
  *         description: An object with property 'mentor' and a value of array of mentors' mongo ids to be deleted
  *         required: true
- *         name: mentors
  *         schema:
  *           type: object
  *           required:
@@ -90,7 +89,7 @@
  *       404:
  *         description: Error message if a cohort or it's mentors not found
  */
-// TODO - describe 404 response??
+
 // TODO - swagger - change description if anything returns from DELETED request
 import User from 'lib/models/User'; // this import is needed for successful population
 import Cohort from 'lib/models/Cohort';
@@ -107,14 +106,14 @@ export default async function handler(req, res) {
         const data = await getCohortMentors(id);
         res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
       } catch (error) {
-        res.status(error.code || 400).json({ message: error.message });
+        res
+          .status(error.code || error.status || 400)
+          .json({ message: error.message });
       }
       break;
     case 'PATCH':
       try {
-        console.log(req.body);
         if (!req.body.mentors) {
-          // this will prevent executing the api for presentation in swagger
           res
             .status(400)
             .json({ message: 'Mentor ids to add are not provided' });
@@ -140,7 +139,6 @@ export default async function handler(req, res) {
     case 'DELETE':
       try {
         if (!req.body.mentors) {
-          // this will prevent executing the api for presentation in swagger
           res
             .status(400)
             .json({ message: 'Mentors ids to delete are not provided' });
@@ -193,6 +191,7 @@ export const addUsersToCohort = async (id, field, value) => {
   // find which of the provided users exist in users database
   const users = await User.find({ _id: { $in: value } });
 
+  // if students property equals to null adding users will give an error
   // add field if cohort has set it to null
   if (!cohort[field]) {
     cohort[field] = [];
