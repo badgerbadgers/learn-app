@@ -67,8 +67,7 @@
  *         schema:
  *           type: string
  *         required: false
- *       - in: body
- *         name: address_mailing_same
+ *       - name: address_mailing_same
  *         schema:
  *           type: boolean
  *         required: false
@@ -202,23 +201,19 @@
  *         schema:
  *           type: [string]
  *         required: false
- *       - in: body
- *         name: consent_work_commitment
+ *       - name: consent_work_commitment
  *         schema:
  *           type: boolean
  *         required: true
- *       - in: body
- *         name: consent_leave_notice
+ *       - name: consent_leave_notice
  *         schema:
  *           type: boolean
  *         required: true
- *       - in: body
- *         name: active_step
+ *       - name: active_step
  *         schema:
  *           type: number
  *         required: false
- *       - in: body
- *         name: is_completed
+ *       - name: is_completed
  *         schema:
  *           type: boolean
  *         default: false
@@ -234,7 +229,7 @@
  *       400:
  *        description: Error messages
  *   get:
- *     description: Returns all the acceptance forms from collection in a formatted .csv file
+ *     description: Returns a CSV file with all acceptance forms
  *     tags: [Acceptance form]
  *     responses:
  *       200:
