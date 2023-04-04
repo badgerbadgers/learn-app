@@ -33,19 +33,28 @@
  *         required: true
  *         example: 62db592a4101934c0011b357
  *       - in: body
- *         description: Array of students' mongo ids
  *         name: students
+ *         description: An object with property 'students' and a value of array of students' mongo ids to add
+ *         required: true
  *         schema:
- *           type: array
- *           items:
- *             type: string
- *           example: ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]
- *     required: true
+ *           type: object
+ *           required:
+ *             - students
+ *           properties:
+ *             students:
+ *             type: array
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *           example: {"students": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
  *     responses:
  *       200:
  *         description: Provides a cohort's students list
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort or it's students not found
  *   delete:
  *     description: Deletes students from a cohort by cohort's id
  *     tags: [Cohorts]
@@ -58,19 +67,28 @@
  *         required: true
  *         example: 635841bd9be844015c74719a
  *       - in: body
- *         description: Array of students' mongo ids
  *         name: students
+ *         description: An object with property 'students' and a value of array of students' mongo ids to delete
+ *         required: true
  *         schema:
- *           type: array
- *           items:
- *              type: string
- *           required: true
- *           example: ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]
+ *           type: object
+ *           required:
+ *             - students
+ *           properties:
+ *             students:
+ *             type: array
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *           example: {"students": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
  *     responses:
  *       200:
  *         description: Deletes a cohort's students by the cohort's id, returns no content
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort or it's students not found
  */
 
 // TODO - swagger - change description if anything returns from DELETED request
@@ -89,13 +107,14 @@ export default async function handler(req, res) {
         const data = await getCohortStudents(id);
         res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
       } catch (error) {
-        res.status(error.code || 400).json({ message: error.message });
+        res
+          .status(error.code || error.status || 400)
+          .json({ message: error.message });
       }
       break;
     case 'PATCH':
       try {
         if (!req.body.students) {
-          // this will prevent executing the api for presentation in swagger
           res
             .status(400)
             .json({ message: 'Student ids to add are not provided' });
@@ -113,14 +132,15 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.error(error);
-        res.status(error.code || 400).json({ message: error.message });
+        res
+          .status(error.code || error.status || 400)
+          .json({ message: error.message });
       }
 
       break;
     case 'DELETE':
       try {
         if (!req.body.students) {
-          // this will prevent executing the api for presentation in swagger
           res
             .status(400)
             .json({ message: 'Student ids to delete are not provided' });
