@@ -67,6 +67,16 @@ export default async function handler(req, res) {
         res.status(400).json({ message: error.message });
       }
       return;
+    case "POST":
+      try {
+        //call method for creating a user with any data we received
+        const user = await createUser(req.body);
+        res.status(200).json({ success: true, data: user });
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({ success: false, message: error.message });
+      }
+      return;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -84,4 +94,26 @@ export const getUsers = async (filters = {}) => {
   }
 };
 
+export const createUser = async (data) => {
+  //run mongoose validator to make sure data is ok
+  const newUser = new User(data);
+  const validationErr = await newUser.validate();
+  if(validationErr) {
+    throw new Error(validationErr);
+  }
 
+  await dbConnect();
+
+  //make sure github is unique
+  const duplicateGH = await User.findOne({
+    gh: newUser.gh,
+  });
+  if (duplicateGH) {
+    throw new Error("Duplicate User Github");
+  }
+
+  //save the new user
+  newUser.save();
+
+  return newUser;
+}

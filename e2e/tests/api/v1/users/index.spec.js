@@ -152,7 +152,7 @@ test.describe("/api/v1/users", () => {
 
   });
 
-  test.only("returns an empty array when there are no results", async ({
+  test("returns an empty array when there are no results", async ({
     request,
   }) => {
     //choose by a course not in the cohort
