@@ -167,3 +167,122 @@ test.describe("/api/v1/users", () => {
     expect((await response.json()).data).toHaveLength(0);   
   });
 });
+
+//POST TESTS
+  test("creates a user when the fields name, email, gh are properly given", async ({ request, db }) => {
+    const newUser = {
+      name: faker.lorem.words(),
+      email: faker.lorem.words(),
+      gh: faker.lorem.words(),
+    };
+
+    const response = await request.post(`/api/v1/users`, {
+      data: newUser
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newUser);
+    expect(responseData._id).toBeDefined();
+
+    //delete newUser
+    await db
+      .collection("cohorts")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
+
+  test("does not create a user when name is missing", async ({
+    request,
+  }) => {
+    const newUser = {
+      email: faker.lorem.words(),
+      gh: faker.lorem.words(),
+    };
+
+    const response = await request.post(`/api/v1/users`, {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get(`/api/v1/users`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ name: newUser.name })
+    );
+  });
+
+  test("does not create a user email is missing", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.lorem.words(),
+      gh: faker.lorem.words(),
+    };
+
+    const response = await request.post(`/api/v1/users`, {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get(`/api/v1/users`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user when github is missing", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.lorem.words(),
+      email: faker.lorem.words(),
+    };
+
+    const response = await request.post(`/api/v1/users`, {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get(`/api/v1/users`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ gh: newUser.gh })
+    );
+  });
+
+  test(
+    "does not allow creating a user with a non-unique github",
+    async ({ request, db }) => {
+      const user = await db.collection("users").findOne();
+
+      const newUser = {
+        name: faker.lorem.words(),
+        email: faker.lorem.words(),
+        gh: user.gh,
+      };
+
+      const response = await request.post(`/api/v1/users`, {
+        data: newUser,
+      });
+      expect(response.ok()).toBeFalsy();
+
+      //confirm our user has not been created
+      const getResponse = await request.get(`/api/v1/users`);
+      expect(getResponse.ok()).toBeTruthy();
+
+      const users = (await getResponse.json()).data;
+      expect(users).not.toContainEqual(
+        expect.objectContaining({ name: newUser.name })
+      );
+    }
+  );
