@@ -6,223 +6,112 @@
  *   post:
  *     description: Creates/updates an acceptance form
  *     tags: [Acceptance form]
- *     parameters:
+*     parameters:
  *       - in: body
- *         name: personal_first_name
- *         schema:
- *           type: string
+ *         name: acceptance form
  *         required: true
- *       - in: body
- *         name: personal_last_name
+ *         description: Creates/updates an acceptance form key value pairs
  *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: personal_email
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: personal_github
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: personal_phone
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: address_USResident
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_physical_zipcode
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: address_physical_street1
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_physical_street2
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_physical_city
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_physical_state
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_physical_country
- *         schema:
- *           type: string
- *         required: false
- *       - name: address_mailing_same
- *         schema:
- *           type: boolean
- *         required: false
- *       - in: body
- *         name: address_mailing_zipcode
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_mailing_street1
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_mailing_street2
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_mailing_city
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_mailing_state
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: address_mailing_country
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_dob
- *         schema:
- *           type: date
- *         required: true
- *       - in: body
- *         name: demographics_pronouns
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_gender_identity
- *         schema:
- *           type: [string]
- *         required: true
- *       - in: body
- *         name: demographics_gender_identity_self
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_race_ethnicity
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: demographics_race_ethnicity_self
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_education
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_spoken_languages
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_employed
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_in_school
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: demographics_low_income
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact1_name
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact1_relationship
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact1_phone
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact2_name
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact2_relationship
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: emergency_contact2_phone
- *         schema:
- *           type: string
- *         required: true
- *       - in: body
- *         name: background_learning_style
- *         schema:
- *           type: [string]
- *         required: false
- *       - in: body
- *         name: background_prior_coding_education
- *         schema:
- *           type: string
- *         required: false
- *       - in: body
- *         name: background_prior_coding_languages
- *         schema:
- *           type: [string]
- *         required: false
- *       - name: consent_work_commitment
- *         schema:
- *           type: boolean
- *         required: true
- *       - name: consent_leave_notice
- *         schema:
- *           type: boolean
- *         required: true
- *       - name: active_step
- *         schema:
- *           type: number
- *         required: false
- *       - name: is_completed
- *         schema:
- *           type: boolean
- *         default: false
- *         required: false
- *       - in: body
- *         name: completed_at
- *         schema:
- *           type: date
- *         required: false
+ *           type: object
+ *           required: [personal_first_name, personal_last_name, personal_email, personal_github, personal_phone, address_physical_zipcode, demographics_dob, demographics_gender_identity, demographics_race_ethnicity, demographics_low_income, emergency_contact1_name, emergency_contact1_relationship, emergency_contact1_phone, emergency_contact2_name, emergency_contact2_relationship, emergency_contact2_phone, consent_work_commitment, consent_leave_notice]
+ *           properties:
+ *             personal_first_name:
+ *               type: string
+ *             personal_last_name:
+ *               type: string
+ *             personal_email:
+ *               type: string
+ *             personal_github:
+ *               type: string 
+ *             personal_phone:
+ *               type: string
+ *             address_USResident:
+ *               type: string
+ *             address_physical_zipcode:
+ *               type: string
+ *             address_physical_street1:
+ *               type: string
+ *             address_physical_street2:
+ *               type: string
+ *             address_physical_city:
+ *               type: string
+ *             address_physical_state:
+ *               type: string
+ *             address_physical_country:
+ *               type: string
+ *             address_mailing_same:
+ *               type: boolean
+ *             address_mailing_zipcode:
+ *               type: string
+ *             address_mailing_street1:
+ *               type: string
+ *             address_mailing_street2:
+ *               type: string
+ *             address_mailing_city:
+ *               type: string
+ *             address_mailing_state:
+ *               type: string
+ *             address_mailing_country:
+ *               type: string
+ *             demographics_dob:
+ *               type: string
+ *               format: date-time
+ *               example: 2019-05-17
+ *             demographics_pronouns:
+ *               type: string
+ *             demographics_gender_identity:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             demographics_gender_identity_self:
+ *                 type: string
+ *             demographics_race_ethnicity:
+ *               type: string
+ *             demographics_race_ethnicity_self:
+ *               type: string
+ *             demographics_education:
+ *               type: string
+ *             demographics_spoken_languages:
+ *               type: string
+ *             demographics_employed:
+ *               type: string
+ *             demographics_low_income:
+ *               type: string
+ *             emergency_contact1_name:
+ *               type: string
+ *             emergency_contact1_relationship:
+ *               type: string
+ *             emergency_contact1_phone:
+ *               type: string
+ *             emergency_contact2_name:
+ *               type: string
+ *             emergency_contact2_relationship:
+ *               type: string
+ *               required: true
+ *             emergency_contact2_phone:
+ *               type: string
+ *             background_learning_style:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             background_prior_coding_education:
+ *               type: string
+ *             background_prior_coding_languages:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             consent_work_commitment:
+ *               type: boolean
+ *             consent_leave_notice:
+ *               type: boolean
+ *             active_step:
+ *               type: number
+ *             is_completed:
+ *               type: boolean
+ *             completed_at:
+ *               type: string
+ *               format: date-time
+ *               example: 2019-05-17
  *     responses:
  *       200:
  *        description: Acceptance form created/updated
