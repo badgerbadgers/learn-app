@@ -3,6 +3,16 @@ import { faker } from "@faker-js/faker";
 import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/acceptanceforms", () => {
+  //GET TESTS
+
+  test("returns all acceptanceforms", async ({ request }) => {
+    //populate the database with some acceptanceforms
+
+    //call GET and get all the acceptanceforms
+    const response = await request.get(`/api/v1/acceptanceforms`);
+    expect(response.ok()).toBeTruthy();
+  });
+
   //POST TEST
 
   // define your test data as an object
@@ -10,9 +20,7 @@ test.describe("/api/v1/acceptanceforms", () => {
   // simulate a form submission with test data
   // wait for the API call to complete
 
-  test.only("returns an array with newly created object", async ({
-    request,
-  }) => {
+  test("returns an array with newly created object", async ({ request }) => {
     //new object to test
     const newAcceptanceForm = {
       _id: ObjectId("63eba5f8606021759bbf5e54"),
