@@ -32,9 +32,14 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     // check if each element of the array has a property 'user' and 'added_at'
     data.forEach((mentor) => {
       expect(mentor).toHaveProperty('user');
-     // expect(mentor).toHaveProperty('added_at'); < ---- only for students
+      // expect(mentor).toHaveProperty('added_at'); < ---- only for students
     });
+  });
 
+  test('returns empty array if cohort has no mentors', async ({
+    request,
+    db,
+  }) => {
     const randomCohortWithNoMentors = await db
       .collection('cohorts')
       .findOne({ deleted_at: { $eq: null }, mentors: { $eq: [] } });
@@ -118,7 +123,7 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     data.forEach((mentor) => {
       expect(mentor).toHaveProperty('user');
       // expect(mentor.user).not.toBeNull(); some of the existing mentors in the current db is null
-     // expect(mentor).toHaveProperty('added_at'); <--- only for 'students'
+      // expect(mentor).toHaveProperty('added_at'); <--- only for 'students'
     });
 
     // check if the request does not add users that do not exist in db, mock data
@@ -136,8 +141,10 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     expect(responseNotAddedMentors.ok()).toBeTruthy();
     const dataMentorsNotAdded = (await responseNotAddedMentors.json()).data;
     expect(dataMentorsNotAdded.length).toBe(data.length); // compare to the value after the first request which added mentors
+  });
 
-    // check if the request does not add users to deleted cohort
+  test('does not add users to deleted cohort', async ({ request, db }) => {
+    //  check if the request does not add users to deleted cohort
     const randomDeletedCohort = await db
       .collection('cohorts')
       .findOne({ deleted_at: { $ne: null } });
@@ -149,17 +156,25 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     // check if response is not OK
     expect(responseForDeletedCohort.ok()).not.toBeTruthy();
     expect(responseForDeletedCohort.status()).toBe(404);
-    // check if api returns error if array of mentors to add not provided
-    //call DELETE to delete mentors of a cohort by id
+  });
+
+  test('returns error if array of mentors to add not provided', async ({
+    request,
+    db,
+  }) => {
+    // find a random cohort that has mentors in mentors field
+    const randomCohort = await db
+      .collection('cohorts')
+      .findOne({ deleted_at: { $eq: null } });
+
+    //call PATCH to add mentors of a cohort by id
     const responseNoMentors = await request.patch(
-      `/api/v1/cohorts/${randomCohort._id}/Mentors`,
+      `/api/v1/cohorts/${randomCohort._id}/mentors`,
       { data: {} }
     );
     expect(responseNoMentors.ok()).not.toBeTruthy();
     //expect(responseNoMentors.status()).toBe(400);
-
   });
-
   // DELETE TESTS
   test("deletes mentors from a cohort by cohort's id", async ({
     request,
@@ -183,22 +198,20 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     //call DELETE to delete mentors of a cohort by id
     const response = await request.delete(
       `/api/v1/cohorts/${randomCohort._id}/mentors`,
-      { data: { mentors: [parsedUsersToDelete[0]] } }
+      { data: { mentors: [parsedUsersToDelete[0]] } } // delete one user
     );
 
     // check if response is OK
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(204);
 
-    // retrieve cohort from db to check if the mentors was deleted
+    // retrieve cohort from db to check if the mentors were deleted
     const updatedCohort1 = await db
       .collection('cohorts')
       .findOne({ _id: randomCohort._id });
 
     // check if one mentor was deleted
-    expect(updatedCohort1.mentors.length).toBe(
-      randomCohort.mentors.length - 1
-    );
+    expect(updatedCohort1.mentors.length).toBe(randomCohort.mentors.length - 1);
     //call DELETE to delete mentors of a cohort by id
     const responseDeleteAll = await request.delete(
       `/api/v1/cohorts/${randomCohort._id}/mentors`,
@@ -209,11 +222,18 @@ test.describe('/api/v1/cohorts/[id]/mentors', () => {
     const updatedCohort2 = await db
       .collection('cohorts')
       .findOne({ _id: randomCohort._id });
-    // check if all Mentors were deleted
+    // check if all mentors were deleted
     expect(updatedCohort2.mentors.length).toBe(0);
+  });
+  test('returns error if array of mentors to delete not provided', async ({
+    request,
+    db,
+  }) => {
+    const randomCohort = await db
+      .collection('cohorts')
+      .findOne({ $where: 'this.mentors.length > 1' });
 
-    // check if api returns error if array of Mentors to delete not provided
-    //call DELETE to delete Mentors of a cohort by id
+    //call DELETE to delete mentors of a cohort by id
     const responseNoMentors = await request.delete(
       `/api/v1/cohorts/${randomCohort._id}/mentors`,
       { data: {} }
