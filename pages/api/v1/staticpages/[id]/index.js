@@ -67,6 +67,10 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(400).json({ message: error.message });
       }
+    // case "DELETE":
+    //   try {
+
+    //   }
     default:
       res.setHeader("Allow", ["PATCH"]);
       res.status(405).rendered(`Method ${method} Not Allowed`);
