@@ -15,8 +15,8 @@
  *         required: true
  *         example: 62db592a4101934c0011b357
  *     responses:
- *       204:
- *         description: Provides no content
+ *       200:
+ *         description: Provides given cohort's status
  *       400:
  *         description: Error messages
  *       404:
