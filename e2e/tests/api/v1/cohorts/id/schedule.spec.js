@@ -1,4 +1,5 @@
-import { test, expect } from "e2e/fixtures/testAsAdmin";
+//import { test, expect } from "e2e/fixtures/testAsUser"; //test for GET method
+import { test, expect } from "e2e/fixtures/testAsAdmin"; //test for PUT method
 
 test.describe("/api/v1/cohorts/[id]/schedule", () => {
   //GET TESTS

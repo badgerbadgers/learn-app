@@ -18,6 +18,47 @@
  *         description: Provides a cohort's schedule list
  *       400:
  *         description: Error messages
+ *   put:
+ *     description: Update entire schedule for specific cohort
+ *     tags: [Cohorts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         example: 635841bd9be844015c74719a
+ *       - in: body
+ *         name: schedule
+ *         description:  
+ *         required: true
+ *         schema:
+ *           type: object
+ *           required:
+ *             - schedule
+ *           properties:
+ *             schedule:
+ *             type: array
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *           example: {"schedule": [
+      {
+        "type": "lesson",
+        "lesson": "62e26dbb69dd077fc82fbfe5",
+        "section": "633d9915ec0d4b5e83a6b05e"
+      },
+      {
+       " type": "lesson",
+        "lesson": "62e26dbb69dd077fc82fbfe1",
+        "section": "633d9915ec0d4b5e83a6b05e"
+      }]}
+ *     responses:
+ *       200:
+ *         description: Update entire schedule for a specific cohort
+ *       400:
+ *         description: Error messages
  */
 
 import Cohort from "lib/models/Cohort";
@@ -36,11 +77,28 @@ export default async function handler(req, res) {
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
+      break;
+    case "PUT":
+      //check body for update object
+      const updates = req.body;
+      //update
+      try {
+        await dbConnect();
+        await Cohort.updateOne({ _id: id }, updates);
+      } catch (error) {
+        console.error("Update cohort error", error);
+        res.status(400).json({ success: false });
+        return;
+      }
+      res.status(200).json({ success: true });
       return;
-    default: //PUT method will be added later
+      break;
+    default:
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
+      break;
   }
+  return res;
 }
 export const getCohortSchedule = async (id) => {
   try {
