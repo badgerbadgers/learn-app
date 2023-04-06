@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await updateCohorts();
+    await updateCohortsStatus();
     // res.status(200).json({ message: `Updated ${count} cohorts`, count });
     res.status(204).json();
   } catch (error) {
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
   }
 }
 
-export const updateCohorts = async () => {
+export const updateCohortsStatus = async () => {
   try {
     await dbConnect();
     // let count = 0;
