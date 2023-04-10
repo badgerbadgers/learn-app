@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/fixtures/testAsAdmin';
 
 test.describe('/api/v1/cohorts/status', () => {
   //PATCH TESTS
-  test.only("updates all cohorts' status", async ({ request, db }) => {
+  test("updates all cohorts' status", async ({ request, db }) => {
     //call PATCH and get all the non-deleted cohorts
     const response = await request.patch(`/api/v1/cohorts/status`);
     expect(response.ok()).toBeTruthy();
