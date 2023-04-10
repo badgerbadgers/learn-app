@@ -64,7 +64,7 @@ export default async function handler(req, res) {
         console.error(error);
         res
           .status(error.status || 400)
-          .json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
+          .json({ message: error.message }); 
       }
       break;
 
@@ -78,8 +78,7 @@ export default async function handler(req, res) {
           return;
         } else {
           // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
-          // 204 (No Content)
-          res.status(204).json();
+          res.status(200).json();
         }
       } catch (error) {
         console.error(error);
