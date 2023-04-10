@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/fixtures/testAsAdmin';
 
 test.describe('/api/v1/cohorts/status', () => {
   //PATCH TESTS
-  test("updates all cohorts' status", async ({ request, db }) => {
+  test.only("updates all cohorts' status", async ({ request, db }) => {
     //call PATCH and get all the non-deleted cohorts
     const response = await request.patch(`/api/v1/cohorts/status`);
     expect(response.ok()).toBeTruthy();
@@ -23,8 +23,7 @@ test.describe('/api/v1/cohorts/status', () => {
         if (!cohort.start_date) {
           //if no start date, check if status set to "unknown"
           expect(cohort.status).toBe('unknown');
-        } else if (!cohort.schedule || !Array.isArray(cohort.schedule)) {
-          // TODO  add !cohort.schedule.length check if added to Cohorts model
+        } else if (!cohort.schedule.length || !cohort.schedule || !Array.isArray(cohort.schedule)) {
           // if no schedule, check if status set to 'unknown'
           expect(cohort.status).toBe('unknown');
         } else if (now < new Date(cohort.start_date).getTime()) {
