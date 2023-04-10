@@ -36,7 +36,9 @@ export default async function handler(req, res) {
         const user = await getUser(id);
         res.status(200).json({ data: user });
       } catch (error) {
-        res.status(400).json();
+        res.status(400).json({
+          message: error.message,
+        });
       }
       return;
     case "PATCH":
@@ -45,7 +47,16 @@ export default async function handler(req, res) {
         const user = await updateUser(id, updates);
         res.status(200).json({ data: user });
       } catch (error) {
-        //console.log(error);
+        res.status(400).json({
+          message: error.message,
+        });
+      }
+      return;
+    case "DELETE":
+      try {
+        const user = await deleteUser(id);
+        res.status(201).json({ data: user });
+      } catch (error) {
         res.status(400).json({
           message: error.message,
         });
@@ -74,9 +85,24 @@ export const updateUser = async (id, updates) => {
     throw new Error("User with Github username already exists");
   }
 
+  //update user
   const user = await User.findByIdAndUpdate(id, updates, {
     runValidators: true,
   });
+
+  //Verify if not found user with this UserId
+  if (!user) {
+    throw new Error("No user found with this ID");
+  }
+  return user;
+};
+
+export const deleteUser = async (id) => {
+  await dbConnect();
+  const user = await User.findByIdAndUpdate(id, {
+    deleted_at: new Date(),
+  });
+  
   //Verify if not found user with this UserId
   if (!user) {
     throw new Error("No user found with this ID");
