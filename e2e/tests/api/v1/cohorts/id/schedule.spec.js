@@ -72,4 +72,52 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(responseDeletedCohort.ok()).not.toBeTruthy();
     expect(responseDeletedCohort.status()).toBe(400);
   });
+
+  ////////////////////////////////////////////////////////////////////
+  //PUT TESTS
+  test("test should update a cohort schedule property with an properly giving array of schedule objects", async ({
+    request,
+    db,
+  }) => {
+    //create schedule
+    const schedule = {
+      schedule: [
+        { lesson: "62e26dbb69dd077fc82fbfe5" },
+        { lesson: "62e26dbb69dd077fc82fbfe1" },
+        { lesson: "62e26dc769dd077fc82fc017" },
+        { lesson: "62e26dc669dd077fc82fc00b" },
+      ],
+    };
+    console.log("SCHEDULE", schedule.schedule);
+    // update cohort with empty schedule array
+    const response = await request.put(
+      "api/v1/cohorts/632e0184290d23ac4c005e27/schedule",
+      {
+        data: schedule,
+      }
+    );
+    console.log("Resp", response);
+    // check if response is OK
+    expect(response.status()).toBeTruthy();
+    const data = (await response.json()).data;
+    console.log("DATA", data);
+
+    // Send a GET request to retrieve the updated list of cohorts
+    const updatedResponse = await request.get(
+      "api/v1/cohorts/632e0184290d23ac4c005e27/schedule"
+    );
+
+    const updatedCohort = (await updatedResponse.json()).data.schedule;
+    //console.log("UPDATED COHORT's Schedule", updatedCohort);
+    //return lesson's ids to match with sended ids
+    const result = updatedCohort.map(({ lesson }) => {
+      return { lesson: lesson._id };
+    });
+    console.log("LESSON's ID", result);
+    expect(result).toStrictEqual(schedule.schedule);
+
+    expect(result.length).toBe(schedule.schedule.length);
+
+    await db.collection("cohorts");
+  });
 });
