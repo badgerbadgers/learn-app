@@ -82,7 +82,7 @@
  *                 type: string
  *           example: {"mentors": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
  *     responses:
- *       204:
+ *       200:
  *         description: Deletes a cohort's mentors by the cohort's id, returns no content
  *       400:
  *         description: Error messages
@@ -145,8 +145,7 @@ export default async function handler(req, res) {
         } else {
           await deleteMentorsFromCohort(id, 'mentors', req.body.mentors);
           // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-          // 204 (No Content)
-          res.status(204).json();
+          res.status(200).json();
         }
       } catch (error) {
         console.log(error);
