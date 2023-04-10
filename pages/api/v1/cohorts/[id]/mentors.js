@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
       } catch (error) {
         res
-          .status(error.code || error.status || 400)
+          .status(error.status || 400)
           .json({ message: error.message });
       }
       break;
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
       } catch (error) {
         console.error(error);
         res
-          .status(error.code || error.status || 400)
+          .status(error.status || 400)
           .json({ message: error.message });
       }
 
@@ -151,7 +151,7 @@ export default async function handler(req, res) {
       } catch (error) {
         console.log(error);
         res
-          .status(error.status || error.code || 400)
+          .status(error.status || 400)
           .json({ message: error.message });
       }
       break;
@@ -170,7 +170,7 @@ export const getCohortMentors = async (id) => {
   if (!data) {
     //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
-    error.code = 404;
+    error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
     throw error;
   }
@@ -183,7 +183,7 @@ export const addUsersToCohort = async (id, field, value) => {
   if (!cohort) {
     //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
-    error.code = 404;
+    error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
     throw error;
   }
@@ -229,7 +229,7 @@ export const deleteMentorsFromCohort = async (id, field, value) => {
 
     if (!cohort) {
       const error = new Error();
-      error.code = 404;
+      error.status = 404;
       error.message = `Could not find cohort with id ${id} `;
       throw error;
     }
