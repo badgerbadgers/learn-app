@@ -75,48 +75,56 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
   ////////////////////////////////////////////////////////////////////
   //PUT TESTS
-  test("test should update a cohort schedule property with an properly giving array of schedule objects", async ({
+  test("test should update an empty cohort schedule array property with NOT empty array of schedule objects", async ({
     request,
     db,
   }) => {
-    //create schedule
-    const schedule = {
-      schedule: [
-        { lesson: "62e26dbb69dd077fc82fbfe5" },
-        { lesson: "62e26dbb69dd077fc82fbfe1" },
-        { lesson: "62e26dc769dd077fc82fc017" },
-        { lesson: "62e26dc669dd077fc82fc00b" },
+    //find schedule arr from db
+    const updateSchedule = await db
+      .collection("lessons")
+      .find({}, { projection: { _id: 1, section: 1, type: 1 } })
+      .limit(4)
+      .toArray();
+
+    //convert lesson's id property to string type
+    const lessons = updateSchedule.map(({ _id }) => {
+      return { lesson: _id.toString() };
+    });
+
+    // find a random cohort that has empty schedule property
+    const randomCohortSchedule = await db.collection("cohorts").findOne({
+      $and: [
+        { deleted_at: { $eq: null } },
+        { schedule: { $ne: null } },
+        { schedule: { $eq: [] } },
       ],
-    };
-    console.log("SCHEDULE", schedule.schedule);
+    });
+    //extract id from random cohort
+    const cohortID = randomCohortSchedule._id.toString();
+
     // update cohort with empty schedule array
-    const response = await request.put(
-      "api/v1/cohorts/632e0184290d23ac4c005e27/schedule",
-      {
-        data: schedule,
-      }
-    );
-    console.log("Resp", response);
+    const response = await request.put(`api/v1/cohorts/${cohortID}/schedule`, {
+      data: { schedule: lessons },
+    });
+
     // check if response is OK
     expect(response.status()).toBeTruthy();
     const data = (await response.json()).data;
-    console.log("DATA", data);
 
-    // Send a GET request to retrieve the updated list of cohorts
+    // Send a GET request to retrieve the updated schedule array of cohort
     const updatedResponse = await request.get(
-      "api/v1/cohorts/632e0184290d23ac4c005e27/schedule"
+      `api/v1/cohorts/${cohortID}/schedule`
     );
 
     const updatedCohort = (await updatedResponse.json()).data.schedule;
-    //console.log("UPDATED COHORT's Schedule", updatedCohort);
-    //return lesson's ids to match with sended ids
+    //return lesson's ids to match with sent ids
     const result = updatedCohort.map(({ lesson }) => {
       return { lesson: lesson._id };
     });
-    console.log("LESSON's ID", result);
-    expect(result).toStrictEqual(schedule.schedule);
-
-    expect(result.length).toBe(schedule.schedule.length);
+    //check if data matches
+    expect(result).toStrictEqual(lessons);
+    expect(result).toStrictEqual(data.schedule);
+    expect(result.length).toBe(lessons.length);
 
     await db.collection("cohorts");
   });

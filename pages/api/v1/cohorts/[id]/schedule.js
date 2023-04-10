@@ -45,12 +45,10 @@
  *                 type: string
  *           example: {"schedule": [
       {
-        "type": "lesson",
         "lesson": "62e26dbb69dd077fc82fbfe5",
         "section": "633d9915ec0d4b5e83a6b05e"
       },
       {
-       " type": "lesson",
         "lesson": "62e26dbb69dd077fc82fbfe1",
         "section": "633d9915ec0d4b5e83a6b05e"
       }]}
@@ -87,10 +85,10 @@ export default async function handler(req, res) {
         await Cohort.updateOne({ _id: id }, updates);
       } catch (error) {
         console.error("Update cohort error", error);
-        res.status(400).json({ success: false });
+        res.status(400).json({ message: error.message });
         return;
       }
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true, data: updates });
       return;
       break;
     default:
