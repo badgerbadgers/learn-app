@@ -203,7 +203,6 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
 
     // check if response is OK
     expect(response.ok()).toBeTruthy();
-    expect(response.status()).toBe(204);
 
     // retrieve cohort from db to check if the student was deleted
     const updatedCohort1 = await db

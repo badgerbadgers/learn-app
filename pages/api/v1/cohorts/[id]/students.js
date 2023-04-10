@@ -147,8 +147,7 @@ export default async function handler(req, res) {
         } else {
           await deleteStudentsFromCohort(id, 'students', req.body.students);
           // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-          // 204 (No Content)
-          res.status(204).json();
+          res.status(200).json();
         }
       } catch (error) {
         console.log(error);
@@ -183,7 +182,6 @@ export const addUsersToCohort = async (id, field, value) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
-    //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
     error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
