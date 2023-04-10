@@ -29,24 +29,24 @@ import dbConnect from "../../../../../lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const { id } = req.query;
+  const updates = req.body;
   switch (method) {
     case "GET":
       try {
         const user = await getUser(id);
-        res.status(200).json({ success: true, data: user });
+        res.status(200).json({ data: user });
       } catch (error) {
-        res.status(400).json({ success: false });
+        res.status(400).json();
       }
       return;
     case "PATCH":
       try {
         //call method for updating user by id filds: name, email, gh
-        const user = await updateUser(id, req.body);
-        res.status(200).json({ success: true, data: user });
+        const user = await updateUser(id, updates);
+        res.status(200).json({ data: user });
       } catch (error) {
         //console.log(error);
         res.status(400).json({
-          success: false,
           message: error.message,
         });
       }
@@ -63,23 +63,23 @@ export const getUser = async (id) => {
   return user;
 };
 
-export const updateUser = async (id, data) => {
+export const updateUser = async (id, updates) => {
   await dbConnect();
-  const user = await User.findByIdAndUpdate(id, data);
-  if (!user) {
-    return res.status(400).json({ success: false });
-  }
-  //run mongoose validator to make sure data is ok (it will not check for github uniqueness)
-  const validationErr = await user.validate();
-  if(validationErr) {
-    throw new Error(validationErr);
-  }
-  //make sure users github is unique
+  //Verify if Github username already exist
   const duplicateGHUser = await User.findOne({
-    gh: user.gh,
+    gh: updates.gh,
   });
+
   if (duplicateGHUser) {
-    throw new Error("Duplicate User Github");
+    throw new Error("User with Github username already exists");
+  }
+
+  const user = await User.findByIdAndUpdate(id, updates, {
+    runValidators: true,
+  });
+  //Verify if not found user with this UserId
+  if (!user) {
+    throw new Error("No user found with this ID");
   }
   return user;
-}
+};
