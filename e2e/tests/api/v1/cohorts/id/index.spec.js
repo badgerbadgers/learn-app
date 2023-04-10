@@ -3,17 +3,22 @@ import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/cohorts/id", () => {
   //PATCH TESTS
-  //Update name and update slug
-  test("change a cohort name and slug", async ({ request, db }) => {
+  //Update name
+  test("change a cohort name", async ({ request, db }) => {
     //call GET and get all the non-deleted cohorts
     const response = await request.get(`/api/v1/cohorts`);
     expect(response.ok()).toBeTruthy();
 
-    // the ID of the cohort Alpaca
-    const cohortId = "62db592a4101934c0011b357";
+    // find a random cohort
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const cohortID = randomCohort._id.toString();
+    //new name for cohort
     const newCohortName = faker.lorem.words();
     //change cohort_name and slug
-    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortId, {
+    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,14 +27,15 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was successful
     expect(patchResponse.ok()).toBeTruthy();
+    const data = (await patchResponse.json()).data;
 
     // Send a GET request to retrieve the updated list of cohorts
-    const updatedResponse = await request.get(`/api/v1/cohorts`);
+    const updatedResponse = await request.get("/api/v1/cohorts/");
     const updatedCohorts = (await updatedResponse.json()).data;
 
     // Check that the cohort name was updated correctly
     const updatedCohort = updatedCohorts.find(
-      (cohort) => cohort._id === cohortId
+      (cohort) => cohort._id === cohortID
     );
     expect(updatedCohort.cohort_name).toBe(newCohortName);
     await db.collection("cohorts");
