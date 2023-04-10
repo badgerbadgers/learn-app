@@ -41,7 +41,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.log(error);
     res
-      .status(error.code || error.status || 400)
+      .status(error.status || 400)
       .json({ error: error.message });
   }
 }
@@ -53,7 +53,7 @@ export const updateCohortStatus = async (id) => {
     if (!cohort) {
       //throw new Error(`Cohort with id of ${id} not found`);
       const error = new Error();
-      error.code = 404;
+      error.status = 404;
       error.message = `Could not find cohort with id ${id} `;
       throw error;
     }
