@@ -5,10 +5,6 @@ test.describe("/api/v1/cohorts/id", () => {
   //PATCH TESTS
   //Update name
   test("change a cohort name", async ({ request, db }) => {
-    //call GET and get all the non-deleted cohorts
-    const response = await request.get(`/api/v1/cohorts`);
-    expect(response.ok()).toBeTruthy();
-
     // find a random cohort
     const randomCohort = await db
       .collection("cohorts")
@@ -44,15 +40,16 @@ test.describe("/api/v1/cohorts/id", () => {
   ////////////////////////////////////////////////////////////////////////
   //update start date
   test("change start_date", async ({ request, db }) => {
-    //call GET and get all the non-deleted cohorts
-    const response = await request.get(`/api/v1/cohorts`);
-    expect(response.ok()).toBeTruthy();
+    // find a random cohort
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
 
-    // the ID of the cohort Mobile View
-    const cohortId = "635841bd9be844015c74719a";
+    const cohortID = randomCohort._id.toString();
+    //new date
     const newDate = faker.date.future(1).toISOString();
     //change start date
-    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortId, {
+    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,7 +65,7 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the start date was updated correctly
     const updatedCohort = updatedCohorts.find(
-      (cohort) => cohort._id === cohortId
+      (cohort) => cohort._id === cohortID
     );
     expect(updatedCohort.start_date).toBe(newDate);
     await db.collection("cohorts");
@@ -93,12 +90,15 @@ test.describe("/api/v1/cohorts/id", () => {
     const randomExistingCohortName =
       cohortNames[Math.floor(Math.random() * cohortNames.length)];
 
-    // I want to prevent rename Albatross to random existing cohort_name from Cohorts arr
-    const cohortId = "62db592a4101934c0011b356"; //Albatross id
-    const originalName = "Albatross";
+    // find a random cohort that I try to rename to existing cohort_name
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
 
+    const cohortID = randomCohort._id.toString();
+    const originalName = randomCohort.cohort_name.toString();
     // Send PATCH request to change cohort name
-    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortId, {
+    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -113,7 +113,7 @@ test.describe("/api/v1/cohorts/id", () => {
     const notUpdatedCohorts = (await notUpdatedResponse.json()).data;
 
     const notUpdatedCohort = notUpdatedCohorts.find(
-      (cohort) => cohort._id === cohortId
+      (cohort) => cohort._id === cohortID
     );
 
     expect(notUpdatedCohort.cohort_name).toBe(originalName); //toEqual
