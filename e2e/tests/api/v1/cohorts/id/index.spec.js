@@ -167,4 +167,58 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(updatedCohort.seats).toBe(updates.seats);
     await db.collection("cohorts");
   });
+
+  ////////////////////////////////////////////////////////////////////////
+  test("DON't update NOT allowed fields such as slug,course, end_date, status,students,mentors, schedule, created_at", async ({
+    request,
+    db,
+  }) => {
+    // new fields to cohort
+    const updates = {
+      slug: faker.lorem.words(),
+      course: "62e056cee6daad619e5cc2c511",
+      end_date: faker.date.future(1).toISOString(),
+      status: faker.lorem.words(),
+      students: faker.datatype.number({ min: 5, max: 100 }),
+      mentors: faker.datatype.number({ min: 5, max: 100 }),
+      schedule: faker.datatype.number({ min: 5, max: 100 }),
+      created_at: faker.date.future(1).toISOString(),
+    };
+
+    // find a random cohort
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const cohortID = randomCohort._id.toString();
+
+    //send new fields to a cohort
+    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
+      data: updates,
+    });
+
+    // Check that the PATCH request was FALSE
+    expect(patchResponse.ok()).toBeFalsy();
+
+    // Send a GET request to retrieve list of cohorts
+    const updatedResponse = await request.get(`/api/v1/cohorts`);
+    const updatedCohorts = (await updatedResponse.json()).data;
+
+    //find cohort that I tried to update
+    const updatedCohort = updatedCohorts.find(
+      (cohort) => cohort._id === cohortID
+    );
+
+    // Check that the NOT allowed fields were NOT updated
+    expect(updatedCohort.slug).not.toBe(updates.slug);
+    expect(updatedCohort.course).not.toBe(updates.course);
+    expect(updatedCohort.end_date).not.toBe(updates.end_date);
+    expect(updatedCohort.status).not.toBe(updates.status);
+    expect(updatedCohort.students).not.toBe(updates.students);
+    expect(updatedCohort.mentors).not.toBe(updates.course);
+    expect(updatedCohort.schedule).not.toBe(updates.schedule);
+    expect(updatedCohort.created_at).not.toBe(updates.created_at);
+
+    await db.collection("cohorts");
+  });
 });

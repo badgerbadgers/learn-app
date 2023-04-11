@@ -44,6 +44,17 @@ export default async function handler(req, res) {
       //check body for update field
       const updates = req.body;
 
+      //first remove any keys that are not allowed to be updated
+      const allowedFields = ["cohort_name", "start_date", "seats", "zoom_link"];
+      for (const key in updates) {
+        if (allowedFields.indexOf(key) === -1) {
+          // delete updates[key];
+          return res.status(400).json({
+            data: updates,
+            message: `Update is Not Allowed`,
+          });
+        }
+      }
       //Prevent changing cohort_name if it already exists
       const cohortNameExists = await Cohort.findOne({
         cohort_name: updates.cohort_name,
