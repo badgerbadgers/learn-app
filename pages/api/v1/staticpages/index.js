@@ -94,21 +94,18 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const staticpages = await getStaticPages();
-        res.status(200).json({ data: staticpages });
+        return res.status(200).json({ data: staticpages });
       } catch (error) {
-        console.error(error);
-        res.status(400).json({ success: false });
+        return res.status(400).json({ message: error.message });
       }
-      return;
     case "POST":
       try {
-        const staticpage = await createStaticPage(req.body);
-        console.log(req.body);
-        res.status(200).json({ data: staticpage });
+        const postData = req.body;
+        const staticpage = await createStaticPage(postData);
+        return res.status(200).json({ data: staticpage });
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
       }
-      return;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -119,17 +116,13 @@ export const getStaticPages = async () => {
   try {
     await dbConnect();
 
-    const staticpages = await Staticpage.find().exec();
+    const staticpages = await Staticpage.find({});
     if (!staticpages) {
       throw new Error("No static pages found");
     }
     return staticpages;
   } catch (error) {
-    console.log(error);
-    throw new Error(
-      "Error creating new static page, ensure all fields have correct values.",
-      error.message
-    );
+    throw new Error("Error getting static pages", error.message);
   }
 };
 
@@ -144,7 +137,9 @@ export const createStaticPage = async (data) => {
     staticpage.isShown === undefined ||
     staticpage.wordpress_id === undefined
   ) {
-    throw new Error(`Please ensure all fields contain valid values.`);
+    throw new Error(
+      `Please ensure isShown and wordpress_id contain valid values.`
+    );
   }
 
   try {
@@ -154,7 +149,6 @@ export const createStaticPage = async (data) => {
     return newstaticpage;
   } catch (error) {
     //gives specific error message
-    console.log(error.message);
     throw new Error(error.message);
   }
 };
