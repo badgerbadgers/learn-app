@@ -120,4 +120,51 @@ test.describe("/api/v1/cohorts/id", () => {
 
     await db.collection("cohorts");
   });
+  ////////////////////////////////////////////////////////////////////////
+  test("update allowed fields such as cohort_name, start_date, zoom_link, seats", async ({
+    request,
+    db,
+  }) => {
+    // new fields to cohort
+    const updates = {
+      cohort_name: faker.lorem.words(),
+      start_date: faker.date.future(1).toISOString(),
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      zoom_link: faker.internet.url(),
+    };
+
+    // find a random cohort
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const cohortID = randomCohort._id.toString();
+
+    //send new fields to a cohort
+    const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
+      data: updates,
+    });
+
+    // Check that the PATCH request was successful
+    expect(patchResponse.ok()).toBeTruthy();
+    const responseData = (await patchResponse.json()).data;
+
+    expect(responseData).toMatchObject(updates);
+
+    // Send a GET request to retrieve the updated list of cohorts
+    const updatedResponse = await request.get(`/api/v1/cohorts`);
+    const updatedCohorts = (await updatedResponse.json()).data;
+
+    //find updated cohort
+    const updatedCohort = updatedCohorts.find(
+      (cohort) => cohort._id === cohortID
+    );
+
+    // Check that the allowed fields were updated correctly
+    expect(updatedCohort.cohort_name).toBe(updates.cohort_name);
+    expect(updatedCohort.start_date).toBe(updates.start_date);
+    expect(updatedCohort.zoom_link).toBe(updates.zoom_link);
+    expect(updatedCohort.seats).toBe(updates.seats);
+    await db.collection("cohorts");
+  });
 });
