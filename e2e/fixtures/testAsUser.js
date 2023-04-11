@@ -9,4 +9,12 @@ export const test = base.extend({
     await use(context);
     await context.close();
   },
+  request: async ({ playwright }, use) => {
+    const request = await playwright.request.newContext({
+      baseURL: process.env.NEXTAUTH_URL,
+      storageState: process.env.STORAGE_STATE_USER,
+    });
+    await use(request);
+    await request.dispose();
+  },
 });
