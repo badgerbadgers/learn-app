@@ -20,7 +20,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error messages if cohort to be deleted not found
+ *         description: Error messages if cohort not found
  *   delete:
  *     description: Delete a cohort by id
  *     tags: [Cohorts]
