@@ -15,6 +15,7 @@ test.describe("/api/v1/staticpages", () => {
     expect(staticpages).toContainEqual(
       expect.objectContaining({ isShown: true })
     );
+
     //check for object containing isShown = false does not exists
     expect(staticpages).not.toContainEqual(
       expect.objectContaining({ isShown: false })

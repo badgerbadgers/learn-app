@@ -68,20 +68,17 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStaticPageByIsShown = async (req) => {
-  const slug = req.query.slug;
+export const getStaticPageByIsShown = async () => {
   try {
     await dbConnect();
     const staticPagesShown = await StaticPage.find({
       isShown: true,
-    }).exec();
+    });
     if (!staticPagesShown) {
       throw new Error("No static pages can be found");
     }
-    console.log("shown", staticPagesShown);
     return staticPagesShown;
   } catch (error) {
-    console.log(error);
     throw new Error(error.message);
   }
 };
