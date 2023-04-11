@@ -62,33 +62,49 @@ export default async function handler(req, res) {
   switch (method) {
     case "PATCH":
       try {
-        const staticpage = await updateStaticPage(req, res);
+        const id = req.query.id;
+        const updatedData = req.body;
+        const updatedStaticPage = {
+          wordpress_id: updatedData.wordpress_id,
+          isShown: updatedData.isShown,
+          slug: updatedData.slug,
+          title: updatedData.title,
+          deleted_at: updatedData.deleted_at || null,
+        };
+        if (
+          updatedStaticPage.isShown === undefined ||
+          updatedStaticPage.wordpress_id === undefined
+        ) {
+          throw new Error(
+            `Please ensure isShown and wordpress_id contain valid values.`
+          );
+        }
+        await updateStaticPage(id, updatedStaticPage);
         return res.status(200).json({ data: req.body });
       } catch (error) {
         return res.status(400).json({ message: error.message });
       }
-    // case "DELETE":
-    //   try {
-
-    //   }
+    case "DELETE":
+      try {
+        const id = req.query.id;
+        await deletedStaticPage(id);
+        return res.status(200).json({ message: "success" });
+      } catch (error) {
+        return res.status(400).json({ message: error.message });
+      }
     default:
-      res.setHeader("Allow", ["PATCH"]);
+      res.setHeader("Allow", ["PATCH", "DELETE"]);
       res.status(405).rendered(`Method ${method} Not Allowed`);
   }
 }
 
-export const updateStaticPage = async (req) => {
-  const id = req.query.id;
-  const updatedData = req.body;
-
+export const updateStaticPage = async (id, updatedStaticPage) => {
   try {
     await dbConnect();
-    const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, {
-      wordpress_id: updatedData.wordpress_id,
-      isShown: updatedData.isShown,
-      slug: updatedData.slug,
-      title: updatedData.title,
-    });
+    const updatedstaticpage = await StaticPage.findByIdAndUpdate(
+      id,
+      updatedStaticPage
+    );
     if (!updatedstaticpage) {
       throw new Error(`${id} is not a valid id.`);
     }
@@ -96,5 +112,20 @@ export const updateStaticPage = async (req) => {
   } catch (error) {
     console.log(error);
     throw new Error(`${error.message}`);
+  }
+};
+
+export const deletedStaticPage = async (id) => {
+  const update = { deleted_at: new Date() };
+  try {
+    await dbConnect();
+    const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
+    if (!deletedPage) {
+      throw new Error(`Could not find ${id}`);
+    }
+    return;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Could not delete by id: ${error.message}`);
   }
 };
