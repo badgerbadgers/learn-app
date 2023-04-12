@@ -159,4 +159,25 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(responseForDeletedCohort.ok()).not.toBeTruthy();
     expect(responseForDeletedCohort.status()).toBe(400);
   });
+
+  test("api doesn't update cohort schedule if schedule data is empty", async ({
+    request,
+    db,
+  }) => {
+    // find non deleted cohort
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+    //extract id from random cohort
+    const cohortID = randomCohort._id.toString();
+    //send empty data of schedule to DB
+    const responseNoData = await request.put(
+      `/api/v1/cohorts/${cohortID}/schedule`,
+      { data: {} }
+    );
+    //check if response wasn't successful
+    expect(responseNoData.ok()).not.toBeTruthy();
+    expect(responseNoData.status()).toBe(400);
+  });
+
 });
