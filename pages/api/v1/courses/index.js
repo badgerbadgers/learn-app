@@ -12,7 +12,7 @@
  *         schema:
  *           type: boolean
  *         required: false
- *         example: true
+ *         example: false
  *     responses:
  *       200:
  *         description: Provides list of courses
@@ -20,105 +20,145 @@
  *         description: Error messages
  *       404:
  *         description: Error messages if courses not found
- */
-
-// TODO - swagger - change description if anything returns from DELETED request
-
-/*
-
-
-
-
-*   delete:
- *     description: Delete a cohort by id
- *     tags: [Cohorts]
+ *   post:
+ *     description: Creates a new Course
+ *     tags: [Courses]
  *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
+ *       - in: body
+ *         name: new course
+ *         description: An object with required properties to create a new course
  *         required: true
- *         example: 635841bd9be844015c74719a
+ *         schema:
+ *           type: object
+ *           required:
+ *             - course_name
+ *           properties:
+ *             course_name:
+ *               type: string
+ *             lessons:
+ *               type: array
+ *               items:
+ *                 type: string
+ *
+ *           example: {"course_name": "React-Redux", "lessons": ["62e26dbb69dd077fc82fbfe5", "62e26dbb69dd077fc82fbfe1"]}
  *     responses:
  *       200:
- *         description: Deletes cohort by id, returns no content
+ *         description: Provides a newly created Course details
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error messages if cohort to be deleted not found
+ */
 
+import Course from "lib/models/Course";
+import dbConnect from "lib/dbConnect";
 
-*/
+export default async function handler(req, res) {
+  const { method } = req;
+  const deleted = req.query.deleted || false;
 
-// import Cohort from 'lib/models/Cohort';
-// import dbConnect from 'lib/dbConnect';
+  switch (method) {
+    case "GET":
+      try {
+        const courses = await getCourses(deleted);
+        if (!courses) {
+          res.status(404).json({ message: `Failed to find courses` });
+        } else {
+          res.status(200).json({ data: courses });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
+      }
+      break;
+    case "POST":
+      try {
+        //call method for creating a cohort with any data we received
+        // const cohort = await createCohort(req.body);
+        res.status(200).json({ data: "course" });
+      } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
+      }
+    // case 'DELETE':
+    //   try {
+    //     const deletedCohort = await deleteCohortById(id);
+    //     if (!deletedCohort) {
+    //       res.status(404).json({
+    //         message: `Failed to delete cohort with id ${id}. Cohort not found`,
+    //       });
+    //       return;
+    //     } else {
+    //       // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
+    //       res.status(200).json();
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //     res.status(error.status || 400).json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
+    //   }
+    //   break;
+    default:
+      res.setHeader("Allow", ["GET", "POST"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
+  return res;
+}
 
-// export default async function handler(req, res) {
-//   const { method } = req;
-//   const id = req.query.id;
+export const getCourses = async (deleted) => {
+  try {
+    await dbConnect();
+    let courses = [];
+    if (deleted === "true") {
+      courses = await Course.find({ deleted_at: { $ne: null } });
+    } else {
+      courses = await Course.find({ deleted_at: { $eq: null } });
+    }
+    return courses;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
 
-//   switch (method) {
-//     case 'GET':
-//       try {
-//         const cohort = await getCohortById(id);
-//         if (!cohort) {
-//           res
-//             .status(404)
-//             .json({ message: `Failed to find cohort with id ${id}` });
-//         } else {
-//           res.status(200).json({ data: cohort });
-//         }
-//       } catch (error) {
-//         console.error(error);
-//         res.status(error.status || 400).json({ message: error.message });
-//       }
-//       break;
+// export const createCohort = async (data) => {
+//   //do not let user overwrite schedule, students, and mentors
+//   delete data.schedule;
+//   data.mentors = [];
+//   data.students = [];
 
-//     case 'DELETE':
-//       try {
-//         const deletedCohort = await deleteCohortById(id);
-//         if (!deletedCohort) {
-//           res.status(404).json({
-//             message: `Failed to delete cohort with id ${id}. Cohort not found`,
-//           });
-//           return;
-//         } else {
-//           // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
-//           res.status(200).json();
-//         }
-//       } catch (error) {
-//         console.error(error);
-//         res.status(error.status || 400).json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
-//       }
-//       break;
-//     default:
-//       res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
-//       res.status(405).end(`Method ${method} Not Allowed`);
+//   //run mongoose validator to make sure data is ok (it will not check for name uniqueness)
+//   const newCohort = new Cohort(data);
+//   const validationErr = await newCohort.validate();
+//   if (validationErr) {
+//     throw new Error(validationErr);
 //   }
-//   return res;
-// }
 
-// export const getCohortById = async (id) => {
-//   try {
-//     await dbConnect();
-//     const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
+//   await dbConnect();
 
-//     return cohort;
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error(error);
+//   //make sure cohort_name is unique
+//   const duplicateNameCohort = await Cohort.findOne({
+//     cohort_name: newCohort.cohort_name,
+//   });
+//   if (duplicateNameCohort) {
+//     throw new Error('Duplicate Cohort Name');
 //   }
+
+//   //copy schedule from course
+//   newCohort.schedule = await createSchedule(newCohort.course);
+
+//   //save the new cohort
+//   await newCohort.save();
+
+//   return newCohort;
 // };
 
-// export const deleteCohortById = async (id) => {
-//   try {
-//     await dbConnect();
-//     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
-//       deleted_at: new Date(),
-//     }); // TODO - add { new: true } if need to return deleted cohort in response
-//     return deletedCohort;
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error(error);
-//   }
-// };
+// // export const deleteCohortById = async (id) => {
+// //   try {
+// //     await dbConnect();
+// //     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
+// //       deleted_at: new Date(),
+// //     }); // TODO - add { new: true } if need to return deleted cohort in response
+// //     return deletedCohort;
+// //   } catch (error) {
+// //     console.error(error);
+// //     throw new Error(error);
+// //   }
+// // };
