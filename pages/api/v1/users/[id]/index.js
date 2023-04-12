@@ -71,6 +71,10 @@ export default async function handler(req, res) {
 export const getUser = async (id) => {
   await dbConnect();
   const user = await User.findById(id).exec();
+  //Verify if not found user with this id
+  if (!user) {
+    throw new Error("No user found with this ID");
+  }
   return user;
 };
 
@@ -90,7 +94,7 @@ export const updateUser = async (id, updates) => {
     runValidators: true,
   });
 
-  //Verify if not found user with this UserId
+  //Verify if not found user with this id
   if (!user) {
     throw new Error("No user found with this ID");
   }
@@ -103,7 +107,7 @@ export const deleteUser = async (id) => {
     deleted_at: new Date(),
   });
 
-  //Verify if not found user with this UserId
+  //Verify if not found user with this id
   if (!user) {
     throw new Error("No user found with this ID");
   }
