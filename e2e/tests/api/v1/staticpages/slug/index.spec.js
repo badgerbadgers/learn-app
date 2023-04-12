@@ -1,4 +1,4 @@
-import { test, expect } from "e2e/fixtures/testAsAdmin";
+import { test, expect } from "e2e/fixtures/testAsGuest";
 
 test.describe("/api/v1/staticpages/[slug]", () => {
   //GET SLUG TESTS
