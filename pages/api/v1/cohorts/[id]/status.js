@@ -23,14 +23,14 @@
  *         description: Error message if a cohort is not found
  */
 
-import Cohort from 'lib/models/Cohort';
-import dbConnect from 'lib/dbConnect';
+import Cohort from "lib/models/Cohort";
+import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-  if (method !== 'PATCH') {
-    res.setHeader('Allow', ['PATCH']);
+  if (method !== "PATCH") {
+    res.setHeader("Allow", ["PATCH"]);
     res.status(405).end(`Method ${method} Not Allowed`);
     return;
   }
@@ -40,9 +40,7 @@ export default async function handler(req, res) {
     res.status(200).json({ data });
   } catch (error) {
     console.log(error);
-    res
-      .status(error.status || 400)
-      .json({ error: error.message });
+    res.status(error.status || 400).json({ error: error.message });
   }
 }
 
