@@ -176,6 +176,42 @@ test.describe("/api/v1/users/id", () => {
     expect(getResponse.ok()).toBeFalsy();
   });
 
+  test("undelete user by ID", async ({ request, db }) => {
+    const userId = "634dd3eda86808cf9acb204f";
+
+    //GET User by ID and check deleted_at
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(getUser.deleted_at).toBe(null);
+
+    //DELETE User by ID
+    const deleteResponse = await request.delete(`/api/v1/users/${userId}`);
+    expect(deleteResponse.ok()).toBeTruthy();
+
+    const deletedUser = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(userId) });
+    expect(deletedUser.deleted_at).not.toBe(null);
+
+    //undelete User by ID
+    const updateUser = {
+      deleted_at: null,
+    };
+
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+
+    //GET User by ID and compare updated values
+    const getResponseUndeletedUser = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponseUndeletedUser.ok()).toBeTruthy();
+    const getUndeletedUser = (await getResponseUndeletedUser.json()).data;
+    expect(getUndeletedUser.deleted_at).toBe(null);
+  });
+
   //DELETE TESTS
 
   test("delete user by ID", async ({ request, db }) => {
