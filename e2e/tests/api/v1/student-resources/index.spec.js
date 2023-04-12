@@ -2,7 +2,9 @@ import { test, expect } from "e2e/fixtures/testAsGuest";
 
 test.describe("/api/v1/staticpages", () => {
   //GET TESTS
-  test("returns an array when there are staticpages", async ({ request }) => {
+  test.only("returns an array when there are staticpages", async ({
+    request,
+  }) => {
     //GET request all static pages with isShown = true
     const res = await request.get(`/api/v1/student-resources`);
     expect(res.ok()).toBeTruthy();
