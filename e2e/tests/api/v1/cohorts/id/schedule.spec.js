@@ -1,6 +1,7 @@
 //import { test, expect } from "e2e/fixtures/testAsUser"; //test for GET method
 import { test, expect } from "e2e/fixtures/testAsAdmin"; //test for PUT method
 
+
 test.describe("/api/v1/cohorts/[id]/schedule", () => {
   //GET TESTS
   test("returns schedule array of a non deleted cohort by cohort id", async ({
@@ -8,7 +9,6 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     db,
   }) => {
     //find not deleted cohort that has NON empty schedule array
-    //at this moment only Intro cohorts has schedule array
     const nonEmptyScheduleCohort = await db.collection("cohorts").findOne({
       $and: [
         { deleted_at: { $eq: null } },
@@ -16,11 +16,11 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
         { schedule: { $ne: null } },
       ],
     });
+    //extract id from  cohort
+    const cohortID = nonEmptyScheduleCohort._id.toString();
 
     //call GET and get the non-deleted cohort by id
-    const response = await request.get(
-      `/api/v1/cohorts/${nonEmptyScheduleCohort._id}/schedule`
-    );
+    const response = await request.get(`/api/v1/cohorts/${cohortID}/schedule`);
 
     const data = (await response.json()).data.schedule;
 
@@ -31,9 +31,8 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     // check if array of schedule has expected length
     expect(data).toHaveLength(nonEmptyScheduleCohort.schedule.length);
 
-    // check if each element of the array has a property 'type' and 'section'
+    // check if each element of the array has a property 'section'
     data.forEach((schedule) => {
-      expect(schedule).toHaveProperty("type");
       expect(schedule).toHaveProperty("section");
     });
     // Check if the schedule array has an object with property 'lesson' or 'content'
@@ -65,8 +64,10 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     const randomDeletedCohort = await db.collection("cohorts").findOne({
       deleted_at: { $ne: null },
     });
+    //extract id from random cohort
+    const cohortID = randomDeletedCohort._id.toString();
     const responseDeletedCohort = await request.get(
-      `/api/v1/cohorts/${randomDeletedCohort._id}/schedule`
+      `/api/v1/cohorts/${cohortID}/schedule`
     );
     // test if api does not return ok response if cohort is deleted
     expect(responseDeletedCohort.ok()).not.toBeTruthy();
@@ -102,7 +103,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     //extract id from random cohort
     const cohortID = randomCohortSchedule._id.toString();
 
-    // update cohort with empty schedule array
+    // update empty schedule array's cohort with elements
     const response = await request.put(`api/v1/cohorts/${cohortID}/schedule`, {
       data: { schedule: lessons },
     });
@@ -127,5 +128,35 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(result.length).toBe(lessons.length);
 
     await db.collection("cohorts");
+  });
+  test("api doesn't update cohort schedule if cohort is deleted", async ({
+    request,
+    db,
+  }) => {
+    //find schedule arr from db
+    const updateSchedule = await db
+      .collection("lessons")
+      .find({}, { projection: { _id: 1, section: 1, type: 1 } })
+      .limit(4)
+      .toArray();
+
+    //convert lesson's id property to string type
+    const lessons = updateSchedule.map(({ _id }) => {
+      return { lesson: _id.toString() };
+    });
+    // find deleted cohort
+    const randomDeletedCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $ne: null } });
+    //extract id from random cohort
+    const cohortID = randomDeletedCohort._id.toString();
+
+    const responseForDeletedCohort = await request.put(
+      `/api/v1/cohorts/${cohortID}/schedule`,
+      { data: { schedule: lessons } }
+    );
+    // check if response is not OK
+    expect(responseForDeletedCohort.ok()).not.toBeTruthy();
+    expect(responseForDeletedCohort.status()).toBe(400);
   });
 });

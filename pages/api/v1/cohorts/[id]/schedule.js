@@ -84,7 +84,7 @@ export default async function handler(req, res) {
         await dbConnect();
         await Cohort.updateOne({ _id: id }, updates);
       } catch (error) {
-        console.error("Update cohort error", error);
+        //console.error("Update cohort error", error);
         res.status(400).json({ message: error.message });
         return;
       }
