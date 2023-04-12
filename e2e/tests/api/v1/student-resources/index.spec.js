@@ -18,5 +18,8 @@ test.describe("/api/v1/staticpages", () => {
     expect(staticpages).not.toContainEqual(
       expect.objectContaining({ isShown: false })
     );
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({ isShown: { $ne: null } })
+    );
   });
 });
