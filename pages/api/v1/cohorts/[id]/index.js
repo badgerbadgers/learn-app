@@ -42,15 +42,15 @@
 
 // TODO - swagger - change description if anything returns from DELETED request
 
-import Cohort from 'lib/models/Cohort';
-import dbConnect from 'lib/dbConnect';
+import Cohort from "lib/models/Cohort";
+import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
 
   switch (method) {
-    case 'GET':
+    case "GET":
       try {
         const cohort = await getCohortById(id);
         if (!cohort) {
@@ -62,13 +62,11 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.error(error);
-        res
-          .status(error.status || 400)
-          .json({ message: error.message }); 
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
 
-    case 'DELETE':
+    case "DELETE":
       try {
         const deletedCohort = await deleteCohortById(id);
         if (!deletedCohort) {
@@ -82,13 +80,11 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.error(error);
-        res
-          .status(error.status || 400)
-          .json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
+        res.status(error.status || 400).json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
       }
       break;
     default:
-      res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
+      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
   return res;
