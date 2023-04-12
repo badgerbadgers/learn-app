@@ -171,9 +171,9 @@ test.describe("/api/v1/users", () => {
 //POST TESTS
   test("creates a user when the fields name, email, gh are properly given", async ({ request, db }) => {
     const newUser = {
-      name: faker.lorem.words(),
-      email: faker.lorem.words(),
-      gh: faker.lorem.words(),
+      name: faker.name.fullName(),
+      email: faker.internet.email(),
+      gh: faker.random.alphaNumeric(10),
     };
 
     const response = await request.post(`/api/v1/users`, {
@@ -195,8 +195,8 @@ test.describe("/api/v1/users", () => {
     request,
   }) => {
     const newUser = {
-      email: faker.lorem.words(),
-      gh: faker.lorem.words(),
+      email: faker.internet.email(),
+      gh: faker.random.alphaNumeric(10),
     };
 
     const response = await request.post(`/api/v1/users`, {
@@ -218,8 +218,8 @@ test.describe("/api/v1/users", () => {
     request,
   }) => {
     const newUser = {
-      name: faker.lorem.words(),
-      gh: faker.lorem.words(),
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
     };
 
     const response = await request.post(`/api/v1/users`, {
@@ -241,8 +241,8 @@ test.describe("/api/v1/users", () => {
     request,
   }) => {
     const newUser = {
-      name: faker.lorem.words(),
-      email: faker.lorem.words(),
+      name: faker.name.fullName(),
+      email: faker.internet.email(),
     };
 
     const response = await request.post(`/api/v1/users`, {
@@ -266,8 +266,8 @@ test.describe("/api/v1/users", () => {
       const user = await db.collection("users").findOne();
 
       const newUser = {
-        name: faker.lorem.words(),
-        email: faker.lorem.words(),
+        name: faker.name.fullName(),
+        email: faker.internet.email(),
         gh: user.gh,
       };
 
