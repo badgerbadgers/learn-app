@@ -91,71 +91,65 @@
  */
 
 // TODO - swagger - change description if anything returns from DELETED request
-import User from 'lib/models/User'; // this import is needed for successful population
-import Cohort from 'lib/models/Cohort';
-import dbConnect from 'lib/dbConnect';
-import { ObjectId } from 'bson';
+import User from "lib/models/User"; // this import is needed for successful population
+import Cohort from "lib/models/Cohort";
+import dbConnect from "lib/dbConnect";
+import { ObjectId } from "bson";
 
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
 
   switch (method) {
-    case 'GET':
+    case "GET":
       try {
         const data = await getCohortMentors(id);
         res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
       } catch (error) {
-        res
-          .status(error.status || 400)
-          .json({ message: error.message });
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
-    case 'PATCH':
+    case "PATCH":
       try {
         if (!req.body.mentors) {
           res
             .status(400)
-            .json({ message: 'Mentor ids to add are not provided' });
+            .json({ message: "Mentor ids to add are not provided" });
         } else {
           const updatedCohort = await addUsersToCohort(
             id,
-            'mentors',
+            "mentors",
             req.body.mentors
           );
           const updatedCohortPopulate = await updatedCohort.populate(
-            'mentors.user'
+            "mentors.user"
           );
           res.status(200).json({ data: updatedCohortPopulate.mentors });
         }
       } catch (error) {
         console.error(error);
-        res
-          .status(error.status || 400)
-          .json({ message: error.message });
+        res.status(error.status || 400).json({ message: error.message });
       }
 
       break;
-    case 'DELETE':
+    case "DELETE":
       try {
         if (!req.body.mentors) {
           res
             .status(400)
-            .json({ message: 'Mentors ids to delete are not provided' });
+            .json({ message: "Mentors ids to delete are not provided" });
         } else {
-          await deleteMentorsFromCohort(id, 'mentors', req.body.mentors);
+          await deleteMentorsFromCohort(id, "mentors", req.body.mentors);
           // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
           res.status(200).json();
         }
       } catch (error) {
         console.log(error);
-        res
-          .status(error.status || 400)
-          .json({ message: error.message });
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
     default:
-      res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
+      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
   return res;
@@ -163,8 +157,8 @@ export default async function handler(req, res) {
 
 export const getCohortMentors = async (id) => {
   await dbConnect();
-  const data = await Cohort.findById(id, 'mentors')
-    .populate('mentors.user')
+  const data = await Cohort.findById(id, "mentors")
+    .populate("mentors.user")
     .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns mentors with all fields from User data model
   if (!data) {
     //throw new Error(`Cohort with id of ${id} not found`);
@@ -204,7 +198,7 @@ export const addUsersToCohort = async (id, field, value) => {
 
     if (!isExistingUser) {
       // check if the field is 'student' to add 'added_at' property
-      if (field === 'students') {
+      if (field === "students") {
         cohort[field].push({ user: user._id, added_at: new Date() });
       } else {
         cohort[field].push({ user: user._id });
