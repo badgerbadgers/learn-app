@@ -1,14 +1,14 @@
-import { test, expect } from 'e2e/fixtures/testAsAdmin';
-const { ObjectId } = require('mongodb');
+import { test, expect } from "e2e/fixtures/testAsAdmin";
+const { ObjectId } = require("mongodb");
 
-test.describe('/api/v1/cohorts/[id]/students', () => {
+test.describe("/api/v1/cohorts/[id]/students", () => {
   //GET TESTS
-  test('returns all students of a not deleted cohort by cohort id', async ({
+  test("returns all students of a not deleted cohort by cohort id", async ({
     request,
     db,
   }) => {
     // find a random cohort that has students in students field
-    const randomCohort = await db.collection('cohorts').findOne({
+    const randomCohort = await db.collection("cohorts").findOne({
       $and: [
         { deleted_at: { $eq: null } },
         { students: { $ne: [] } },
@@ -31,17 +31,17 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(data).toHaveLength(randomCohort.students.length);
     // check if each element of the array has a property 'user' and 'added_at'
     data.forEach((student) => {
-      expect(student).toHaveProperty('user');
-      expect(student).toHaveProperty('added_at');
+      expect(student).toHaveProperty("user");
+      expect(student).toHaveProperty("added_at");
     });
   });
 
-  test('returns empty array if cohort has not students', async ({
+  test("returns empty array if cohort has not students", async ({
     request,
     db,
   }) => {
     const randomCohortWithNoStudents = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ deleted_at: { $eq: null }, students: { $eq: [] } });
 
     const responseNoStudents = await request.get(
@@ -54,11 +54,11 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(noStudentsData).toHaveLength(0);
   });
 
-  test('does not return students of a deleted cohort', async ({
+  test("does not return students of a deleted cohort", async ({
     request,
     db,
   }) => {
-    const randomDeletedCohort = await db.collection('cohorts').findOne({
+    const randomDeletedCohort = await db.collection("cohorts").findOne({
       deleted_at: { $ne: null },
     });
     const responseDeletedCohort = await request.get(
@@ -70,18 +70,18 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
   });
 
   // PATCH TESTS
-  test('adds students by ids to a cohort by provided cohort id', async ({
+  test("adds students by ids to a cohort by provided cohort id", async ({
     request,
     db,
   }) => {
     // find a random cohort that has students in students field
     const randomCohort = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ deleted_at: { $eq: null } });
 
     // find users from users db to add to cohort
     const usersToAdd = await db
-      .collection('users')
+      .collection("users")
       .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
       .limit(4)
       .toArray();
@@ -121,15 +121,15 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(data.length).toBe(expectedStudentsCount);
     // check if each element of the data has a property 'user' and 'added_at'
     data.forEach((student) => {
-      expect(student).toHaveProperty('user');
+      expect(student).toHaveProperty("user");
       // expect(student.user).not.toBeNull(); some of the existing students in the current db is null
-      expect(student).toHaveProperty('added_at');
+      expect(student).toHaveProperty("added_at");
     });
 
     // check if the request does not add users that do not exist in db, mock data
     const nonExistentUsers = [
-      ObjectId('62a8bc08eee42d82d2d8d111'),
-      ObjectId('55a5bc08eee42d82d2d8d555'),
+      ObjectId("62a8bc08eee42d82d2d8d111"),
+      ObjectId("55a5bc08eee42d82d2d8d555"),
     ];
 
     //call PATCH and get cohort's updated students list
@@ -143,10 +143,10 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(dataStudentsNotAdded.length).toBe(data.length); // compare to the value after the first request which added students
   });
 
-  test('does not add users to deleted cohort', async ({ request, db }) => {
+  test("does not add users to deleted cohort", async ({ request, db }) => {
     // check if the request does not add users to deleted cohort
     const randomDeletedCohort = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ deleted_at: { $ne: null } });
 
     const responseForDeletedCohort = await request.patch(
@@ -158,12 +158,12 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     expect(responseForDeletedCohort.status()).toBe(404);
   });
 
-  test('returns error if array of students to add not provided', async ({
+  test("returns error if array of students to add not provided", async ({
     request,
     db,
   }) => {
     const randomCohort = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ deleted_at: { $eq: null } });
 
     //call DELETE to delete students of a cohort by id
@@ -181,8 +181,8 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     db,
   }) => {
     const randomCohort = await db
-      .collection('cohorts')
-      .findOne({ $where: 'this.students.length > 1' });
+      .collection("cohorts")
+      .findOne({ $where: "this.students.length > 1" });
 
     // filter the array to get students with ids
     const parsedUsersToDelete = randomCohort.students.reduce(
@@ -206,7 +206,7 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
 
     // retrieve cohort from db to check if the student was deleted
     const updatedCohort1 = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ _id: randomCohort._id });
 
     // check if one student was deleted
@@ -221,18 +221,18 @@ test.describe('/api/v1/cohorts/[id]/students', () => {
     // check if response is OK
     expect(responseDeleteAll.ok()).toBeTruthy();
     const updatedCohort2 = await db
-      .collection('cohorts')
+      .collection("cohorts")
       .findOne({ _id: randomCohort._id });
     // check if all students were deleted
     expect(updatedCohort2.students.length).toBe(0);
   });
-  test('returns error if array of students to delete not provided', async ({
+  test("returns error if array of students to delete not provided", async ({
     request,
     db,
   }) => {
     const randomCohort = await db
-      .collection('cohorts')
-      .findOne({ $where: 'this.students.length > 1' });
+      .collection("cohorts")
+      .findOne({ $where: "this.students.length > 1" });
 
     //call DELETE to delete students of a cohort by id
     const responseNoStudents = await request.delete(
