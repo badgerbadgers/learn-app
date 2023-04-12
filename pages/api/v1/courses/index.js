@@ -49,6 +49,7 @@
  */
 
 import Course from "lib/models/Course";
+import Lesson from "lib/models/Lesson";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -71,30 +72,14 @@ export default async function handler(req, res) {
       break;
     case "POST":
       try {
-        //call method for creating a cohort with any data we received
-        // const cohort = await createCohort(req.body);
-        res.status(200).json({ data: "course" });
+        //call method for creating a course with any data we received
+        const course = await createCourse(req.body);
+        res.status(200).json({ data: course });
       } catch (error) {
         console.error(error);
-        res.status(400).json({ message: error.message });
+        res.status(error.status || 400).json({ message: error.message });
       }
-    // case 'DELETE':
-    //   try {
-    //     const deletedCohort = await deleteCohortById(id);
-    //     if (!deletedCohort) {
-    //       res.status(404).json({
-    //         message: `Failed to delete cohort with id ${id}. Cohort not found`,
-    //       });
-    //       return;
-    //     } else {
-    //       // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
-    //       res.status(200).json();
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(error.status || 400).json({ message: error.message }); // TODO  - should it display actual error message we get or should it be hard coded text?
-    //   }
-    //   break;
+      break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -103,62 +88,56 @@ export default async function handler(req, res) {
 }
 
 export const getCourses = async (deleted) => {
-  try {
-    await dbConnect();
-    let courses = [];
-    if (deleted === "true") {
-      courses = await Course.find({ deleted_at: { $ne: null } });
-    } else {
-      courses = await Course.find({ deleted_at: { $eq: null } });
-    }
-    return courses;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
+  await dbConnect();
+  let courses = [];
+  if (deleted === "true") {
+    courses = await Course.find({ deleted_at: { $ne: null } });
+  } else {
+    courses = await Course.find({ deleted_at: { $eq: null } });
   }
+  return courses;
 };
 
-// export const createCohort = async (data) => {
-//   //do not let user overwrite schedule, students, and mentors
-//   delete data.schedule;
-//   data.mentors = [];
-//   data.students = [];
+export const createCourse = async (data) => {
+  //do not let user create slug
+  if (data.slug) {
+    delete data.slug;
+  }
+  //do not let user create a course with deleted_at set to not null
+  if (data.deleted_at) {
+   // console.log('it is not null')
+   // delete data.deleted_at;
+    throw new Error("Cannot create deleted Course");
+  }
 
-//   //run mongoose validator to make sure data is ok (it will not check for name uniqueness)
-//   const newCohort = new Cohort(data);
-//   const validationErr = await newCohort.validate();
-//   if (validationErr) {
-//     throw new Error(validationErr);
-//   }
+  await dbConnect();
+  //make sure course_name is unique
+  const duplicateCourseName = await Course.findOne({
+    course_name: data.course_name,
+  });
 
-//   await dbConnect();
+  if (duplicateCourseName) {
+    throw new Error("Duplicate Course Name");
+  }
 
-//   //make sure cohort_name is unique
-//   const duplicateNameCohort = await Cohort.findOne({
-//     cohort_name: newCohort.cohort_name,
-//   });
-//   if (duplicateNameCohort) {
-//     throw new Error('Duplicate Cohort Name');
-//   }
+  // make sure provided lessons exist in db
+  if (data.lessons) {
+    // find which of the provided users exist in users database
+    const lessons = await Lesson.find({ _id: { $in: data.lessons } });
+    if (lessons.length !== data.lessons.length) {
+      throw new Error("All lessons provided must exist in the data base");
+    }
+  }
 
-//   //copy schedule from course
-//   newCohort.schedule = await createSchedule(newCohort.course);
+  //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
+  const newCourse = new Course(data);
+  const validationErr = await newCourse.validate();
+  if (validationErr) {
+    throw new Error(validationErr);
+  }
 
-//   //save the new cohort
-//   await newCohort.save();
+  //save the new course
+  await newCourse.save();
 
-//   return newCohort;
-// };
-
-// // export const deleteCohortById = async (id) => {
-// //   try {
-// //     await dbConnect();
-// //     const deletedCohort = await Cohort.findByIdAndUpdate(id, {
-// //       deleted_at: new Date(),
-// //     }); // TODO - add { new: true } if need to return deleted cohort in response
-// //     return deletedCohort;
-// //   } catch (error) {
-// //     console.error(error);
-// //     throw new Error(error);
-// //   }
-// // };
+  return newCourse;
+};
