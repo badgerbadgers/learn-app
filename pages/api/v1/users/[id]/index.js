@@ -102,7 +102,7 @@ export const deleteUser = async (id) => {
   const user = await User.findByIdAndUpdate(id, {
     deleted_at: new Date(),
   });
-  
+
   //Verify if not found user with this UserId
   if (!user) {
     throw new Error("No user found with this ID");

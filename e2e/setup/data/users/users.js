@@ -16,6 +16,7 @@ const makeOne = (userId) => {
     url: "https://github.com/" + gh,
     emailVerified: null,
     is_admin: Math.random() < 0.2,
+    deleted_at: null
   };
 };
 
