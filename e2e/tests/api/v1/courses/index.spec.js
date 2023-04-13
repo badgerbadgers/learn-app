@@ -83,18 +83,17 @@ test.describe("/api/v1/courses", () => {
     const responseData = (await response.json()).data;
     expect(responseData).toMatchObject(newCourse);
     expect(responseData._id).toBeDefined();
-
-    expect(responseData.lessons.length).toBe(1);
-
+    expect(responseData.lessons.length).toBe(newCourse.lessons.length);
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
+
     // delete created course from test db to prevent collisions with next tests
     await db
       .collection("courses")
       .deleteOne({ _id: ObjectId(responseData._id) });
   });
 
-  test.only("does not create a course when course_name is missing", async ({
+  test("does not create a course when course_name is missing", async ({
     request,
     db,
   }) => {
@@ -108,6 +107,7 @@ test.describe("/api/v1/courses", () => {
     const allCoursesCountBefore = await db
       .collection("courses")
       .countDocuments();
+
     const response = await request.post(`/api/v1/courses`, {
       data: newCourse,
     });
@@ -120,8 +120,9 @@ test.describe("/api/v1/courses", () => {
     expect(allCoursesCountBefore).toEqual(allCoursesCountAfter);
   });
 
-  test("does not create a course if at least one of provided lessons don't exist in db", async ({
+  test("does not create a course if at least one of provided lessons does not exist in db", async ({
     request,
+    db
   }) => {
     const randomLesson = await db
       .collection("lessons")
@@ -129,7 +130,10 @@ test.describe("/api/v1/courses", () => {
 
     const newCourse = {
       course_name: faker.lorem.words(),
-      lessons: ["42e46dc669dd077fc82fbffa", randomLesson._id],
+      lessons: [
+        "42e46dc669dd077fc82fbffa",
+        /* fake mongo id */ randomLesson._id,
+      ],
     };
     const response = await request.post(`/api/v1/courses`, {
       data: newCourse,
@@ -144,5 +148,56 @@ test.describe("/api/v1/courses", () => {
     expect(courses).not.toContainEqual(
       expect.objectContaining({ course_name: newCourse.course_name })
     );
+  });
+  test("does not create a course with a field not existed in Course model", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [randomLesson._id],
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      name: faker.lorem.words(),
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const createdCourse = (await response.json()).data;
+    expect(createdCourse.seats).toBeUndefined();
+    expect(createdCourse.name).toBeUndefined();
+    const nonExistentCourse = await db
+      .collection("courses")
+      .findOne({ seats: newCourse.seats });
+    expect(nonExistentCourse).toBeNull();
+  });
+
+  test("does not create a course deleted_at provided and set to non null value", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [randomLesson._id],
+      deleted_at: faker.date.future(1).toISOString(),
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    const nonExistentCourse = await db
+      .collection("courses")
+      .findOne({ course_name: newCourse.course_name });
+    expect(nonExistentCourse).toBeNull();
   });
 });

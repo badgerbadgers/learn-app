@@ -39,7 +39,6 @@
  *               type: array
  *               items:
  *                 type: string
- *
  *           example: {"course_name": "React-Redux", "lessons": ["62e26dbb69dd077fc82fbfe5", "62e26dbb69dd077fc82fbfe1"]}
  *     responses:
  *       200:
@@ -105,7 +104,6 @@ export const createCourse = async (data) => {
   }
   //do not let user create a course with deleted_at set to not null
   if (data.deleted_at) {
-   // console.log('it is not null')
    // delete data.deleted_at;
     throw new Error("Cannot create deleted Course");
   }
