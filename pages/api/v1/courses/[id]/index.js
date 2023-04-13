@@ -94,29 +94,25 @@ export default async function handler(req, res) {
         res.status(error.status || 400).json({ message: error.message });
       }
       break;
-    // case "PATCH":
-    //   try {
-    //     if (!req.body.mentors) {
-    //       res
-    //         .status(400)
-    //         .json({ message: "Mentor ids to add are not provided" });
-    //     } else {
-    //       const updatedCohort = await addUsersToCohort(
-    //         id,
-    //         "mentors",
-    //         req.body.mentors
-    //       );
-    //       const updatedCohortPopulate = await updatedCohort.populate(
-    //         "mentors.user"
-    //       );
-    //       res.status(200).json({ data: updatedCohortPopulate.mentors });
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(error.status || 400).json({ message: error.message });
-    //   }
+    case "PATCH":
+      try {
+        if (!req.body) {
+          res
+            .status(400)
+            .json({ message: "Data to update course is not provided" });
+        } else {
+          const updatedCourse = await updateCourse(id);
+          //   const updatedCohortPopulate = await updatedCohort.populate(
+          //     "mentors.user"
+          //   );
+          res.status(200).json({ data: "updated course" });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
+      }
 
-    //   break;
+      break;
     // case "DELETE":
     //   try {
     //     if (!req.body.mentors) {
@@ -150,6 +146,18 @@ export const getCourse = async (id) => {
     throw error;
   }
   return data;
+};
+
+export const updateCourse = async (id) => {
+  await dbConnect();
+  //  const data = await Course.findById(id); // returns course with deleted_at: null only
+  // if (!data) {
+  //   const error = new Error();
+  //   error.status = 404;
+  //   error.message = `Could not find course with id - ${id}`;
+  //   throw error;
+  // }
+  return "updated";
 };
 
 // export const addUsersToCohort = async (id, field, value) => {
