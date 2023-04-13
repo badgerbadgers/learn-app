@@ -39,4 +39,32 @@
 import Section from "lib/models/Section";
 import dbConnect from "lib/dbConnect";
 
-export default async function handler(req, res) {}
+export default async function handler(req, res) {
+  const { method } = req;
+
+  switch (method) {
+    case "GET":
+      try {
+        await getSections();
+        return res.status(200).json({ message: success });
+      } catch (error) {
+        return res.status(400).json({ message: error });
+      }
+      return;
+    default:
+      res.setheader("Allow", ["GET"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
+}
+
+export const getSections = async () => {
+  try {
+    await dbConnect();
+
+    const sections = await Section.find({});
+    console.log("sections", sections);
+    return sections;
+  } catch (error) {
+    throw new Error("Error getting sections");
+  }
+};
