@@ -4,7 +4,6 @@ import { ObjectId } from "bson";
 
 test.describe("/api/v1/courses", () => {
   //GET TESTS
-
   test("returns all courses", async ({ request, db }) => {
     // check how many not deleted courses in db
     const courseCount = await db
@@ -44,7 +43,7 @@ test.describe("/api/v1/courses", () => {
     expect(courses).toHaveLength(courseCount);
   });
 
-  test.only("supports not deleted filter", async ({ request, db }) => {
+  test("supports not deleted filter", async ({ request, db }) => {
     // check how many deleted courses in db
     const courseCount = await db
       .collection("courses")
@@ -64,130 +63,86 @@ test.describe("/api/v1/courses", () => {
     expect(courses).toHaveLength(courseCount);
   });
 
-  //   test("supports status filter", async ({ request }) => {
-  //     const response = await request.get("/api/v1/cohorts", {
-  //       params: {
-  //         status: "active",
-  //       },
-  //     });
-  //     expect(response.ok()).toBeTruthy();
+  //POST TESTS
+  test("creates a course when all fields are properly given", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
 
-  //     const cohorts = (await response.json()).data;
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [randomLesson._id],
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newCourse);
+    expect(responseData._id).toBeDefined();
 
-  //     for (const c of cohorts) {
-  //       expect(c.status).toBe("active");
-  //     }
-  //   });
+    expect(responseData.lessons.length).toBe(1);
 
-  //   test("supports course filter", async ({ request }) => {
-  //     const response = await request.get("/api/v1/cohorts", {
-  //       params: {
-  //         course: "62e056cee6daad619e5cc2c5",
-  //       },
-  //     });
-  //     expect(response.ok()).toBeTruthy();
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    // delete created course from test db to prevent collisions with next tests
+    await db
+      .collection("courses")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
 
-  //     const cohorts = (await response.json()).data;
+  test.only("does not create a course when course_name is missing", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
 
-  //     for (const c of cohorts) {
-  //       expect(c.course._id).toBe("62e056cee6daad619e5cc2c5");
-  //     }
-  //   });
+    const newCourse = {
+      lessons: [randomLesson._id],
+    };
+    const allCoursesCountBefore = await db
+      .collection("courses")
+      .countDocuments();
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
+    // confirm the course was not added to DB
+    const allCoursesCountAfter = await db
+      .collection("courses")
+      .countDocuments();
 
-  //   test("returns an empty array when there are no results", async ({
-  //     request,
-  //   }) => {
-  //     const response = await request.get(`/api/v1/cohorts`, {
-  //       params: {
-  //         course: "nosuchcourse",
-  //       },
-  //     });
-  //     expect(response.ok()).toBeTruthy();
-  //     expect((await response.json()).data).toHaveLength(0);
-  //   });
+    expect(allCoursesCountBefore).toEqual(allCoursesCountAfter);
+  });
 
-  //   //POST TESTS
-  //   test("creates a cohort when all fields are properly given", async ({
-  //     request,
-  //     db,
-  //   }) => {
-  //     const newCohort = {
-  //       cohort_name: faker.lorem.words(),
-  //       course: "62e056cee6daad619e5cc2c5",
-  //       seats: faker.datatype.number({ min: 5, max: 100 }),
-  //       start_date: faker.date.future(1).toISOString(),
-  //       zoom_link: faker.internet.url(),
-  //     };
+  test("does not create a course if at least one of provided lessons don't exist in db", async ({
+    request,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
 
-  //     const response = await request.post(`/api/v1/cohorts`, {
-  //       data: newCohort,
-  //     });
-  //     expect(response.ok()).toBeTruthy();
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: ["42e46dc669dd077fc82fbffa", randomLesson._id],
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
 
-  //     const responseData = (await response.json()).data;
-  //     expect(responseData).toMatchObject(newCohort);
+    //confirm the course has not been created
+    const getResponse = await request.get(`/api/v1/courses`);
+    expect(getResponse.ok()).toBeTruthy();
 
-  //     expect(responseData._id).toBeDefined();
-
-  //     expect(responseData.schedule).toBeDefined();
-  //     expect(responseData.schedule.length).toBeGreaterThan(0);
-  //     //TODO: improve test to confirm schedule is the same as the course schedule
-
-  //     expect(responseData.slug).toBeDefined();
-  //     expect(typeof responseData.slug).toBe("string");
-
-  //     await db
-  //       .collection("cohorts")
-  //       .deleteOne({ _id: ObjectId(responseData._id) });
-  //   });
-
-  //   test("does not create a cohort when cohort_name is missing", async ({
-  //     request,
-  //   }) => {
-  //     const newCohort = {
-  //       course: "62e056cee6daad619e5cc2c5",
-  //       seats: faker.datatype.number({ min: 5, max: 100 }),
-  //       start_date: faker.date.future(1).toISOString(),
-  //       zoom_link: faker.internet.url(),
-  //     };
-
-  //     const response = await request.post(`/api/v1/cohorts`, {
-  //       data: newCohort,
-  //     });
-  //     expect(response.ok()).toBeFalsy();
-
-  //     //confirm our cohort has not been created
-  //     const getResponse = await request.get(`/api/v1/cohorts`);
-  //     expect(getResponse.ok()).toBeTruthy();
-
-  //     const cohorts = (await getResponse.json()).data;
-  //     expect(cohorts).not.toContainEqual(
-  //       expect.objectContaining({ start_date: newCohort.start_date })
-  //     );
-  //   });
-
-  //   test("does not create a cohort when course is missing", async ({
-  //     request,
-  //   }) => {
-  //     const newCohort = {
-  //       cohort_name: faker.lorem.words(),
-  //       seats: faker.datatype.number({ min: 5, max: 100 }),
-  //       start_date: faker.date.future(1).toISOString(),
-  //       zoom_link: faker.internet.url(),
-  //     };
-
-  //     const response = await request.post(`/api/v1/cohorts`, {
-  //       data: newCohort,
-  //     });
-  //     expect(response.ok()).toBeFalsy();
-
-  //     //confirm our cohort has not been created
-  //     const getResponse = await request.get(`/api/v1/cohorts`);
-  //     expect(getResponse.ok()).toBeTruthy();
-
-  //     const cohorts = (await getResponse.json()).data;
-  //     expect(cohorts).not.toContainEqual(
-  //       expect.objectContaining({ cohort_name: newCohort.cohort_name })
-  //     );
-  //   });
+    const courses = (await getResponse.json()).data;
+    expect(courses).not.toContainEqual(
+      expect.objectContaining({ course_name: newCourse.course_name })
+    );
+  });
 });
