@@ -104,10 +104,13 @@ export const createCourse = async (data) => {
   }
   //do not let user create a course with deleted_at set to not null
   if (data.deleted_at) {
-   // delete data.deleted_at;
+    // delete data.deleted_at;
     throw new Error("Cannot create deleted Course");
   }
-
+  if (data.deleted_at === null) {
+    delete data.deleted_at;
+  }
+  
   await dbConnect();
   //make sure course_name is unique
   const duplicateCourseName = await Course.findOne({
