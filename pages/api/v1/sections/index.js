@@ -21,18 +21,15 @@
  *                       _id:
  *                         type: string
  *                         example: 75ge23c42f9b73c474826693
- *                       wordpress_id:
- *                         type: number
- *                         example: 4232
- *                       isShown:
- *                         type: boolean
- *                         example: false
- *                       slug:
- *                         type: string
- *                         example: giraffe-intro
  *                       title:
  *                         type: string
- *                         example: Giraffe Intro
+ *                         example: Git Basics
+ *                       order:
+ *                         type: number
+ *                         example: 2
+ *                       course:
+ *                         type: number
+ *                         example: 75ge23c42f9b73c474826693
  *
  */
 
@@ -45,12 +42,14 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        await getSections();
-        return res.status(200).json({ message: success });
+        const sections = await getSections();
+        if (!sections) {
+          return res.status(404).json({ message: error });
+        }
+        return res.status(200).json({ data: sections });
       } catch (error) {
-        return res.status(400).json({ message: error });
+        return res.status(400).json({ message: error.message });
       }
-      return;
     default:
       res.setheader("Allow", ["GET"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -61,9 +60,11 @@ export const getSections = async () => {
   try {
     await dbConnect();
 
-    const sections = await Section.find({});
-    console.log("sections", sections);
-    return sections;
+    const allsections = await Section.find({});
+    if (!allsections) {
+      throw new Error("No sections can be found");
+    }
+    return allsections;
   } catch (error) {
     throw new Error("Error getting sections");
   }
