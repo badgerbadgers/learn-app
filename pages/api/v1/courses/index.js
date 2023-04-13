@@ -110,15 +110,17 @@ export const createCourse = async (data) => {
   if (data.deleted_at === null) {
     delete data.deleted_at;
   }
-  
-  await dbConnect();
-  //make sure course_name is unique
-  const duplicateCourseName = await Course.findOne({
-    course_name: data.course_name,
-  });
 
-  if (duplicateCourseName) {
-    throw new Error("Duplicate Course Name");
+  await dbConnect();
+  if (data.course_name) {
+    //make sure course_name is unique
+    const duplicateCourseName = await Course.findOne({
+      course_name: data.course_name,
+    });
+
+    if (duplicateCourseName) {
+      throw new Error("Duplicate Course Name");
+    }
   }
 
   // make sure provided lessons exist in db
@@ -130,15 +132,19 @@ export const createCourse = async (data) => {
     }
   }
 
-  //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
-  const newCourse = new Course(data);
-  const validationErr = await newCourse.validate();
-  if (validationErr) {
-    throw new Error(validationErr);
+  if (Object.keys(data).length === 0) {
+    throw new Error("Valid data to create a new course not provided");
+  } else {
+    //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
+    const newCourse = new Course(data);
+    const validationErr = await newCourse.validate();
+    if (validationErr) {
+      throw new Error(validationErr);
+    }
+
+    //save the new course
+    await newCourse.save();
+    const newCoursePopulate = await newCourse.populate("lessons");
+    return newCoursePopulate;
   }
-
-  //save the new course
-  await newCourse.save();
-
-  return newCourse;
 };
