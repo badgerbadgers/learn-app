@@ -96,22 +96,12 @@ export default async function handler(req, res) {
       break;
     case "PATCH":
       try {
-        if (!req.body) {
-          res
-            .status(400)
-            .json({ message: "Data to update course is not provided" });
-        } else {
-          const updatedCourse = await updateCourse(id);
-          //   const updatedCohortPopulate = await updatedCohort.populate(
-          //     "mentors.user"
-          //   );
-          res.status(200).json({ data: "updated course" });
-        }
+        const updatedCourse = await updateCourse(id, req.body);
+        res.status(200).json({ data: updatedCourse });
       } catch (error) {
         console.error(error);
         res.status(error.status || 400).json({ message: error.message });
       }
-
       break;
     // case "DELETE":
     //   try {
@@ -148,16 +138,61 @@ export const getCourse = async (id) => {
   return data;
 };
 
-export const updateCourse = async (id) => {
+export const updateCourse = async (id, updates) => {
+  if (updates.slug) {
+    delete updates.slug;
+  }
+  if (updates.deleted_at) {
+    throw new Error("Cannot create deleted Course");
+  }
+  if (updates.deleted_at === null) {
+    delete updates.deleted_at;
+  }
+
   await dbConnect();
-  //  const data = await Course.findById(id); // returns course with deleted_at: null only
-  // if (!data) {
-  //   const error = new Error();
-  //   error.status = 404;
-  //   error.message = `Could not find course with id - ${id}`;
-  //   throw error;
-  // }
-  return "updated";
+  if (updates.course_name) {
+    //make sure course_name is unique
+    const duplicateCourseName = await Course.findOne({
+      course_name: updates.course_name,
+    });
+
+    if (duplicateCourseName) {
+      throw new Error("Duplicate Course Name");
+    }
+  }
+
+  // make sure provided lessons exist in db
+  if (updates.lessons) {
+    // find which of the provided users exist in users database
+    const lessons = await Lesson.find({ _id: { $in: updates.lessons } });
+    if (lessons.length !== updates.lessons.length) {
+      throw new Error("All lessons provided must exist in the data base");
+    }
+  }
+  // return an error if updates is an empty object since database won't perform an update with empty object provided
+  if (Object.keys(updates).length === 0) {
+    throw new Error(
+      "Valid data to perform an update for the course not provided"
+    );
+  } else {
+    const updatedCourse = await Course.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
+    //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
+    const validationErr = await updatedCourse.validate();
+    if (validationErr) {
+      throw new Error(validationErr);
+    }
+
+    if (!updatedCourse) {
+      const error = new Error();
+      error.status = 404;
+      error.message = `Could not find course with id - ${id}`;
+      throw error;
+    }
+    const updatedCoursePopulate = await updatedCourse.populate("lessons");
+    return updatedCoursePopulate;
+  }
 };
 
 // export const addUsersToCohort = async (id, field, value) => {
