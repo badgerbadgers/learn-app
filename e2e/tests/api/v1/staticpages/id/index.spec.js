@@ -12,7 +12,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
     const staticPageToUpdate = await db
       .collection("staticpages")
       .findOne({ wordpress_id: { $ne: null } });
-    console.log("page id", staticPageToUpdate._id);
+
     //PATCH OBJ
     const allFieldsUpdated = {
       isShown: faker.datatype.boolean(),
@@ -43,7 +43,6 @@ test.describe("/api/v1/staticpages/[id]", () => {
       const staticPageToDelete = await db
         .collection("staticpages")
         .findOne({ deleted_at: { $eq: null } });
-      console.log("page id", staticPageToDelete._id);
 
       //DELETE REQ
       const deletedResponse = await request.delete(
