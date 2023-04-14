@@ -57,7 +57,7 @@
  *         description: Error message if a course not found
  *   delete:
  *     description: Deletes a course by the course's id
- *     tags: [Course]
+ *     tags: [Courses]
  *     parameters:
  *       - in: path
  *         description: Course id
