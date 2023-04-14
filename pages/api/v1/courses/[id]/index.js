@@ -79,7 +79,6 @@
 import Lesson from "lib/models/Lesson";
 import Course from "lib/models/Course";
 import dbConnect from "lib/dbConnect";
-import { ObjectId } from "bson";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -103,22 +102,23 @@ export default async function handler(req, res) {
         res.status(error.status || 400).json({ message: error.message });
       }
       break;
-    // case "DELETE":
-    //   try {
-    //     if (!req.body.mentors) {
-    //       res
-    //         .status(400)
-    //         .json({ message: "Mentors ids to delete are not provided" });
-    //     } else {
-    //       await deleteMentorsFromCohort(id, "mentors", req.body.mentors);
-    //       // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-    //       res.status(200).json();
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     res.status(error.status || 400).json({ message: error.message });
-    //   }
-    //   break;
+    case "DELETE":
+      try {
+        await dbConnect();
+        const deletedCourse = await Course.findByIdAndUpdate(id, {
+          deleted_at: new Date(),
+        });
+        if (!deletedCourse) {
+          return res
+            .status(404)
+            .json({ message: `Course with id ${id} not found` });
+        }
+        res.status(200).json();
+      } catch (error) {
+        console.log(error);
+        res.status(error.status || 400).json({ message: error.message });
+      }
+      break;
     default:
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -174,7 +174,7 @@ export const updateCourse = async (id, updates) => {
     }
   }
 
-  // return an error if filteredUpdates is an empty object since database won't perform an update with empty object provided
+  // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
       "Valid data to perform an update for the course not provided"
@@ -197,68 +197,7 @@ export const updateCourse = async (id, updates) => {
       throw error;
     }
     const updatedCoursePopulate = await updatedCourse.populate("lessons");
+
     return updatedCoursePopulate;
   }
 };
-
-// export const addUsersToCohort = async (id, field, value) => {
-//   await dbConnect();
-//   const cohort = await Cohort.findById(id);
-//   if (!cohort) {
-//     //throw new Error(`Cohort with id of ${id} not found`);
-//     const error = new Error();
-//     error.status = 404;
-//     error.message = `Could not find cohort with id ${id} `;
-//     throw error;
-//   }
-
-//   // find which of the provided users exist in users database
-//   const users = await User.find({ _id: { $in: value } });
-
-//   // if students property equals to null adding users will give an error
-//   // add field if cohort has set it to null
-//   if (!cohort[field]) {
-//     cohort[field] = [];
-//   }
-
-//   users.forEach((user) => {
-//     // if the user not in the field already, add them
-//     const isExistingUser = cohort[field].find(
-//       (u) => u.user?.toString() === user._id.toString()
-//     );
-
-//     if (!isExistingUser) {
-//       // check if the field is 'student' to add 'added_at' property
-//       if (field === "students") {
-//         cohort[field].push({ user: user._id, added_at: new Date() });
-//       } else {
-//         cohort[field].push({ user: user._id });
-//       }
-//     }
-//   });
-//   return await cohort.save();
-// };
-
-// export const deleteMentorsFromCohort = async (id, field, value) => {
-//   await dbConnect();
-
-//   try {
-//     const parsedValues = value.map((mentorId) => ObjectId(mentorId));
-
-//     const cohort = await Cohort.findByIdAndUpdate(
-//       { _id: id },
-//       { $pull: { [field]: { user: { $in: parsedValues } } } }
-//       //  { new: true }
-//     );
-
-//     if (!cohort) {
-//       const error = new Error();
-//       error.status = 404;
-//       error.message = `Could not find cohort with id ${id} `;
-//       throw error;
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error(error);
-//   }
-// };

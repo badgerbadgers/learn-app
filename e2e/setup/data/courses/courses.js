@@ -14,7 +14,7 @@ module.exports = [
     course_name: "React",
     airtable_id: "recJEEWEWWfTsNVmx",
     slug: "react",
-    lessons: [],
+    lessons: []
   },
   {
     _id: ObjectId("62e056cee6daad619e5cc2c5"),
