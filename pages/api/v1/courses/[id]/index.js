@@ -139,13 +139,15 @@ export const getCourse = async (id) => {
 };
 
 export const updateCourse = async (id, updates) => {
-  // return error if updates includes deleted_at property set to a truthy value
-  if (updates.deleted_at) {
-    throw new Error("Cannot create deleted Course");
-  }
   // filter updates to extract allowed fields to perform update
-  const allowedFields = ["course_name", "lessons"];
+  const allowedFields = ["course_name", "lessons", "deleted_at"];
   const filteredUpdates = allowedFields.reduce((fields, current) => {
+    if (
+      current === "deleted_at" &&
+      (updates[current] || updates[current] === null)
+    ) {
+      return { ...fields, [current]: updates[current] };
+    }
     if (updates[current]) {
       return { ...fields, [current]: updates[current] };
     }
@@ -173,7 +175,6 @@ export const updateCourse = async (id, updates) => {
       throw new Error("All lessons provided must exist in the data base");
     }
   }
-
   // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(

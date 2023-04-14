@@ -170,33 +170,6 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(courseWithNotValidFields).toBeNull();
   });
 
-  test("does not update a course with deleted_at property", async ({
-    request,
-    db,
-  }) => {
-    const randomCourse = await db
-      .collection("courses")
-      .findOne({ deleted_at: { $eq: null } });
-
-    const updates = {
-      course_name: faker.lorem.words(),
-      deleted_at: faker.date.future(1).toISOString(),
-    };
-    const response = await request.patch(
-      `/api/v1/courses/${randomCourse._id}`,
-      {
-        data: updates,
-      }
-    );
-    expect(response.ok()).toBeFalsy();
-
-    // check if course was not updated to provided deleted_at property
-    const courseNotUpdatedWithDeletedAt = await db
-      .collection("courses")
-      .findOne({ _id: randomCourse._id });
-    expect(courseNotUpdatedWithDeletedAt.deleted_at).toBeFalsy();
-  });
-
   test("returns an error if update data not provided or unsupported properties are provided", async ({
     request,
     db,
