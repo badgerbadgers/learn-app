@@ -66,34 +66,24 @@ export default async function handler(req, res) {
     case "PATCH":
       try {
         const id = req.query.id;
-        const updatedData = req.body;
-        const updatedStaticPage = {
-          wordpress_id: updatedData.wordpress_id,
-          isShown: updatedData.isShown,
-          slug: updatedData.slug,
-          title: updatedData.title,
-          deleted_at: updatedData.deleted_at || null,
-        };
-        if (
-          updatedStaticPage.isShown === undefined ||
-          updatedStaticPage.wordpress_id === undefined
-        ) {
-          throw new Error(
-            `Please ensure isShown and wordpress_id contain valid values.`
-          );
-        }
-        await updateStaticPage(id, updatedStaticPage);
-        return res.status(200).json({ data: req.body });
+        const updates = req.body;
+
+        await updateStaticPage(id, updates);
+        res.status(200).json({ data: updates });
+        return;
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return;
       }
     case "DELETE":
       try {
         const id = req.query.id;
         await deletedStaticPage(id);
-        return res.status(200).json({ message: "success" });
+        res.status(200).json({ message: `Page has been deleted.` });
+        return;
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return;
       }
     default:
       res.setHeader("Allow", ["PATCH", "DELETE"]);
@@ -101,13 +91,10 @@ export default async function handler(req, res) {
   }
 }
 
-export const updateStaticPage = async (id, updatedStaticPage) => {
+export const updateStaticPage = async (id, updates) => {
   try {
     await dbConnect();
-    const updatedstaticpage = await StaticPage.findByIdAndUpdate(
-      id,
-      updatedStaticPage
-    );
+    const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates);
     if (!updatedstaticpage) {
       throw new Error(`${id} is not a valid id.`);
     }
