@@ -124,7 +124,7 @@ test.describe("/api/v1/courses/[id]", () => {
     const updates = {
       lessons: [faker.database.mongodbObjectId(), randomLesson._id],
     };
-    const response = await request.post(`/api/v1/courses/${randomCourse._id}`, {
+    const response = await request.patch(`/api/v1/courses/${randomCourse._id}`, {
       data: updates,
     });
     expect(response.ok()).toBeFalsy();
