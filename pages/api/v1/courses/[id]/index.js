@@ -139,45 +139,51 @@ export const getCourse = async (id) => {
 };
 
 export const updateCourse = async (id, updates) => {
-  if (updates.slug) {
-    delete updates.slug;
-  }
+  // return error if updates includes deleted_at property set to a truthy value
   if (updates.deleted_at) {
     throw new Error("Cannot create deleted Course");
   }
-  if (updates.deleted_at === null) {
-    delete updates.deleted_at;
-  }
+  // filter updates to extract allowed fields to perform update
+  const allowedFields = ["course_name", "lessons"];
+  const filteredUpdates = allowedFields.reduce((fields, current) => {
+    if (updates[current]) {
+      return { ...fields, [current]: updates[current] };
+    }
+    return fields;
+  }, {});
 
   await dbConnect();
-  if (updates.course_name) {
+  if (filteredUpdates.course_name) {
     //make sure course_name is unique
     const duplicateCourseName = await Course.findOne({
-      course_name: updates.course_name,
+      course_name: filteredUpdates.course_name,
     });
-
     if (duplicateCourseName) {
       throw new Error("Duplicate Course Name");
     }
   }
 
   // make sure provided lessons exist in db
-  if (updates.lessons) {
-    // find which of the provided users exist in users database
-    const lessons = await Lesson.find({ _id: { $in: updates.lessons } });
-    if (lessons.length !== updates.lessons.length) {
+  if (filteredUpdates.lessons) {
+    // find which of the provided users exist in users database, if not - throw an error
+    const lessons = await Lesson.find({
+      _id: { $in: filteredUpdates.lessons },
+    });
+    if (lessons.length !== filteredUpdates.lessons.length) {
       throw new Error("All lessons provided must exist in the data base");
     }
   }
-  // return an error if updates is an empty object since database won't perform an update with empty object provided
-  if (Object.keys(updates).length === 0) {
+
+  // return an error if filteredUpdates is an empty object since database won't perform an update with empty object provided
+  if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
       "Valid data to perform an update for the course not provided"
     );
   } else {
-    const updatedCourse = await Course.findByIdAndUpdate(id, updates, {
+    const updatedCourse = await Course.findByIdAndUpdate(id, filteredUpdates, {
       new: true,
     });
+
     //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
     const validationErr = await updatedCourse.validate();
     if (validationErr) {
@@ -187,7 +193,7 @@ export const updateCourse = async (id, updates) => {
     if (!updatedCourse) {
       const error = new Error();
       error.status = 404;
-      error.message = `Could not find course with id - ${id}`;
+      error.message = `Could not find and update course with id - ${id}`;
       throw error;
     }
     const updatedCoursePopulate = await updatedCourse.populate("lessons");
