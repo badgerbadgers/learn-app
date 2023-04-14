@@ -3,6 +3,10 @@ import { faker } from "@faker-js/faker";
 
 const { ObjectId } = require("mongodb");
 test.describe("/api/v1/staticpages/[id]", () => {
+  //test
+  //A test for updating just one or two fields []
+  //A test for trying to update a field that doesn't exist []
+  //A test for undeleting a static page []
   //PATCH TESTS
   test("returns an updated static page that contains at least one or more updated field(s)", async ({
     request,
