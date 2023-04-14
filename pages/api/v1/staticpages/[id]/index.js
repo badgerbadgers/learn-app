@@ -7,25 +7,27 @@
  *     description: Updates a static page in database using the id
  *     tags: [Static pages]
  *     parameters:
- *       - in: query
- *         name: wordpress_id
+ *       - in: path
+ *         name: id
  *         schema:
  *           type: number
- *         required: true
- *
- *       - in: query
- *         name: isShown
+ *           example: 63fd39c51e0a85c4749274ff
+ *         description: id of the static page to update
+ *       - in: body
+ *         name: data
  *         schema:
- *           type: boolean
- *         example: true
- *       - in: query
- *         name: slug
- *         schema:
- *           type: string
- *       - in: query
- *         name: title
- *         schema:
- *           type: string
+ *           type: object
+ *           properties:
+ *             wordpress_id:
+ *               type: number 
+ *             isShown:
+ *               type: boolean
+ *               example: true
+ *             slug:
+ *               type: string
+ *             title:
+ *               type: string
+ *         description: the updated static page object when PATCH request is called
  *     responses:
  *       200:
  *         description: OK
@@ -52,6 +54,7 @@
  *         description: Error messages
  *
  */
+
 
 import StaticPage from "lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
