@@ -40,7 +40,12 @@ export default async function handler(req, res) {
       return;
     case "POST":
       try {
-      } catch (error) {}
+        //call method for creating a lesson with any data we received
+        const lesson = await createLesson(req.body);
+        res.status(200).json({ data: lesson });
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
       return;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
@@ -60,4 +65,17 @@ export const getLessons = async () => {
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
+};
+
+export const createLesson = async (data) => {
+  const newLesson = new Lesson(data);
+  const validationErr = await newLesson.validate();
+  if (validationErr) {
+    throw new Error(validationErr);
+  }
+
+  await dbConnect();
+  //save the new lesson
+  await newLesson.save();
+  return newLesson;
 };
