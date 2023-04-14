@@ -116,7 +116,6 @@ test.describe("/api/v1/cohorts", () => {
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
-
     await db
       .collection("cohorts")
       .deleteOne({ _id: ObjectId(responseData._id) });
@@ -172,6 +171,25 @@ test.describe("/api/v1/cohorts", () => {
     );
   });
 
+  test.only("sets a cohort's slug to correct value", async ({ request }) => {
+    const newCohort = {
+      cohort_name: "Very Smart Cohort",
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("very-smart-cohort");
+  });
 
   test.fixme(
     "does not save into the database extra fields that are sent",
