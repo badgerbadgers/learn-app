@@ -2,7 +2,7 @@ import { test, expect } from "e2e/fixtures/testAsAdmin";
 
 test.describe("/api/v1/sections", () => {
   //GET TESTS
-  test.only("runs assertions on array of objects", async ({ request }) => {
+  test("runs assertions on array of objects", async ({ request }) => {
     const res = await request.get(`/api/v1/sections`);
 
     expect(res.ok()).toBeTruthy();
