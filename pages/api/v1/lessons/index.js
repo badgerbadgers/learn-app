@@ -68,14 +68,19 @@ export const getLessons = async () => {
 };
 
 export const createLesson = async (data) => {
-  const newLesson = new Lesson(data);
-  const validationErr = await newLesson.validate();
-  if (validationErr) {
-    throw new Error(validationErr);
-  }
+    await dbConnect();
+    if (Object.keys(data).length === 0) {
+      throw new Error("Valid data to create a new lesson not provided");
+    } else {
+      //run mongoose validator to make sure data is valid
+      const newLesson = new Lesson(data);
+      const validationErr = await newLesson.validate();
+      if (validationErr) {
+        throw new Error(validationErr);
+      }
 
-  await dbConnect();
-  //save the new lesson
-  await newLesson.save();
-  return newLesson;
+      //save the new lesson
+      await newLesson.save();
+      return newLesson;
+    }
 };

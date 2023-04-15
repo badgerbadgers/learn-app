@@ -23,7 +23,7 @@ test.describe("/api/v1/lessons", () => {
       expect(lesson).toHaveProperty("section");
     });
   });
-
+  /////////////////////////////////////////////////////////////////
   //POST TESTS
   test("creates a lesson when all fields are properly given", async ({
     request,
@@ -31,7 +31,6 @@ test.describe("/api/v1/lessons", () => {
   }) => {
     //learning_objectives: in Figma schema is a string in setup/data/lessons.js is an arr of strings
     //order:Lessons parameter in the Course is an array of lesson's ids. Order by default.
-    // assignments airtableID and materials airtableID we deal we that later
 
     const newLesson = {
       title: faker.lorem.words(),
@@ -43,33 +42,21 @@ test.describe("/api/v1/lessons", () => {
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
       materials: [
-        "62e26db569dd077fc82fbfdb",
-        "62e26dbb69dd077fc82fbfe2",
-        "62e26dc769dd077fc82fc013",
-        "62e26dc669dd077fc82fbffd",
-        "62e26db569dd077fc82fbfdc",
-        "62e26dc769dd077fc82fc015",
+        "62e26db569dd077fc82fbfdb", //materials_airtableID:"reco3qe9bm6lzhLsP"
+        "62e26dbb69dd077fc82fbfe2", //materials_airtableID:"recxcyNX0XTG05Any"
+        "62e26dc769dd077fc82fc013", //materials_airtableID:"recIqQx3JL8UmeRpO"
+        "62e26dc669dd077fc82fbffd", //materials_airtableID:"recNXVaVwm2OaE0j5"
+        "62e26db569dd077fc82fbfdc", //materials_airtableID:"recbSoPGthb0rHbMS"
+        "62e26dc769dd077fc82fc015", //materials_airtableID:"recPIg5BTCTvK2n22"
       ],
-      assignments: ["62e26dc669dd077fc82fc00d"],
-      //assignment_airtableID: ["recnkUVqXPiVm1hQ9"],
-      // materials_airtableID: [
-      //   "recPIg5BTCTvK2n22",
-      //   "recNXVaVwm2OaE0j5",
-      //   "recbSoPGthb0rHbMS",
-      //   "recmb4E1WP5GLQw5c",
-      //   "recIqQx3JL8UmeRpO",
-      //   "reco3qe9bm6lzhLsP",
-      // ],
+      assignments: ["62e26dc669dd077fc82fc00d"], //assignments airtableID is "recnkUVqXPiVm1hQ9"
     };
-    console.log("NEW LESSON", newLesson);
 
     const response = await request.post(`/api/v1/lessons`, {
       data: newLesson,
     });
     expect(response.ok()).toBeTruthy();
-    console.log("RESP", response);
     const responseData = (await response.json()).data;
-    console.log("DATA", responseData);
     expect(responseData).toMatchObject(newLesson);
     expect(responseData._id).toBeDefined();
 
@@ -77,4 +64,18 @@ test.describe("/api/v1/lessons", () => {
       .collection("lessons")
       .deleteOne({ _id: ObjectId(responseData._id) });
   });
+  /////////////////////////////////////////////////////////////////
+  test("POST /lesson with empty data ", async ({ request, db }) => {
+    //send empty data
+    const response = await request.post(`/api/v1/lessons`, {
+      data: {},
+    });
+
+    // Check that the response is false
+    expect(response.ok()).toBeFalsy();
+
+    await db.collection("lessons");
+  });
+
+  test("POST /lesson with invalid section id", async ({ request, db }) => {});
 });
