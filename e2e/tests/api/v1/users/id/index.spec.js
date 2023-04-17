@@ -240,11 +240,12 @@ test.describe("/api/v1/users/id", () => {
     expect(deletedUser.deleted_at).not.toBe(null);
   });
 
-  test("delete user if ID doesn't exist", async ({ request }) => {
-    const userId = faker.random.numeric(25);
+  test("delete returns 404 if userID not found", async ({ request }) => {
+    //Create not existing userID
+    const userId = faker.database.mongodbObjectId();
 
-    //DELETE User by ID
     const deleteResponse = await request.delete(`/api/v1/users/${userId}`);
     expect(deleteResponse.ok()).toBeFalsy();
+    expect(deleteResponse.status()).toBe(404);
   });
 });

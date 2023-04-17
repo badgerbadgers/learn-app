@@ -67,6 +67,12 @@ export default async function handler(req, res) {
     case "DELETE":
       try {
         const user = await deleteUser(id);
+        if (!user) {
+          res
+            .status(404)
+            .json({ message: `No user found with this ID: ${id}` });
+          return;
+        }
         res.status(200).json({ data: user });
       } catch (error) {
         res.status(400).json({
@@ -110,10 +116,5 @@ export const deleteUser = async (id) => {
   const user = await User.findByIdAndUpdate(id, {
     deleted_at: new Date(),
   });
-
-  //Verify if not found user with this id
-  if (!user) {
-    throw new Error("No user found with this ID");
-  }
   return user;
 };
