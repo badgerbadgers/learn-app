@@ -95,15 +95,17 @@ export const getUser = async (id) => {
 export const updateUser = async (id, updates) => {
   await dbConnect();
   //Verify if Github username already exist
-  const duplicateGHUser = await User.findOne({
-    _id: {$ne: id},
-    gh: updates.gh,
-  });
+  if("gh" in updates) {
+    const duplicateGHUser = await User.findOne({
+      _id: { $ne: id },
+      gh: updates.gh,
+    });
 
-  if (duplicateGHUser) {
-    throw new Error("User with Github username already exists");
+    if (duplicateGHUser) {
+      throw new Error("User with Github username already exists");
+    }
   }
-
+  
   //update user
   const user = await User.findByIdAndUpdate(id, updates, {
     runValidators: true,
