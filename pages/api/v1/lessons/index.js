@@ -6,18 +6,26 @@
  *   get:
  *     description: Returns all lessons
  *     tags: [Lessons]
- *     parameters:
- *        - in: query
- *          name: cohort
- *          type: string
- *          required: false
- *        - in: query
- *          name: course
- *          type: string
- *          required: false
  *     responses:
  *       200:
  *         description: Provides an array of lessons
+ *       400:
+ *         description: Error messages
+  *   post:
+ *     description: Creates a new Lesson
+ *     tags: [Lessons]
+ *     parameters:
+ *       - in: body
+ *         name: lesson
+ *         description: Create a new lesson
+ *         schema:
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Creates new lesson
  *       400:
  *         description: Error messages
  */
