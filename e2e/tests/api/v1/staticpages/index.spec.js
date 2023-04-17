@@ -70,10 +70,8 @@ test.describe("/api/v1/staticpages", () => {
 
     expect(resDummyData).toMatchObject(dbStaticPage);
 
-    //wordpress id not null
     expect(resDummyData.wordpress_id).toBeDefined();
 
-    //isShown no null
     expect(resDummyData.isShown).toBeDefined();
   });
 
