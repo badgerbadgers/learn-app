@@ -168,13 +168,19 @@ test.describe("/api/v1/users/id", () => {
     expect(getUser.gh).not.toBe(existingUser.gh);
   });
 
-  test("not found user by this userID", async ({ request }) => {
+  test("patch returns 404 if userID not found", async ({ request }) => {
     //Create not existing userID
-    const userId = faker.random.numeric(8);
+    const userId = faker.database.mongodbObjectId();
+    const updateUser = {
+      email: faker.internet.email(),
+    };
 
-    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
 
-    expect(getResponse.ok()).toBeFalsy();
+    expect(patchResponse.ok()).toBeFalsy();
+    expect(patchResponse.status()).toBe(404);
   });
 
   test("undelete user by ID", async ({ request, db }) => {
