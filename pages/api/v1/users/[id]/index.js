@@ -23,8 +23,8 @@
  *     description: Delete user by id
  *     tags: [Users]
  */
-import User from "../../../../../lib/models/User";
-import dbConnect from "../../../../../lib/dbConnect";
+import User from "lib/models/User";
+import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
