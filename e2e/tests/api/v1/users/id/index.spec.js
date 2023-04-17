@@ -42,12 +42,13 @@ test.describe("/api/v1/users/id", () => {
     
   });
 
-  test("get User if ID doesn't exist", async ({ request }) => {
-    const userId = faker.random.numeric(25);
+  test("get returns 404 if ID doesn't exist", async ({ request }) => {
+    const userId = faker.database.mongodbObjectId();
 
-    //delete user by userID
     const getResponse = await request.get(`/api/v1/users/${userId}`);
     expect(getResponse.ok()).toBeFalsy();
+    expect(getResponse.status()).toBe(404);
+
   });
 
   //PATCH TESTS

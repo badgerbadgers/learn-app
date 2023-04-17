@@ -33,13 +33,20 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const user = await getUser(id);
+        if(!user) {
+          res
+            .status(404)
+            .json({ message: `No user found with this ID: ${id}` });
+          return;
+        }
         res.status(200).json({ data: user });
       } catch (error) {
         res.status(400).json({
           message: error.message,
         });
+        return;
       }
-      return;
+      
     case "PATCH":
       try {
         //call method for updating user by id filds: name, email, gh
@@ -69,11 +76,7 @@ export default async function handler(req, res) {
 
 export const getUser = async (id) => {
   await dbConnect();
-  const user = await User.findById(id).exec();
-  //Verify if not found user with this id
-  if (!user) {
-    throw new Error("No user found with this ID");
-  }
+  const user = await User.findById(id);
   return user;
 };
 
