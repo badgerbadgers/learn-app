@@ -152,11 +152,11 @@ export default async function handler(req, res) {
 
 const createAcceptanceForm = async (req, res) => {
   const body = req.body;
-  // const session = await getSession({ req });
-  // console.log("session", session);
-  // const filter = { user: session.user.id };
+  const session = await getSession({ req });
+  console.log("session", session);
+  const filter = { user: session.user.id };
   const update = {
-    // user: session.user.id,
+    user: session.user.id,
     personal_first_name: body.personal_first_name,
     personal_last_name: body.personal_last_name,
     personal_email: body.personal_email,
@@ -203,9 +203,10 @@ const createAcceptanceForm = async (req, res) => {
     completed_at: body.completed_at,
   };
   try {
-    const newuser = await AcceptanceForm.altFindOneAndUpdate(update, {
+    const newuser = await AcceptanceForm.altFindOneAndUpdate(filter, update, {
       upsert: true,
     });
+    console.log("newuser", newuser);
     res.status(200).json({ success: true, data: newuser });
   } catch (error) {
     res.status(400).json({ success: false });
@@ -216,6 +217,8 @@ const createAcceptanceForm = async (req, res) => {
 const downloadReport = async (req, res) => {
   const collection = mongoose.connection.collection("acceptanceforms");
   const data = await collection.find().toArray();
+  console.log("data", data);
+
   const stream = fastCsv.format({
     headers: [
       "_id",
@@ -275,6 +278,7 @@ const downloadReport = async (req, res) => {
     data.forEach((doc) => {
       stream.write(doc);
     });
+
     stream.end();
   } catch (error) {
     res.status(400).json({ success: false });
