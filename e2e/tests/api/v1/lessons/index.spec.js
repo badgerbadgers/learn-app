@@ -77,5 +77,25 @@ test.describe("/api/v1/lessons", () => {
     await db.collection("lessons");
   });
 
-  test("POST /lesson with invalid section id", async ({ request, db }) => {});
+  ////////////////////////////////////////////////////////////////
+  test("POST /successfully create a lesson only with title provided", async ({
+    request,
+    db,
+  }) => {
+    const newLesson = {
+      title: faker.lorem.words(),
+    };
+
+    const response = await request.post(`/api/v1/lessons`, {
+      data: newLesson,
+    });
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+    expect(responseData).toMatchObject(newLesson);
+    expect(responseData._id).toBeDefined();
+
+    await db
+      .collection("lessons")
+      .deleteOne({ _id: ObjectId(responseData._id) });
+  });
 });
