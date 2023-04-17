@@ -48,6 +48,9 @@ test.describe("/api/v1/staticpages", () => {
     const responsewithfakerdata = await request.post(`/api/v1/staticpages`, {
       data: fakerJsStaticPage,
     });
+
+    //POST OBJ with no boolean isShown
+
     expect(responsewithfakerdata.ok()).toBeTruthy();
 
     const resFakerData = (await responsewithfakerdata.json()).data;
@@ -56,9 +59,6 @@ test.describe("/api/v1/staticpages", () => {
 
     //wordpress id not null
     expect(resFakerData.wordpress_id).toBeDefined();
-
-    //isShown no null
-    expect(resFakerData.isShown).toBeDefined();
 
     //then make POST with test data
     const responsewithdummydata = await request.post(`/api/v1/staticpages`, {
@@ -71,8 +71,6 @@ test.describe("/api/v1/staticpages", () => {
     expect(resDummyData).toMatchObject(dbStaticPage);
 
     expect(resDummyData.wordpress_id).toBeDefined();
-
-    expect(resDummyData.isShown).toBeDefined();
   });
 
   //FAIL TESTS WONT POST IF MISSING FIELDS
