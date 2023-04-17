@@ -1,6 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
-import { get } from "lodash";
 import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/users/id", () => {
