@@ -25,10 +25,7 @@ async function globalSetup() {
   if (process.env.MONGODB_URI.startsWith(uri)) {
     console.log("Successfuly set up a mongo db at " + process.env.MONGODB_URI);
   } else {
-    throw Error(
-      `Could not create DB at ${process.env.MONGODB_URI}, instead created at ${uri}`
-    );
-    
+    throw Error("Could not create DB at " + process.env.MONGODB_URI);
   }
 
   //populate db with one admin and one user
