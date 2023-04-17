@@ -5,20 +5,27 @@ import { ObjectId } from "mongodb";
 test.describe("/api/v1/users/id", () => {
   //GET TESTS
 
-  test("get user by ID", async ({ request }) => {
+  test("get user by ID", async ({ request, db }) => {
     const userId = "62b22b42f4da59dbea98071b";
+
+    //get Github name from the user
+    const userData = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(userId) });
 
     //get user by ID and check response and deleted_at
     const getResponse = await request.get(`/api/v1/users/${userId}`);
     expect(getResponse.ok()).toBeTruthy();
     const getUser = (await getResponse.json()).data;
     expect(getUser.deleted_at).toBe(null);
-
+    expect(getUser.name).toBe(userData.name);
+    expect(getUser.email).toBe(userData.email);
+    expect(getUser.gh).toBe(userData.gh);
   });
 
   test("get deleted User by ID", async ({ request, db }) => {
     const userId = "62d969ade411b721457b4d58";
-
+    
     //GET User by ID and check deleted_at is null
     const getResponse = await request.get(`/api/v1/users/${userId}`);
     expect(getResponse.ok()).toBeTruthy();
@@ -161,16 +168,14 @@ test.describe("/api/v1/users/id", () => {
     expect(userUpdated.gh).toBe(userData.gh);
   });
 
-  test("update with duplicate Github", async ({ request }) => {
+  test("update with duplicate Github", async ({ request, db }) => {
     const existingUserId = "62a8bc08eee42d82d2d8d616";
     const updatingUserId = "62b22b42f4da59dbea98071b";
 
-    //get user by existing userId and use Githab username
-    const getResponseExistingUser = await request.get(
-      `/api/v1/users/${existingUserId}`
-    );
-    expect(getResponseExistingUser.ok()).toBeTruthy();
-    const existingUser = (await getResponseExistingUser.json()).data;
+    //get Github name from the user
+    const existingUser = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(existingUserId) });
 
     //update user by existing Github username
     const updateUser = {
@@ -186,10 +191,10 @@ test.describe("/api/v1/users/id", () => {
     expect(patchResponse.ok()).toBeFalsy();
 
     //Verify that updating user haven't duplicate Github username
-    const getResponse = await request.get(`/api/v1/users/${updatingUserId}`);
-    expect(getResponse.ok()).toBeTruthy();
-    const getUser = (await getResponse.json()).data;
-    expect(getUser.gh).not.toBe(existingUser.gh);
+    const updatedUser = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(updatingUserId) });
+    expect(updatedUser.gh).not.toBe(existingUser.gh);
   });
 
   test("patch returns 404 if userID not found", async ({ request }) => {

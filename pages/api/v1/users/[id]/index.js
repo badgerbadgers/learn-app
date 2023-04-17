@@ -34,12 +34,12 @@ export default async function handler(req, res) {
       try {
         const user = await getUser(id);
         if(!user) {
-          res
+          return res
             .status(404)
             .json({ message: `No user found with this ID: ${id}` });
-          return;
+          
         }
-        res.status(200).json({ data: user });
+        return res.status(200).json({ data: user });
       } catch (error) {
         res.status(400).json({
           message: error.message,
