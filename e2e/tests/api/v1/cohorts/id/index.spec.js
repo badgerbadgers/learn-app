@@ -18,6 +18,7 @@ test.describe("/api/v1/cohorts/[id]", () => {
     expect(response.ok()).toBeTruthy();
     // check if one cohort is returned and it is not deleted
     expect(data).toMatchObject({ deleted_at: null });
+    expect(data._id.toString()).toBe(randomNotDeletedCohort._id.toString());
     // check if returned data is an object and not an array
     expect(data && typeof data === "object").toBe(true);
   });
@@ -45,7 +46,9 @@ test.describe("/api/v1/cohorts/[id]", () => {
     request,
     db,
   }) => {
-    const randomCohort = await db.collection("cohorts").findOne();
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
     //call DELETE to delete a cohort by id
     const response = await request.delete(
       `/api/v1/cohorts/${randomCohort._id}`
