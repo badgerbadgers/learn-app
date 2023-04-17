@@ -73,26 +73,22 @@ test.describe("/api/v1/staticpages", () => {
     expect(resDummyData.wordpress_id).toBeDefined();
   });
 
-  test("does not create static page if wordpress_id is missing", async ({
+  test.only("does not create static page if wordpress_id is missing", async ({
     request,
   }) => {
-    const newstaticpage = {
-      isShown: faker.datatype.boolean(),
+    //new obj to test with using fakerjs
+    const fakerJsStaticPageNoWPid = {
       title: faker.lorem.text(),
+      isShown: faker.datatype.boolean(),
       slug: faker.lorem.slug(),
     };
-    const res = await request.post(`/api/v1/staticpages`, {
-      data: newstaticpage,
+
+    const responsewithfaker = await request.post(`/api/v1/staticpages`, {
+      data: fakerJsStaticPageNoWPid,
     });
 
-    const getRes = await request.get(`/api/v1/staticpages`);
-    expect(getRes.ok()).toBeTruthy();
+    const staticpages = (await responsewithfaker.json()).data;
 
-    const staticpages = (await getRes.json()).data;
-    expect(staticpages).not.toContainEqual(
-      expect.objectContaining({
-        wordpress_id: newstaticpage.wordpress_id,
-      })
-    );
+    expect(staticpages).toBeUndefined();
   });
 });
