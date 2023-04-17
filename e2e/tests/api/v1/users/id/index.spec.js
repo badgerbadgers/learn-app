@@ -137,6 +137,31 @@ test.describe("/api/v1/users/id", () => {
     expect(patchResponse.ok()).toBeFalsy();
   });
 
+  test("update with the same Github name", async ({ request, db }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+
+    //get Github name from the user
+    const userData = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(userId) });
+
+    //update user by the same Github username
+    const updateUser = {
+      gh: userData.gh,
+    };
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+    expect(patchResponse.ok()).toBeTruthy();
+
+    //verify updated Github name
+    const userUpdated = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(userId) });
+
+    expect(userUpdated.gh).toBe(userData.gh);
+  });
+
   test("update with duplicate Github", async ({ request }) => {
     const existingUserId = "62a8bc08eee42d82d2d8d616";
     const updatingUserId = "62b22b42f4da59dbea98071b";
