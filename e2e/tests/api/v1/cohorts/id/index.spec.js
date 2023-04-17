@@ -15,10 +15,7 @@ test.describe("/api/v1/cohorts/id", () => {
     const newCohortName = faker.lorem.words();
     //change cohort_name and slug
     const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({ cohort_name: newCohortName }),
+      data: { cohort_name: newCohortName },
     });
 
     // Check that the PATCH request was successful
@@ -48,10 +45,7 @@ test.describe("/api/v1/cohorts/id", () => {
     const newDate = faker.date.future(1).toISOString();
     //change start date
     const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({ start_date: newDate }),
+      data: { start_date: newDate },
     });
 
     // Check that the PATCH request was successful
@@ -96,10 +90,7 @@ test.describe("/api/v1/cohorts/id", () => {
     const originalName = randomCohort.cohort_name;
     // Send PATCH request to change cohort name
     const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({ cohort_name: randomExistingCohortName }),
+      data: { cohort_name: randomExistingCohortName },
     });
 
     // Check that the PATCH request was NOT successful
