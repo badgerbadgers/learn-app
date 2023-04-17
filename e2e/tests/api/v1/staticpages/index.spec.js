@@ -28,30 +28,53 @@ test.describe("/api/v1/staticpages", () => {
   });
 
   //POST TESTS
-  test("returns an array with newly created object", async ({ request }) => {
-    //new obj to test with
-    const newStaticPage = {
+  test.only("returns an array with newly created object", async ({
+    request,
+    db,
+  }) => {
+    //new obj to test with using fakerjs
+    const fakerJsStaticPage = {
       wordpress_id: faker.datatype.number(1000),
       title: faker.lorem.text(),
       isShown: faker.datatype.boolean(),
       slug: faker.lorem.slug(),
     };
+    //new obj to test with from test data
+    const dbStaticPage = await db
+      .collection("poststaticpage")
+      .findOne({ wordpress_id: { $ne: null } });
 
-    //then make POST
-    const response = await request.post(`/api/v1/staticpages`, {
-      data: newStaticPage,
+    //then make POST with faker data
+    const responsewithfakerdata = await request.post(`/api/v1/staticpages`, {
+      data: fakerJsStaticPage,
     });
-    expect(response.ok()).toBeTruthy();
+    expect(responsewithfakerdata.ok()).toBeTruthy();
 
-    const resData = (await response.json()).data;
+    const resFakerData = (await responsewithfakerdata.json()).data;
 
-    expect(resData).toMatchObject(newStaticPage);
+    expect(resFakerData).toMatchObject(fakerJsStaticPage);
 
     //wordpress id not null
-    expect(resData.wordpress_id).toBeDefined();
+    expect(resFakerData.wordpress_id).toBeDefined();
 
     //isShown no null
-    expect(resData.isShown).toBeDefined();
+    expect(resFakerData.isShown).toBeDefined();
+
+    //then make POST with test data
+    const responsewithdummydata = await request.post(`/api/v1/staticpages`, {
+      data: dbStaticPage,
+    });
+    expect(responsewithdummydata.ok()).toBeTruthy();
+
+    const resDummyData = (await responsewithdummydata.json()).data;
+
+    expect(resDummyData).toMatchObject(dbStaticPage);
+
+    //wordpress id not null
+    expect(resDummyData.wordpress_id).toBeDefined();
+
+    //isShown no null
+    expect(resDummyData.isShown).toBeDefined();
   });
 
   //FAIL TESTS WONT POST IF MISSING FIELDS
