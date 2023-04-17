@@ -23,7 +23,6 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was successful
     expect(patchResponse.ok()).toBeTruthy();
-    const data = (await patchResponse.json()).data;
 
     // Send a GET request to retrieve the updated list of cohorts
     const updatedResponse = await request.get("/api/v1/cohorts/");
@@ -34,7 +33,6 @@ test.describe("/api/v1/cohorts/id", () => {
       (cohort) => cohort._id === cohortID
     );
     expect(updatedCohort.cohort_name).toBe(newCohortName);
-    await db.collection("cohorts");
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -68,7 +66,6 @@ test.describe("/api/v1/cohorts/id", () => {
       (cohort) => cohort._id === cohortID
     );
     expect(updatedCohort.start_date).toBe(newDate);
-    await db.collection("cohorts");
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -96,7 +93,7 @@ test.describe("/api/v1/cohorts/id", () => {
       .findOne({ deleted_at: { $eq: null } });
 
     const cohortID = randomCohort._id.toString();
-    const originalName = randomCohort.cohort_name.toString();
+    const originalName = randomCohort.cohort_name;
     // Send PATCH request to change cohort name
     const patchResponse = await request.patch("/api/v1/cohorts/" + cohortID, {
       headers: {
@@ -117,8 +114,6 @@ test.describe("/api/v1/cohorts/id", () => {
     );
 
     expect(notUpdatedCohort.cohort_name).toBe(originalName); //toEqual
-
-    await db.collection("cohorts");
   });
   ////////////////////////////////////////////////////////////////////////
   test("update allowed fields such as cohort_name, start_date, zoom_link, seats", async ({
@@ -165,7 +160,6 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(updatedCohort.start_date).toBe(updates.start_date);
     expect(updatedCohort.zoom_link).toBe(updates.zoom_link);
     expect(updatedCohort.seats).toBe(updates.seats);
-    await db.collection("cohorts");
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -218,7 +212,5 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(updatedCohort.mentors).not.toBe(updates.course);
     expect(updatedCohort.schedule).not.toBe(updates.schedule);
     expect(updatedCohort.created_at).not.toBe(updates.created_at);
-
-    await db.collection("cohorts");
   });
 });

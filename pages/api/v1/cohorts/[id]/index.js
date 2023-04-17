@@ -69,7 +69,7 @@ export const updateCohort = async (id, updates) => {
 
   for (const key in updates) {
     if (allowedFields.indexOf(key) === -1) {
-      throw new Error("Update is Not Allowed");
+      throw new Error(`Update ${key} is Not Allowed`);
     }
   }
   //Prevent changing cohort_name if it already exists
