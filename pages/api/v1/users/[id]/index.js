@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     case "DELETE":
       try {
         const user = await deleteUser(id);
-        res.status(201).json({ data: user });
+        res.status(200).json({ data: user });
       } catch (error) {
         res.status(400).json({
           message: error.message,
