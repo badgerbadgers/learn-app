@@ -10,14 +10,11 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
   }) => {
     //find not deleted cohort that has NON empty schedule array
     const nonEmptyScheduleCohort = await db.collection("cohorts").findOne({
-      $and: [
-        { deleted_at: { $eq: null } },
-        { schedule: { $ne: [] } },
-        { schedule: { $ne: null } },
-      ],
+      deleted_at: { $eq: null },
+      schedule: { $nin: [[], null] },
     });
     //extract id from  cohort
-    const cohortID = nonEmptyScheduleCohort._id.toString();
+    const cohortID = nonEmptyScheduleCohort._id;
 
     //call GET and get the non-deleted cohort by id
     const response = await request.get(`/api/v1/cohorts/${cohortID}/schedule`);
@@ -65,7 +62,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       deleted_at: { $ne: null },
     });
     //extract id from random cohort
-    const cohortID = randomDeletedCohort._id.toString();
+    const cohortID = randomDeletedCohort._id;
     const responseDeletedCohort = await request.get(
       `/api/v1/cohorts/${cohortID}/schedule`
     );
@@ -94,14 +91,11 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     // find a random cohort that has empty schedule property
     const randomCohortSchedule = await db.collection("cohorts").findOne({
-      $and: [
-        { deleted_at: { $eq: null } },
-        { schedule: { $ne: null } },
-        { schedule: { $eq: [] } },
-      ],
+      deleted_at: { $eq: null },
+      schedule: { $nin: [[], null] },
     });
     //extract id from random cohort
-    const cohortID = randomCohortSchedule._id.toString();
+    const cohortID = randomCohortSchedule._id;
 
     // update empty schedule array's cohort with elements
     const response = await request.put(`api/v1/cohorts/${cohortID}/schedule`, {
@@ -149,7 +143,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       .collection("cohorts")
       .findOne({ deleted_at: { $ne: null } });
     //extract id from random cohort
-    const cohortID = randomDeletedCohort._id.toString();
+    const cohortID = randomDeletedCohort._id;
 
     const responseForDeletedCohort = await request.put(
       `/api/v1/cohorts/${cohortID}/schedule`,
@@ -169,7 +163,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       .collection("cohorts")
       .findOne({ deleted_at: { $eq: null } });
     //extract id from random cohort
-    const cohortID = randomCohort._id.toString();
+    const cohortID = randomCohort._id;
     //send empty data of schedule to DB
     const responseNoData = await request.put(
       `/api/v1/cohorts/${cohortID}/schedule`,
