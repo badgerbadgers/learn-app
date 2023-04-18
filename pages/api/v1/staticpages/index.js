@@ -121,9 +121,6 @@ export const getStaticPages = async () => {
     await dbConnect();
 
     const staticpages = await Staticpage.find({});
-    if (!staticpages) {
-      throw new Error("No static pages found");
-    }
     return staticpages;
   } catch (error) {
     throw new Error("Error getting static pages", error.message);
