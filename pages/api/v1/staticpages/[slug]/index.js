@@ -52,12 +52,6 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const staticpage = await getStaticPageSlug(req, res);
-        if (!staticpage) {
-          res.status(404).json({
-            message: `${staticpage} is not a valid slug. Please enter a valid slug`,
-          });
-          return;
-        }
         res.status(200).json({ data: staticpage });
         return; 
       } catch (error) {
