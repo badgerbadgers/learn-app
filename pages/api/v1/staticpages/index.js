@@ -94,17 +94,21 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const staticpages = await getStaticPages();
-        return res.status(200).json({ data: staticpages });
+        res.status(200).json({ data: staticpages });
+        return;
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return;
       }
     case "POST":
       try {
         const postData = req.body;
         const staticpage = await createStaticPage(postData);
-        return res.status(200).json({ data: staticpage });
+        res.status(200).json({ data: staticpage });
+        return;
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return;
       }
     default:
       res.setHeader("Allow", ["GET", "POST"]);
