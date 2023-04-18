@@ -81,35 +81,27 @@ export default async function handler(req, res) {
       const updates = req.body;
       //update
       try {
-        await dbConnect();
         await Cohort.updateOne({ _id: id }, updates);
+        res.status(200).json({ data: updates });
       } catch (error) {
-        //console.error("Update cohort error", error);
+        console.error("Update cohort error", error);
         res.status(400).json({ message: error.message });
-        return;
       }
-      res.status(200).json({ success: true, data: updates });
-      return;
       break;
     default:
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
-      break;
   }
   return res;
 }
 export const getCohortSchedule = async (id) => {
-  try {
-    await dbConnect();
-    const schedule = await Cohort.findById(id, "schedule")
-      .populate("schedule.lesson") //we are getting lessons array
-      .exec();
-    //if wrong id then throw error
-    if (!schedule) {
-      Error(message);
-    }
-    return schedule;
-  } catch (error) {
+  await dbConnect();
+  const schedule = await Cohort.findById(id, "schedule")
+    .populate("schedule.lesson") //we are getting lessons array
+    .exec();
+  //if wrong id then throw error
+  if (!schedule) {
     throw new Error(`Cohort with id ${id} not found`);
   }
+  return schedule;
 };
