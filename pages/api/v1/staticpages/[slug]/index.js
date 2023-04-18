@@ -47,16 +47,17 @@ import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
+  const slug = req.query.slug;
 
   switch (method) {
     case "GET":
       try {
-        const staticpage = await getStaticPageSlug(req, res);
-        res.status(200).json({ data: staticpage });
-        return; 
+        const staticpage = await getStaticPageSlug(slug);
+        res.status(200).json({ data: slug });
+        return;
       } catch (error) {
         res.status(400).json({ message: error.message });
-        return; 
+        return;
       }
     default:
       res.setHeader("Allow", ["GET"]);
@@ -64,8 +65,8 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStaticPageSlug = async (req) => {
-  const slug = req.query.slug;
+export const getStaticPageSlug = async (slug) => {
+  // const slug = req.query.slug;
   try {
     await dbConnect();
     const staticPageSlug = await StaticPage.findOne({
