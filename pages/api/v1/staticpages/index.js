@@ -137,14 +137,6 @@ export const createStaticPage = async (data) => {
     isShown: data.isShown,
     slug: data.slug,
   };
-  if (
-    staticpage.isShown === undefined ||
-    staticpage.wordpress_id === undefined
-  ) {
-    throw new Error(
-      `Please ensure isShown and wordpress_id contain valid values.`
-    );
-  }
 
   try {
     await dbConnect();
