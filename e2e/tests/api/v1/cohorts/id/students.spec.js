@@ -131,7 +131,7 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     });
   });
 
-  test.only("does not duplicate students if duplicated students are added", async ({
+  test("does not add duplicated students if duplicated students are in update object", async ({
     request,
     db,
   }) => {
@@ -148,51 +148,28 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
       .toArray();
 
     const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the students
+    // extract 2 students from the cohort to be updated to create duplicate students
     const duplicateStudents = randomCohort.students
-      //.filter((student) => student.user !== null)
       .map((student) => {
         if (student.user) {
           return student.user.toString();
         }
       })
       .slice(0, 2); // get 2 students
-    //console.log(duplicateStudents)
-    // find number of students which are already in the cohort
-    // const duplicateStudentsCount = parsedUsersToAdd.reduce((total, user) => {
-    //   const ifFound = randomCohort.students?.find((student) => {
-    //     return student.user.toString() === user;
-    //   })
-    //     ? 1
-    //     : 0;
-
-    //   total += ifFound;
-    //   return total;
-    // }, 0);
-
-    // console.log([...parsedUsersToAdd, ...duplicateStudents]);
 
     // call PATCH and get cohort's updated students list
     const response = await request.patch(
       `/api/v1/cohorts/${randomCohort._id}/students`,
       { data: { students: [...parsedUsersToAdd, ...duplicateStudents] } }
     );
-    //  console.log([...parsedUsersToAdd, ...duplicateStudents]);
+
     const data = (await response.json()).data;
     expect(response.ok()).toBeTruthy();
-    // console.log(data);
-    const count = data.filter(
-      (student) => student.user?._id === duplicateStudents[0]
-    ).length;
-    //  console.log(count);
-
-    // // check if each user was added
-    // parsedUsersToAdd.forEach((user) => {
-    //   expect(user).toBe(
-    //     data
-    //       .filter((userInCohort) => userInCohort.user !== null) // discard users in db which are null
-    //       .find((userInCohort) => userInCohort.user._id === user).user._id
-    //   );
-    // });
+    // check if students in updated cohort are not duplicated
+    [...parsedUsersToAdd, ...duplicateStudents].forEach((user) => {
+      const count = data.filter((student) => student.user?._id === user).length;
+      expect(count).toBe(1);
+    });
   });
 
   test("does not adds non existent students to a cohort by provided cohort id", async ({
