@@ -58,9 +58,11 @@ export default async function handler(req, res) {
           });
           return;
         }
-        return res.status(200).json({ data: staticpage });
+        res.status(200).json({ data: staticpage });
+        return; 
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return; 
       }
     default:
       res.setHeader("Allow", ["GET"]);
