@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
-      return;
+      break;
     case "POST":
       try {
         //call method for creating a lesson with any data we received
@@ -54,41 +54,36 @@ export default async function handler(req, res) {
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
-      return;
+      break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
+  return res;
 }
 
 export const getLessons = async () => {
-  try {
-    await dbConnect();
-
-    const lessons = await Lesson.find();
-    if (!lessons) {
-      throw new Error("No lessons found");
-    }
-    return lessons;
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+  await dbConnect();
+  const lessons = await Lesson.find();
+  if (!lessons) {
+    throw new Error("No lessons found");
   }
+  return lessons;
 };
 
 export const createLesson = async (data) => {
-    await dbConnect();
-    if (Object.keys(data).length === 0) {
-      throw new Error("Valid data to create a new lesson not provided");
-    } else {
-      //run mongoose validator to make sure data is valid
-      const newLesson = new Lesson(data);
-      const validationErr = await newLesson.validate();
-      if (validationErr) {
-        throw new Error(validationErr);
-      }
+  await dbConnect();
+  if (Object.keys(data).length === 0) {
+    throw new Error("Valid data to create a new lesson not provided");
+  }
+  //run mongoose validator to make sure data is valid
+  const newLesson = new Lesson(data);
+  const validationErr = await newLesson.validate();
+  if (validationErr) {
+    throw new Error(validationErr);
+  }
 
-      //save the new lesson
-      await newLesson.save();
-      return newLesson;
-    }
+  //save the new lesson
+  await newLesson.save();
+  return newLesson;
 };
