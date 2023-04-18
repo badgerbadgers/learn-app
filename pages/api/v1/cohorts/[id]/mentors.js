@@ -1,3 +1,5 @@
+// TODO  -we need to choose a file where addUsersToCohort is going to live and export it from there to other files across the app
+
 /**
  * @swagger
  *  tags:
@@ -140,7 +142,6 @@ export default async function handler(req, res) {
             .json({ message: "Mentors ids to delete are not provided" });
         } else {
           await deleteMentorsFromCohort(id, "mentors", req.body.mentors);
-          // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
           res.status(200).json();
         }
       } catch (error) {
@@ -161,7 +162,6 @@ export const getCohortMentors = async (id) => {
     .populate("mentors.user")
     .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns mentors with all fields from User data model
   if (!data) {
-    //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
     error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
@@ -174,7 +174,6 @@ export const addUsersToCohort = async (id, field, value) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
-    //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
     error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
@@ -184,7 +183,7 @@ export const addUsersToCohort = async (id, field, value) => {
   // find which of the provided users exist in users database
   const users = await User.find({ _id: { $in: value } });
 
-  // if students property equals to null adding users will give an error
+  // if mentors/students property equals to null adding users will give an error
   // add field if cohort has set it to null
   if (!cohort[field]) {
     cohort[field] = [];

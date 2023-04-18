@@ -1,5 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-const { ObjectId } = require("mongodb");
+import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/cohorts/[id]/mentors", () => {
   //GET TESTS
@@ -9,11 +9,8 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
   }) => {
     // find a random cohort that has mentors in mentors field
     const randomCohort = await db.collection("cohorts").findOne({
-      $and: [
-        { deleted_at: { $eq: null } },
-        { mentors: { $ne: [] } },
-        { mentors: { $ne: null } },
-      ],
+      deleted_at: { $eq: null },
+      mentors: { $nin: [[], null] },
     });
 
     //call GET and get the non-deleted cohort by id
@@ -32,7 +29,6 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
     // check if each element of the array has a property 'user' and 'added_at'
     data.forEach((mentor) => {
       expect(mentor).toHaveProperty("user");
-      // expect(mentor).toHaveProperty('added_at'); < ---- only for students
     });
   });
 
@@ -77,7 +73,7 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
     // find a random cohort that has mentors in mentors field
     const randomCohort = await db
       .collection("cohorts")
-      .findOne({ deleted_at: { $eq: null } });
+      .findOne({ deleted_at: { $eq: null }, mentors: { $nin: [[], null] } });
 
     // find users from users db to add to cohort
     const usersToAdd = await db
@@ -122,14 +118,92 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
     // check if each element of the data has a property 'user' and 'added_at'
     data.forEach((mentor) => {
       expect(mentor).toHaveProperty("user");
-      // expect(mentor.user).not.toBeNull(); some of the existing mentors in the current db is null
-      // expect(mentor).toHaveProperty('added_at'); <--- only for 'students'
     });
+
+    // check if each user was added
+    parsedUsersToAdd.forEach((user) => {
+      expect(user).toBe(
+        data
+          .filter((userInCohort) => userInCohort.user !== null) // discard users in db which are null
+          .find((userInCohort) => userInCohort.user._id === user).user._id
+      );
+    });
+  });
+
+  test("does not add duplicated mentors if duplicated mentors are in update object", async ({
+    request,
+    db,
+  }) => {
+    // find a random cohort that has mentors in mentors field
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null }, mentors: { $nin: [[], null] } });
+
+    // find users from users db to add to cohort
+    const usersToAdd = await db
+      .collection("users")
+      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(2)
+      .toArray();
+
+    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the mentors
+    // extract 2 mentors from the cohort to be updated to create duplicate mentors
+    const duplicateMentors = randomCohort.mentors
+      .map((mentor) => {
+        if (mentor.user) {
+          return mentor.user.toString();
+        }
+      })
+      .slice(0, 2); // get 2 mentors
+
+    // call PATCH and get cohort's updated mentors list
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}/mentors`,
+      { data: { mentors: [...parsedUsersToAdd, ...duplicateMentors] } }
+    );
+
+    const data = (await response.json()).data;
+    expect(response.ok()).toBeTruthy();
+    // check if mentors in updated cohort are not duplicated
+    [...parsedUsersToAdd, ...duplicateMentors].forEach((user) => {
+      const count = data.filter((mentor) => mentor.user?._id === user).length;
+      expect(count).toBe(1);
+    });
+  });
+
+  test("does not adds non existent mentors to a cohort by provided cohort id", async ({
+    request,
+    db,
+  }) => {
+    // find a random cohort that has mentors in mentors field
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null }, mentors: { $nin: [[], null] } });
+
+    // find users from users db to add to cohort
+    const usersToAdd = await db
+      .collection("users")
+      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(4)
+      .toArray();
+
+    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the mentors
+
+    //call PATCH and get cohort's updated mentors list
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}/mentors`,
+      { data: { mentors: parsedUsersToAdd } }
+    );
+
+    const data = (await response.json()).data;
+
+    // check if response is OK
+    expect(response.ok()).toBeTruthy();
 
     // check if the request does not add users that do not exist in db, mock data
     const nonExistentUsers = [
-      ObjectId("62a8bc08eee42d82d2d8d111"),
-      ObjectId("55a5bc08eee42d82d2d8d555"),
+      faker.database.mongodbObjectId(),
+      faker.database.mongodbObjectId(),
     ];
 
     //call PATCH and get cohort's updated mentors list
@@ -140,7 +214,17 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
     // check if response is OK
     expect(responseNotAddedMentors.ok()).toBeTruthy();
     const dataMentorsNotAdded = (await responseNotAddedMentors.json()).data;
-    expect(dataMentorsNotAdded.length).toBe(data.length); // compare to the value after the first request which added mentors
+
+    expect(dataMentorsNotAdded.length).toBe(data.length);
+
+    // check if non-existent users were not added to mentors list
+    expect(
+      dataMentorsNotAdded.find(
+        (person) =>
+          person.user?._id === nonExistentUsers[0] ||
+          person.user?._id === nonExistentUsers[1]
+      )
+    ).toBeFalsy(); // compare to the value after the first request which added mentors
   });
 
   test("does not add users to deleted cohort", async ({ request, db }) => {
@@ -173,7 +257,7 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
       { data: {} }
     );
     expect(responseNoMentors.ok()).not.toBeTruthy();
-    //expect(responseNoMentors.status()).toBe(400);
+    expect(responseNoMentors.status()).toBe(400);
   });
   // DELETE TESTS
   test("deletes mentors from a cohort by cohort's id", async ({
