@@ -43,9 +43,6 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const sections = await getSections();
-        if (!sections) {
-          return res.status(404).json({ message: error });
-        }
         return res.status(200).json({ data: sections });
       } catch (error) {
         return res.status(400).json({ message: error.message });
@@ -61,9 +58,6 @@ export const getSections = async () => {
     await dbConnect();
 
     const allsections = await Section.find({});
-    if (!allsections) {
-      throw new Error("No sections can be found");
-    }
     return allsections;
   } catch (error) {
     throw new Error("Error getting sections");
