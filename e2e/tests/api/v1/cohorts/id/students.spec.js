@@ -1,5 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-const { ObjectId } = require("mongodb");
+import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/cohorts/[id]/students", () => {
   //GET TESTS
@@ -9,11 +9,8 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
   }) => {
     // find a random cohort that has students in students field
     const randomCohort = await db.collection("cohorts").findOne({
-      $and: [
-        { deleted_at: { $eq: null } },
-        { students: { $ne: [] } },
-        { students: { $ne: null } },
-      ],
+      deleted_at: { $eq: null },
+      students: { $nin: [[], null] },
     });
 
     //call GET and get the non-deleted cohort by id
@@ -77,7 +74,7 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     // find a random cohort that has students in students field
     const randomCohort = await db
       .collection("cohorts")
-      .findOne({ deleted_at: { $eq: null } });
+      .findOne({ deleted_at: { $eq: null }, students: { $nin: [[], null] } });
 
     // find users from users db to add to cohort
     const usersToAdd = await db
@@ -122,14 +119,115 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     // check if each element of the data has a property 'user' and 'added_at'
     data.forEach((student) => {
       expect(student).toHaveProperty("user");
-      // expect(student.user).not.toBeNull(); some of the existing students in the current db is null
       expect(student).toHaveProperty("added_at");
     });
+    // check if each user was added
+    parsedUsersToAdd.forEach((user) => {
+      expect(user).toBe(
+        data
+          .filter((userInCohort) => userInCohort.user !== null) // discard users in db which are null
+          .find((userInCohort) => userInCohort.user._id === user).user._id
+      );
+    });
+  });
+
+  test.only("does not duplicate students if duplicated students are added", async ({
+    request,
+    db,
+  }) => {
+    // find a random cohort that has students in students field
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null }, students: { $nin: [[], null] } });
+
+    // find users from users db to add to cohort
+    const usersToAdd = await db
+      .collection("users")
+      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(2)
+      .toArray();
+
+    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the students
+    const duplicateStudents = randomCohort.students
+      //.filter((student) => student.user !== null)
+      .map((student) => {
+        if (student.user) {
+          return student.user.toString();
+        }
+      })
+      .slice(0, 2); // get 2 students
+    //console.log(duplicateStudents)
+    // find number of students which are already in the cohort
+    // const duplicateStudentsCount = parsedUsersToAdd.reduce((total, user) => {
+    //   const ifFound = randomCohort.students?.find((student) => {
+    //     return student.user.toString() === user;
+    //   })
+    //     ? 1
+    //     : 0;
+
+    //   total += ifFound;
+    //   return total;
+    // }, 0);
+
+    // console.log([...parsedUsersToAdd, ...duplicateStudents]);
+
+    // call PATCH and get cohort's updated students list
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}/students`,
+      { data: { students: [...parsedUsersToAdd, ...duplicateStudents] } }
+    );
+    //  console.log([...parsedUsersToAdd, ...duplicateStudents]);
+    const data = (await response.json()).data;
+    expect(response.ok()).toBeTruthy();
+    // console.log(data);
+    const count = data.filter(
+      (student) => student.user?._id === duplicateStudents[0]
+    ).length;
+    //  console.log(count);
+
+    // // check if each user was added
+    // parsedUsersToAdd.forEach((user) => {
+    //   expect(user).toBe(
+    //     data
+    //       .filter((userInCohort) => userInCohort.user !== null) // discard users in db which are null
+    //       .find((userInCohort) => userInCohort.user._id === user).user._id
+    //   );
+    // });
+  });
+
+  test("does not adds non existent students to a cohort by provided cohort id", async ({
+    request,
+    db,
+  }) => {
+    // find a random cohort that has students in students field
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    // find users from users db to add to cohort
+    const usersToAdd = await db
+      .collection("users")
+      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(4)
+      .toArray();
+
+    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the students
+
+    //call PATCH and get cohort's updated students list
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}/students`,
+      { data: { students: parsedUsersToAdd } }
+    );
+
+    const data = (await response.json()).data;
+
+    // check if response is OK
+    expect(response.ok()).toBeTruthy();
 
     // check if the request does not add users that do not exist in db, mock data
     const nonExistentUsers = [
-      ObjectId("62a8bc08eee42d82d2d8d111"),
-      ObjectId("55a5bc08eee42d82d2d8d555"),
+      faker.database.mongodbObjectId(),
+      faker.database.mongodbObjectId(),
     ];
 
     //call PATCH and get cohort's updated students list
@@ -140,7 +238,17 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     // check if response is OK
     expect(responseNotAddedStudents.ok()).toBeTruthy();
     const dataStudentsNotAdded = (await responseNotAddedStudents.json()).data;
-    expect(dataStudentsNotAdded.length).toBe(data.length); // compare to the value after the first request which added students
+
+    expect(dataStudentsNotAdded.length).toBe(data.length);
+
+    // check if non-existent users were not added to students list
+    expect(
+      dataStudentsNotAdded.find(
+        (person) =>
+          person.user?._id === nonExistentUsers[0] ||
+          person.user?._id === nonExistentUsers[1]
+      )
+    ).toBeFalsy(); // compare to the value after the first request which added students
   });
 
   test("does not add users to deleted cohort", async ({ request, db }) => {
@@ -172,7 +280,7 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
       { data: {} }
     );
     expect(responseNoStudents.ok()).not.toBeTruthy();
-    //expect(responseNoStudents.status()).toBe(400);
+    expect(responseNoStudents.status()).toBe(400);
   });
 
   // DELETE TESTS
