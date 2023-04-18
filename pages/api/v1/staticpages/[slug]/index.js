@@ -52,7 +52,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const staticpage = await getStaticPageSlug(slug);
+        await getStaticPageSlug(slug);
         res.status(200).json({ data: slug });
         return;
       } catch (error) {
