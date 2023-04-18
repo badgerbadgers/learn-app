@@ -43,9 +43,11 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const sections = await getSections();
-        return res.status(200).json({ data: sections });
+        res.status(200).json({ data: sections });
+        return; 
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
+        return;
       }
     default:
       res.setheader("Allow", ["GET"]);
