@@ -73,8 +73,6 @@ test.describe("/api/v1/lessons", () => {
 
     // Check that the response is false
     expect(response.ok()).toBeFalsy();
-
-    await db.collection("lessons");
   });
 
   ////////////////////////////////////////////////////////////////
