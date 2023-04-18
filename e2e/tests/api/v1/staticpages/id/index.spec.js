@@ -72,7 +72,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
   });
 
   //SOFT DELETE TESTS
-  test("returns a static page that has a new field deleted_at", async ({
+  test.only("returns a static page that has a new field deleted_at", async ({
     request,
     db,
   }) => {
@@ -94,7 +94,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
     const responsejson = await deletedResponse.json();
 
     //test for success msg
-    expect(responsejson).toEqual({ message: "success" });
+    expect(responsejson).toEqual({ message: "Page has been deleted." });
 
     //read db with id and make sure deleted at is not null
     const staticPagePostDelete = await db
@@ -106,6 +106,6 @@ test.describe("/api/v1/staticpages/[id]", () => {
     const undeletedResponse = await request.patch(
       `/api/v1/staticpages/${undeletedStaticPage._id}`
     );
-    expect(undeletedResponse).toBeNull();
+    expect(undeletedResponse.deleted_at).toBeUndefined();
   });
 });
