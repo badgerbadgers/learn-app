@@ -892,4 +892,30 @@ module.exports = [
     __v: 0,
     status: "future",
   },
+
+  {
+    _id: ObjectId("335841bd9be844015c74719a"),
+    cohort_name: "Mobile View no schedule",
+    created_at: "2022-10-25T20:06:20.673Z",
+    course: ObjectId("62e056cee6daad619e5cc2c5"),
+    start_date: faker.date.future(2).toISOString(),
+    zoom_link: "",
+    students: [
+      {
+        user: ObjectId("6282b0d6d20d837b1c87afa9"),
+        added_at: "2023-03-01T14:48:30.884Z",
+      },
+    ],
+    mentors: [
+      {
+        user: ObjectId("6282b0d6d20d837b1c87afa9"),
+      },
+    ],
+    seats: 0,
+    schedule: [],
+    slug: "mobile-view-no-schedule",
+    deleted_at: null,
+    __v: 6,
+    status: "past",
+  },
 ];
