@@ -128,13 +128,6 @@ export const getStaticPages = async () => {
 };
 
 export const createStaticPage = async (data) => {
-  const staticpage = {
-    wordpress_id: data.wordpress_id,
-    title: data.title,
-    isShown: data.isShown,
-    slug: data.slug,
-  };
-
   try {
     await dbConnect();
     const newstaticpage = new Staticpage(staticpage);
