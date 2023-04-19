@@ -9,19 +9,11 @@ module.exports = [
     zoom_link: "https://us02web.zoom.us/j/87054407958",
     students: [
       {
-        user: ObjectId("62d969ade411b721457b4000"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
-      {
         user: ObjectId("62abc6581f78e685fe3c8066"),
         added_at: "2023-01-12T18:41:15.964Z",
       },
       {
         user: ObjectId("62d1cdeb70f32c8f947ee2ba"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
-      {
-        user: ObjectId("62abc6581f78e685fe3c8066"),
         added_at: "2023-01-12T18:41:15.964Z",
       },
       {
@@ -638,10 +630,6 @@ module.exports = [
     zoom_link: "https://us02web.zoom.us/j/87054407958",
     status: "past",
     students: [
-      {
-        user: ObjectId("62abc6581f78e685fe3c8066"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
       {
         user: ObjectId("62abc6581f78e685fe3c8066"),
         added_at: "2023-01-12T18:41:15.964Z",
