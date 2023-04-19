@@ -73,7 +73,7 @@ test.describe("/api/v1/staticpages", () => {
     expect(resDummyData.wordpress_id).toBeDefined();
   });
 
-  test.only("does not create static page if wordpress_id is missing", async ({
+  test("does not create static page if wordpress_id is missing", async ({
     request,
   }) => {
     //new obj to test with using fakerjs
