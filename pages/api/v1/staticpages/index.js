@@ -127,7 +127,7 @@ export const getStaticPages = async () => {
   }
 };
 
-export const createStaticPage = async (data) => {
+export const createStaticPage = async (staticpage) => {
   try {
     await dbConnect();
     const newstaticpage = new Staticpage(staticpage);
