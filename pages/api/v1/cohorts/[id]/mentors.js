@@ -1,11 +1,10 @@
-// TODO check 4** error responses options
 /**
  * @swagger
  *  tags:
  *   name: Cohorts
- * /api/v1/cohorts/{id}/students:
+ * /api/v1/cohorts/{id}/mentors:
  *   get:
- *     description: Returns a cohort's students by the cohort's id
+ *     description: Returns a cohort's mentors by the cohort's id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -16,13 +15,13 @@
  *         example: 62db592a4101934c0011b357
  *     responses:
  *       200:
- *         description: Provides a cohort's students list
+ *         description: Provides a cohort's mentors list
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if a cohort or it's students not found
+ *         description: Error message if a cohort or it's mentors not found
  *   patch:
- *     description: Updates a cohort's students list by the cohort's id
+ *     description: Updates a cohort's mentors list by the cohort's id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -33,30 +32,30 @@
  *         required: true
  *         example: 62db592a4101934c0011b357
  *       - in: body
- *         name: students
- *         description: An object with property 'students' and a value of array of students' mongo ids to add
+ *         name: mentors
+ *         description: An object with property 'mentor' and a value of array of mentors' mongo ids
  *         required: true
  *         schema:
  *           type: object
  *           required:
- *             - students
+ *             - mentors
  *           properties:
- *             students:
+ *             mentors:
  *             type: array
  *             schema:
  *               type: array
  *               items:
  *                 type: string
- *           example: {"students": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
+ *           example: {"mentors": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
  *     responses:
  *       200:
- *         description: Provides a cohort's students list
+ *         description: Provides a cohort's mentors list
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if a cohort or it's students not found
+ *         description: Error message if a cohort or it's mentors not found
  *   delete:
- *     description: Deletes students from a cohort by cohort's id
+ *     description: Deletes mentors from a cohort by cohort's id
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
@@ -65,30 +64,30 @@
  *         schema:
  *           type: string
  *         required: true
- *         example: 635841bd9be844015c74719a
+ *         example: 62db592a4101934c0011b357
  *       - in: body
- *         name: students
- *         description: An object with property 'students' and a value of array of students' mongo ids to delete
+ *         name: mentors
+ *         description: An object with property 'mentor' and a value of array of mentors' mongo ids to be deleted
  *         required: true
  *         schema:
  *           type: object
  *           required:
- *             - students
+ *             - mentors
  *           properties:
- *             students:
+ *             mentors:
  *             type: array
  *             schema:
  *               type: array
  *               items:
  *                 type: string
- *           example: {"students": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
+ *           example: {"mentors": ["62a11039db71825ea1c4388f", "634dbf456cef142cec41c17e"]}
  *     responses:
  *       200:
- *         description: Deletes a cohort's students by the cohort's id, returns no content
+ *         description: Deletes a cohort's mentors by the cohort's id, returns no content
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if a cohort or it's students not found
+ *         description: Error message if a cohort or it's mentors not found
  */
 
 // TODO - swagger - change description if anything returns from DELETED request
@@ -104,45 +103,42 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const data = await getCohortStudents(id);
-        res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
+        const data = await getCohortMentors(id);
+        res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
       } catch (error) {
         res.status(error.status || 400).json({ message: error.message });
       }
       break;
     case "PATCH":
       try {
-        if (!req.body.students) {
+        if (!req.body.mentors) {
           res
             .status(400)
-            .json({ message: "Student ids to add are not provided" });
+            .json({ message: "Mentor ids to add are not provided" });
         } else {
-          // TODO - make sure calculating/updating 'seats' property is taken care  of in Cohort data model to prevent students from exceeding allowed number
           const updatedCohort = await addUsersToCohort(
             id,
-            "students",
-            req.body.students
+            "mentors",
+            req.body.mentors
           );
           const updatedCohortPopulate = await updatedCohort.populate(
-            "students.user"
+            "mentors.user"
           );
-          res.status(200).json({ data: updatedCohortPopulate.students });
+          res.status(200).json({ data: updatedCohortPopulate.mentors });
         }
       } catch (error) {
         console.error(error);
         res.status(error.status || 400).json({ message: error.message });
       }
-
       break;
     case "DELETE":
       try {
-        if (!req.body.students) {
+        if (!req.body.mentors) {
           res
             .status(400)
-            .json({ message: "Student ids to delete are not provided" });
+            .json({ message: "Mentors ids to delete are not provided" });
         } else {
-          await deleteStudentsFromCohort(id, "students", req.body.students);
-          // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
+          await deleteMentorsFromCohort(id, "mentors", req.body.mentors);
           res.status(200).json();
         }
       } catch (error) {
@@ -156,13 +152,12 @@ export default async function handler(req, res) {
   }
 }
 
-export const getCohortStudents = async (id) => {
+export const getCohortMentors = async (id) => {
   await dbConnect();
-  const data = await Cohort.findById(id, "students")
-    .populate("students.user")
-    .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
+  const data = await Cohort.findById(id, "mentors")
+    .populate("mentors.user")
+    .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns mentors with all fields from User data model
   if (!data) {
-    //throw new Error(`Cohort with id of ${id} not found`);
     const error = new Error();
     error.status = 404;
     error.message = `Could not find cohort with id ${id} `;
@@ -184,6 +179,7 @@ export const addUsersToCohort = async (id, field, value) => {
   // find which of the provided users exist in users database
   const users = await User.find({ _id: { $in: value } });
 
+  // if mentors/students property equals to null adding users will give an error
   // add field if cohort has set it to null
   if (!cohort[field]) {
     cohort[field] = [];
@@ -207,16 +203,18 @@ export const addUsersToCohort = async (id, field, value) => {
   return await cohort.save();
 };
 
-export const deleteStudentsFromCohort = async (id, field, value) => {
+export const deleteMentorsFromCohort = async (id, field, value) => {
   await dbConnect();
+
   try {
-    const parsedValues = value.map((studentId) => ObjectId(studentId));
+    const parsedValues = value.map((mentorId) => ObjectId(mentorId));
 
     const cohort = await Cohort.findByIdAndUpdate(
       { _id: id },
       { $pull: { [field]: { user: { $in: parsedValues } } } }
       //  { new: true }
     );
+
     if (!cohort) {
       const error = new Error();
       error.status = 404;
