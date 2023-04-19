@@ -907,7 +907,7 @@ module.exports = [
 
   {
     _id: ObjectId("335841bd9be844015c74719a"),
-    cohort_name: "Mobile View no shedule",
+    cohort_name: "Mobile View no schedule",
     created_at: "2022-10-25T20:06:20.673Z",
     course: ObjectId("62e056cee6daad619e5cc2c5"),
     start_date: faker.date.future(2).toISOString(),
