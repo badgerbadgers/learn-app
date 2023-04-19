@@ -1,5 +1,3 @@
-// TODO  -we need to choose a file where addUsersToCohort is going to live and export it from there to other files across the app
-
 /**
  * @swagger
  *  tags:
@@ -132,7 +130,6 @@ export default async function handler(req, res) {
         console.error(error);
         res.status(error.status || 400).json({ message: error.message });
       }
-
       break;
     case "DELETE":
       try {
@@ -153,7 +150,6 @@ export default async function handler(req, res) {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
-  return res;
 }
 
 export const getCohortMentors = async (id) => {

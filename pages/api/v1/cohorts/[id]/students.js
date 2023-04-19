@@ -154,7 +154,6 @@ export default async function handler(req, res) {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
-  return res;
 }
 
 export const getCohortStudents = async (id) => {
