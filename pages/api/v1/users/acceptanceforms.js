@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/users/{id}/acceptanceforms:
+ * /api/v1/users/acceptanceforms:
  *   get:
  *     description: Returns all acceptanceforms for user by id
  *     tags: [Users]
