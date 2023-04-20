@@ -139,7 +139,16 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      await downloadReport(req, res);
+      if (req.headers.accept === "text/csv") {
+        const body = req.body;
+        const session = await getSession({ req });
+        const result = await downloadReport(res, body, session);
+      } else {
+        const body = req.body;
+        const session = await getSession({ req });
+        const result = await getAcceptanceForms(body, session);
+        res.status(200).json({ data: result });
+      }
       return;
     case "POST":
       await createAcceptanceForm(req, res);
@@ -153,7 +162,6 @@ export default async function handler(req, res) {
 const createAcceptanceForm = async (req, res) => {
   const body = req.body;
   const session = await getSession({ req });
-  console.log("session", session);
   const filter = { user: session.user.id };
   const update = {
     user: session.user.id,
@@ -206,7 +214,6 @@ const createAcceptanceForm = async (req, res) => {
     const newuser = await AcceptanceForm.altFindOneAndUpdate(filter, update, {
       upsert: true,
     });
-    console.log("newuser", newuser);
     res.status(200).json({ success: true, data: newuser });
   } catch (error) {
     res.status(400).json({ success: false });
@@ -214,11 +221,9 @@ const createAcceptanceForm = async (req, res) => {
   }
 };
 
-const downloadReport = async (req, res) => {
+const downloadReport = async (res) => {
   const collection = mongoose.connection.collection("acceptanceforms");
   const data = await collection.find().toArray();
-  console.log("data", data);
-
   const stream = fastCsv.format({
     headers: [
       "_id",
@@ -284,4 +289,15 @@ const downloadReport = async (req, res) => {
     res.status(400).json({ success: false });
     console.error(error);
   }
+};
+
+const getAcceptanceForms = async () => {
+  const acceptanceForms = await AcceptanceForm.find();
+  if (!acceptanceForms) {
+    const error = new Error();
+    error.status = 404;
+    error.message = "No acceptanceforms found";
+    throw error;
+  }
+  return acceptanceForms;
 };

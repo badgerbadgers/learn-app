@@ -19,7 +19,17 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      await downloadReport(req, res);
+      if (req.headers.accept === "text/csv") {
+        const body = req.body;
+        const session = await getSession({ req });
+        const result = await downloadReport(res, body, session);
+      } else {
+        const body = req.body;
+        const session = await getSession({ req });
+        const result = await getAcceptanceForms(body, session);
+        res.status(200).json({ data: result });
+      }
+      // await downloadReport(req, res);
       return;
     case "POST":
       await createAcceptanceForm(req, res);
@@ -92,7 +102,7 @@ const createAcceptanceForm = async (req, res) => {
   }
 };
 
-const downloadReport = async (req, res) => {
+const downloadReport = async (res) => {
   const collection = mongoose.connection.collection("acceptanceforms");
   const data = await collection.find().toArray();
   const stream = fastCsv.format({
@@ -158,5 +168,17 @@ const downloadReport = async (req, res) => {
   } catch (error) {
     res.status(400).json({ success: false });
     console.error(error);
+  }
+};
+
+const getAcceptanceForms = async (res) => {
+  try {
+    const acceptanceForms = await AcceptanceForm.find();
+    res.status(200).json({
+      success: true,
+      data: acceptanceForms,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false });
   }
 };
