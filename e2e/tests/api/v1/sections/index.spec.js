@@ -15,7 +15,7 @@ test.describe("/api/v1/sections", () => {
     //assertions for hard coded data
     expect(sections[0].course).toContain("62e056cee6daad619e5cc2c5");
     expect(sections[0]._id).toContain("633d9916ec0d4b5e83a6b062");
-    // expect(sections[0].order).toContain(2);
+    expect(sections[0].order).toBe(2);
     expect(sections[0].title).toContain("Git Basics");
 
     //assertions for type of each field
