@@ -67,6 +67,7 @@ export default async function handler(req, res) {
       try {
         const id = req.query.id;
         const updates = req.body;
+        console.log(updates);
 
         const updatedPage = await updateStaticPage(id, updates);
         res.status(200).json({ data: updatedPage });
@@ -94,7 +95,11 @@ export default async function handler(req, res) {
 export const updateStaticPage = async (id, updates) => {
   try {
     await dbConnect();
-    const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates);
+    const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates, {
+      runValidators: true,
+      new: true,
+    });
+    //run validators on new obj
     if (!updatedstaticpage) {
       throw new Error(`${id} is not a valid id.`);
     }
