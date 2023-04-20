@@ -52,6 +52,7 @@
  *       - in: body
  *         description: Cohort data to update
  *         name: cohort
+ *         required: true
  *         schema:
  *           type: object
  *           properties:
@@ -182,22 +183,15 @@ export const updateCohort = async (id, updates) => {
   }
   if (Object.keys(updates).length === 0) {
     throw new Error("No valid information was supplied to update the cohort");
-  } else {
-    const updatedCohort = await Cohort.findByIdAndUpdate(id, updates, {
-      new: true,
-    });
-    //run mongoose validator to make sure data is valid
-    const validationErr = await updatedCohort.validate();
-    if (validationErr) {
-      throw new Error(validationErr);
-    }
-
-    if (!updatedCohort) {
-      const error = new Error();
-      error.status = 404;
-      error.message = `Could not find and update cohort with id - ${id}`;
-      throw error;
-    }
-
+  }
+  const updatedCohort = await Cohort.findByIdAndUpdate(id, updates, {
+    new: true,
+    runValidators: true,
+  });
+  if (!updatedCohort) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find and update cohort with id - ${id}`;
+    throw error;
   }
 };
