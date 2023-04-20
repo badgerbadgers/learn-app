@@ -209,9 +209,6 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was successful
     expect(patchResponse.ok()).toBeTruthy();
-    const responseData = (await patchResponse.json()).data;
-
-    expect(responseData).toMatchObject(updates);
 
     // Send a GET request to retrieve the updated list of cohorts
     const updatedResponse = await request.get(`/api/v1/cohorts`);

@@ -122,8 +122,8 @@ export default async function handler(req, res) {
     case "PATCH":
       try {
         const updates = req.body;
-        await updateCohort(id, updates);
-        res.status(200).json({ data: updates });
+        const updatedCohort = await updateCohort(id, updates);
+        res.status(200).json({ data: updatedCohort });
       } catch (error) {
         console.error(error);
         res.status(400).json({ message: error.message });
