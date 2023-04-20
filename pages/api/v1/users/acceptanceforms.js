@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         }
         return res.status(200).json({ data: acceptanceforms });
       } catch (error) {
-        res.status(400).json({
+        res.status(error.status || 400).json({
           message: error.message,
         });
         return;
@@ -49,6 +49,12 @@ export const getAcceptanceforms = async (req) => {
   await dbConnect();
   const session = await getSession({ req });
   const filter = {user: ObjectId(session.user.id)}
+  if(!user) {
+    const error = new Error();
+    error.status = 404;
+    error.message = "No acceptanceforms found";
+    throw error
+  }
   const collection = mongoose.connection.collection("acceptanceforms");
   const acceptanceforms = await collection.find(filter).toArray();
   return acceptanceforms;
