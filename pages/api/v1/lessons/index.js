@@ -9,9 +9,11 @@
  *     responses:
  *       200:
  *         description: Provides an array of lessons
+ *       404:
+ *         description: Error messages if lessons not found
  *       400:
  *         description: Error messages
-  *   post:
+ *   post:
  *     description: Creates a new Lesson
  *     tags: [Lessons]
  *     parameters:
@@ -23,6 +25,7 @@
  *           properties:
  *             title:
  *               type: string
+ *               required: true
  *     responses:
  *       200:
  *         description: Creates new lesson
@@ -40,7 +43,7 @@ export default async function handler(req, res) {
     case "GET":
       try {
         //call method for getting lessons with any parameters we received
-        const lessons = await getLessons(req.query);
+        const lessons = await getLessons();
         res.status(200).json({ data: lessons });
       } catch (error) {
         res.status(400).json({ message: error.message });
@@ -59,14 +62,17 @@ export default async function handler(req, res) {
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
-  return res;
+  return;
 }
 
 export const getLessons = async () => {
   await dbConnect();
   const lessons = await Lesson.find();
   if (!lessons) {
-    throw new Error("No lessons found");
+    return {
+      // returns the default 404 page with a status code of 404
+      notFound: true,
+    };
   }
   return lessons;
 };
