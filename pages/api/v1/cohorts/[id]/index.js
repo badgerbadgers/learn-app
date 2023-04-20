@@ -138,28 +138,17 @@ export default async function handler(req, res) {
 }
 
 export const getCohortById = async (id) => {
-  try {
-    await dbConnect();
-    const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
-
-    return cohort;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
-  }
+  await dbConnect();
+  const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
+  return cohort;
 };
 
 export const deleteCohortById = async (id) => {
-  try {
-    await dbConnect();
-    const deletedCohort = await Cohort.findByIdAndUpdate(id, {
-      deleted_at: new Date(),
-    }); // TODO - add { new: true } if need to return deleted cohort in response
-    return deletedCohort;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
-  }
+  await dbConnect();
+  const deletedCohort = await Cohort.findByIdAndUpdate(id, {
+    deleted_at: new Date(),
+  }); // TODO - add { new: true } if need to return deleted cohort in response
+  return deletedCohort;
 };
 
 export const updateCohort = async (id, updates) => {
