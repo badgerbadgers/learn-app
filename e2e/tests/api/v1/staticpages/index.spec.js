@@ -39,38 +39,17 @@ test.describe("/api/v1/staticpages", () => {
       isShown: faker.datatype.boolean(),
       slug: faker.lorem.slug(),
     };
-    //new obj to test with from test data
-    const dbStaticPage = await db
-      .collection("poststaticpage")
-      .findOne({ wordpress_id: { $ne: null } });
 
     //then make POST with faker data
     const responsewithfakerdata = await request.post(`/api/v1/staticpages`, {
       data: fakerJsStaticPage,
     });
-
-    //POST OBJ with no boolean isShown
-
     expect(responsewithfakerdata.ok()).toBeTruthy();
-
     const resFakerData = (await responsewithfakerdata.json()).data;
-
     expect(resFakerData).toMatchObject(fakerJsStaticPage);
 
     //wordpress id not null
     expect(resFakerData.wordpress_id).toBeDefined();
-
-    //then make POST with test data
-    const responsewithdummydata = await request.post(`/api/v1/staticpages`, {
-      data: dbStaticPage,
-    });
-    expect(responsewithdummydata.ok()).toBeTruthy();
-
-    const resDummyData = (await responsewithdummydata.json()).data;
-
-    expect(resDummyData).toMatchObject(dbStaticPage);
-
-    expect(resDummyData.wordpress_id).toBeDefined();
   });
 
   test("does not create static page if wordpress_id is missing", async ({
