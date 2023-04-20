@@ -142,11 +142,11 @@ export const updateCourse = async (id, updates) => {
   // filter updates to extract allowed fields to perform update
   const allowedFields = ["course_name", "lessons", "deleted_at"];
   const filteredUpdates = allowedFields.reduce((fields, current) => {
-    if (
-      current === "deleted_at" &&
-      (updates[current] || updates[current] === null)
-    ) {
+    if (current === "deleted_at" && updates[current] === null) {
       return { ...fields, [current]: updates[current] };
+    } else if (current === "deleted_at" && updates[current]) {
+      // check if deleted_at is a Date not null and do not let the field to go to updates (deleted not allowed in PATCH)
+      return fields;
     }
     if (updates[current]) {
       return { ...fields, [current]: updates[current] };

@@ -124,9 +124,12 @@ test.describe("/api/v1/courses/[id]", () => {
     const updates = {
       lessons: [faker.database.mongodbObjectId(), randomLesson._id],
     };
-    const response = await request.patch(`/api/v1/courses/${randomCourse._id}`, {
-      data: updates,
-    });
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
     expect(response.ok()).toBeFalsy();
 
     //confirm the course has not been updated
@@ -140,7 +143,7 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(course.lessons.sort()).not.toStrictEqual(updates.lessons.sort());
   });
 
-  test("does not update a course to add a field not existed in Course model", async ({
+  test("does not update a course with field not existed in Course model", async ({
     request,
     db,
   }) => {
@@ -195,6 +198,44 @@ test.describe("/api/v1/courses/[id]", () => {
       }
     );
     expect(responseToEmptyUpdate.ok()).toBeFalsy();
+  });
+
+  test("does not let delete (soft delete) course in PATCH and returns an error if deleted_at provided with a date object", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const updates = { deleted_at: faker.date.recent() };
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeFalsy();
+  });
+
+  test("undeletes a course if deleted_at set to null provided in updates", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $ne: null } });
+
+    const updates = { deleted_at: null };
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const data = (await response.json()).data;
+    expect(data.deleted_at).toBeNull();
   });
 
   // DELETE TESTS
