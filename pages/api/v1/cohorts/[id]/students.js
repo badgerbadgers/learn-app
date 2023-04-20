@@ -123,10 +123,11 @@ export default async function handler(req, res) {
             "students",
             req.body.students
           );
-          const updatedCohortPopulate = await updatedCohort.populate(
-            "students.user"
-          );
-          res.status(200).json({ data: updatedCohortPopulate.students });
+          // const updatedCohortPopulate = await updatedCohort.populate(
+          //   "students.user"
+          // );
+          res.status(200).json({data: updatedCohort})
+          // res.status(200).json({ data: updatedCohortPopulate.students });
         }
       } catch (error) {
         console.error(error);
@@ -181,30 +182,35 @@ export const addUsersToCohort = async (id, field, value) => {
     throw error;
   }
 
-  // find which of the provided users exist in users database
-  const users = await User.find({ _id: { $in: value } });
+  // // find which of the provided users exist in users database
+  // const users = await User.find({ _id: { $in: value } });
 
-  // add field if cohort has set it to null
-  if (!cohort[field]) {
-    cohort[field] = [];
-  }
+  // // add field if cohort has set it to null
+  // if (!cohort[field]) {
+  //   cohort[field] = [];
+  // }
 
-  users.forEach((user) => {
-    // if the user not in the field already, add them
-    const isExistingUser = cohort[field].find(
-      (u) => u.user?.toString() === user._id.toString()
-    );
+  // users.forEach((user) => {
+  //   // if the user not in the field already, add them
+  //   const isExistingUser = cohort[field].find(
+  //     (u) => u.user?.toString() === user._id.toString()
+  //   );
 
-    if (!isExistingUser) {
-      // check if the field is 'student' to add 'added_at' property
-      if (field === "students") {
-        cohort[field].push({ user: user._id, added_at: new Date() });
-      } else {
-        cohort[field].push({ user: user._id });
-      }
-    }
-  });
-  return await cohort.save();
+  //   if (!isExistingUser) {
+  //     // check if the field is 'student' to add 'added_at' property
+  //     if (field === "students") {
+  //       cohort[field].push({ user: user._id, added_at: new Date() });
+  //     } else {
+  //       cohort[field].push({ user: user._id });
+  //     }
+  //   }
+  // });
+  // return await cohort.save();
+  console.log(value, "FROM API");
+   await cohort.updateUsers({ students: value });
+  // const updated = await cohort.save()
+
+  return { students: "updated" };
 };
 
 export const deleteStudentsFromCohort = async (id, field, value) => {
