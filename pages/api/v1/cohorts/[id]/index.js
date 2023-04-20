@@ -183,4 +183,5 @@ export const updateCohort = async (id, updates) => {
     error.message = `Could not find and update cohort with id - ${id}`;
     throw error;
   }
+  return updatedCohort;
 };
