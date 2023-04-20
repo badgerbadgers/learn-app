@@ -7,7 +7,7 @@ test.describe("/api/v1/users", () => {
 
   test("returns the list of users", async ({ request }) => {
     //call GET and get all the non-deleted users
-    const response = await request.get(`/api/users`);
+    const response = await request.get("/api/v1/users");
     expect(response.ok()).toBeTruthy();
 
     const users = (await response.json()).data;
@@ -222,13 +222,13 @@ test.describe("/api/v1/users", () => {
       gh: faker.random.alphaNumeric(10),
     };
 
-    const response = await request.post(`/api/v1/users`, {
+    const response = await request.post("/api/v1/users", {
       data: newUser,
     });
     expect(response.ok()).toBeFalsy();
 
     //confirm our user has not been created
-    const getResponse = await request.get(`/api/v1/users`);
+    const getResponse = await request.get("/api/v1/users");
     expect(getResponse.ok()).toBeTruthy();
 
     const users = (await getResponse.json()).data;
@@ -245,13 +245,13 @@ test.describe("/api/v1/users", () => {
       email: faker.internet.email(),
     };
 
-    const response = await request.post(`/api/v1/users`, {
+    const response = await request.post("/api/v1/users", {
       data: newUser,
     });
     expect(response.ok()).toBeFalsy();
 
     //confirm our user has not been created
-    const getResponse = await request.get(`/api/v1/users`);
+    const getResponse = await request.get("/api/v1/users");
     expect(getResponse.ok()).toBeTruthy();
 
     const users = (await getResponse.json()).data;
@@ -271,13 +271,13 @@ test.describe("/api/v1/users", () => {
         gh: user.gh,
       };
 
-      const response = await request.post(`/api/v1/users`, {
+      const response = await request.post("/api/v1/users", {
         data: newUser,
       });
       expect(response.ok()).toBeFalsy();
 
       //confirm our user has not been created
-      const getResponse = await request.get(`/api/v1/users`);
+      const getResponse = await request.get("/api/v1/users");
       expect(getResponse.ok()).toBeTruthy();
 
       const users = (await getResponse.json()).data;

@@ -33,15 +33,18 @@
  *     description: Creates a new user
  *     tags: [Users]
  *     parameters:
- *        - name: name
- *          type: string
- *          required: true
- *        - name: email
- *          type: string
- *          required: true
- *        - name: gh
- *          type: string
- *          required: true
+ *        - in: body
+ *          name: user
+ *          description: Create a new user
+ *          schema: 
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *              email:
+ *                type: string
+ *              gh:
+ *                type: string
  *     responses:
  *       200:
  *         description: the created user
