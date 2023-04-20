@@ -166,7 +166,7 @@ export const createSchedule = async (courseId) => {
       })
     );
   } catch (error) {
-    console.log(error, "Can't fetch lessons from course");
+    throw new Error("Can't fetch lessons from course");
   }
 
   return schedule;
