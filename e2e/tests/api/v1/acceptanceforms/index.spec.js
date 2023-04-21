@@ -1,4 +1,4 @@
-import { test, expect } from "e2e/fixtures/testAsAdmin";
+import { test, expect } from "e2e/fixtures/testAsUser";
 import { faker } from "@faker-js/faker";
 const { Readable } = require("stream");
 import { parseStream } from "fast-csv";
@@ -102,7 +102,6 @@ test.describe("/api/v1/acceptanceforms", () => {
       data: newAcceptanceForm,
     });
     expect(response.ok()).toBeTruthy();
-
     const responseData = (await response.json()).data;
     expect(responseData).toMatchObject(newAcceptanceForm);
     // check if the user id is the same
@@ -120,6 +119,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_first_name property
     const formWithoutFirstName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutFirstName.personal_first_name;
+    formWithoutFirstName.demographics_education = "formWithoutFirstName";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutFirstName,
@@ -133,7 +133,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutFirstName.completed_at,
+        demographics_education: formWithoutFirstName.demographics_education,
       })
     );
   });
@@ -149,6 +149,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_last_name property
     const formWithoutLastName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLastName.personal_last_name;
+    formWithoutLastName.demographics_education = "formWithoutLastName";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutLastName,
@@ -162,7 +163,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutLastName.completed_at,
+        demographics_education: formWithoutLastName.demographics_education,
       })
     );
   });
@@ -178,6 +179,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_email property
     const formWithoutEmail = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutEmail.personal_email;
+    formWithoutEmail.demographics_education = "formWithoutEmail";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutEmail,
@@ -191,7 +193,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutEmail.completed_at,
+        demographics_education: formWithoutEmail.demographics_education,
       })
     );
   });
@@ -207,6 +209,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_github property
     const formWithoutGithub = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutGithub.personal_github;
+    formWithoutGithub.demographics_education = "formWithoutGithub";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutGithub,
@@ -220,7 +223,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutGithub.completed_at,
+        demographics_education: formWithoutGithub.demographics_education,
       })
     );
   });
@@ -236,6 +239,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_phone property
     const formWithoutPhone = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutPhone.personal_phone;
+    formWithoutPhone.demographics_education = "formWithoutPhone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutPhone,
@@ -249,7 +253,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutPhone.completed_at,
+        demographics_education: formWithoutPhone.demographics_education,
       })
     );
   });
@@ -267,6 +271,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutPhysicalZip.address_physical_zipcode;
+    formWithoutPhysicalZip.demographics_education = "formWithoutPhysicalZip";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutPhysicalZip,
@@ -280,7 +285,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutPhysicalZip.completed_at,
+        demographics_education: formWithoutPhysicalZip.demographics_education,
       })
     );
   });
@@ -298,6 +303,8 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutGenderIdentity.demographics_gender_identity;
+    formWithoutGenderIdentity.demographics_education =
+      "formWithoutGenderIdentity";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutGenderIdentity,
@@ -311,7 +318,8 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutGenderIdentity.completed_at,
+        demographics_education:
+          formWithoutGenderIdentity.demographics_education,
       })
     );
   });
@@ -329,6 +337,8 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutRaceEthnicity.demographics_race_ethnicity;
+    formWithoutRaceEthnicity.demographics_education =
+      "formWithoutRaceEthnicity";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutRaceEthnicity,
@@ -342,7 +352,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutRaceEthnicity.completed_at,
+        demographics_education: formWithoutRaceEthnicity.demographics_education,
       })
     );
   });
@@ -358,6 +368,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted demographics_low_income property
     const formWithoutLowIncome = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLowIncome.demographics_low_income;
+    formWithoutLowIncome.demographics_education = "formWithoutLowIncome";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutLowIncome,
@@ -371,7 +382,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutLowIncome.completed_at,
+        demographics_education: formWithoutLowIncome.demographics_education,
       })
     );
   });
@@ -389,6 +400,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact1Name.emergency_contact1_name;
+    formWithoutConact1Name.demographics_education = "formWithoutConact1Name";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact1Name,
@@ -402,7 +414,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact1Name.completed_at,
+        demographics_education: formWithoutConact1Name.demographics_education,
       })
     );
   });
@@ -420,6 +432,8 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact1Relationship.emergency_contact1_relationship;
+    formWithoutConact1Relationship.demographics_education =
+      "formWithoutConact1Relationship";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact1Relationship,
@@ -433,7 +447,8 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact1Relationship.completed_at,
+        demographics_education:
+          formWithoutConact1Relationship.demographics_education,
       })
     );
   });
@@ -451,6 +466,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact1Phone.emergency_contact1_phone;
+    formWithoutConact1Phone.demographics_education = "formWithoutConact1Phone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact1Phone,
@@ -464,7 +480,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact1Phone.completed_at,
+        demographics_education: formWithoutConact1Phone.demographics_education,
       })
     );
   });
@@ -482,6 +498,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Name.emergency_contact2_name;
+    formWithoutConact2Name.demographics_education = "formWithoutConact2Name";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact2Name,
@@ -495,7 +512,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact2Name.completed_at,
+        demographics_education: formWithoutConact2Name.demographics_education,
       })
     );
   });
@@ -513,6 +530,8 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Relationship.emergency_contact2_relationship;
+    formWithoutConact2Relationship.demographics_education =
+      "formWithoutConact2Relationship";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact2Relationship,
@@ -526,7 +545,8 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact2Relationship.completed_at,
+        demographics_education:
+          formWithoutConact2Relationship.demographics_education,
       })
     );
   });
@@ -544,6 +564,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Phone.emergency_contact2_phone;
+    formWithoutConact2Phone.demographics_education = "formWithoutConact2Phone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutConact2Phone,
@@ -557,7 +578,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutConact2Phone.completed_at,
+        demographics_education: formWithoutConact2Phone.demographics_education,
       })
     );
   });
@@ -575,6 +596,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutLeaveNotice.consent_leave_notice;
+    formWithoutLeaveNotice.demographics_education = "formWithoutLeaveNotice";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutLeaveNotice,
@@ -588,7 +610,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutLeaveNotice.completed_at,
+        demographics_education: formWithoutLeaveNotice.demographics_education,
       })
     );
   });
@@ -606,6 +628,8 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutWorkCommitment.consent_work_commitment;
+    formWithoutWorkCommitment.demographics_education =
+      "formWithoutWorkCommitment";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: formWithoutWorkCommitment,
@@ -619,7 +643,8 @@ test.describe("/api/v1/acceptanceforms", () => {
     const acceptanceForms = (await getResponse.json()).data;
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
-        completed_at: formWithoutWorkCommitment.completed_at,
+        demographics_education:
+          formWithoutWorkCommitment.demographics_education,
       })
     );
   });
