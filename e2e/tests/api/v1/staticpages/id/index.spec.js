@@ -1,8 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 
-//make smaller tests for each obj
-//make tests expecting data i sent
 const { ObjectId } = require("mongodb");
 test.describe("/api/v1/staticpages/[id]", () => {
   //PATCH TESTS
@@ -147,5 +145,29 @@ test.describe("/api/v1/staticpages/[id]", () => {
     //assertions to check deleted_at is not null
     expect(confirmPageDeleted.deleted_at).not.toBeNull();
     expect(confirmPageDeleted.deleted_at).toBeDefined();
+  });
+
+  test("undeletes a static page", async ({ request, db }) => {
+    const staticPageToUnDelete = await db
+      .collection("staticpages")
+      .findOne({ deleted_at: { $ne: null } });
+
+    const id = staticPageToUnDelete._id.toString();
+
+    //UNDELETE PATCH OBJ
+    const undeletedObj = {
+      deleted_at: null,
+      isShown: faker.datatype.boolean(),
+      wordpress_id: faker.datatype.number(10000),
+    };
+    //PATCH REQ FOR UNDELETE OBJ
+    const undeletedpatchreq = await request.patch(`/api/v1/staticpages/${id}`, {
+      data: undeletedObj,
+    });
+
+    expect(undeletedpatchreq.ok()).toBeTruthy();
+    const responsejson = await undeletedpatchreq.json();
+    expect(responsejson.deleted_at).toBeUndefined();
+    expect(responsejson.deleted_at).not.toBeDefined();
   });
 });
