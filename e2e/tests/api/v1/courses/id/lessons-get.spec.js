@@ -27,6 +27,7 @@ test.describe("/api/v1/courses/[id]/lessons", () => {
     // TODO - add all required properties for Lesson data model
     data.forEach((lesson) => {
       expect(lesson).toHaveProperty("_id");
+      expect(lesson).toHaveProperty("title");
     });
   });
 
