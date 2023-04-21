@@ -71,7 +71,7 @@ test.describe("/api/v1/lessons", () => {
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
       materials: randomLesson.materials,
-      assignments: randomLesson.assignments, //assignments airtableID is "recnkUVqXPiVm1hQ9"
+      assignments: randomLesson.assignments,
     };
     //send lesson without title
     const response = await request.post(`/api/v1/lessons`, {
@@ -100,6 +100,13 @@ test.describe("/api/v1/lessons", () => {
 
     // Check that the response is false
     expect(response.ok()).toBeFalsy();
+    const responseMessage = (await response.json()).message;
+
+    //Verify that POST response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(
+      "Valid data to create a new lesson not provided"
+    );
   });
 
   ////////////////////////////////////////////////////////////////
