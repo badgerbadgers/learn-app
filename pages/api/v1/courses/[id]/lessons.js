@@ -68,6 +68,7 @@ export default async function handler(req, res) {
         const data = await getLessons(id);
         res.status(200).json({ data: data.lessons });
       } catch (error) {
+        console.error(error)
         res.status(error.status || 400).json({ message: error.message });
       }
       break;
