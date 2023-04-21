@@ -96,6 +96,7 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was successful
     expect(patchResponse.ok()).toBeTruthy();
+    const responseData = (await patchResponse.json()).data;
 
     // Send a GET request to retrieve the updated list of cohorts
     const updatedResponse = await request.get("/api/v1/cohorts/");
@@ -105,7 +106,8 @@ test.describe("/api/v1/cohorts/id", () => {
     const updatedCohort = updatedCohorts.find(
       (cohort) => cohort._id === cohortID
     );
-    expect(updatedCohort.cohort_name).toBe(newCohortName);
+
+    expect(updatedCohort.cohort_name).toBe(responseData.cohort_name);
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -126,6 +128,7 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was successful
     expect(patchResponse.ok()).toBeTruthy();
+    const responseData = (await patchResponse.json()).data;
 
     // Send a GET request to retrieve the updated list of cohorts
     const updatedResponse = await request.get(`/api/v1/cohorts`);
@@ -135,7 +138,7 @@ test.describe("/api/v1/cohorts/id", () => {
     const updatedCohort = updatedCohorts.find(
       (cohort) => cohort._id === cohortID
     );
-    expect(updatedCohort.start_date).toBe(newDate);
+    expect(updatedCohort.start_date).toBe(responseData.start_date);
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -171,6 +174,7 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was NOT successful
     expect(patchResponse.status()).toBe(400);
+    const responseMessage = (await patchResponse.json()).message;
 
     // Verify that cohort name was not changed
     const notUpdatedResponse = await request.get(`/api/v1/cohorts`);
@@ -181,6 +185,9 @@ test.describe("/api/v1/cohorts/id", () => {
     );
 
     expect(notUpdatedCohort.cohort_name).toBe(originalName); //toEqual
+    //Verify that PATCH response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch("Cohort name already exists");
   });
   ////////////////////////////////////////////////////////////////////////
   test("update allowed fields such as cohort_name, start_date, zoom_link, seats", async ({
@@ -221,10 +228,10 @@ test.describe("/api/v1/cohorts/id", () => {
     );
 
     // Check that the allowed fields were updated correctly
-    expect(updatedCohort.cohort_name).toBe(updates.cohort_name);
-    expect(updatedCohort.start_date).toBe(updates.start_date);
-    expect(updatedCohort.zoom_link).toBe(updates.zoom_link);
-    expect(updatedCohort.seats).toBe(updates.seats);
+    expect(updatedCohort.cohort_name).toBe(responseData.cohort_name);
+    expect(updatedCohort.start_date).toBe(responseData.start_date);
+    expect(updatedCohort.zoom_link).toBe(responseData.zoom_link);
+    expect(updatedCohort.seats).toBe(responseData.seats);
   });
 
   ////////////////////////////////////////////////////////////////////////
@@ -258,7 +265,7 @@ test.describe("/api/v1/cohorts/id", () => {
 
     // Check that the PATCH request was FALSE
     expect(patchResponse.ok()).toBeFalsy();
-
+    const responseMessage = (await patchResponse.json()).message;
     // Send a GET request to retrieve list of cohorts
     const updatedResponse = await request.get(`/api/v1/cohorts`);
     const updatedCohorts = (await updatedResponse.json()).data;
@@ -277,5 +284,9 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(updatedCohort.mentors).not.toBe(updates.course);
     expect(updatedCohort.schedule).not.toBe(updates.schedule);
     expect(updatedCohort.created_at).not.toBe(updates.created_at);
+
+    //Verify that PATCH response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(/Update (\w+) is Not Allowed/i);
   });
 });
