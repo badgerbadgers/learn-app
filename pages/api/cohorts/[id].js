@@ -54,7 +54,7 @@ export default async function handler(req, res) {
           cohort_name: cohortToDb.cohort_name,
           _id: { $ne: cohortToDb._id }, // to exclude the current cohort
         });
-        if (existingCohortName.lenght) {
+        if (existingCohortName.length) {
           const error = {
             error: "Cohort name is not unique",
           };

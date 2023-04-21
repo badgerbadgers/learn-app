@@ -4,8 +4,11 @@ import "swagger-ui-react/swagger-ui.css";
 
 const SwaggerUI = dynamic(import("swagger-ui-react"), { ssr: false });
 
-function ApiDoc({ spec }) {
-  return <SwaggerUI spec={spec} />;
+// adding a prop supportedSubmitMethods disables 'try it' button for not listed methods, 'try it out' button won't be shown, see docs https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/ 'Network' table 'supportedSubmitMethods'
+function ApiDoc({ spec, supportedSubmitMethods }) {
+  return (
+    <SwaggerUI spec={spec} supportedSubmitMethods={supportedSubmitMethods} />
+  );
 }
 
 export const getStaticProps = async () => {
@@ -22,6 +25,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       spec,
+      supportedSubmitMethods: ["get"],
     },
   };
 };
