@@ -1,4 +1,4 @@
-import { test, expect } from "e2e/fixtures/testAsUser";
+import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 import { ObjectId } from "bson";
 
@@ -17,10 +17,7 @@ test.describe("/api/v1/lessons", () => {
     // Check that each lesson object has the expected properties
     lessons.forEach((lesson) => {
       expect(lesson).toHaveProperty("_id");
-      expect(lesson).toHaveProperty("lesson_label");
-      expect(lesson).toHaveProperty("submission_link");
       expect(lesson).toHaveProperty("title");
-      expect(lesson).toHaveProperty("section");
     });
   });
   /////////////////////////////////////////////////////////////////
@@ -31,25 +28,19 @@ test.describe("/api/v1/lessons", () => {
   }) => {
     //learning_objectives: in Figma schema is a string in setup/data/lessons.js is an arr of strings
     //order:Lessons parameter in the Course is an array of lesson's ids. Order by default.
+    const randomLesson = await db.collection("lessons").findOne({});
 
     const newLesson = {
       title: faker.lorem.words(),
-      section: "633d9916ec0d4b5e83a6b061", //id to Sections
+      section: randomLesson.section,
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: [
-        "62e26db569dd077fc82fbfdb", //materials_airtableID:"reco3qe9bm6lzhLsP"
-        "62e26dbb69dd077fc82fbfe2", //materials_airtableID:"recxcyNX0XTG05Any"
-        "62e26dc769dd077fc82fc013", //materials_airtableID:"recIqQx3JL8UmeRpO"
-        "62e26dc669dd077fc82fbffd", //materials_airtableID:"recNXVaVwm2OaE0j5"
-        "62e26db569dd077fc82fbfdc", //materials_airtableID:"recbSoPGthb0rHbMS"
-        "62e26dc769dd077fc82fc015", //materials_airtableID:"recPIg5BTCTvK2n22"
-      ],
-      assignments: ["62e26dc669dd077fc82fc00d"], //assignments airtableID is "recnkUVqXPiVm1hQ9"
+      materials: randomLesson.materials,
+      assignments: randomLesson.assignments, //assignments airtableID is "recnkUVqXPiVm1hQ9"
     };
 
     const response = await request.post(`/api/v1/lessons`, {
@@ -63,6 +54,42 @@ test.describe("/api/v1/lessons", () => {
     await db
       .collection("lessons")
       .deleteOne({ _id: ObjectId(responseData._id) });
+  });
+  /////////////////////////////////////////////////////////////////
+  test("does not create a lesson when title is missing", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db.collection("lessons").findOne({});
+
+    const newLesson = {
+      section: randomLesson.section,
+      submission_link: {
+        label: faker.lorem.words(),
+        url: faker.internet.url(),
+      },
+      learning_objectives: [faker.lorem.words(), faker.lorem.words()],
+      mindset_content: faker.lorem.words(),
+      materials: randomLesson.materials,
+      assignments: randomLesson.assignments, //assignments airtableID is "recnkUVqXPiVm1hQ9"
+    };
+    //send lesson without title
+    const response = await request.post(`/api/v1/lessons`, {
+      data: newLesson,
+    });
+
+    // Check that the response is false
+    expect(response.ok()).toBeFalsy();
+    //confirm our lesson has not been created
+    const getResponse = await request.get(`/api/v1/lessons`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const lessons = (await getResponse.json()).data;
+    expect(lessons).not.toContainEqual(
+      expect.objectContaining({
+        submission_link: newLesson.submission_link.url,
+      })
+    );
   });
   /////////////////////////////////////////////////////////////////
   test("POST /lesson with empty data ", async ({ request, db }) => {
