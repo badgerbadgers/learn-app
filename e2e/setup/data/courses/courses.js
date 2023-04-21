@@ -45,6 +45,6 @@ module.exports = [
     airtable_id: "recJEEWEWWfTsNVmx",
     slug: "react-deleted",
     lessons: [],
-    deleted_at: faker.date.recent()
+    deleted_at: faker.date.recent(),
   },
 ];

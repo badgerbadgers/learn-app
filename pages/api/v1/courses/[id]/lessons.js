@@ -139,9 +139,10 @@ export const updateLessons = async (id, updates) => {
   if (!updatedCourse) {
     const error = new Error();
     error.status = 404;
-    error.message = `Could not update course with id - ${id}`;
+    error.message = `Could not find and update course with id - ${id}`;
     throw error;
   }
+
   const updatedCoursePopulate = await updatedCourse.populate("lessons");
 
   return updatedCoursePopulate;

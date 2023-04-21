@@ -1,7 +1,7 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { faker } from "@faker-js/faker";
 
-test.describe("/api/v1/courses/[id]/lessons", () => {
+test.describe("GET /api/v1/courses/[id]/lessons", () => {
   //GET TESTS
 
   test("returns only not deleted a course's lessons", async ({
