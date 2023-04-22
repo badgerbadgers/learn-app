@@ -171,34 +171,32 @@ export const updateCourse = async (id, updates) => {
     const lessons = await Lesson.find({
       _id: { $in: filteredUpdates.lessons },
     });
-    if (lessons.length !== filteredUpdates.lessons.length) {
-      throw new Error("All lessons provided must exist in the data base");
+    if (!lessons.length) {
+      throw new Error("Lessons provided must exist in the data base");
     }
+    // extract lessons ids
+    const lessonsParsed = lessons.map((lesson) => lesson._id);
+
+    filteredUpdates.lessons = lessonsParsed;
   }
   // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
       "Valid data to perform an update for the course not provided"
     );
-  } else {
-    const updatedCourse = await Course.findByIdAndUpdate(id, filteredUpdates, {
-      new: true,
-    });
-
-    //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
-    const validationErr = await updatedCourse.validate();
-    if (validationErr) {
-      throw new Error(validationErr);
-    }
-
-    if (!updatedCourse) {
-      const error = new Error();
-      error.status = 404;
-      error.message = `Could not find and update course with id - ${id}`;
-      throw error;
-    }
-    const updatedCoursePopulate = await updatedCourse.populate("lessons");
-
-    return updatedCoursePopulate;
   }
+  const updatedCourse = await Course.findByIdAndUpdate(id, filteredUpdates, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedCourse) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find and update course with id - ${id}`;
+    throw error;
+  }
+  const updatedCoursePopulate = await updatedCourse.populate("lessons");
+
+  return updatedCoursePopulate;
 };
