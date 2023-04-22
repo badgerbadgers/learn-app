@@ -120,9 +120,9 @@ test.describe("/api/v1/courses", () => {
     expect(allCoursesCountBefore).toEqual(allCoursesCountAfter);
   });
 
-  test("does not create a course if at least one of provided lessons does not exist in db", async ({
+  test("creates a course only with lessons that exist in db, if lessons ids provided", async ({
     request,
-    db
+    db,
   }) => {
     const randomLesson = await db
       .collection("lessons")
@@ -131,24 +131,33 @@ test.describe("/api/v1/courses", () => {
     const newCourse = {
       course_name: faker.lorem.words(),
       lessons: [
-        "42e46dc669dd077fc82fbffa",
+        faker.database.mongodbObjectId(),
         /* fake mongo id */ randomLesson._id,
       ],
     };
     const response = await request.post(`/api/v1/courses`, {
       data: newCourse,
     });
-    expect(response.ok()).toBeFalsy();
-
-    //confirm the course has not been created
-    const getResponse = await request.get(`/api/v1/courses`);
-    expect(getResponse.ok()).toBeTruthy();
-
-    const courses = (await getResponse.json()).data;
-    expect(courses).not.toContainEqual(
-      expect.objectContaining({ course_name: newCourse.course_name })
-    );
+    expect(response.ok()).toBeTruthy();
+    const data = (await response.json()).data;
+    expect(data.lessons.length).toBe(1);
+    expect(data.lessons[0]._id).toBe(randomLesson._id.toString());
   });
+
+  test("does not create course if all provided lessons ids do not exist in db", async ({
+    request,
+    db,
+  }) => {
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [faker.database.mongodbObjectId()],
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
+  });
+
   test("does not create a course with a field not existed in Course model", async ({
     request,
     db,
@@ -177,7 +186,7 @@ test.describe("/api/v1/courses", () => {
     expect(nonExistentCourse).toBeNull();
   });
 
-  test("does not create a course deleted_at provided and set to non null value", async ({
+  test("does not create a course if deleted_at provided and set to non null value", async ({
     request,
     db,
   }) => {

@@ -92,7 +92,7 @@ export const getCourses = async (deleted) => {
   if (deleted === "true") {
     courses = await Course.find({ deleted_at: { $ne: null } });
   } else {
-    courses = await Course.find({ deleted_at: { $eq: null } });
+    courses = await Course.find(); // returns only not deleted courses
   }
   return courses;
 };
@@ -111,6 +111,10 @@ export const createCourse = async (data) => {
     delete data.deleted_at;
   }
 
+  if (Object.keys(data).length === 0) {
+    throw new Error("Valid data to create a new course not provided");
+  }
+
   await dbConnect();
   if (data.course_name) {
     //make sure course_name is unique
@@ -127,24 +131,26 @@ export const createCourse = async (data) => {
   if (data.lessons) {
     // find which of the provided users exist in users database
     const lessons = await Lesson.find({ _id: { $in: data.lessons } });
-    if (lessons.length !== data.lessons.length) {
-      throw new Error("All lessons provided must exist in the data base");
+
+    // TODO - should it let create course without lessons field if no valid lessons ids provided or throw an error like below?
+    if (!lessons.length) {
+      throw new Error("Lessons provided must exist in the data base");
     }
+    // extract lessons ids
+    const lessonsParsed = lessons.map((lesson) => lesson._id);
+
+    data.lessons = lessonsParsed;
   }
 
-  if (Object.keys(data).length === 0) {
-    throw new Error("Valid data to create a new course not provided");
-  } else {
-    //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
-    const newCourse = new Course(data);
-    const validationErr = await newCourse.validate();
-    if (validationErr) {
-      throw new Error(validationErr);
-    }
-
-    //save the new course
-    await newCourse.save();
-    const newCoursePopulate = await newCourse.populate("lessons");
-    return newCoursePopulate;
+  const newCourse = new Course(data);
+  //run mongoose validator to make sure data is valid (it will not check for name uniqueness)
+  const validationErr = await newCourse.validate();
+  if (validationErr) {
+    throw new Error(validationErr);
   }
+
+  //save the new course
+  await newCourse.save();
+  const newCoursePopulate = await newCourse.populate("lessons");
+  return newCoursePopulate;
 };
