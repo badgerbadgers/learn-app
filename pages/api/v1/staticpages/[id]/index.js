@@ -105,7 +105,6 @@ export const updateStaticPage = async (id, updates) => {
     }
     return updatedstaticpage;
   } catch (error) {
-    console.log(error);
     throw new Error(`${error.message}`);
   }
 };
