@@ -140,7 +140,7 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(courseWithNotValidFields).toBeNull();
   });
 
-  test("updates a course only with lessons that exist in db, if lessons ids provided", async ({
+  test("does not update a course  if not all lessons ids exist in db", async ({
     request,
     db,
   }) => {
@@ -164,12 +164,9 @@ test.describe("/api/v1/courses/[id]", () => {
         data: updates,
       }
     );
-    expect(response.ok()).toBeTruthy();
-    const data = (await response.json()).data;
-    expect(data.lessons.length).toBe(1);
-    expect(data.lessons[0]._id).toBe(randomLesson._id.toString());
+    expect(response.ok()).toBeFalsy();
 
-    //confirm (double check) the course has not been updated using get request
+    //confirm the course  was not updated
     const getResponse = await request.get(
       `/api/v1/courses/${randomCourse._id}`
     );
@@ -178,37 +175,6 @@ test.describe("/api/v1/courses/[id]", () => {
     const course = (await getResponse.json()).data;
     // using sort() to make sure array compared correctly if different order of elements provided
     expect(course.lessons.sort()).not.toStrictEqual(updates.lessons.sort());
-  });
-
-  test("does not update course if all provided lessons ids do not exist in db", async ({
-    request,
-    db,
-  }) => {
-    const randomCourse = await db
-      .collection("courses")
-      .findOne({ deleted_at: { $eq: null } });
-    const notExistedLessonId = faker.database.mongodbObjectId();
-    const updates = {
-      course_name: faker.lorem.words(),
-      lessons: [notExistedLessonId],
-    };
-    const response = await request.patch(
-      `/api/v1/courses/${randomCourse._id}`,
-      {
-        data: updates,
-      }
-    );
-    expect(response.ok()).toBeFalsy();
-
-    // find the course in db after update request and check if not existed lesson was not added to course lessons
-    const randomCourseAfterRequest = await db
-      .collection("courses")
-      .findOne({ _id: randomCourse._id });
-
-    const ifLessonFound = randomCourseAfterRequest.lessons.find(
-      (lesson) => lesson === notExistedLessonId
-    );
-    expect(ifLessonFound).toBeFalsy();
   });
 
   test("returns an error if update data not provided or unsupported properties are provided", async ({

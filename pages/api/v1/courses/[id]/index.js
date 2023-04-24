@@ -172,13 +172,9 @@ export const updateCourse = async (id, updates) => {
     const lessons = await Lesson.find({
       _id: { $in: filteredUpdates.lessons },
     });
-    if (!lessons.length) {
+    if (lessons.length !== filteredUpdates.lessons.length) {
       throw new Error("Lessons provided must exist in the data base");
     }
-    // extract lessons ids
-    const lessonsParsed = lessons.map((lesson) => lesson._id);
-
-    filteredUpdates.lessons = lessonsParsed;
   }
   // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
