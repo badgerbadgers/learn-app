@@ -120,52 +120,32 @@ test.describe("/api/v1/courses", () => {
     expect(allCoursesCountBefore).toEqual(allCoursesCountAfter);
   });
 
-  test("creates a course only with lessons that exist in db, if lessons ids provided", async ({
+  test("does not create a course if at least one lesson id does not exist in db", async ({
     request,
     db,
   }) => {
     const randomLesson = await db
       .collection("lessons")
       .findOne({ deleted_at: { $eq: null } });
-    const notExistedLessonId = faker.database.mongodbObjectId();
+
     const newCourse = {
       course_name: faker.lorem.words(),
-      lessons: [notExistedLessonId, /* fake mongo id */ randomLesson._id],
-    };
-    const response = await request.post(`/api/v1/courses`, {
-      data: newCourse,
-    });
-    expect(response.ok()).toBeTruthy();
-    const data = (await response.json()).data;
-    expect(data.lessons.length).toBe(1);
-    expect(data.lessons[0]._id).toBe(randomLesson._id.toString());
-
-    // find the course in db after post request and check if not existed lesson was not added to course lessons
-    const createdCourse = await db.collection("courses").findById(data._id);
-    const ifLessonFound = createdCourse.lessons.find(
-      (lesson) => lesson === notExistedLessonId
-    );
-    expect(ifLessonFound).toBeFalsy();
-  });
-
-  test.only("does not create course if all provided lessons ids do not exist in db", async ({
-    request,
-    db,
-  }) => {
-    const newCourse = {
-      course_name: faker.lorem.words(),
-      lessons: [faker.database.mongodbObjectId()],
+      lessons: [
+        faker.database.mongodbObjectId(),
+        /* fake mongo id */ randomLesson._id,
+      ],
     };
     const response = await request.post(`/api/v1/courses`, {
       data: newCourse,
     });
     expect(response.ok()).toBeFalsy();
-    // check db if the course with the given name is not created
+
+    // check if the course was not created
     const createdCourse = await db
       .collection("courses")
       .findOne({ course_name: newCourse.course_name });
 
-    expect(createdCourse).toBeFalsy();
+    expect(createdCourse).toBeNull();
   });
 
   test("does not create a course with a field not existed in Course model", async ({

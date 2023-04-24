@@ -132,14 +132,10 @@ export const createCourse = async (data) => {
     // find which of the provided users exist in users database
     const lessons = await Lesson.find({ _id: { $in: data.lessons } });
 
-    // TODO - should it let create course without lessons field if no valid lessons ids provided or throw an error like below?
-    if (!lessons.length) {
-      throw new Error("Lessons provided must exist in the data base");
+    // throw an error if not each lesson id provided is found in db
+    if (lessons.length !== data.lessons.length) {
+      throw new Error("All lessons ids provided must exist in the data base");
     }
-    // extract lessons ids
-    const lessonsParsed = lessons.map((lesson) => lesson._id);
-
-    data.lessons = lessonsParsed;
   }
 
   const newCourse = new Course(data);
