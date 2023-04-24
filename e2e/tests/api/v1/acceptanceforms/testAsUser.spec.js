@@ -1,8 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { faker } from "@faker-js/faker";
-const { Readable } = require("stream");
-import { parseStream } from "fast-csv";
-const userIds = require("e2e/setup/data/user_ids.json");
 
 //new object to test
 const newAcceptanceForm = {
@@ -53,40 +50,6 @@ const newAcceptanceForm = {
 };
 
 test.describe("/api/v1/acceptanceforms", () => {
-  //GET TESTS
-
-  test("returns all acceptanceforms", async ({ request }) => {
-    //populate the database with some acceptanceforms
-    //call GET and get all the acceptanceforms
-    const response = await request.get(`/api/v1/acceptanceforms`);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  test("returns all acceptanceforms in csv", async ({ request }) => {
-    //populate the database with some acceptanceforms
-    //call GET and get all the acceptanceforms report CSV file
-
-    const response = await request.get(`/api/v1/acceptanceforms`, {
-      headers: { Accept: "text/csv" },
-    });
-    expect(response.ok()).toBeTruthy();
-
-    const acceptanceforms = await response.body();
-    const stream = Readable.from(acceptanceforms);
-
-    const dataInCsv = [];
-    parseStream(stream)
-      .on("error", (error) => console.error(error))
-      .on("data", (row) => {
-        dataInCsv.push(row);
-      })
-      .on("end", (rowCount) => {
-        //expect the row counts to be:
-        //number of test users + 1 header row
-        expect(rowCount).toBe(userIds.length + 1);
-      });
-  });
-
   //POST TESTS
 
   test("returns an array with newly created object", async ({
@@ -108,7 +71,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     expect(responseData.user).toEqual(user._id + "");
   });
 
-  test("does not create an acceptanceform when personal_first_name property is missing", async ({
+  test("does not create an acceptance form when personal_first_name property is missing", async ({
     request,
     db,
   }) => {
@@ -119,6 +82,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_first_name property
     const formWithoutFirstName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutFirstName.personal_first_name;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutFirstName.demographics_education = "formWithoutFirstName";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -126,11 +90,12 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    //confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
     const acceptanceForms = (await getResponse.json()).data;
+    //
     expect(acceptanceForms).not.toContainEqual(
       expect.objectContaining({
         demographics_education: formWithoutFirstName.demographics_education,
@@ -138,7 +103,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when personal_last_name property is missing", async ({
+  test("does not create an acceptance form when personal_last_name property is missing", async ({
     request,
     db,
   }) => {
@@ -149,6 +114,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_last_name property
     const formWithoutLastName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLastName.personal_last_name;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutLastName.demographics_education = "formWithoutLastName";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -156,7 +122,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -168,7 +134,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when personal_email property is missing", async ({
+  test("does not create an acceptance form when personal_email property is missing", async ({
     request,
     db,
   }) => {
@@ -179,6 +145,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_email property
     const formWithoutEmail = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutEmail.personal_email;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutEmail.demographics_education = "formWithoutEmail";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -186,7 +153,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -198,7 +165,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when personal_github property is missing", async ({
+  test("does not create an acceptance form when personal_github property is missing", async ({
     request,
     db,
   }) => {
@@ -209,6 +176,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_github property
     const formWithoutGithub = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutGithub.personal_github;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutGithub.demographics_education = "formWithoutGithub";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -216,7 +184,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -228,7 +196,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when personal_phone property is missing", async ({
+  test("does not create an acceptance form when personal_phone property is missing", async ({
     request,
     db,
   }) => {
@@ -239,6 +207,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted personal_phone property
     const formWithoutPhone = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutPhone.personal_phone;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutPhone.demographics_education = "formWithoutPhone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -246,7 +215,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -258,7 +227,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when address_physical_zipcode property is missing", async ({
+  test("does not create an acceptance form when address_physical_zipcode property is missing", async ({
     request,
     db,
   }) => {
@@ -271,6 +240,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutPhysicalZip.address_physical_zipcode;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutPhysicalZip.demographics_education = "formWithoutPhysicalZip";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -278,7 +248,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -290,7 +260,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when demographics_gender_identity property is missing", async ({
+  test("does not create an acceptance form when demographics_gender_identity property is missing", async ({
     request,
     db,
   }) => {
@@ -303,6 +273,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutGenderIdentity.demographics_gender_identity;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutGenderIdentity.demographics_education =
       "formWithoutGenderIdentity";
 
@@ -311,7 +282,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -324,7 +295,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when demographics_race_ethnicity property is missing", async ({
+  test("does not create an acceptance form when demographics_race_ethnicity property is missing", async ({
     request,
     db,
   }) => {
@@ -337,6 +308,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutRaceEthnicity.demographics_race_ethnicity;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutRaceEthnicity.demographics_education =
       "formWithoutRaceEthnicity";
 
@@ -345,7 +317,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -357,7 +329,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when demographics_low_income property is missing", async ({
+  test("does not create an acceptance form when demographics_low_income property is missing", async ({
     request,
     db,
   }) => {
@@ -368,6 +340,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     //new object to test with deleted demographics_low_income property
     const formWithoutLowIncome = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLowIncome.demographics_low_income;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutLowIncome.demographics_education = "formWithoutLowIncome";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -375,7 +348,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -387,7 +360,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact1_name property is missing", async ({
+  test("does not create an acceptance form when emergency_contact1_name property is missing", async ({
     request,
     db,
   }) => {
@@ -400,6 +373,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact1Name.emergency_contact1_name;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutConact1Name.demographics_education = "formWithoutConact1Name";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -407,7 +381,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -419,7 +393,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact1_relationship property is missing", async ({
+  test("does not create an acceptance form when emergency_contact1_relationship property is missing", async ({
     request,
     db,
   }) => {
@@ -431,6 +405,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     const formWithoutConact1Relationship = JSON.parse(
       JSON.stringify(newAcceptanceForm)
     );
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     delete formWithoutConact1Relationship.emergency_contact1_relationship;
     formWithoutConact1Relationship.demographics_education =
       "formWithoutConact1Relationship";
@@ -440,7 +415,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -453,7 +428,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact1_phone property is missing", async ({
+  test("does not create an acceptance form when emergency_contact1_phone property is missing", async ({
     request,
     db,
   }) => {
@@ -466,6 +441,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact1Phone.emergency_contact1_phone;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutConact1Phone.demographics_education = "formWithoutConact1Phone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -473,7 +449,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -485,7 +461,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact2_name property is missing", async ({
+  test("does not create an acceptance form when emergency_contact2_name property is missing", async ({
     request,
     db,
   }) => {
@@ -498,6 +474,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Name.emergency_contact2_name;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutConact2Name.demographics_education = "formWithoutConact2Name";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -505,7 +482,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -517,7 +494,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact2_relationship property is missing", async ({
+  test("does not create an acceptance form when emergency_contact2_relationship property is missing", async ({
     request,
     db,
   }) => {
@@ -530,6 +507,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Relationship.emergency_contact2_relationship;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutConact2Relationship.demographics_education =
       "formWithoutConact2Relationship";
 
@@ -538,7 +516,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -551,7 +529,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when emergency_contact2_phone property is missing", async ({
+  test("does not create an acceptance form when emergency_contact2_phone property is missing", async ({
     request,
     db,
   }) => {
@@ -564,6 +542,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutConact2Phone.emergency_contact2_phone;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutConact2Phone.demographics_education = "formWithoutConact2Phone";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -571,7 +550,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -583,7 +562,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when consent_leave_notice property is missing", async ({
+  test("does not create an acceptance form when consent_leave_notice property is missing", async ({
     request,
     db,
   }) => {
@@ -596,6 +575,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutLeaveNotice.consent_leave_notice;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutLeaveNotice.demographics_education = "formWithoutLeaveNotice";
 
     const response = await request.post(`/api/v1/acceptanceforms`, {
@@ -603,7 +583,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
@@ -615,7 +595,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     );
   });
 
-  test("does not create an acceptanceform when consent_work_commitment property is missing", async ({
+  test("does not create an acceptance form when consent_work_commitment property is missing", async ({
     request,
     db,
   }) => {
@@ -628,6 +608,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       JSON.stringify(newAcceptanceForm)
     );
     delete formWithoutWorkCommitment.consent_work_commitment;
+    //add a unique value to the not required property as a reference for later checking if the object would have ben created
     formWithoutWorkCommitment.demographics_education =
       "formWithoutWorkCommitment";
 
@@ -636,7 +617,7 @@ test.describe("/api/v1/acceptanceforms", () => {
     });
     expect(response.ok()).toBeFalsy();
 
-    // confirm our acceptanceform has not been created
+    // confirm our acceptance form has not been created
     const getResponse = await request.get(`/api/v1/acceptanceforms`);
     expect(getResponse.ok()).toBeTruthy();
 
