@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 const { ObjectId } = require("mongodb");
 test.describe("/api/v1/staticpages/[id]", () => {
   //PATCH TESTS
-  test("returns an updated static page that contains at four updated fields", async ({
+  test("returns an updated static page that contains at five updated fields", async ({
     request,
     db,
   }) => {
@@ -20,6 +20,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
       wordpress_id: faker.datatype.number(10000),
       slug: faker.lorem.slug(2),
       title: faker.lorem.words(2),
+      deleted_at: null,
     };
 
     //PATCH REQ FOR ALL FIELDS
@@ -30,8 +31,49 @@ test.describe("/api/v1/staticpages/[id]", () => {
     //PATCH RESPONSE OK
     expect(updatedresponse.ok()).toBeTruthy();
     const patcheddata = (await updatedresponse.json()).data;
-
+    console.log("patch obj", patcheddata);
     expect(patcheddata).toMatchObject(allFieldsUpdated);
+
+    expect(patcheddata).toHaveProperty("isShown");
+    expect(patcheddata).toHaveProperty("wordpress_id");
+    expect(patcheddata).toHaveProperty("slug");
+    expect(patcheddata).toHaveProperty("title");
+    expect(patcheddata.isShown).toBeDefined();
+    expect(patcheddata.wordpress_id).toBeDefined();
+    expect(patcheddata.slug).toBeDefined();
+    expect(patcheddata.title).toBeDefined();
+    expect(patcheddata._id).not.toBeNull();
+
+    expect(typeof patcheddata.wordpress_id).toBe("number");
+    expect(typeof patcheddata.isShown).toBe("boolean");
+    expect(typeof patcheddata._id).toBe("string");
+    expect(typeof patcheddata.slug).toBe("string");
+    expect(typeof patcheddata.title).toBe("string");
+
+    //get req to see if obj was patched in collection
+    const allStaticPages = await db
+      .collection("staticpages")
+      .findOne({})
+      .toArray();
+    //in array allstaticpages see if patch req obj was updated
+    // expect(typeof allStaticPages).toBe("object");
+    // expect(allStaticPages[0]).toContain(patcheddata);
+    // expect(allStaticPages[0]).toMatchObject(patcheddata);
+    // for (const a of allStaticPages) {
+    //   expect(patcheddata).toContainEqual(
+    //     expect.objectContaining({ id: new ObjectId(patcheddata._id) })
+    //   );
+    // }
+
+    // expect(allStaticPages).toContain(patcheddata);
+
+    // expect(allStaticPages[0]).toEqual(
+    //   expect.objectContaining({
+    //     locationId: expect.any(Number),
+    //     geo: expect.any(Array),
+    //     isFetching: expect.any(Boolean),
+    //   })
+    // );
   });
 
   test("returns an updated static page that contains two updated field(s)", async ({
@@ -61,6 +103,21 @@ test.describe("/api/v1/staticpages/[id]", () => {
     const patchedpartialpatchdata = (await updatedresponsepartialpatch.json())
       .data;
     expect(patchedpartialpatchdata).toMatchObject(twoFieldsUpdated);
+
+    expect(patchedpartialpatchdata).toHaveProperty("isShown");
+    expect(patchedpartialpatchdata).toHaveProperty("wordpress_id");
+    expect(patchedpartialpatchdata.isShown).toBeDefined();
+    expect(patchedpartialpatchdata.wordpress_id).toBeDefined();
+    expect(patchedpartialpatchdata.slug).toBeUndefined();
+    expect(patchedpartialpatchdata.title).toBeUndefined();
+    expect(patchedpartialpatchdata._id).not.toBeNull();
+    expect(typeof patchedpartialpatchdata.wordpress_id).toBe("number");
+    expect(typeof patchedpartialpatchdata.isShown).toBe("boolean");
+    expect(typeof patchedpartialpatchdata._id).toBe("string");
+    expect(typeof patchedpartialpatchdata.slug).not.toBe("string");
+    expect(typeof patchedpartialpatchdata.title).not.toBe("string");
+
+    //get req and see if new obj was added tests
   });
 
   test("returns an undefined variable after a PATCH request with non-existant fields is made", async ({
@@ -87,42 +144,10 @@ test.describe("/api/v1/staticpages/[id]", () => {
     expect(fielddoesnotexistresponse.ok()).toBeTruthy();
     const responsejson = await fielddoesnotexistresponse.json().data;
     expect(responsejson).toBeUndefined();
+    expect(responsejson).not.toBeDefined();
   });
 
   //SOFT DELETE TESTS
-  // test("returns a static page that has a new field deleted_at", async ({
-  //   request,
-  //   db,
-  // }) => {
-  //   //Get a staticpage
-  //   const staticPageToDelete = await db
-  //     .collection("staticpages")
-  //     .findOne({ deleted_at: { $eq: null } });
-
-  //   //static page that is deleted_at: null
-  //   const undeletedStaticPage = {
-  //     deleted_at: null,
-  //   };
-  //   const id = staticPageToDelete._id;
-  //   //DELETE REQ
-  //   const deletedResponse = await request.delete(`/api/v1/staticpages/${id}`);
-  //   //after req, res should be ok no err
-  //   expect(deletedResponse).toBeOK();
-  //   const responsejson = await deletedResponse.json();
-
-  //   //test for success msg
-  //   expect(responsejson).toEqual({ message: "Page has been deleted." });
-
-  //   //read db with id and make sure deleted at is not null
-  //   const staticPagePostDelete = await db
-  //     .collection("staticpages")
-  //     .findOne({ _id: id });
-  //   expect(staticPagePostDelete.deleted_at).not.toBeNull();
-
-  //   //A test for undeleting a static page []
-  //   const undeletedResponse = await request.patch(`/api/v1/staticpages/${id}`);
-  //   expect(undeletedResponse.deleted_at).toBeUndefined();
-  // });
   test("soft deletes a static page", async ({ request, db }) => {
     //Get a staticpage
     const staticPageToDelete = await db
