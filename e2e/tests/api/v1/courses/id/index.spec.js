@@ -120,8 +120,8 @@ test.describe("/api/v1/courses/[id]", () => {
 
     const updates = {
       course_name: faker.lorem.words(),
-      seats: faker.datatype.number({ min: 5, max: 100 }),
-      name: faker.lorem.words(),
+      fake_seats: faker.datatype.number({ min: 5, max: 100 }),
+      fake_name: faker.lorem.words(),
     };
     const response = await request.patch(
       `/api/v1/courses/${randomCourse._id}`,
@@ -132,11 +132,12 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(response.ok()).toBeTruthy();
 
     const updatedCourse = (await response.json()).data;
-    expect(updatedCourse.seats).toBeUndefined();
-    expect(updatedCourse.name).toBeUndefined();
+    expect(updatedCourse.course_name).toBe(updates.course_name);
+    expect(updatedCourse.fake_seats).toBeUndefined();
+    expect(updatedCourse.fake_name).toBeUndefined();
     const courseWithNotValidFields = await db
       .collection("courses")
-      .findOne({ seats: updates.seats });
+      .findOne({ fake_seats: updates.fake_seats });
     expect(courseWithNotValidFields).toBeNull();
   });
 
