@@ -124,18 +124,17 @@ export const updateLessons = async (id, updates) => {
   if (!lessons) {
     throw new Error("All lessons ids provided must exist in the data base");
   }
-  if (lessons) {
-    // check if each provided lesson exist in db
-    const ifEveryExist = updates.lessons.every((lesson) =>
-      lessons.find((lsn) => lsn._id.toString() === lesson)
-    );
-    // throw an error if not each lesson id provided is found in db
-    if (!ifEveryExist) {
-      throw new Error("All lessons ids provided must exist in the data base");
-    }
-    // make sure to not add duplicate lessons
-    updates.lessons = lessons;
+
+  // check if each provided lesson exist in db
+  const ifEveryExist = updates.lessons.every((lesson) =>
+    lessons.find((lsn) => lsn._id.toString() === lesson)
+  );
+  // throw an error if not each lesson id provided is found in db
+  if (!ifEveryExist) {
+    throw new Error("All lessons ids provided must exist in the data base");
   }
+  // make sure to not add duplicate lessons
+  updates.lessons = lessons;
 
   // update course
   const updatedCourse = await Course.findByIdAndUpdate(
