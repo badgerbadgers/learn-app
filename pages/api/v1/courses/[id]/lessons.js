@@ -120,16 +120,14 @@ export const updateLessons = async (id, updates) => {
     },
     "_id"
   );
-  if (!lessons.length) {
+  if (lessons.length !== updates.lessons.length) {
     throw new Error("All lessons provided must exist in the data base");
   }
 
-  // extract lessons ids
-  const lessonsParsed = lessons.map((lesson) => lesson._id);
   // update course
   const updatedCourse = await Course.findByIdAndUpdate(
     id,
-    { $set: { lessons: lessonsParsed } },
+    { $set: { lessons: updates.lessons } },
     {
       new: true,
       runValidators: true,

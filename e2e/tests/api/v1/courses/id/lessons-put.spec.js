@@ -70,14 +70,15 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
     const parsedLessonsToAdd = lessonsToAdd.map((lesson) =>
       lesson._id.toString()
     ); // extract ids of the lessons
+
     // extract 2 lessons from the course to be updated to create duplicate lessons
     const duplicateLessons = randomCourse.lessons
+      .slice(0, 2) // get 2 lessons
       .map((lesson) => {
         if (lesson) {
           return lesson.toString();
         }
-      })
-      .slice(0, 2); // get 2 lessons
+      });
 
     // call PUT and get course's updated lessons list
     const response = await request.put(
@@ -86,6 +87,7 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
     );
 
     const data = (await response.json()).data;
+
     expect(response.ok()).toBeTruthy();
     // check if lessons in updated course are not duplicated
     [...parsedLessonsToAdd, ...duplicateLessons].forEach((lsn) => {
@@ -103,7 +105,7 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
     // find a random course
     const randomCourse = await db
       .collection("courses")
-      .findOne({ deleted_at: { $eq: null } });
+      .findOne({ deleted_at: { $eq: null }, lessons: { $nin: [[], null] } });
 
     // find lessons from lessons db to add to lesson
     const lessonsToAdd = await db
@@ -115,17 +117,6 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
     const parsedLessonsToAdd = lessonsToAdd.map((lesson) =>
       lesson._id.toString()
     ); // extract ids of the lessons
-
-    //call PUT and get course's updated lessons list
-    const response = await request.put(
-      `/api/v1/courses/${randomCourse._id}/lessons`,
-      { data: { lessons: parsedLessonsToAdd } }
-    );
-
-    const data = (await response.json()).data;
-
-    // check if response is OK
-    expect(response.ok()).toBeTruthy();
 
     // check if the request does not add lessons that do not exist in db, mock data
     const nonExistentLessons = [
@@ -139,19 +130,16 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
       { data: { lessons: [...nonExistentLessons, ...parsedLessonsToAdd] } }
     );
     // check if response is OK
-    expect(responseNotAddedLessons.ok()).toBeTruthy();
-    const dataLessonsNotAdded = (await responseNotAddedLessons.json()).data;
+    expect(responseNotAddedLessons.ok()).toBeFalsy();
 
-    expect(dataLessonsNotAdded.length).toBe(data.length);
+    const updatedCourse = await db
+      .collection("courses")
+      .findOne({ _id: randomCourse._id });
 
-    // check if non-existent lessons were not added to lessons list
-    expect(
-      dataLessonsNotAdded.find(
-        (lesson) =>
-          lesson._id === nonExistentLessons[0] ||
-          lesson._id === nonExistentLessons[1]
-      )
-    ).toBeFalsy();
+    // compare courses lessons before and after updates which included non existent lessons ids
+    expect(updatedCourse.lessons.sort()).toStrictEqual(
+      randomCourse.lessons.sort()
+    );
   });
 
   test("returns error if only non existent lessons to add to a course provided", async ({
