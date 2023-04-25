@@ -67,7 +67,6 @@ export default async function handler(req, res) {
       try {
         const id = req.query.id;
         const updates = req.body;
-        console.log(updates);
 
         const updatedPage = await updateStaticPage(id, updates);
         res.status(200).json({ data: updatedPage });
