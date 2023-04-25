@@ -126,7 +126,7 @@ export const createCourse = async (data) => {
 
   // make sure provided lessons exist in db
   if (data.lessons) {
-    // find which of the provided lessons exist in users database
+    // find which of the provided lessons exist in lessons database
     const lessons = await Lesson.find({ _id: { $in: data.lessons } }, "_id");
 
     // throw an error if not each lesson id provided is found in db
