@@ -180,26 +180,6 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
       .collection("cohorts")
       .findOne({ deleted_at: { $eq: null }, mentors: { $nin: [[], null] } });
 
-    // find users from users db to add to cohort
-    const usersToAdd = await db
-      .collection("users")
-      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
-      .limit(4)
-      .toArray();
-
-    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the mentors
-
-    //call PATCH and get cohort's updated mentors list
-    const response = await request.patch(
-      `/api/v1/cohorts/${randomCohort._id}/mentors`,
-      { data: { mentors: parsedUsersToAdd } }
-    );
-
-    const data = (await response.json()).data;
-
-    // check if response is OK
-    expect(response.ok()).toBeTruthy();
-
     // check if the request does not add users that do not exist in db, mock data
     const nonExistentUsers = [
       faker.database.mongodbObjectId(),
@@ -211,20 +191,22 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
       `/api/v1/cohorts/${randomCohort._id}/mentors`,
       { data: { mentors: nonExistentUsers } }
     );
-    // check if response is OK
-    expect(responseNotAddedMentors.ok()).toBeTruthy();
-    const dataMentorsNotAdded = (await responseNotAddedMentors.json()).data;
+    // check if response is not okay
+    expect(responseNotAddedMentors.ok()).toBeFalsy();
 
-    expect(dataMentorsNotAdded.length).toBe(data.length);
+    // find the cohort in db after update and make sure the non existed users were not added
+    const updatedCohort = await db
+      .collection("cohorts")
+      .findOne({ _id: randomCohort._id });
 
     // check if non-existent users were not added to mentors list
     expect(
-      dataMentorsNotAdded.find(
+      updatedCohort.mentors.find(
         (person) =>
           person.user?._id === nonExistentUsers[0] ||
           person.user?._id === nonExistentUsers[1]
       )
-    ).toBeFalsy(); // compare to the value after the first request which added mentors
+    ).toBeFalsy();
   });
 
   test("does not add users to deleted cohort", async ({ request, db }) => {

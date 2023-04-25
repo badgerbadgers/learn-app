@@ -181,26 +181,6 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
       .collection("cohorts")
       .findOne({ deleted_at: { $eq: null } });
 
-    // find users from users db to add to cohort
-    const usersToAdd = await db
-      .collection("users")
-      .find({}, { projection: { _id: 1, name: 1 } }) // return only ids
-      .limit(4)
-      .toArray();
-
-    const parsedUsersToAdd = usersToAdd.map((user) => user._id.toString()); // extract ids of the students
-
-    //call PATCH and get cohort's updated students list
-    const response = await request.patch(
-      `/api/v1/cohorts/${randomCohort._id}/students`,
-      { data: { students: parsedUsersToAdd } }
-    );
-
-    const data = (await response.json()).data;
-
-    // check if response is OK
-    expect(response.ok()).toBeTruthy();
-
     // check if the request does not add users that do not exist in db, mock data
     const nonExistentUsers = [
       faker.database.mongodbObjectId(),
@@ -212,20 +192,21 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
       `/api/v1/cohorts/${randomCohort._id}/students`,
       { data: { students: nonExistentUsers } }
     );
-    // check if response is OK
-    expect(responseNotAddedStudents.ok()).toBeTruthy();
-    const dataStudentsNotAdded = (await responseNotAddedStudents.json()).data;
-
-    expect(dataStudentsNotAdded.length).toBe(data.length);
+    // check if response is not OK
+    expect(responseNotAddedStudents.ok()).toBeFalsy();
+    // find the cohort in db after update and make sure the non existed users were not added
+    const updatedCohort = await db
+      .collection("cohorts")
+      .findOne({ _id: randomCohort._id });
 
     // check if non-existent users were not added to students list
     expect(
-      dataStudentsNotAdded.find(
+      updatedCohort.students.find(
         (person) =>
           person.user?._id === nonExistentUsers[0] ||
           person.user?._id === nonExistentUsers[1]
       )
-    ).toBeFalsy(); // compare to the value after the first request which added students
+    ).toBeFalsy();
   });
 
   test("does not add users to deleted cohort", async ({ request, db }) => {
