@@ -159,8 +159,8 @@ test.describe("/api/v1/courses", () => {
     const newCourse = {
       course_name: faker.lorem.words(),
       lessons: [randomLesson._id],
-      seats: faker.datatype.number({ min: 5, max: 100 }),
-      name: faker.lorem.words(),
+      fake_seats: faker.datatype.number({ min: 5, max: 100 }),
+      fake_name: faker.lorem.words(),
     };
     const response = await request.post(`/api/v1/courses`, {
       data: newCourse,
@@ -168,11 +168,15 @@ test.describe("/api/v1/courses", () => {
     expect(response.ok()).toBeTruthy();
 
     const createdCourse = (await response.json()).data;
-    expect(createdCourse.seats).toBeUndefined();
-    expect(createdCourse.name).toBeUndefined();
+    expect(createdCourse.course_name).toBe(newCourse.course_name);
+    expect(createdCourse._id).toBeDefined();
+    expect(createdCourse.fake_seats).toBeUndefined();
+    expect(createdCourse.fake_name).toBeUndefined();
+   
+    // check if there was document created with non existent fields
     const nonExistentCourse = await db
       .collection("courses")
-      .findOne({ seats: newCourse.seats });
+      .findOne({ fake_name: newCourse.fake_name });
     expect(nonExistentCourse).toBeNull();
   });
 
