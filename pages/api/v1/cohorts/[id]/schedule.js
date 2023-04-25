@@ -1,14 +1,14 @@
 /**
  * @swagger
  *  tags:
- *   name: Cohorts
+ *   name: Schedule
  * /api/v1/cohorts/{id}/schedule:
  *   get:
  *     description: Get schedule for a specific cohort
- *     tags: [Cohorts]
+ *     tags: [Schedule]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: Cohort's id
  *         schema:
  *           type: string
  *         required: true
@@ -18,9 +18,11 @@
  *         description: Provides a cohort's schedule list
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort's schedule not found
  *   put:
  *     description: Update entire schedule for specific cohort
- *     tags: [Cohorts]
+ *     tags: [Schedule]
  *     parameters:
  *       - in: path
  *         name: id
@@ -30,7 +32,7 @@
  *         example: 635841bd9be844015c74719a
  *       - in: body
  *         name: schedule
- *         description:  
+ *         description: An object with array of lessons
  *         required: true
  *         schema:
  *           type: object
@@ -42,16 +44,32 @@
  *             schema:
  *               type: array
  *               items:
- *                 type: string
+ *                 type: object
+ *                 required: [type, section]
+ *                 properties:
+ *                   type:
+ *                     type: string
+ *                   section:
+ *                     type: string
+ *                   lesson:
+ *                     type: string
+ *                   content:
+ *                     type: string
  *           example: {"schedule": [
-      {
-        "lesson": "62e26dbb69dd077fc82fbfe5",
-        "section": "633d9915ec0d4b5e83a6b05e"
-      },
-      {
-        "lesson": "62e26dbb69dd077fc82fbfe1",
-        "section": "633d9915ec0d4b5e83a6b05e"
-      }]}
+ *     { "type":"lesson",
+ *       "lesson": "62e26dbb69dd077fc82fbfe5",
+ *       "section": "633d9915ec0d4b5e83a6b05e"
+ *     },
+ *     {
+ *       "type":"break",
+ *       "content": "dfsfds",
+ *       "section": "633d9915ec0d4b5e83a6b05e"
+ *     },
+ *   {
+ *       "type":"review",
+ *       "content": "kjlkjlkj",
+ *       "section": "633d9915ec0d4b5e83a6b05e"
+ *     }]}
  *     responses:
  *       200:
  *         description: Update entire schedule for a specific cohort
@@ -73,18 +91,17 @@ export default async function handler(req, res) {
         const schedule = await getCohortSchedule(id);
         res.status(200).json({ data: schedule });
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Get cohort error", error);
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
     case "PUT":
-      //check body for update object
       const updates = req.body;
-      //update
       try {
-        await Cohort.updateOne({ _id: id }, updates);
-        res.status(200).json({ data: updates });
+        const schedule = await updateSchedule(id, updates);
+        res.status(200).json({ data: schedule });
       } catch (error) {
-        console.error("Update cohort error", error);
+        console.error("Update cohort's schedule error", error);
         res.status(400).json({ message: error.message });
       }
       break;
@@ -92,12 +109,12 @@ export default async function handler(req, res) {
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
-  return res;
+  return;
 }
 export const getCohortSchedule = async (id) => {
   await dbConnect();
   const schedule = await Cohort.findById(id, "schedule")
-    .populate("schedule.lesson") //we are getting lessons array
+    .populate(["schedule.lesson", "schedule.section"])
     .exec();
   //if wrong id then throw error
   if (!schedule) {
@@ -105,3 +122,20 @@ export const getCohortSchedule = async (id) => {
   }
   return schedule;
 };
+export const updateSchedule = async (id, updates) => {
+  await dbConnect();
+  if (Object.keys(updates).length === 0) {
+    throw new Error("No valid information was supplied to update the schedule of the cohort");
+  }
+  const updatedSchedule = await Cohort.findByIdAndUpdate(id, updates, {
+    new: true,
+    runValidators: true,
+  });
+  if (!updatedSchedule) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find and update cohort with id - ${id}`;
+    throw error;
+  }
+  return updatedSchedule;
+}
