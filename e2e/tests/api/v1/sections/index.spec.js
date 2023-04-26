@@ -8,9 +8,8 @@ test.describe("/api/v1/sections", () => {
     expect(res.ok()).toBeTruthy();
 
     const sections = (await res.json()).data;
-
-    //if any data exists length always 1
-    expect(sections.length).toBeGreaterThan(0);
+    expect(sections.length).toBeGreaterThan(5);
+    expect(sections.length).toBe(6);
 
     //assertions for hard coded data
     expect(sections[0].course).toContain("62e056cee6daad619e5cc2c5");
@@ -18,28 +17,20 @@ test.describe("/api/v1/sections", () => {
     expect(sections[0].order).toBe(2);
     expect(sections[0].title).toContain("Git Basics");
 
-    //assertions for type of each field
-    sections.forEach((section) => {
-      expect(typeof section.course).toBe("string");
-    });
-
-    sections.forEach((section) => {
-      expect(typeof section.title).toBe("string");
-    });
-
-    sections.forEach((section) => {
-      expect(typeof section.order).toBe("number");
-    });
-
-    sections.forEach((section) => {
-      expect(typeof section._id).toBe("string");
-    });
-
     sections.forEach((section) => {
       expect(section).toHaveProperty("_id");
       expect(section).toHaveProperty("course");
       expect(section).toHaveProperty("title");
       expect(section).toHaveProperty("order");
     });
+
+    //assertions for type of each field
+    sections.forEach((section) => {
+      expect(typeof section.course).toBe("string");
+      expect(typeof section.order).toBe("number");
+      expect(typeof section._id).toBe("string");
+      expect(typeof section.title).toBe("string");
+    });
+
   });
 });
