@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: slug });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(404).json({ message: error.message });
         return;
       }
     default:
@@ -71,6 +71,9 @@ export const getStaticPageSlug = async (slug) => {
     const staticPageSlug = await StaticPage.findOne({
       slug: slug,
     }).exec();
+    if (!staticPageSlug || staticPageSlug.isShown === false) {
+      throw new Error(`Check your values they are invalid or set to false`);
+    }
     return staticPageSlug;
   } catch (error) {
     console.log(error);
