@@ -75,6 +75,8 @@
  *         description: Update entire schedule for a specific cohort
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort's schedule not found
  */
 
 import Cohort from "lib/models/Cohort";
@@ -102,7 +104,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: schedule });
       } catch (error) {
         console.error("Update cohort's schedule error", error);
-        res.status(400).json({ message: error.message });
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
     default:
@@ -111,6 +113,8 @@ export default async function handler(req, res) {
   }
   return;
 }
+
+
 export const getCohortSchedule = async (id) => {
   await dbConnect();
   const schedule = await Cohort.findById(id, "schedule")
@@ -118,14 +122,20 @@ export const getCohortSchedule = async (id) => {
     .exec();
   //if wrong id then throw error
   if (!schedule) {
-    throw new Error(`Cohort with id ${id} not found`);
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find cohort's schedule with id - ${id}`;
+    throw error;
   }
   return schedule;
 };
+
 export const updateSchedule = async (id, updates) => {
   await dbConnect();
   if (Object.keys(updates).length === 0) {
-    throw new Error("No valid information was supplied to update the schedule of the cohort");
+    throw new Error(
+      "No valid information was supplied to update the schedule of the cohort"
+    );
   }
   const updatedSchedule = await Cohort.findByIdAndUpdate(id, updates, {
     new: true,
@@ -138,4 +148,4 @@ export const updateSchedule = async (id, updates) => {
     throw error;
   }
   return updatedSchedule;
-}
+};
