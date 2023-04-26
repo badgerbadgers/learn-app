@@ -1,10 +1,10 @@
 /**
  * @swagger
  * tags:
- *   name: Static pages
+ *   name: Student Resources
  * /api/v1/student-resources:
  *   get:
- *     description: Gets all static pages with boolean isShown equal to true
+ *     description: Gets all student resources with boolean isShown equal to true
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
