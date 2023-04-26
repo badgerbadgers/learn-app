@@ -4,7 +4,7 @@
  *   name: Static pages
  * /api/v1/staticpages/{slug}:
  *   get:
- *     description: Gets all static pages from database
+ *     description: Get a specific static page by slug
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
@@ -48,12 +48,11 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const slug = req.query.slug;
-
   switch (method) {
     case "GET":
       try {
-        await getStaticPageSlug(slug);
-        res.status(200).json({ data: slug });
+        const staticpage = await getStaticPageSlug(slug);
+        res.status(200).json({ data: staticpage });
         return;
       } catch (error) {
         res.status(404).json({ message: error.message });
@@ -68,9 +67,11 @@ export default async function handler(req, res) {
 export const getStaticPageSlug = async (slug) => {
   try {
     await dbConnect();
-    const staticPageSlug = await StaticPage.findOne({
+    const staticPageSlug = await StaticPage.find({
       slug: slug,
     }).exec();
+
+    console.log("slugs", staticPageSlug);
     if (!staticPageSlug || staticPageSlug.isShown === false) {
       throw new Error(`Check your values they are invalid or set to false`);
     }
