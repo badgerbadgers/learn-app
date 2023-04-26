@@ -52,10 +52,13 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const staticpage = await getStaticPageSlug(slug);
+        if (!staticpage) {
+          res.status(404).json({ message: `Page not found` });
+        }
         res.status(200).json({ data: staticpage });
         return;
       } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(400).json({ message: error.message });
         return;
       }
     default:
@@ -67,14 +70,10 @@ export default async function handler(req, res) {
 export const getStaticPageSlug = async (slug) => {
   try {
     await dbConnect();
-    const staticPageSlug = await StaticPage.find({
+    const staticPageSlug = await StaticPage.findOne({
       slug: slug,
+      isShown: true,
     }).exec();
-
-    console.log("slugs", staticPageSlug);
-    if (!staticPageSlug || staticPageSlug.isShown === false) {
-      throw new Error(`Check your values they are invalid or set to false`);
-    }
     return staticPageSlug;
   } catch (error) {
     console.log(error);
