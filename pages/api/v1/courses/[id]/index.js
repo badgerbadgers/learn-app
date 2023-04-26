@@ -177,7 +177,7 @@ export const updateCourse = async (id, updates) => {
     );
 
     // throw an error if not each lesson id provided is found in db
-    if (!lessons || filteredUpdates.lessons.length !== lessons.length) {
+    if (!lessons.length || filteredUpdates.lessons.length !== lessons.length) {
       throw new Error(
         "All lessons ids provided must be unique and exist in the data base"
       );
