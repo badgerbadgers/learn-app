@@ -53,7 +53,6 @@
  *       400:
  *         description: Error messages
  */
-import Lesson from "lib/models/Lesson";
 import Course from "lib/models/Course";
 import Section from "lib/models/Section";
 import dbConnect from "lib/dbConnect";
