@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const { faker } = require("@faker-js/faker");
 
 module.exports = [
   {
@@ -38,5 +39,12 @@ module.exports = [
       ObjectId("62e26dc569dd077fc82fbff7"),
       ObjectId("62e26dc669dd077fc82fc000"),
     ],
+  },
+  {
+    _id: ObjectId("32e056cee6daad619e5cc2c3"),
+    course_name: "Rails fake deleted",
+    slug: "rails-fake-deleted",
+    lessons: [],
+    deleted_at: faker.date.recent(),
   },
 ];
