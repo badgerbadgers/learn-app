@@ -1,17 +1,15 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { faker } from "@faker-js/faker";
-import { getSession } from "next-auth/react";
+import { ObjectId } from "bson";
 
 test.describe("/api/v1/users/acceptanceforms", () => {
   //GET TESTS
 
-  test("returns all acceptanceforms for user by session", async ({
+  test.fixme("returns all acceptanceforms for user by session", async ({
     request, db
   }) => {
     //create acceptanceform for session user
-    const session = await getSession({ req });
-    const userId = session.user.id;
-
+    const userId = db.collection('users').findOne({email: "user@codethedream.org"})
     const newAcceptanceform = {
       id: ObjectId(faker.database.mongodbObjectId()),
       user: ObjectId(userId),
@@ -74,7 +72,6 @@ test.describe("/api/v1/users/acceptanceforms", () => {
     expect(response.ok()).toBeTruthy();
 
     const acceptanceforms = (await response.json()).data;
-    //console.log(acceptanceforms)
 
     //delete created before acceptance form
     await db
@@ -83,14 +80,13 @@ test.describe("/api/v1/users/acceptanceforms", () => {
   });
 
 
-  test.only("get returns 404 if acceptanceforms not found", async ({
+  test("get returns 404 if acceptanceforms not found", async ({
     request,
   }) => {
     //call GET and get all the non-deleted users
-    const response = await request.get(`/api/v1/users/acceptanceforms`);
+    const response = await request.get(`/api/v1/users/acceptanceforms`); 
     expect(response.ok()).toBeFalsy();
     expect(response.status()).toBe(404);
-    console.log("response", response); //undefined
-    const acceptanceforms = (await response.json()).data;
   });
+
 });

@@ -11,12 +11,16 @@
  *         description: Error messages
  *       404:
  *         description: No acceptanceforms found
+ *       401:
+ *         description: User unauthorized
  */
 
 import dbConnect from "lib/dbConnect";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import AcceptanceForm from "lib/models/AcceptanceForm";
+
 const { ObjectId } = require("mongodb");
-import mongoose from "mongoose";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -24,15 +28,17 @@ export default async function handler(req, res) {
     case "GET":
       try {
         //Get acceptanceforms for user by Id
-        const acceptanceforms = await getAcceptanceforms(req);
+        const acceptanceforms = await getAcceptanceforms(req, res);
         if (!acceptanceforms) {
-          return res
+           res
             .status(404)
             .json({
               message: "No acceptanceforms found",
             });
+            return;
         }
-        return res.status(200).json({ data: acceptanceforms });
+        res.status(200).json({ data: acceptanceforms });
+        return;
       } catch (error) {
         res.status(error.status || 400).json({
           message: error.message,
@@ -45,17 +51,19 @@ export default async function handler(req, res) {
   }
 }
 
-export const getAcceptanceforms = async (req) => {
+export const getAcceptanceforms = async (req, res) => {
+
   await dbConnect();
-  const session = await getSession({ req });
-  const filter = {user: ObjectId(session.user.id)}
-  if(!user) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session || !session.user) {
     const error = new Error();
-    error.status = 404;
-    error.message = "No acceptanceforms found";
-    throw error
+    error.status = 401;
+    error.message = "User unauthorized";
+    throw error;
   }
-  const collection = mongoose.connection.collection("acceptanceforms");
-  const acceptanceforms = await collection.find(filter).toArray();
+  
+  const filter = {user: ObjectId(session.user.id)}
+  const acceptanceforms = await AcceptanceForm.findOne(filter);
   return acceptanceforms;
+
 };
