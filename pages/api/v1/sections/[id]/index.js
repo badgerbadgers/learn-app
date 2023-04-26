@@ -48,3 +48,54 @@
  *         description: Error messages
  *
  */
+
+import Section from "lib/models/Section";
+import dbConnect from "lib/dbConnect";
+
+export default async function handler(req, res) {
+  const { method } = req;
+
+  switch (method) {
+    case "PATCH":
+      try {
+        const id = req.query.id;
+        const updates = req.body;
+
+        const updateSection = await updateSection(id, updates);
+        res.status(200).json({ data: updatedSection });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
+    case "DELETE":
+      try {
+        const id = req.query.id;
+        await deletedSection(id);
+        res.status(200).json({ message: `Section has been deleted` });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
+    default:
+      res.setHeader("Allow", ["PATCH", "DELETE"]);
+      res.status(405).rendered(`Method ${method} Not Allowed`);
+  }
+}
+
+export const updateSection = async (id, updates) => {
+  try {
+    await dbConnect();
+    const updatedsection = await Section.findByIdAndUpdate(id, updates, {
+      runValidators: true,
+      new: true,
+    });
+    if (!updatedsection) {
+      throw new Error(`${id} is not a valid id.`);
+    }
+    return updatedsection;
+  } catch (error) {
+    throw new Error(`${error.message}`);
+  }
+};
