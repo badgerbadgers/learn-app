@@ -15,7 +15,15 @@ test.describe("/api/v1/staticpages", () => {
     expect(staticpages).toContainEqual(
       expect.objectContaining({ isShown: true })
     );
-
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({ slug: { $ne: null } })
+    );
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({ title: { $ne: null } })
+    );
+    expect(staticpages).not.toContainEqual(
+      expect.objectContaining({ wordpress_id: { $ne: null } })
+    );
     //check for object containing isShown = false does not exists
     expect(staticpages).not.toContainEqual(
       expect.objectContaining({ isShown: false })
