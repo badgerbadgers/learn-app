@@ -73,9 +73,7 @@ export const getStaticPageByIsShown = async () => {
     const staticPagesShown = await StaticPage.find({
       isShown: true,
     });
-    if (!staticPagesShown) {
-      throw new Error("No static pages can be found");
-    }
+
     return staticPagesShown;
   } catch (error) {
     throw new Error(error.message);
