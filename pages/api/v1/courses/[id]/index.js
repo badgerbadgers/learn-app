@@ -177,19 +177,11 @@ export const updateCourse = async (id, updates) => {
     );
 
     // throw an error if not each lesson id provided is found in db
-    if (!lessons) {
-      throw new Error("All lessons ids provided must exist in the data base");
+    if (!lessons || filteredUpdates.lessons.length !== lessons.length) {
+      throw new Error(
+        "All lessons ids provided must be unique and exist in the data base"
+      );
     }
-
-    // check if each provided lesson exist in db
-    const ifEveryExist = filteredUpdates.lessons.every((lesson) =>
-      lessons.find((lsn) => lsn._id.toString() === lesson)
-    );
-    // throw an error if not each lesson id provided is found in db
-    if (!ifEveryExist) {
-      throw new Error("All lessons ids provided must exist in the data base");
-    }
-    // make sure to not add duplicate lessons
     filteredUpdates.lessons = lessons;
   }
   // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update

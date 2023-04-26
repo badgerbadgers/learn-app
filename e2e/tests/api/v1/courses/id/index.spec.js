@@ -178,6 +178,57 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(course.lessons.sort()).not.toStrictEqual(updates.lessons.sort());
   });
 
+  test("does not update a course if all: duplicate lesson ids, not existent lesson id and a valid lesson ids provided", async ({
+    request,
+    db,
+  }) => {
+    const randomLessons = await db
+      .collection("lessons")
+      .find({ deleted_at: { $eq: null } }, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(3)
+      .toArray();
+
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const nonExistentLesson = faker.database.mongodbObjectId();
+    const updates = {
+      course_name: faker.lorem.words(),
+      lessons: [
+        nonExistentLesson,
+        randomLessons[0]._id,
+        randomLessons[0]._id, // duplicate
+        randomLessons[1]._id,
+        randomLessons[2]._id,
+      ],
+    };
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeFalsy();
+
+    // check if the course was not updated
+    const courseAfterUpdate = await db
+      .collection("courses")
+      .findOne({ _id: randomCourse._id });
+    // check if the course was not updated
+    const notExistentCourse = await db
+      .collection("courses")
+      .findOne({ course_name: updates.course_name });
+      
+    expect(notExistentCourse).toBeNull();
+    expect(courseAfterUpdate).not.toMatchObject(updates);
+    expect(
+      courseAfterUpdate.lessons.find(
+        (lesson) => nonExistentLesson.toString() === lesson
+      )
+    ).toBeFalsy();
+  });
+
   test("returns an error if update data not provided or unsupported properties are provided", async ({
     request,
     db,
