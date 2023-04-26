@@ -148,6 +148,64 @@ test.describe("/api/v1/courses", () => {
     expect(createdCourse).toBeNull();
   });
 
+  test("does not create a course if duplicate lesson ids provided", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [randomLesson._id, randomLesson._id],
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    // check if the course was not created
+    const createdCourse = await db
+      .collection("courses")
+      .findOne({ course_name: newCourse.course_name });
+
+    expect(createdCourse).toBeNull();
+  });
+
+  test("does not create a course if all: duplicate lesson ids, not existent lesson id and a valid lesson ids provided", async ({
+    request,
+    db,
+  }) => {
+    const randomLessons = await db
+      .collection("lessons")
+      .find({ deleted_at: { $eq: null } }, { projection: { _id: 1, name: 1 } }) // return only ids
+      .limit(3)
+      .toArray();
+
+    const newCourse = {
+      course_name: faker.lorem.words(),
+      lessons: [
+        faker.database.mongodbObjectId(),
+        randomLessons[0]._id,
+        randomLessons[0]._id, // duplicate
+        randomLessons[1]._id,
+        randomLessons[2]._id,
+      ],
+    };
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    // check if the course was not created
+    const createdCourse = await db
+      .collection("courses")
+      .findOne({ course_name: newCourse.course_name });
+
+    expect(createdCourse).toBeNull();
+  });
+
   test("does not create a course with a field not existed in Course model", async ({
     request,
     db,
@@ -172,7 +230,7 @@ test.describe("/api/v1/courses", () => {
     expect(createdCourse._id).toBeDefined();
     expect(createdCourse.fake_seats).toBeUndefined();
     expect(createdCourse.fake_name).toBeUndefined();
-   
+
     // check if there was document created with non existent fields
     const nonExistentCourse = await db
       .collection("courses")

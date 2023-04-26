@@ -130,19 +130,9 @@ export const createCourse = async (data) => {
     const lessons = await Lesson.find({ _id: { $in: data.lessons } }, "_id");
 
     // throw an error if not each lesson id provided is found in db
-    if (!lessons) {
-      throw new Error("All lessons ids provided must exist in the data base");
+    if (!lessons || data.lessons.length !== lessons.length) {
+      throw new Error("All lessons ids provided must be unique and exist in the data base");
     }
-
-    // check if each provided lesson exist in db
-    const ifEveryExist = data.lessons.every((lesson) =>
-      lessons.find((lsn) => lsn._id.toString() === lesson)
-    );
-    // throw an error if not each lesson id provided is found in db
-    if (!ifEveryExist) {
-      throw new Error("All lessons ids provided must exist in the data base");
-    }
-    // make sure to not add duplicate lessons
     data.lessons = lessons;
   }
 
