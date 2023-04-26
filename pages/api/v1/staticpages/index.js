@@ -4,42 +4,84 @@
  *   name: Static pages
  * /api/v1/staticpages:
  *   get:
- *     description: Returns all staticpages with isShown = true
+ *     description: Gets all static pages from database
  *     tags: [Static pages]
- *     parameters:
- *        - name: wordpress_id
- *          type: number
- *          required: true
- *        - name: isShown
- *          type: boolean
- *          required: false
- *        - name: slug
- *          type: string
- *          required: false
- *        - name: title
- *          type: string
- *          required: false
  *     responses:
  *       200:
- *         description: Provides an array of static pages
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 75ge23c42f9b73c474826693
+ *                       wordpress_id:
+ *                         type: number
+ *                         example: 4232
+ *                       isShown:
+ *                         type: boolean
+ *                         example: false
+ *                       slug:
+ *                         type: string
+ *                         example: giraffe-intro
+ *                       title:
+ *                         type: string
+ *                         example: Giraffe Intro
+ *                       
+ *   post:
+ *     description: Creates a new static page in database
+ *     tags: [Static pages]
+ *     parameters:
+ *       - in: query
+ *         name: wordpress_id
+ *         schema:
+ *           type: number
+ *         required: true
+ *         
+ *       - in: query
+ *         name: isShown
+ *         schema:
+ *           type: boolean
+ *         example: true
+ *       - in: query
+ *         name: slug
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     wordpress_id:
+ *                       type: number
+ *                       example: 2999
+ *                     isShown:
+ *                       type: boolean
+ *                       example: true
+ *                     slug:
+ *                       type: string
+ *                       example: bright-dolphin
+ *                     title:
+ *                       type: string
+ *                       example: Bright Dolphin
  *       400:
  *         description: Error messages
- *   post:
- *     description:: Creates a new static page
- *     tags: [Static pages]
- *    parameters:
- *      - wordpress_id: wp_id
- *        type: number
- *        required: true,
- *        unique: true
- *      - title: title
- *        type: string
- *      - isShown: null
- *        type: boolean
- *        default: null
- *      - slug: slug
- *        type: string
- *      
+ *  
  */
 
 import Staticpage from "/lib/models/StaticPage";
@@ -53,20 +95,21 @@ export default async function handler(req, res) {
       try {
         const staticpages = await getStaticPages();
         res.status(200).json({ data: staticpages });
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ success: false });
-      }
-      return;
-    case "POST":
-      try {
-        //creates or updates a static page if it exist
-        const staticpage = await createStaticPage(req.body);
-        res.status(200).json({ data: staticpage });
+        return;
       } catch (error) {
         res.status(400).json({ message: error.message });
+        return;
       }
-      return;
+    case "POST":
+      try {
+        const postData = req.body;
+        const staticpage = await createStaticPage(postData);
+        res.status(200).json({ data: staticpage });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -77,29 +120,21 @@ export const getStaticPages = async () => {
   try {
     await dbConnect();
 
-    const staticpages = await Staticpage.find().exec();
+    const staticpages = await Staticpage.find({});
     return staticpages;
   } catch (error) {
-    console.error(error);
-    res.status(400).json({ success: false });
+    throw new Error("Error getting static pages", error.message);
   }
 };
 
-export const createStaticPage = async (data) => {
-  let newstaticpage = [];
-  let staticpage = {
-    wordpress_id: data.wordpress_id,
-    title: data.title,
-    isShown: data.isShown,
-    slug: data.slug,
-  };
+export const createStaticPage = async (staticpage) => {
   try {
     await dbConnect();
-    //create new static page with properties
-    const newstaticpage = await Staticpage.create(staticpage);
-    res.status(200).json({ success: true });
+    const newstaticpage = new Staticpage(staticpage);
+    await newstaticpage.save();
+    return newstaticpage;
   } catch (error) {
-    console.log(error, "cant create new static page");
+    //gives specific error message
+    throw new Error(error.message);
   }
-  return newstaticpage;
 };

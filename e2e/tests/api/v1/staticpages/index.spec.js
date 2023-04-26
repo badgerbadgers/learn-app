@@ -28,33 +28,46 @@ test.describe("/api/v1/staticpages", () => {
   });
 
   //POST TESTS
-  test("returns an array with newly created object", async ({ request }) => {
-    //new obj to test with
-    const newStaticPage = {
+  test("returns an array with newly created object", async ({
+    request,
+    db,
+  }) => {
+    //new obj to test with using fakerjs
+    const fakerJsStaticPage = {
       wordpress_id: faker.datatype.number(1000),
       title: faker.lorem.text(),
       isShown: faker.datatype.boolean(),
       slug: faker.lorem.slug(),
     };
-    //check isShown bool cannot be null
-    expect(newStaticPage.isShown).not.toBeNull();
-    //check wordpress_id cannot be null
-    expect(newStaticPage.wordpress_id).not.toBeNull();
 
-    //then make POST
-    const response = await request.post(`/api/v1/staticpages`, {
-      data: newStaticPage,
+    //then make POST with faker data
+    const responsewithfakerdata = await request.post(`/api/v1/staticpages`, {
+      data: fakerJsStaticPage,
     });
-    expect(response.ok()).toBeTruthy();
+    expect(responsewithfakerdata.ok()).toBeTruthy();
+    const resFakerData = (await responsewithfakerdata.json()).data;
+    expect(resFakerData).toMatchObject(fakerJsStaticPage);
 
-    //newly created object contains the following properties
-    expect(newStaticPage).toEqual(
-      expect.objectContaining({
-        wordpress_id: newStaticPage.wordpress_id,
-        isShown: newStaticPage.isShown,
-        slug: newStaticPage.slug,
-        title: newStaticPage.title,
-      })
-    );
+    //wordpress id not null
+    expect(resFakerData.wordpress_id).toBeDefined();
+  });
+
+  test("does not create static page if wordpress_id is missing", async ({
+    request,
+  }) => {
+    //new obj to test with using fakerjs
+    const fakerJsStaticPageNoWPid = {
+      title: faker.lorem.text(),
+      isShown: faker.datatype.boolean(),
+      slug: faker.lorem.slug(),
+    };
+
+    const responsewithfaker = await request.post(`/api/v1/staticpages`, {
+      data: fakerJsStaticPageNoWPid,
+    });
+
+    const staticpages = (await responsewithfaker.json()).data;
+
+    expect(staticpages).toBeUndefined();
   });
 });
