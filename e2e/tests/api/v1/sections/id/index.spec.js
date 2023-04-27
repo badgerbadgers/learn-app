@@ -39,4 +39,16 @@ test.describe("/api/v1/sections/{id}", () => {
     expect(patchedSection.title).toMatch(patchedSectionObj.title);
     expect(patchedSection.order).toBe(patchedSectionObj.order);
   });
+
+  //SOFT DELETE TESTS
+  test("tests a soft deleted document in the database", async ({
+    request,
+    db,
+  }) => {
+    //get section id
+    const sectionToPatch = await db
+      .collection("sections")
+      .findOne({ deleted_at: { $eq: null } });
+    console.log(sectionToPatch);
+  });
 });
