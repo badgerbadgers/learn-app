@@ -187,7 +187,7 @@ test.describe("/api/v1/users", () => {
 
     //delete newUser
     await db
-      .collection("cohorts")
+      .collection("users")
       .deleteOne({ _id: ObjectId(responseData._id) });
   });
 
@@ -284,5 +284,29 @@ test.describe("/api/v1/users", () => {
       expect(users).not.toContainEqual(
         expect.objectContaining({ name: newUser.name })
       );
-    }
-  );
+    });
+
+    test("does not save into the database extra fields that are sent", async ({
+      request, db
+    }) => {
+      const newUser = {
+        name: faker.name.fullName(),
+        email: faker.internet.email(),
+        gh: faker.random.alphaNumeric(10),
+        extraField: faker.random.alphaNumeric(10),
+      };
+
+      const response = await request.post(`/api/v1/users`, {
+        data: newUser,
+      });
+      expect(response.ok()).toBeTruthy();
+
+      const responseData = (await response.json()).data;
+      expect(responseData).not.toMatchObject(newUser);
+      expect(responseData._id).toBeDefined();
+
+      //delete newUser
+      await db
+        .collection("users")
+        .deleteOne({ _id: ObjectId(responseData._id) });
+    });
