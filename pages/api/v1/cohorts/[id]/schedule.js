@@ -118,7 +118,34 @@ export default async function handler(req, res) {
 export const getCohortSchedule = async (id) => {
   await dbConnect();
   const schedule = await Cohort.findById(id, "schedule")
-    .populate(["schedule.lesson", "schedule.section"])
+    .populate([
+      {
+        path: "schedule",
+        model: "Cohort",
+        select: "lesson",
+        populate: {
+          path: "lesson",
+          populate: [
+            {
+              path: "materials",
+              model: "Material",
+            },
+            {
+              path: "assignments",
+              model: "Assignment",
+            },
+          ],
+        },
+      },
+      {
+        path: "schedule",
+        model: "Cohort",
+        populate: {
+          path: "section",
+          model: "Section",
+        },
+      },
+    ])
     .exec();
   //if wrong id then throw error
   if (!schedule) {
