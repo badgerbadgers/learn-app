@@ -54,15 +54,17 @@ import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
+  const id = req.query.id;
 
   switch (method) {
     case "PATCH":
       try {
-        const id = req.query.id;
+        // const id = req.query;
         const updates = req.body;
-
-        const updateSection = await updateSection(id, updates);
-        res.status(200).json({ data: updatedSection });
+        console.log(id);
+        console.log("updates", updates);
+        const patchSection = await updateSection(id, updates);
+        res.status(200).json({ data: patchSection });
         return;
       } catch (error) {
         res.status(400).json({ message: error.message });
@@ -71,7 +73,7 @@ export default async function handler(req, res) {
     case "DELETE":
       try {
         const id = req.query.id;
-        await deletedSection(id);
+        await deleteSection(id);
         res.status(200).json({ message: `Section has been deleted` });
         return;
       } catch (error) {
@@ -85,17 +87,34 @@ export default async function handler(req, res) {
 }
 
 export const updateSection = async (id, updates) => {
+  console.log("updates");
   try {
     await dbConnect();
     const updatedsection = await Section.findByIdAndUpdate(id, updates, {
       runValidators: true,
       new: true,
     });
+    console.log("updatedsection", updatedsection);
     if (!updatedsection) {
       throw new Error(`${id} is not a valid id.`);
     }
     return updatedsection;
   } catch (error) {
     throw new Error(`${error.message}`);
+  }
+};
+
+export const deleteSection = async (id) => {
+  const update = { deleted_at: new Date() };
+  try {
+    await dbConnect();
+    const deletedsection = await Section.findByIdAndUpdate(id, update);
+    if (!deletedsection) {
+      throw new Error(`Could not find ${id}`);
+    }
+    return deletedsection;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Could not delete by id: ${error.message}`);
   }
 };
