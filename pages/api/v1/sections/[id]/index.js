@@ -59,10 +59,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "PATCH":
       try {
-        // const id = req.query;
         const updates = req.body;
-        console.log(id);
-        console.log("updates", updates);
         const patchSection = await updateSection(id, updates);
         res.status(200).json({ data: patchSection });
         return;
@@ -87,14 +84,12 @@ export default async function handler(req, res) {
 }
 
 export const updateSection = async (id, updates) => {
-  console.log("updates");
   try {
     await dbConnect();
     const updatedsection = await Section.findByIdAndUpdate(id, updates, {
       runValidators: true,
       new: true,
     });
-    console.log("updatedsection", updatedsection);
     if (!updatedsection) {
       throw new Error(`${id} is not a valid id.`);
     }
