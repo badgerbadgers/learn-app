@@ -14,8 +14,8 @@ test.describe("/api/v1/staticpages/[id_or_slug]", () => {
     //hit endpoint with slug as path parameter
     const response = await request.get(`/api/v1/staticpages/${slug}`);
     const staticpageslug = (await response.json()).data;
-    expect(staticpageslug).toMatch(slug);
-    expect(typeof staticpageslug).toBe("string");
+    expect(response.ok()).toBeTruthy();
+    expect(staticpageslug).toMatchObject(staticpage);
   });
 
   test("test GET request of a static page with invalid slug", async ({
