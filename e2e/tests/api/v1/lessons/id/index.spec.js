@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 test.describe("/api/v1/lessons/[id]", () => {
   //GET TESTS
 
-  test.only("returns only not deleted a lesson by id", async ({
+  test.only("returns only not deleted lesson by id", async ({
     request,
     db,
   }) => {
@@ -25,20 +25,20 @@ test.describe("/api/v1/lessons/[id]", () => {
   });
 
   test("does not return a deleted lesson", async ({ request, db }) => {
-    const randomCourse = await db.collection("courses").findOne({
+    const randomLesson = await db.collection("lessons").findOne({
       deleted_at: { $ne: null },
     });
-    //call GET and get the course by id
-    const response = await request.get(`/api/v1/courses/${randomCourse._id}`);
+    //call GET and get the lesson by id
+    const response = await request.get(`/api/v1/lessons/${randomLesson._id}`);
     expect(response.ok()).toBeFalsy();
     expect(response.status()).toBe(404);
   });
 
-  test("does not return a course with non existent id", async ({ request }) => {
+  test("does not return a lesson with non existent id", async ({ request }) => {
     const randomNonExistentId = faker.database.mongodbObjectId();
     //call GET and get the course by id
     const response = await request.get(
-      `/api/v1/courses/${randomNonExistentId}`
+      `/api/v1/lessons/${randomNonExistentId}`
     );
     expect(response.ok()).toBeFalsy();
     expect(response.status()).toBe(404);

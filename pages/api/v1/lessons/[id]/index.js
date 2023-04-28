@@ -108,32 +108,32 @@ export default async function handler(req, res) {
         res.status(error.status || 400).json({ message: error.message });
       }
       break;
-    // case "PATCH":
-    //   try {
-    //     const updatedCourse = await updateCourse(id, req.body);
-    //     res.status(200).json({ data: updatedCourse });
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(error.status || 400).json({ message: error.message });
-    //   }
-    //   break;
-    // case "DELETE":
-    //   try {
-    //     await dbConnect();
-    //     const deletedCourse = await Course.findByIdAndUpdate(id, {
-    //       deleted_at: new Date(),
-    //     });
-    //     if (!deletedCourse) {
-    //       return res
-    //         .status(404)
-    //         .json({ message: `Course with id ${id} not found` });
-    //     }
-    //     res.status(200).json();
-    //   } catch (error) {
-    //     console.log(error);
-    //     res.status(error.status || 400).json({ message: error.message });
-    //   }
-    //   break;
+    case "PATCH":
+      try {
+        const updatedLesson = await updateLesson(id, req.body);
+        res.status(200).json({ data: updatedLesson });
+      } catch (error) {
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
+      }
+      break;
+    case "DELETE":
+      try {
+        await dbConnect();
+        const deletedLesson = await Lesson.findByIdAndUpdate(id, {
+          deleted_at: new Date(),
+        });
+        if (!deletedLesson) {
+          return res
+            .status(404)
+            .json({ message: `Lesson with id ${id} not found` });
+        }
+        res.status(200).json();
+      } catch (error) {
+        console.log(error);
+        res.status(error.status || 400).json({ message: error.message });
+      }
+      break;
     default:
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
