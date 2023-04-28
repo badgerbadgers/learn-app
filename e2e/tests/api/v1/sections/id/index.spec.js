@@ -46,9 +46,26 @@ test.describe("/api/v1/sections/{id}", () => {
     db,
   }) => {
     //get section id
-    const sectionToPatch = await db
+    const sectionToDelete = await db
       .collection("sections")
       .findOne({ deleted_at: { $eq: null } });
-    console.log(sectionToPatch);
+    // console.log(sectionToDelete);
+
+    const id = sectionToDelete._id.toString();
+    console.log("id", id);
+    //make DELETE req
+    const response = await request.delete(`/api/v1/sections/${id}`);
+
+    expect(response.ok()).toBeTruthy();
+    const deletedsection = await response.json();
+    expect(deletedsection).toMatchObject({
+      message: "Section has been deleted",
+    });
+    //get document by id and confirm page has been soft deleted
+    const confirmPageDeleted = await db
+      .collection("sections")
+      .findOne({ _id: sectionToDelete._id });
+
+    expect(confirmPageDeleted.deleted_at).not.toBeNull();
   });
 });
