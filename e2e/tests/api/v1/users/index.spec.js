@@ -304,6 +304,8 @@ test.describe("/api/v1/users", () => {
       const responseData = (await response.json()).data;
       expect(responseData).not.toMatchObject(newUser);
       expect(responseData._id).toBeDefined();
+      expect(responseData.extraField).toBeUndefined();
+      expect(responseData.email).toBe(newUser.email)
 
       //delete newUser
       await db
