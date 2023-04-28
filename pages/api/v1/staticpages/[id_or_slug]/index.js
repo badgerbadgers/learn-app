@@ -2,13 +2,49 @@
  * @swagger
  * tags:
  *   name: Static pages
- * /api/v1/staticpages/{id}:
+ * /api/v1/staticpages/{id_or_slug}:
+ *   get:
+ *     description: Get a specific static page by slug
+ *     tags: [Static pages]
+ *     parameters:
+ *       - in: path
+ *         name: id_or_slug
+ *         schema:
+ *           type: string
+ *         example: bass-practicum
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: number
+ *                         example: 63fd39c51e0a85c474927702
+ *                       wordpress_id:
+ *                         type: number
+ *                         example: 2334
+ *                       isShown:
+ *                         type: boolean
+ *                         example: true
+ *                       slug:
+ *                         type: string
+ *                         example: grasshopper-rails
+ *                       title:
+ *                         type: string
+ *                         example: Grasshopper Rails
  *   patch:
  *     description: Updates a static page in database using the id
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_or_slug
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
@@ -19,7 +55,7 @@
  *           type: object
  *           properties:
  *             wordpress_id:
- *               type: number 
+ *               type: number
  *             isShown:
  *               type: boolean
  *               example: true
@@ -55,7 +91,6 @@
  *
  */
 
-
 import StaticPage from "lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
@@ -63,9 +98,23 @@ export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
+    case "GET":
+      try {
+        const slug = req.query.id_or_slug;
+        const staticpage = await getStaticPageSlug(slug);
+        if (!staticpage) {
+          res.status(404).json({ message: `Page not found` });
+          return;
+        }
+        res.status(200).json({ data: staticpage });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
     case "PATCH":
       try {
-        const id = req.query.id;
+        const id = req.query.id_or_slug;
         const updates = req.body;
 
         const updatedPage = await updateStaticPage(id, updates);
@@ -77,7 +126,7 @@ export default async function handler(req, res) {
       }
     case "DELETE":
       try {
-        const id = req.query.id;
+        const id = req.query.id_or_slug;
         await deletedStaticPage(id);
         res.status(200).json({ message: `Page has been deleted.` });
         return;
@@ -86,10 +135,24 @@ export default async function handler(req, res) {
         return;
       }
     default:
-      res.setHeader("Allow", ["PATCH", "DELETE"]);
+      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).rendered(`Method ${method} Not Allowed`);
   }
 }
+
+export const getStaticPageSlug = async (slug) => {
+  try {
+    await dbConnect();
+    const staticPageSlug = await StaticPage.findOne({
+      slug: slug,
+      isShown: true,
+    }).exec();
+    return staticPageSlug;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
 
 export const updateStaticPage = async (id, updates) => {
   try {
