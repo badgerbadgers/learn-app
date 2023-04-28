@@ -264,9 +264,10 @@ test.describe("/api/v1/cohorts/[id]/mentors", () => {
     request,
     db,
   }) => {
-    const randomCohort = await db
-      .collection("cohorts")
-      .findOne({ $where: "this.mentors.length > 1" });
+    const randomCohort = await db.collection("cohorts").findOne({
+      deleted_at: { $eq: null },
+      $where: "this.mentors.length > 1",
+    });
 
     // filter the array to get mentors with ids
     const parsedUsersToDelete = randomCohort.mentors.reduce(
