@@ -11,11 +11,11 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       deleted_at: { $eq: null },
       schedule: { $nin: [[], null] },
     });
-    //extract id from  cohort
-    const cohortID = nonEmptyScheduleCohort._id;
 
     //call GET and get the non-deleted cohort by id
-    const response = await request.get(`/api/v1/cohorts/${cohortID}/schedule`);
+    const response = await request.get(
+      `/api/v1/cohorts/${nonEmptyScheduleCohort._id}/schedule`
+    );
 
     const data = (await response.json()).data.schedule;
 
@@ -57,7 +57,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     // check an empty array is returned
     expect(emptyScheduleData).toHaveLength(0);
   });
-  ////////////////////////////////////////////////////////////////////
+
   test("does not return schedule of a deleted cohort", async ({
     request,
     db,
@@ -65,10 +65,9 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     const randomDeletedCohort = await db.collection("cohorts").findOne({
       deleted_at: { $ne: null },
     });
-    //extract id from random cohort
-    const cohortID = randomDeletedCohort._id;
+
     const responseDeletedCohort = await request.get(
-      `/api/v1/cohorts/${cohortID}/schedule`
+      `/api/v1/cohorts/${randomDeletedCohort._id}/schedule`
     );
     // test if api does not return ok response if cohort is deleted
     expect(responseDeletedCohort.ok()).not.toBeTruthy();
@@ -79,7 +78,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     //Verify that response returning error message
     expect(responseMessage).toEqual(expect.any(String));
     expect(responseMessage).toMatch(
-      `Could not find cohort's schedule with id - ${cohortID}`
+      `Could not find cohort's schedule with id - ${randomDeletedCohort._id}`
     );
   });
 });

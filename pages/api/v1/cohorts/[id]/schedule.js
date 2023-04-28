@@ -75,8 +75,6 @@
  *         description: Update entire schedule for a specific cohort
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error message if a cohort's schedule not found
  */
 
 import Cohort from "lib/models/Cohort";
@@ -169,10 +167,11 @@ export const updateSchedule = async (id, updates) => {
     runValidators: true,
   });
   if (!updatedSchedule) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update cohort with id - ${id}`;
-    throw error;
+    throw new Error("Couldn't update schedule");
+    // const error = new Error();
+    // error.status = 404;
+    // error.message = `Could not find and update cohort with id - ${id}`;
+    // throw error;
   }
   return updatedSchedule;
 };
