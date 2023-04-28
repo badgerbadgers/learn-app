@@ -48,7 +48,8 @@ const createStaticPages = async (req, res) => {
 
   const newpages = [];
   try {
-    const newpages = await Staticpage.altFindOneAndUpdate(filter, update, {
+    const newpages = await Staticpage.findOneAndUpdate(filter, update, {
+      runValidators: true,
       upsert: true,
     });
     res.status(200).json({ success: true, data: JSON.stringify(newpages) });
