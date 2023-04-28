@@ -46,23 +46,30 @@
  *               type: number
  *             submission_link:
  *               type: object
- *               schema:
- *                 properties:
- *                    label:
- *                      type: string
- *                    url:
- *                       type: string
+ *               required: [label, url]
+ *               properties:
+ *                  label:
+ *                   type: string
+ *                  url:
+ *                   type: string
  *             learning_objectives:
- *               type: array
- *                 items: string
+ *                type: array
+ *                items:
+ *                 type: string
  *             mindset_content:
- *                type: string
+ *                 type: string
  *             materials:
- *               type: array
- *               items: string
- *              assignments:
- *               type: array
- *               items: string
+ *                type: array
+ *                items:
+ *                 type: string
+ *             assignments:
+ *                 type: array
+ *                 items:
+ *                  type: string
+ *             section:
+ *                 type: string
+ *             deleted_at:
+ *                 type: ???
  *           example: {"title": "JavaScript Arrays", "order": 3.2, "submission_link": { "label": "Submit Assignment", "url": "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=HTML Basics"},"learning_objectives": ["Learn everything", "Learn JavaScript arrays"], "mindset_content": "For many, failure has become deeply engrained in us as something to avoid. And for that reason, as you’re learning to code, you may find that your gut response to bright red error messages or long stack traces is one of fear, anger, or frustration. But we’ll let you in on a little secret—those error messages and stack traces are a gift.", "materials": ["62e26db569dd077fc82fbfce","62e26dbb69dd077fc82fbfed"], "assignments": ["62e26dc669dd077fc82fc002", "62e26dc569dd077fc82fbff4"], "section": "633d9916ec0d4b5e83a6b062"}
  *     responses:
  *       200:
