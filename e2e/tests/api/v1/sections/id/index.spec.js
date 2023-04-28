@@ -1,6 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
-import { ObjectID } from "mongodb";
 
 test.describe("/api/v1/sections/{id}", () => {
   //PATCH TESTS
@@ -10,7 +9,7 @@ test.describe("/api/v1/sections/{id}", () => {
       .collection("sections")
       .findOne({ _id: { $ne: null } });
     const id = sectionToPatch._id.toString();
-    //create data to send for patch req
+    //PATCH obj
     const patchedSectionObj = {
       _id: id,
       title: faker.lorem.words(5),
@@ -49,10 +48,8 @@ test.describe("/api/v1/sections/{id}", () => {
     const sectionToDelete = await db
       .collection("sections")
       .findOne({ deleted_at: { $eq: null } });
-    // console.log(sectionToDelete);
-
     const id = sectionToDelete._id.toString();
-    console.log("id", id);
+
     //make DELETE req
     const response = await request.delete(`/api/v1/sections/${id}`);
 
@@ -62,10 +59,36 @@ test.describe("/api/v1/sections/{id}", () => {
       message: "Section has been deleted",
     });
     //get document by id and confirm page has been soft deleted
-    const confirmPageDeleted = await db
+    const confirmSectionDeleted = await db
       .collection("sections")
       .findOne({ _id: sectionToDelete._id });
 
-    expect(confirmPageDeleted.deleted_at).not.toBeNull();
+    expect(confirmSectionDeleted.deleted_at).not.toBeNull();
+  });
+
+  //UNDELETE TESTS
+  test("undeletes a section", async ({ request, db }) => {
+    //get section that has been deleted
+    const sectionToUndelete = await db
+      .collection("sections")
+      .findOne({ deleted_at: { $ne: null } });
+    const id = sectionToUndelete._id.toString();
+
+    //PATCH obj
+    const undeletePatchObj = {
+      deleted_at: null,
+    };
+
+    //make PATCH req
+    const response = await request.patch(
+      `/api/v1/sections/${id}`,
+      undeletePatchObj
+    );
+    //get same section from db
+    const undeletedsection = await db
+      .collection("sections")
+      .findOne({ _id: sectionToUndelete._id });
+
+    expect(undeletedsection.deleted_at).not.toBeNull();
   });
 });
