@@ -41,8 +41,6 @@
  *             - mentors
  *           properties:
  *             mentors:
- *             type: array
- *             schema:
  *               type: array
  *               items:
  *                 type: string
@@ -74,9 +72,7 @@
  *           required:
  *             - mentors
  *           properties:
- *             mentors:
- *             type: array
- *             schema:
+  *             mentors:
  *               type: array
  *               items:
  *                 type: string
