@@ -41,10 +41,8 @@
  *           properties:
  *             lessons:
  *               type: array
- *               schema:
- *                 type: array
- *                 items:
- *                   type: string
+ *               items:
+ *                 type: string
  *           example: { "lessons": ["62e26dc669dd077fc82fbffa", "62e26dc669dd077fc82fc00b"]}
  *     responses:
  *       200:
