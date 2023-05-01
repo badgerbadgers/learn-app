@@ -5,13 +5,7 @@
  * /api/v1/student-resources:
  *   get:
  *     description: Gets all student resources with boolean isShown equal to true
- *     tags: [Static pages]
- *     parameters:
- *       - in: path
- *         name: slug
- *         schema:
- *           type: string
- *         example: bass-practicum
+ *     tags: [Student Resources]
  *     responses:
  *       200:
  *         description: OK
