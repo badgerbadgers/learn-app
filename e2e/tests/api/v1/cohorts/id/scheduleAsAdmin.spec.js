@@ -354,4 +354,129 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(response.ok()).not.toBeTruthy();
     expect(response.status()).toBe(400);
   });
+
+  test("does not update a schedule when section's ids do not exist in DB", async ({
+    request,
+    db,
+  }) => {
+    //find lessons  from db
+    const lessons = await db
+      .collection("lessons")
+      .find({}, { projection: { _id: 1, section: 1, type: 1 } })
+      .limit(2)
+      .toArray();
+
+    //convert lesson's id and section's id to string type
+    const lesson = lessons.map((obj) => obj._id.toString());
+    const section = lessons.map((obj) => obj.section.toString());
+
+    //create a schedule with non existing section id
+    const newSchedule = {
+      schedule: [
+        {
+          type: "lesson",
+          lesson: lesson[0],
+          section: "933d9917ec0d4b5e83a6b063",
+        },
+        {
+          type: "review",
+          content: "Some text",
+          section: section[0],
+        },
+        {
+          type: "lesson",
+          lesson: lesson[1],
+          section: section[0],
+        },
+        {
+          type: "break",
+          content: "Some text",
+          section: section[0],
+        },
+      ],
+    };
+
+    // find a random non deleted cohort
+    const randomCohort = await db.collection("cohorts").findOne({
+      deleted_at: { $eq: null },
+    });
+
+    // update a schedule array of cohort
+    const response = await request.put(
+      `api/v1/cohorts/${randomCohort._id}/schedule`,
+      {
+        data: newSchedule,
+      }
+    );
+    // check if response is not OK
+    expect(response.ok()).not.toBeTruthy();
+    expect(response.status()).toBe(400);
+    const responseMessage = (await response.json()).message;
+
+    //Verify that response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(`Section's ID not found`);
+  });
+  test("does not update a schedule when lesson's ids do not exist in DB", async ({
+    request,
+    db,
+  }) => {
+    //find lessons  from db
+    const lessons = await db
+      .collection("lessons")
+      .find({}, { projection: { _id: 1, section: 1, type: 1 } })
+      .limit(2)
+      .toArray();
+
+    //convert lesson's id and section's id to string type
+    const lesson = lessons.map((obj) => obj._id.toString());
+    const section = lessons.map((obj) => obj.section.toString());
+
+    //create a schedule with non existing lesson id
+    const newSchedule = {
+      schedule: [
+        {
+          type: "lesson",
+          lesson: lesson[0],
+          section: section[0],
+        },
+        {
+          type: "review",
+          content: "Some text",
+          section: section[0],
+        },
+        {
+          type: "lesson",
+          lesson: "72e26dbb69dd077fc82fbfe6",
+          section: section[0],
+        },
+        {
+          type: "break",
+          content: "Some text",
+          section: section[0],
+        },
+      ],
+    };
+
+    // find a random non deleted cohort
+    const randomCohort = await db.collection("cohorts").findOne({
+      deleted_at: { $eq: null },
+    });
+
+    // update a schedule array of cohort
+    const response = await request.put(
+      `api/v1/cohorts/${randomCohort._id}/schedule`,
+      {
+        data: newSchedule,
+      }
+    );
+    // check if response is not OK
+    expect(response.ok()).not.toBeTruthy();
+    expect(response.status()).toBe(400);
+    const responseMessage = (await response.json()).message;
+
+    //Verify that response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(`Lesson's ID not found`);
+  });
 });
