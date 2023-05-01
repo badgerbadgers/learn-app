@@ -29,6 +29,8 @@
  *     responses:
  *       200:
  *         description: Creates new lesson
+ *       404:
+ *         description: Error messages if lessons not found
  *       400:
  *         description: Error messages
  */
@@ -42,20 +44,20 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        //call method for getting lessons with any parameters we received
         const lessons = await getLessons();
         res.status(200).json({ data: lessons });
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
     case "POST":
       try {
-        //call method for creating a lesson with any data we received
         const lesson = await createLesson(req.body);
         res.status(200).json({ data: lesson });
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
       }
       break;
     default:
@@ -67,12 +69,15 @@ export default async function handler(req, res) {
 
 export const getLessons = async () => {
   await dbConnect();
-  const lessons = await Lesson.find();
+  const lessons = await Lesson.find({})
+    .populate(["materials", "assignments", "section"])
+    .exec();
+
   if (!lessons) {
-    return {
-      // returns the default 404 page with a status code of 404
-      notFound: true,
-    };
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find lessons`;
+    throw error;
   }
   return lessons;
 };
