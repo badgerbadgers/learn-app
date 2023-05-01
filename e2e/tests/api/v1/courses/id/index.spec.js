@@ -375,6 +375,26 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(data.deleted_at).toBeNull();
   });
 
+  test("can handle sending setting deleted_at to null on a non-deleted course", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: null });
+
+    const updates = { deleted_at: null };
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const data = (await response.json()).data;
+    expect(data.deleted_at).toBeNull();
+  });
+
   // DELETE TESTS
   test("deletes a course by id by changing deleted_at property", async ({
     request,
