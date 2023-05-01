@@ -267,7 +267,10 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
   }) => {
     const randomCohort = await db
       .collection("cohorts")
-      .findOne({ $where: "this.students.length > 1" });
+      .findOne({
+        deleted_at: { $eq: null },
+        $where: "this.students.length > 1",
+      });
 
     // filter the array to get students with ids
     const parsedUsersToDelete = randomCohort.students.reduce(
