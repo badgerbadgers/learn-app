@@ -16,20 +16,20 @@ test.describe("/api/v1/staticpages", () => {
       expect.objectContaining({ isShown: true })
     );
     expect(staticpages).not.toContainEqual(
-      expect.objectContaining({ slug: { $ne: null } })
+      expect.objectContaining({ slug: null })
     );
     expect(staticpages).not.toContainEqual(
-      expect.objectContaining({ title: { $ne: null } })
+      expect.objectContaining({ title: null })
     );
     expect(staticpages).not.toContainEqual(
-      expect.objectContaining({ wordpress_id: { $ne: null } })
+      expect.objectContaining({ wordpress_id: null })
     );
     //check for object containing isShown = false does not exists
     expect(staticpages).not.toContainEqual(
       expect.objectContaining({ isShown: false })
     );
     expect(staticpages).not.toContainEqual(
-      expect.objectContaining({ isShown: { $ne: null } })
+      expect.objectContaining({ isShown: null })
     );
     expect(staticpages.length).toBeGreaterThan(0);
   });
