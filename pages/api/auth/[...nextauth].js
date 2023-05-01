@@ -7,7 +7,7 @@ import { date } from "yup";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
-export default NextAuth({
+export const authOptions = {
   session: {
     // Choose how you want to save the user session.
     // The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
@@ -29,19 +29,20 @@ export default NextAuth({
   callbacks: {
     async session({ session, user }) {
       //update user's last visit timestamp
-      if(user) {
+      if (user) {
         const client = await clientPromise;
         const database = client.db(process.env.MONGODB_DB);
-       
 
         try {
           await database
-          .collection("users")
-          .findOneAndUpdate({gh: user.gh}, {$set: {"last_seen": new Date()}})
+            .collection("users")
+            .findOneAndUpdate(
+              { gh: user.gh },
+              { $set: { last_seen: new Date() } }
+            );
         } catch (error) {
-          console.error(error, "error from last visit datetime session")
+          console.error(error, "error from last visit datetime session");
         }
-
       }
       return { ...session, user };
     },
@@ -102,9 +103,9 @@ export default NextAuth({
           image: profile.avatar_url,
           gh: profile.login,
           url: profile.html_url,
-          
         };
       },
     }),
   ],
-});
+};
+export default NextAuth(authOptions);
