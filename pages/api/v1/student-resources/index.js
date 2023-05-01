@@ -51,7 +51,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const staticpage = await getStaticPageByIsShown(req, res);
+        const staticpage = await getStaticPageByIsShown();
         if (!staticpage) {
           return res.status(404).json({
             message: `Error getting static pages`,
