@@ -1,11 +1,11 @@
 /**
  * @swagger
  *  tags:
- *   name: Schedule
+ *   name: Cohorts
  * /api/v1/cohorts/{id}/schedule:
  *   get:
  *     description: Get schedule for a specific cohort
- *     tags: [Schedule]
+ *     tags: [Cohorts]
  *     parameters:
  *       - in: path
  *         name: Cohort's id
@@ -22,7 +22,7 @@
  *         description: Error message if a cohort's schedule not found
  *   put:
  *     description: Update entire schedule for specific cohort
- *     tags: [Schedule]
+ *     tags: [Cohorts]
  *     parameters:
  *       - in: path
  *         name: id
