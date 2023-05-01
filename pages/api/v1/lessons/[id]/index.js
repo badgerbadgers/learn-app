@@ -177,61 +177,58 @@ const foundInDataBase = async (model, data) => {
 
 export const updateLesson = async (id, updates) => {
   // filter updates to extract allowed fields to perform update
-  const allowedFields = [
-    "title",
-    "order",
-    "submission_link",
-    "learning_objectives",
-    "mindset_content",
-    "materials",
-    "assignments",
-    "section",
-    "deleted_at",
-  ];
-  const filteredUpdates = allowedFields.reduce((fields, current) => {
-    if (current === "deleted_at" && updates[current] === null) {
-      return { ...fields, [current]: updates[current] };
-    }
-    if (current === "deleted_at" && updates[current]) {
-      // check if deleted_at is a Date not null and do not let delete a lesson in PATCH )
-      throw new Error("Not allowed to delete a lesson via PATCH method");
-      //  return fields;
-    }
-    if (
-      current === "submission_link" &&
-      updates[current] &&
-      (!updates[current].label || !updates[current].url)
-    ) {
-      throw new Error("Submission link must include label and valid url");
-    }
-    if (updates[current]) {
-      return { ...fields, [current]: updates[current] };
-    }
-    return fields;
-  }, {});
 
-  if (!filteredUpdates.title) {
-    throw new Error("Title is required to update a lesson");
+  const filteredUpdates = {};
+
+  if (updates.title) {
+    filteredUpdates.title = updates.title;
+  }
+
+  if (updates.order) {
+    filteredUpdates.order = updates.order;
+  }
+
+  if (updates.mindset_content) {
+    filteredUpdates.mindset_content = updates.mindset_content;
+  }
+
+  if (updates.learning_objectives) {
+    filteredUpdates.learning_objectives = updates.learning_objectives;
+  }
+
+  if (updates.deleted_at) {
+    // check if deleted_at is a Date not null and do not let delete a lesson in PATCH )
+    throw new Error("Not allowed to delete a lesson via PATCH method");
+  }
+  if (updates.deleted_at === null) {
+    filteredUpdates.deleted_at = updates.deleted_at;
+  }
+
+  if (
+    updates.submission_link &&
+    (!updates.submission_link.label || !updates.submission_link.url)
+  ) {
+    throw new Error("Submission link must include label and valid url");
   }
 
   await dbConnect();
 
-  if (filteredUpdates.materials) {
+  if (updates.materials) {
     filteredUpdates.materials = await foundInDataBase(
       Material,
-      filteredUpdates.materials
+      updates.materials
     );
   }
 
-  if (filteredUpdates.section) {
-    const [section] = await foundInDataBase(Section, [filteredUpdates.section]);
+  if (updates.section) {
+    const [section] = await foundInDataBase(Section, [updates.section]);
     filteredUpdates.section = section;
   }
 
-  if (filteredUpdates.assignments) {
+  if (updates.assignments) {
     filteredUpdates.assignments = await foundInDataBase(
       Assignment,
-      filteredUpdates.assignments
+      updates.assignments
     );
   }
 
@@ -241,6 +238,7 @@ export const updateLesson = async (id, updates) => {
       "Valid data to perform an update for the course not provided"
     );
   }
+
   const updatedLesson = await Lesson.findByIdAndUpdate(id, filteredUpdates, {
     new: true,
     runValidators: true,
