@@ -3,10 +3,20 @@
  * tags:
  *   name: Acceptance form
  * /api/v1/acceptanceforms:
+ *   get:
+ *     description: Returns a CSV file with all acceptance forms
+ *     tags: [Acceptance form]
+ *     responses:
+ *       200:
+ *        description: Acceptanceform.csv report file downloaded
+ *       400:
+ *        description: Error messages
+ *       404:
+ *        description: No acceptanceforms found
  *   post:
  *     description: Creates/updates an acceptance form
  *     tags: [Acceptance form]
-*     parameters:
+ *     parameters:
  *       - in: body
  *         name: acceptance form
  *         required: true
@@ -117,14 +127,6 @@
  *        description: Acceptance form created/updated
  *       400:
  *        description: Error messages
- *   get:
- *     description: Returns a CSV file with all acceptance forms
- *     tags: [Acceptance form]
- *     responses:
- *       200:
- *        description: Acceptanceform.csv report file downloaded
- *       400:
- *        description: Error messages
  */
 
 import AcceptanceForm from "lib/models/AcceptanceForm.js";
@@ -224,6 +226,12 @@ const createAcceptanceForm = async (req, res) => {
 const downloadReport = async (res) => {
   const collection = mongoose.connection.collection("acceptanceforms");
   const data = await collection.find().toArray();
+  if (!data) {
+    const error = new Error();
+    error.status = 404;
+    error.message = "No acceptanceforms found";
+    throw error;
+  }
   const stream = fastCsv.format({
     headers: [
       "_id",
