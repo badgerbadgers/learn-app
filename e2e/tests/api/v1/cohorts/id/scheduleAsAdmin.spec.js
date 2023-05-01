@@ -213,7 +213,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     );
     // check if response is not OK
     expect(responseForDeletedCohort.ok()).not.toBeTruthy();
-    expect(responseForDeletedCohort.status()).toBe(400);
+    expect(responseForDeletedCohort.status()).toBe(404);
   });
 
   test("api doesn't update cohort schedule if schedule data is empty", async ({

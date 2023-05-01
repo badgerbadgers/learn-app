@@ -75,9 +75,13 @@
  *         description: Update entire schedule for a specific cohort
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error message if a cohort's schedule not found
  */
 
 import Cohort from "lib/models/Cohort";
+import Lesson from "lib/models/Lesson";
+import Section from "lib/models/Section";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -111,7 +115,6 @@ export default async function handler(req, res) {
   }
   return;
 }
-
 
 export const getCohortSchedule = async (id) => {
   await dbConnect();
@@ -162,16 +165,57 @@ export const updateSchedule = async (id, updates) => {
       "No valid information was supplied to update the schedule of the cohort"
     );
   }
+  // find all lesson's IDs in db
+  const lessons = await Lesson.find(
+    {
+      lesson: {},
+    },
+    "_id"
+  );
+  const allLessonsIds = lessons.map((obj) => obj._id.toString());
+  //check lesson's id in updates
+  const filterLessonsInUpdates = updates.schedule.filter((obj) =>
+    obj.hasOwnProperty("lesson")
+  );
+  const lessonsInUpdates = filterLessonsInUpdates.map((obj) => obj.lesson);
+  //verify that lessons in updates exist in DB
+  const lessonsExist = lessonsInUpdates.every((id) =>
+    allLessonsIds.includes(id)
+  );
+  // throw an error if not each lesson id provided is found in db
+  if (!lessonsExist) {
+    throw new Error("Lesson's ID not found");
+  }
+
+  // find all section's IDs  in db
+  const sections = await Section.find(
+    {
+      section: {},
+    },
+    "_id"
+  );
+  const allSectionsIds = sections.map((obj) => obj._id.toString());
+  //check section's id in updates
+  const sectionsInUpdates = updates.schedule.map((obj) => obj.section);
+
+  //verify that sections in updates exist in DB
+  const sectionsExist = sectionsInUpdates.every((id) =>
+    allSectionsIds.includes(id)
+  );
+  // throw an error if not each section id provided is found in db
+  if (!sectionsExist) {
+    throw new Error("Section's ID not found");
+  }
+  //update
   const updatedSchedule = await Cohort.findByIdAndUpdate(id, updates, {
     new: true,
     runValidators: true,
   });
   if (!updatedSchedule) {
-    throw new Error("Couldn't update schedule");
-    // const error = new Error();
-    // error.status = 404;
-    // error.message = `Could not find and update cohort with id - ${id}`;
-    // throw error;
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find and update cohort with id - ${id}`;
+    throw error;
   }
   return updatedSchedule;
 };
