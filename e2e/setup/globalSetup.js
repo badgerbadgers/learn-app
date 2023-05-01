@@ -23,7 +23,7 @@ async function globalSetup() {
   const uri = mongod.getUri();
 
   if (process.env.MONGODB_URI.startsWith(uri)) {
-    console.log("Successfuly set up a mongo db at " + process.env.MONGODB_URI);
+    console.log("Successfully set up a mongo db at " + process.env.MONGODB_URI);
   } else {
     throw Error("Could not create DB at " + process.env.MONGODB_URI);
   }
