@@ -14,7 +14,7 @@ module.exports = [
     course_name: "React",
     airtable_id: "recJEEWEWWfTsNVmx",
     slug: "react",
-    lessons: []
+    lessons: [],
   },
   {
     _id: ObjectId("62e056cee6daad619e5cc2c5"),
@@ -47,13 +47,5 @@ module.exports = [
     slug: "react-deleted",
     lessons: [],
     deleted_at: faker.date.past().toISOString(),
-  },
-  {
-    _id: ObjectId("32e056cee6daad619e5cc2c4"),
-    course_name: "React Redux deleted",
-    airtable_id: "recJEEWEWWfTsNVmx",
-    slug: "react-redux-deleted",
-    lessons: [],
-    deleted_at: faker.date.recent().toISOString(),
   },
 ];
