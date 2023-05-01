@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 test.describe("/api/v1/courses/[id]", () => {
   //GET TESTS
 
-  test("returns only not deleted a course by id", async ({ request, db }) => {
+  test("returns not deleted a course by id", async ({ request, db }) => {
     const randomCourse = await db.collection("courses").findOne({
       deleted_at: { $eq: null },
     });
@@ -51,6 +51,7 @@ test.describe("/api/v1/courses/[id]", () => {
     const randomLesson = await db
       .collection("lessons")
       .findOne({ deleted_at: { $eq: null } });
+    console.log(randomLesson._id);
 
     const updates = {
       course_name: faker.lorem.words(),
@@ -107,7 +108,87 @@ test.describe("/api/v1/courses/[id]", () => {
     const ifCourseUpdated = await db
       .collection("courses")
       .findOne({ _id: randomCourseToUpdate._id });
+
     expect(ifCourseUpdated.course_name).not.toBe(randomCourse.course_name);
+  });
+
+  test("creates a course with a course_name that exists in a deleted course", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const randomDeletedCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $ne: null } });
+
+    const updates = {
+      course_name: randomDeletedCourse.course_name,
+    };
+
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const updatedCourse = (await response.json()).data;
+    // check if random course_name was updated
+    expect(updatedCourse.course_name).toBe(randomDeletedCourse.course_name);
+    expect(updatedCourse._id).toBe(randomCourse._id.toString());
+
+    // set the course name back to initial name to prevent subsequent tests failure
+    const responseBackToOriginal = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: { course_name: randomCourse.course_name },
+      }
+    );
+    expect(responseBackToOriginal.ok()).toBeTruthy();
+  });
+
+  test("does not undelete a course if it results in getting a course with duplicate name can be created", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const randomDeletedCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $ne: null } });
+
+    const updates = {
+      course_name: randomDeletedCourse.course_name,
+    };
+
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const updatedCourse = (await response.json()).data;
+    // check if random course_name was updated
+    expect(updatedCourse.course_name).toBe(randomDeletedCourse.course_name);
+
+    const updatesUndelete = {
+      deleted_at: null,
+    };
+
+    const getResponse = await request.patch(
+      `/api/v1/courses/${randomDeletedCourse._id}`,
+      {
+        data: updatesUndelete,
+      }
+    );
+    expect(getResponse.ok()).toBeFalsy();
+    expect(randomDeletedCourse.deleted_at).toBeDefined();
   });
 
   test("does not update a course with field not existed in Course model", async ({
@@ -219,7 +300,7 @@ test.describe("/api/v1/courses/[id]", () => {
     const notExistentCourse = await db
       .collection("courses")
       .findOne({ course_name: updates.course_name });
-      
+
     expect(notExistentCourse).toBeNull();
     expect(courseAfterUpdate).not.toMatchObject(updates);
     expect(

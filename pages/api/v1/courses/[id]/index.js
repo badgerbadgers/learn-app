@@ -41,13 +41,14 @@
  *           properties:
  *             course_name:
  *               type: string
+ *             deleted_at:
+ *               type:
+ *                 - 'null'
  *             lessons:
  *               type: array
- *               schema:
- *                 type: array
- *                 items:
- *                   type: string
- *           example: {"course_name": "Some course name", "lessons": ["62e26dc669dd077fc82fbffa", "62e26dc669dd077fc82fc00b"]}
+ *               items:
+ *                 type: string
+ *           example: {"course_name": "Some course name", "lessons": ["62e26dc669dd077fc82fbffa", "62e26dc669dd077fc82fc00b"], "deleted_at": null}
  *     responses:
  *       200:
  *         description: Provides a course's data
@@ -139,57 +140,70 @@ export const getCourse = async (id) => {
 };
 
 export const updateCourse = async (id, updates) => {
-  // filter updates to extract allowed fields to perform update
-  const allowedFields = ["course_name", "lessons", "deleted_at"];
-  const filteredUpdates = allowedFields.reduce((fields, current) => {
-    if (current === "deleted_at" && updates[current] === null) {
-      return { ...fields, [current]: updates[current] };
-    }
-    if (current === "deleted_at" && updates[current]) {
-      // check if deleted_at is a Date not null and do not let the field to go to updates (deleted not allowed in PATCH)
-      return fields;
-    }
-    if (updates[current]) {
-      return { ...fields, [current]: updates[current] };
-    }
-    return fields;
-  }, {});
+  //  allowed fields to update are: "course_name", "lessons", "deleted_at"];
+  const filteredUpdates = {};
+
+  if (updates.deleted_at) {
+    throw new Error("Not allowed to update deleted_at to non null value");
+  }
 
   await dbConnect();
-  if (filteredUpdates.course_name) {
+
+  if (updates.course_name) {
     //make sure course_name is unique
     const duplicateCourseName = await Course.findOne({
-      course_name: filteredUpdates.course_name,
+      course_name: updates.course_name,
     });
+
     if (duplicateCourseName) {
       throw new Error("Duplicate Course Name");
     }
+    filteredUpdates.course_name = updates.course_name;
+  }
+
+  if (updates.deleted_at === null) {
+    if (!updates.course_name) {
+      //make sure course_name is unique
+      const [course] = await Course.find({
+        _id: id,
+        deleted_at: { $ne: null },
+      });
+      const duplicateCourseName = await Course.findOne({
+        course_name: course.course_name,
+      });
+      if (duplicateCourseName) {
+        throw new Error(
+          "Not allowed: undeleting the course will create duplicate course name"
+        );
+      }
+    }
+    filteredUpdates.deleted_at = updates.deleted_at;
   }
 
   // make sure provided lessons exist in db
-  if (filteredUpdates.lessons) {
+  if (updates.lessons) {
     // find which of the provided lessons exist in lessons database, if not - throw an error
     const lessons = await Lesson.find(
       {
-        _id: { $in: filteredUpdates.lessons },
+        _id: { $in: updates.lessons },
       },
       "_id"
     );
-
     // throw an error if not each lesson id provided is found in db
-    if (!lessons.length || filteredUpdates.lessons.length !== lessons.length) {
+    if (!lessons.length || updates.lessons.length !== lessons.length) {
       throw new Error(
         "All lessons ids provided must be unique and exist in the data base"
       );
     }
     filteredUpdates.lessons = lessons;
   }
-  // since an error is returned if filteredUpdates is an empty object because database won't perform an update with empty object provided, return error if there are no valid fields to update
+  // return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
       "Valid data to perform an update for the course not provided"
     );
   }
+
   const updatedCourse = await Course.findByIdAndUpdate(id, filteredUpdates, {
     new: true,
     runValidators: true,
