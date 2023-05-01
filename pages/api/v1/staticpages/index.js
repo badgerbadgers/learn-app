@@ -97,6 +97,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: staticpages });
         return;
       } catch (error) {
+        console.log("error", error.message);
         res.status(400).json({ message: error.message });
         return;
       }
@@ -128,6 +129,7 @@ export const getStaticPages = async () => {
 };
 
 export const createStaticPage = async (staticpage) => {
+  console.log("func", staticpage);
   try {
     await dbConnect();
     const newstaticpage = new Staticpage(staticpage);

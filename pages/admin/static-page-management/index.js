@@ -1,46 +1,42 @@
 import React, { useState } from "react"
 import { Switch, Typography, Box } from "@mui/material"
-import { DataGrid } from "@mui/x-data-grid"
-import StaticPage from "../../../lib/models/StaticPage"
+import { DataGrid } from "@mui/x-data-grid";
 import dbConnect from "../../../lib/dbConnect"
 import axios from "axios"
 import { getSession } from "next-auth/react"
 import { privateLayout } from "../../../components/layout/PrivateLayout"
 
 const AllStaticPages = ({ combinedData }) => {
-  const [staticPages, setStaticPages] = useState(combinedData)
-  const [updatedPages, setUpdatedPages] = useState([])
-  const [checked, setIsChecked] = useState(combinedData.checked)
+  const [staticPages, setStaticPages] = useState(combinedData);
+  const [updatedPages, setUpdatedPages] = useState([]);
+  const [checked, setIsChecked] = useState(combinedData.checked);
 
   const handleChange = async (event) => {
-    const deleted = event.target.checked
-    const id = JSON.parse(event.target.id)
+    const deleted = event.target.checked;
+    const id = JSON.parse(event.target.id);
     const filteredByIdPage = staticPages.filter((page) => {
-      let wp_id = JSON.parse(page.wordpress_id)
-      return wp_id === id
-    })
+      let wp_id = JSON.parse(page.wordpress_id);
+      return wp_id === id;
+    });
 
     //toggled page will always be array index 0 from filter
     const mongo_id = filteredByIdPage[0].mongo_id;
     const title = filteredByIdPage[0].title;
     const slug = filteredByIdPage[0].slug;
 
-    await axios.post(
-      "/api/staticpages",
-      {
-        wp_id: id,
-        isShown: deleted,
-        _id: mongo_id,
-        title: title,
-        slug: slug,
+    const staticpage = {
+      wordpress_id: id,
+      isShown: deleted,
+      _id: mongo_id,
+      title: title,
+      slug: slug,
+    };
+    await axios.post("http://localhost:3000/api/v1/staticpages", staticpage, {
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-  }
+    });
+  };
 
   const columns = [
     {
@@ -54,7 +50,7 @@ const AllStaticPages = ({ combinedData }) => {
       headerName: "Shown in Learn App",
       width: 150,
       renderCell: (params) => {
-        const id = params.id
+        const id = params.id;
         return (
           <Switch
             title={params.title}
@@ -64,10 +60,10 @@ const AllStaticPages = ({ combinedData }) => {
             inputProps={{ "aria-label": "controlled" }}
             defaultChecked={!!params.row.isShown}
           />
-        )
+        );
       },
     },
-  ]
+  ];
 
   return (
     <Box
@@ -78,9 +74,9 @@ const AllStaticPages = ({ combinedData }) => {
       }}
     >
       <Typography
-        variant='h4'
+        variant="h4"
         gutterBottom
-        color='primary'
+        color="primary"
         style={{
           fontSize: "35px",
           position: "relative",
@@ -97,12 +93,12 @@ const AllStaticPages = ({ combinedData }) => {
         getRowId={(row) => row.wordpress_id}
       />
     </Box>
-  )
-}
+  );
+};
 
-export default AllStaticPages
+export default AllStaticPages;
 
-AllStaticPages.getLayout = privateLayout
+AllStaticPages.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   await dbConnect();
@@ -118,7 +114,9 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
 
-  const mongoData = await StaticPage.find({}).lean();
+  const dbData = await axios.get("http://localhost:3000/api/v1/staticpages");
+  const mongoData = await dbData.data.data;
+
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
   const combinedData = combineData(wordpressData, mongoData);
