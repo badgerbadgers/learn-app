@@ -24,6 +24,10 @@
  *                   items:
  *                     type: object
  *                     properties:
+ *                       deleted_at:
+ *                         type: string
+ *                         format: date #
+ *                         example: 2023-04-09T00:56:05.829+00:00
  *                       _id:
  *                         type: number
  *                         example: 63fd39c51e0a85c474927702
@@ -44,7 +48,7 @@
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
- *         name: id_or_slug
+ *         name: id
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
@@ -98,20 +102,20 @@ export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
-    // case "GET":
-    //   try {
-    //     const slug = req.query.id_or_slug;
-    //     const staticpage = await getStaticPageSlug(slug);
-    //     if (!staticpage) {
-    //       res.status(404).json({ message: `Page not found` });
-    //       return;
-    //     }
-    //     res.status(200).json({ data: staticpage });
-    //     return;
-    //   } catch (error) {
-    //     res.status(400).json({ message: error.message });
-    //     return;
-    //   }
+    case "GET":
+      try {
+        const id = req.query.id;
+        const staticpage = await getStaticPageById(id);
+        if (!staticpage) {
+          res.status(404).json({ message: `Page not found` });
+          return;
+        }
+        res.status(200).json({ data: staticpage });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
     case "PATCH":
       try {
         const id = req.query.id_or_slug;
@@ -126,7 +130,7 @@ export default async function handler(req, res) {
       }
     case "DELETE":
       try {
-        const id = req.query.id_or_slug;
+        const id = req.query.id;
         await deletedStaticPage(id);
         res.status(200).json({ message: `Page has been deleted.` });
         return;
@@ -140,19 +144,18 @@ export default async function handler(req, res) {
   }
 }
 
-// export const getStaticPageSlug = async (slug) => {
-//   try {
-//     await dbConnect();
-//     const staticPageSlug = await StaticPage.findOne({
-//       slug: slug,
-//       isShown: true,
-//     }).exec();
-//     return staticPageSlug;
-//   } catch (error) {
-//     console.log(error);
-//     throw new Error(error.message);
-//   }
-// };
+export const getStaticPageById = async (id) => {
+  try {
+    await dbConnect();
+    const staticPageSlug = await StaticPage.findOne({
+      _id: id,
+    }).exec();
+    return staticPageSlug;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
 
 export const updateStaticPage = async (id, updates) => {
   try {

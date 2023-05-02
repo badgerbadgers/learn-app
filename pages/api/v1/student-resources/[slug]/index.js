@@ -24,6 +24,10 @@
  *                   items:
  *                     type: object
  *                     properties:
+ *                       deleted_at:
+ *                         type: string
+ *                         format: date #
+ *                         example: 2023-04-09T00:56:05.829+00:00
  *                       _id:
  *                         type: number
  *                         example: 63fd39c51e0a85c474927702
