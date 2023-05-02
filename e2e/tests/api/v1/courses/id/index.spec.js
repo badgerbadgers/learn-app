@@ -51,7 +51,6 @@ test.describe("/api/v1/courses/[id]", () => {
     const randomLesson = await db
       .collection("lessons")
       .findOne({ deleted_at: { $eq: null } });
-    console.log(randomLesson._id);
 
     const updates = {
       course_name: faker.lorem.words(),

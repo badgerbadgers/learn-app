@@ -148,7 +148,7 @@ export const updateCourse = async (id, updates) => {
   }
 
   await dbConnect();
-
+  
   if (updates.course_name) {
     //make sure course_name is unique
     const duplicateCourseName = await Course.findOne({
@@ -160,21 +160,25 @@ export const updateCourse = async (id, updates) => {
     }
     filteredUpdates.course_name = updates.course_name;
   }
-
+  
   if (updates.deleted_at === null) {
+ 
     if (!updates.course_name) {
       //make sure course_name is unique
       const [course] = await Course.find({
         _id: id,
         deleted_at: { $ne: null },
       });
-      const duplicateCourseName = await Course.findOne({
-        course_name: course.course_name,
-      });
-      if (duplicateCourseName) {
-        throw new Error(
-          "Not allowed: undeleting the course will create duplicate course name"
-        );
+      console.log(course, "COURSE");
+      if (course) {
+        const duplicateCourseName = await Course.findOne({
+          course_name: course.course_name,
+        });
+        if (duplicateCourseName) {
+          throw new Error(
+            "Not allowed: undeleting the course will create duplicate course name"
+          );
+        }
       }
     }
     filteredUpdates.deleted_at = updates.deleted_at;
@@ -197,6 +201,7 @@ export const updateCourse = async (id, updates) => {
     }
     filteredUpdates.lessons = lessons;
   }
+
   // return error if there are no valid fields to update
   if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
