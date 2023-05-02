@@ -56,14 +56,11 @@ export default async function handler(req, res) {
       try {
         const slug = req.query.slug;
         const staticpage = await getStudentResourcesSlug(slug);
-        if (!staticpage) {
-          res.status(404).json({ message: `Page not found` });
-          return;
-        }
         res.status(200).json({ data: staticpage });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     default:
@@ -73,15 +70,16 @@ export default async function handler(req, res) {
 }
 
 export const getStudentResourcesSlug = async (slug) => {
-  try {
-    await dbConnect();
-    const staticPageSlug = await StaticPage.findOne({
-      slug: slug,
-      isShown: true,
-    }).exec();
-    return staticPageSlug;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error.message);
+  await dbConnect();
+  const studentResourceSlug = await StaticPage.findOne({
+    slug: slug,
+    isShown: true,
+  }).exec();
+  if (!studentResourceSlug) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Error finding slug - ${slug} is invalid`;
+    throw error;
   }
+  return studentResourceSlug;
 };

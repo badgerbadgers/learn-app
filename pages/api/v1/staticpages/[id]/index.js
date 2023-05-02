@@ -147,14 +147,11 @@ export default async function handler(req, res) {
       try {
         const id = req.query.id;
         const staticpage = await getStaticPageById(id);
-        if (!staticpage) {
-          res.status(404).json({ message: `Page not found` });
-          return;
-        }
         res.status(200).json({ data: staticpage });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     case "PATCH":
@@ -166,7 +163,8 @@ export default async function handler(req, res) {
         res.status(200).json({ data: updatedPage });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     case "DELETE":
@@ -176,7 +174,8 @@ export default async function handler(req, res) {
         res.status(200).json({ message: `Page has been deleted.` });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     default:
@@ -186,46 +185,46 @@ export default async function handler(req, res) {
 }
 
 export const getStaticPageById = async (id) => {
-  try {
-    await dbConnect();
-    const staticPageSlug = await StaticPage.findOne({
-      _id: id,
-    }).exec();
-    return staticPageSlug;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error.message);
+  await dbConnect();
+  const staticPageId = await StaticPage.findOne({
+    _id: id,
+  }).exec();
+  if (!staticPageId) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Error finding id - ${id} is invalid`;
+    throw error;
   }
+  return staticPageId;
 };
 
 export const updateStaticPage = async (id, updates) => {
-  try {
-    await dbConnect();
-    const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates, {
-      runValidators: true,
-      new: true,
-    });
-    //run validators on new obj
-    if (!updatedstaticpage) {
-      throw new Error(`${id} is not a valid id.`);
-    }
-    return updatedstaticpage;
-  } catch (error) {
-    throw new Error(`${error.message}`);
+  await dbConnect();
+  const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates, {
+    runValidators: true,
+    new: true,
+  });
+  //run validators on new obj
+  if (!updatedstaticpage) {
+    // throw new Error(`${id} is not a valid id.`);
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find static page, ${id} is invalid`;
+    throw error;
   }
+  return updatedstaticpage;
 };
 
 export const deletedStaticPage = async (id) => {
   const update = { deleted_at: new Date() };
-  try {
-    await dbConnect();
-    const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
-    if (!deletedPage) {
-      throw new Error(`Could not find ${id}`);
-    }
-    return;
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Could not delete by id: ${error.message}`);
+  await dbConnect();
+  const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
+  if (!deletedPage) {
+    // throw new Error(`Could not find ${id}`);
+    const error = new Error();
+    error.status = 404;
+    error.message = `Could not find static page, ${id} is invalid`;
+    throw error;
   }
+  return;
 };
