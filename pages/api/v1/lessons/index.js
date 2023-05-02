@@ -36,6 +36,9 @@
  */
 
 import Lesson from "lib/models/Lesson";
+import Material from "lib/models/Material"; //not active but needed for populate()
+import Assignment from "lib/models/Assignment"; //not active but needed for populate()
+import Section from "lib/models/Section"; //not active but needed for populate()
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -70,7 +73,20 @@ export default async function handler(req, res) {
 export const getLessons = async () => {
   await dbConnect();
   const lessons = await Lesson.find({})
-    .populate(["materials", "assignments", "section"])
+    .populate([
+      {
+        path: "materials",
+        model: "Material",
+      },
+      {
+        path: "assignments",
+        model: "Assignment",
+      },
+      {
+        path: "section",
+        model: "Section",
+      },
+    ])
     .exec();
 
   if (!lessons) {
