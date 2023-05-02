@@ -169,7 +169,7 @@ export const updateCourse = async (id, updates) => {
         _id: id,
         deleted_at: { $ne: null },
       });
-      console.log(course, "COURSE");
+  
       if (course) {
         const duplicateCourseName = await Course.findOne({
           course_name: course.course_name,
