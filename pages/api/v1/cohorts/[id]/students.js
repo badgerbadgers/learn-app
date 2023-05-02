@@ -176,7 +176,7 @@ export const addUsersToCohort = async (id, updates) => {
     error.message = `Could not find cohort with id ${id} `;
     throw error;
   }
-  await cohort.updateUsers(updates);
+  await cohort.updateStudents(updates.students);
   return await cohort.save();
 };
 
