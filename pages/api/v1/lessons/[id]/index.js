@@ -38,7 +38,6 @@
  *         required: true
  *         schema:
  *           type: object
- *           required: [title]
  *           properties:
  *             title:
  *               type: string
@@ -210,6 +209,7 @@ export const updateLesson = async (id, updates) => {
   ) {
     throw new Error("Submission link must include label and valid url");
   }
+
   if (updates.submission_link) {
     filteredUpdates.submission_link = updates.submission_link;
   }
@@ -246,6 +246,7 @@ export const updateLesson = async (id, updates) => {
     new: true,
     runValidators: true,
   });
+
   if (!updatedLesson) {
     const error = new Error();
     error.status = 404;
