@@ -2,16 +2,16 @@
  * @swagger
  * tags:
  *   name: Static pages
- * /api/v1/staticpages/{id_or_slug}:
+ * /api/v1/staticpages/{id}:
  *   get:
- *     description: Get a specific static page by slug
+ *     description: Get a specific static page by id
  *     tags: [Static pages]
  *     parameters:
  *       - in: path
- *         name: id_or_slug
+ *         name: id
  *         schema:
- *           type: string
- *         example: bass-practicum
+ *           type: number
+ *         example: 
  *     responses:
  *       200:
  *         description: OK
@@ -98,20 +98,20 @@ export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
-    case "GET":
-      try {
-        const slug = req.query.id_or_slug;
-        const staticpage = await getStaticPageSlug(slug);
-        if (!staticpage) {
-          res.status(404).json({ message: `Page not found` });
-          return;
-        }
-        res.status(200).json({ data: staticpage });
-        return;
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-        return;
-      }
+    // case "GET":
+    //   try {
+    //     const slug = req.query.id_or_slug;
+    //     const staticpage = await getStaticPageSlug(slug);
+    //     if (!staticpage) {
+    //       res.status(404).json({ message: `Page not found` });
+    //       return;
+    //     }
+    //     res.status(200).json({ data: staticpage });
+    //     return;
+    //   } catch (error) {
+    //     res.status(400).json({ message: error.message });
+    //     return;
+    //   }
     case "PATCH":
       try {
         const id = req.query.id_or_slug;
@@ -140,19 +140,19 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStaticPageSlug = async (slug) => {
-  try {
-    await dbConnect();
-    const staticPageSlug = await StaticPage.findOne({
-      slug: slug,
-      isShown: true,
-    }).exec();
-    return staticPageSlug;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error.message);
-  }
-};
+// export const getStaticPageSlug = async (slug) => {
+//   try {
+//     await dbConnect();
+//     const staticPageSlug = await StaticPage.findOne({
+//       slug: slug,
+//       isShown: true,
+//     }).exec();
+//     return staticPageSlug;
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error(error.message);
+//   }
+// };
 
 export const updateStaticPage = async (id, updates) => {
   try {
