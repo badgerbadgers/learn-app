@@ -162,21 +162,16 @@ export const getLesson = async (id) => {
 };
 
 // make sure provided ids exist in model db
-const foundInDataBase = async (model, data) => {
-  // find which of the provided ids exist in model database, if not - throw an error
+const confirmIdsExistInCollection = async (model, data) => {
+  // find which of the provided ids exist in model database
   const idList = await model.find({ _id: { $in: [...data] } }, "_id");
-  // throw an error if not each id provided is found in db
-  if (!idList.length || data.length !== idList.length) {
-    throw new Error(
-      `All ${model.modelName} ids provided must be unique and exist in the data base`
-    );
-  }
-  return idList.map((item) => item._id);
+
+  // return true if all ids exist in db, false otherwise
+  return !(!idList.length || data.length !== idList.length);
 };
 
 export const updateLesson = async (id, updates) => {
   // filter updates to extract allowed fields to perform update
-
   const filteredUpdates = {};
 
   if (updates.title) {
@@ -217,22 +212,42 @@ export const updateLesson = async (id, updates) => {
   await dbConnect();
 
   if (updates.materials) {
-    filteredUpdates.materials = await foundInDataBase(
+    const ifIdsExist = await confirmIdsExistInCollection(
       Material,
       updates.materials
     );
+
+    if (!ifIdsExist) {
+      throw new Error(
+        `All materials ids provided must be unique and exist in the data base`
+      );
+    }
+    filteredUpdates.materials = updates.materials;
   }
 
   if (updates.section) {
-    const [section] = await foundInDataBase(Section, [updates.section]);
-    filteredUpdates.section = section;
+    const ifIdsExist = await confirmIdsExistInCollection(Section, [
+      updates.section,
+    ]);
+    if (!ifIdsExist) {
+      throw new Error(
+        `Section id provided must be unique and exist in the data base`
+      );
+    }
+    filteredUpdates.section = updates.section;
   }
 
   if (updates.assignments) {
-    filteredUpdates.assignments = await foundInDataBase(
+    const ifIdsExist = await confirmIdsExistInCollection(
       Assignment,
       updates.assignments
     );
+    if (!ifIdsExist) {
+      throw new Error(
+        `All assignments ids provided must be unique and exist in the data base`
+      );
+    }
+    filteredUpdates.assignments = updates.assignments;
   }
 
   // return error if there are no valid fields to update
