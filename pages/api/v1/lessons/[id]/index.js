@@ -210,6 +210,9 @@ export const updateLesson = async (id, updates) => {
   ) {
     throw new Error("Submission link must include label and valid url");
   }
+  if (updates.submission_link) {
+    filteredUpdates.submission_link = updates.submission_link;
+  }
 
   await dbConnect();
 
