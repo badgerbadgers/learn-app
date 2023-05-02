@@ -138,20 +138,37 @@ import * as fastCsv from "fast-csv";
 export default async function handler(req, res) {
   const { method } = req;
   await dbConnect();
-
+  const session = await getSession({ req });
+  if (!session || !session.user) {
+    const error = new Error();
+    error.status = 401;
+    error.message = "User unauthorized";
+    throw error;
+  }
   switch (method) {
     case "GET":
-      if (req.headers.accept === "text/csv") {
-        const body = req.body;
-        const session = await getSession({ req });
-        const result = await downloadReport(res, body, session);
-      } else {
-        const body = req.body;
-        const session = await getSession({ req });
-        const result = await getAcceptanceForms(body, session);
-        res.status(200).json({ data: result });
+      try {
+        if (req.headers.accept === "text/csv") {
+          const body = req.body;
+          const result = await downloadReport(res, body, session);
+          if (!result) {
+            res.status(404).json({ message: "No acceptanceforms found" });
+            return;
+          }
+        } else {
+          const body = req.body;
+          const result = await getAcceptanceForms(body, session);
+          if (!result) {
+            res.status(404).json({ message: "No acceptanceforms found" });
+            return;
+          }
+          res.status(200).json({ data: result });
+        }
+        return;
+      } catch (error) {
+        res.status(error.status || 400).json({ message: error.message });
+        return;
       }
-      return;
     case "POST":
       await createAcceptanceForm(req, res);
       return;
