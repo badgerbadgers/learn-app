@@ -92,6 +92,47 @@
  *                       example: Resilient Canary
  *       400:
  *         description: Error messages
+ *   delete:
+ *     description: Soft deletes a static page in database using the id
+ *     tags: [Static pages]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: number
+ *           example: 63fd39c51e0a85c4749274ff
+ *         description: id of the static page to soft delete
+ *       - in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             deleted_at:
+ *               type: string
+ *               format: date #
+ *               example: 2023-04-09T00:56:05.829+00:00
+ *             isShown:
+ *               type: boolean
+ *               example: true
+ *             slug:
+ *               type: string
+ *             title:
+ *               type: string
+ *         description: the result object when DELETE is called
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     deleted_at:
+ *                       type: string #
+ *                       example: 2023-04-09T00:56:05.829+00:00
+ *       400:
+ *         description: Error messages
  *
  */
 
