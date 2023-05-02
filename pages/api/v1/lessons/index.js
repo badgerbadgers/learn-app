@@ -20,12 +20,38 @@
  *       - in: body
  *         name: lesson
  *         description: Create a new lesson
+ *         required: true
  *         schema:
  *           type: object
+ *           required:
+ *             - title
  *           properties:
  *             title:
  *               type: string
- *               required: true
+ *             submission_link:
+ *               type: object
+ *               properties:
+ *                 label:
+ *                   type: string
+ *                 url:
+ *                   type: string
+ *             learning_objectives:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             mindset_content:
+ *               type: string 
+ *             materials:
+ *               type: array
+ *               items:
+ *                 type: string         
+ *             assignments:
+ *               type: array
+ *               items:
+ *                 type: string 
+ *             section:
+ *               type: string
+ *           example: {"title":"ThunderClient testing POST a lesson","submission_link": {"label":"Submit Assignment","url":"https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript"},"learning_objectives": ["Some text", "Some text"],"mindset_content": "Some text","materials":["62e26dc669dd077fc82fc010"],"assignments":["62e26dc569dd077fc82fbff2"],"section":"633d9915ec0d4b5e83a6b05e"}
  *     responses:
  *       200:
  *         description: Creates new lesson
