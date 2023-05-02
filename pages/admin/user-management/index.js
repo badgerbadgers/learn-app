@@ -11,9 +11,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import { formatDistance } from "date-fns";
+import { getCourses } from "pages/api/v1/courses";
+import { getCohorts } from "pages/api/v1/cohorts";
 
-const UserManagemant = () => {
-  const url = "/api/users";
+const UserManagemant = ({allCourses, allCohorts}) => {
+  const url = "/api/v1/users";
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -66,38 +68,23 @@ const UserManagemant = () => {
   };
 
   useEffect(() => {
-    const url = "/api/cohorts";
-    const params = {};
-    try {
-      (async () => {
-        const response = await getData(params, url);
-        let cohorts = JSON.parse(response.data);
-        let localCohorts = [];
-        if (cohorts) {
-          cohorts.map((cohort) => {
-            localCohorts.push({
-              value: cohort._id,
-              label: cohort.cohort_name,
-            });
-          });
-        }
-        setCohorts(localCohorts);
-      })();
-    } catch (error) {
-      console.log("An error getData in /api/cohorts:", error);
+    let localCohorsts = [];
+    if (allCohorts) {
+      allCohorts.map((cohort) => {
+        localCohorsts.push({
+          value: cohort._id,
+          label: cohort.cohort_name,
+        });
+      });
     }
+    setCohorts(localCohorsts);
   }, []);
 
-  useEffect(() => {
-    const url = "/api/courses";
-    const params = {};
-    try {
-      (async () => {
-        const response = await getData(params, url);
-        let courses = JSON.parse(response.data);
-        let localCourses = [];
-        if (courses) {
-          courses.map((course) => {
+
+  useEffect(()=>{
+    let localCourses = [];
+    if (allCourses) {
+          allCourses.map((course) => {
             localCourses.push({
               value: course._id,
               label: course.course_name,
@@ -105,11 +92,7 @@ const UserManagemant = () => {
           });
         }
         setCourses(localCourses);
-      })();
-    } catch (error) {
-      console.log("An error from getData in /api/courses:", error);
-    }
-  }, []);
+  }, [])
 
   const filterChangeHandler = (newFilters) => {
     setFilters({ ...newFilters });
@@ -134,7 +117,7 @@ const UserManagemant = () => {
         setLoading(false);
       })();
     } catch (error) {
-      console.log("An error from getData in /api/students", error);
+      console.log("An error from getData in /api/v1/users", error);
     }
   }, [filters]);
 
@@ -193,16 +176,22 @@ UserManagemant.getLayout = privateLayout;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+      if (!session) {
+        return {
+          redirect: {
+            destination: "/",
+            permanent: false,
+          },
+        };
+      }
   const { user } = session;
+  const courses = await getCourses();
+  const cohorts = await getCohorts();
   return {
-    props: { user },
+    props: { 
+      user, 
+      allCourses: JSON.parse(JSON.stringify(courses)),
+      allCohorts: JSON.parse(JSON.stringify(cohorts))
+     },
   };
 }
