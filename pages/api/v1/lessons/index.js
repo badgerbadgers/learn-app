@@ -9,8 +9,6 @@
  *     responses:
  *       200:
  *         description: Provides an array of lessons
- *       404:
- *         description: Error messages if lessons not found
  *       400:
  *         description: Error messages
  *   post:
@@ -55,8 +53,6 @@
  *     responses:
  *       200:
  *         description: Creates new lesson
- *       404:
- *         description: Error messages if lessons not found
  *       400:
  *         description: Error messages
  */
@@ -77,7 +73,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: lessons });
       } catch (error) {
         console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
       }
       break;
     case "POST":
@@ -86,7 +82,7 @@ export default async function handler(req, res) {
         res.status(200).json({ data: lesson });
       } catch (error) {
         console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
       }
       break;
     default:
@@ -97,36 +93,100 @@ export default async function handler(req, res) {
 }
 
 export const getLessons = async () => {
-  await dbConnect();
-  const lessons = await Lesson.find({})
-    .populate([
-      {
-        path: "materials",
-        model: "Material",
-      },
-      {
-        path: "assignments",
-        model: "Assignment",
-      },
-      {
-        path: "section",
-        model: "Section",
-      },
-    ])
-    .exec();
+  try {
+    await dbConnect();
+    const lessons = await Lesson.find({})
+      .populate([
+        {
+          path: "materials",
+          model: "Material",
+        },
+        {
+          path: "assignments",
+          model: "Assignment",
+        },
+        {
+          path: "section",
+          model: "Section",
+        },
+      ])
+      .exec();
 
-  if (!lessons) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find lessons`;
-    throw error;
+    return lessons;
+  } catch (error) {
+    throw new Error("Could not get lessons");
   }
-  return lessons;
 };
 
+// make sure provided ids exist in model db, return true if all ids exist in db, false otherwise
+const confirmIdsExistInCollection = async (model, data) =>
+  data.length === (await model.countDocuments({ _id: { $in: [...data] } }));
+
 export const createLesson = async (data) => {
+  const filteredData = {};
+  if (data.title) {
+    filteredData.title = data.title;
+  }
+
+  if (data.mindset_content) {
+    filteredData.mindset_content = data.mindset_content;
+  }
+
+  if (data.learning_objectives) {
+    filteredData.learning_objectives = data.learning_objectives;
+  }
+
+  if (
+    data.submission_link &&
+    (!data.submission_link.label || !data.submission_link.url)
+  ) {
+    throw new Error("Submission link must include label and valid url");
+  }
+
+  if (data.submission_link) {
+    filteredData.submission_link = data.submission_link;
+  }
   await dbConnect();
-  if (Object.keys(data).length === 0) {
+
+  if (data.materials) {
+    const ifIdsExist = await confirmIdsExistInCollection(
+      Material,
+      data.materials
+    );
+
+    if (!ifIdsExist) {
+      throw new Error(
+        `All materials ids provided must be unique and exist in the data base`
+      );
+    }
+    filteredData.materials = data.materials;
+  }
+  if (data.section) {
+    const ifIdsExist = await confirmIdsExistInCollection(Section, [
+      data.section,
+    ]);
+    if (!ifIdsExist) {
+      throw new Error(
+        `Section id provided must be unique and exist in the data base`
+      );
+    }
+    filteredData.section = data.section;
+  }
+
+  if (data.assignments) {
+    const ifIdsExist = await confirmIdsExistInCollection(
+      Assignment,
+      data.assignments
+    );
+    if (!ifIdsExist) {
+      throw new Error(
+        `All assignments ids provided must be unique and exist in the data base`
+      );
+    }
+    filteredData.assignments = data.assignments;
+  }
+
+  if (Object.keys(filteredData).length === 0) {
     throw new Error("Valid data to create a new lesson not provided");
   }
   //run mongoose validator to make sure data is valid
@@ -138,5 +198,8 @@ export const createLesson = async (data) => {
 
   //save the new lesson
   await newLesson.save();
-  return newLesson;
+  const newLessonPopulate = await newLesson.populate(
+    "materials assignments section"
+  );
+  return newLessonPopulate;
 };

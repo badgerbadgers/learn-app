@@ -40,7 +40,7 @@ test.describe("/api/v1/lessons", () => {
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
       materials: randomLesson.materials,
-      assignments: randomLesson.assignments, //assignments airtableID is "recnkUVqXPiVm1hQ9"
+      assignments: randomLesson.assignments,
     };
 
     const response = await request.post(`/api/v1/lessons`, {
@@ -129,5 +129,134 @@ test.describe("/api/v1/lessons", () => {
     await db
       .collection("lessons")
       .deleteOne({ _id: ObjectId(responseData._id) });
+  });
+  test("does not create a lesson when not all section ids exist in DB", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db.collection("lessons").findOne({});
+
+    const newLesson = {
+      title: faker.lorem.words(),
+      section: "333d9916ec0d4b5e83a6b05f",
+      submission_link: {
+        label: faker.lorem.words(),
+        url: faker.internet.url(),
+      },
+      learning_objectives: [faker.lorem.words(), faker.lorem.words()],
+      mindset_content: faker.lorem.words(),
+      materials: randomLesson.materials,
+      assignments: randomLesson.assignments,
+    };
+    //send lesson without title
+    const response = await request.post(`/api/v1/lessons`, {
+      data: newLesson,
+    });
+
+    // Check that the response is false
+    expect(response.ok()).toBeFalsy();
+    const responseMessage = (await response.json()).message;
+
+    //Verify that POST response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(
+      "Section id provided must be unique and exist in the data base"
+    );
+    //confirm our lesson has not been created
+    const getResponse = await request.get(`/api/v1/lessons`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const lessons = (await getResponse.json()).data;
+    expect(lessons).not.toContainEqual(
+      expect.objectContaining({
+        submission_link: newLesson.submission_link.url,
+      })
+    );
+  });
+  test("does not create a lesson when not all material ids exist in DB", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db.collection("lessons").findOne({});
+
+    const newLesson = {
+      title: faker.lorem.words(),
+      section: randomLesson.section,
+      submission_link: {
+        label: faker.lorem.words(),
+        url: faker.internet.url(),
+      },
+      learning_objectives: [faker.lorem.words(), faker.lorem.words()],
+      mindset_content: faker.lorem.words(),
+      materials: ["22e26dbb69dd077fc82fbfec"],
+      assignments: randomLesson.assignments,
+    };
+    //send lesson without title
+    const response = await request.post(`/api/v1/lessons`, {
+      data: newLesson,
+    });
+
+    // Check that the response is false
+    expect(response.ok()).toBeFalsy();
+    const responseMessage = (await response.json()).message;
+
+    //Verify that POST response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(
+      "All materials ids provided must be unique and exist in the data base"
+    );
+    //confirm our lesson has not been created
+    const getResponse = await request.get(`/api/v1/lessons`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const lessons = (await getResponse.json()).data;
+    expect(lessons).not.toContainEqual(
+      expect.objectContaining({
+        submission_link: newLesson.submission_link.url,
+      })
+    );
+  });
+  test("does not create a lesson when not all assignment ids exist in DB", async ({
+    request,
+    db,
+  }) => {
+    const randomLesson = await db.collection("lessons").findOne({});
+
+    const newLesson = {
+      title: faker.lorem.words(),
+      section: randomLesson.section,
+      submission_link: {
+        label: faker.lorem.words(),
+        url: faker.internet.url(),
+      },
+      learning_objectives: [faker.lorem.words(), faker.lorem.words()],
+      mindset_content: faker.lorem.words(),
+      materials: randomLesson.materials,
+      assignments: ["22e26dc569dd077fc82fbff6"],
+    };
+    //send lesson without title
+    const response = await request.post(`/api/v1/lessons`, {
+      data: newLesson,
+    });
+
+    // Check that the response is false
+    expect(response.ok()).toBeFalsy();
+    const responseMessage = (await response.json()).message;
+
+    //Verify that POST response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(
+      "All assignments ids provided must be unique and exist in the data base"
+    );
+    //confirm our lesson has not been created
+    const getResponse = await request.get(`/api/v1/lessons`);
+    expect(getResponse.ok()).toBeTruthy();
+
+    const lessons = (await getResponse.json()).data;
+    expect(lessons).not.toContainEqual(
+      expect.objectContaining({
+        submission_link: newLesson.submission_link.url,
+      })
+    );
   });
 });
