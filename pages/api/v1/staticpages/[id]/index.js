@@ -132,9 +132,9 @@
  *                       type: string #
  *                       example: 2023-04-09T00:56:05.829+00:00
  *       400:
- *         description: Error messages
+ *         description: Error status
  *       404:
- *         description: error messages
+ *         description: Resource not found
  *
  */
 

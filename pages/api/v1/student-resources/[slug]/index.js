@@ -44,9 +44,9 @@
  *                         type: string
  *                         example: Grasshopper Rails
  *       400:
- *         description: error messages
+ *         description: Error status
  *       404:
- *         description: error messages
+ *         description: Resource not found
  *
  */
 

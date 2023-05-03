@@ -1,6 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
-const { ObjectId } = require("mongodb");
 
 test.describe("/api/v1/staticpages/[id]", () => {
   //GET ID TESTS
