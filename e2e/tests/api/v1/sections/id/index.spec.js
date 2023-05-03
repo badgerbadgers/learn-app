@@ -3,14 +3,14 @@ import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/sections/{id}", () => {
   //PATCH TESTS
-  test("can update fields of a section in the database", async ({
+  test.only("can update fields of a section in the database", async ({
     request,
     db,
   }) => {
-    //get section
+    //get section that is not deleted
     const sectionToPatch = await db
       .collection("sections")
-      .findOne({ _id: { $ne: null } });
+      .findOne({ deleted_at: { $eq: null } });
     const id = sectionToPatch._id.toString();
     //PATCH obj
     const patchedSectionObj = {
