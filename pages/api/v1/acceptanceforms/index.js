@@ -140,10 +140,8 @@ export default async function handler(req, res) {
   await dbConnect();
   const session = await getSession({ req });
   if (!session || !session.user) {
-    const error = new Error();
-    error.status = 401;
-    error.message = "User unauthorized";
-    throw error;
+    res.status(401).json({ message: "Unauthorized user" });
+    return;
   }
   switch (method) {
     case "GET":
@@ -152,14 +150,14 @@ export default async function handler(req, res) {
           const body = req.body;
           const result = await downloadReport(res, body, session);
           if (!result) {
-            res.status(404).json({ message: "No acceptanceforms found" });
+            res.status(404).json({ message: "No acceptance forms found" });
             return;
           }
         } else {
           const body = req.body;
           const result = await getAcceptanceForms(body, session);
           if (!result) {
-            res.status(404).json({ message: "No acceptanceforms found" });
+            res.status(404).json({ message: "No acceptance forms found" });
             return;
           }
           res.status(200).json({ data: result });
