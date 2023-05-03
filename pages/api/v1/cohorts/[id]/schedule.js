@@ -19,7 +19,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if a cohort's schedule not found
+ *         description: Error message if a cohort not found
  *   put:
  *     description: Update entire schedule for specific cohort
  *     tags: [Cohorts]
@@ -30,9 +30,9 @@
  *           type: string
  *         required: true
  *         example: 635841bd9be844015c74719a
- *       - in: body
+*       - in: body
  *         name: schedule
- *         description: An object with array of lessons
+ *         description:  An object with the property 'schedule' with a value of an array of objects which contain either a type, a section mongo id, and a lesson mongo id OR a type, a section mongo id, and a content string
  *         required: true
  *         schema:
  *           type: object
@@ -40,43 +40,28 @@
  *             - schedule
  *           properties:
  *             schedule:
- *             type: array
- *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 required: [type, section]
  *                 properties:
- *                   type:
- *                     type: string
- *                   section:
- *                     type: string
- *                   lesson:
- *                     type: string
- *                   content:
- *                     type: string
- *           example: {"schedule": [
- *     { "type":"lesson",
- *       "lesson": "62e26dbb69dd077fc82fbfe5",
- *       "section": "633d9915ec0d4b5e83a6b05e"
- *     },
- *     {
- *       "type":"break",
- *       "content": "dfsfds",
- *       "section": "633d9915ec0d4b5e83a6b05e"
- *     },
- *   {
- *       "type":"review",
- *       "content": "kjlkjlkj",
- *       "section": "633d9915ec0d4b5e83a6b05e"
- *     }]}
+ *                    type: 
+ *                       type: string
+ *                    section: 
+ *                       type: string
+ *                    lesson: 
+ *                       type: string
+ *                    content: 
+ *                       type: string
+ *                 required: 
+ *                   - type
+ *                   - section
+ *           example: {"schedule": [{ "type":"lesson", "lesson": "62e26dbb69dd077fc82fbfe5", "section": "633d9915ec0d4b5e83a6b05e"},{"type":"break","content": "Some content","section": "633d9915ec0d4b5e83a6b05e"},{"type":"review",      "content": "Some review text","section": "633d9915ec0d4b5e83a6b05e" }]}
  *     responses:
  *       200:
  *         description: Update entire schedule for a specific cohort
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if a cohort's schedule not found
+ *         description: Error message if a cohort not found
  */
 
 import Cohort from "lib/models/Cohort";
@@ -93,7 +78,7 @@ export default async function handler(req, res) {
       try {
         //Get a schedule for a specific cohort
         const schedule = await getCohortSchedule(id);
-        res.status(200).json({ data: schedule });
+        res.status(200).json({ data: schedule.schedule });
       } catch (error) {
         console.error("Get cohort error", error);
         res.status(error.status || 400).json({ message: error.message });
@@ -152,70 +137,75 @@ export const getCohortSchedule = async (id) => {
   if (!schedule) {
     const error = new Error();
     error.status = 404;
-    error.message = `Could not find cohort's schedule with id - ${id}`;
+    error.message = `Could not find cohort with id - ${id}`;
     throw error;
   }
   return schedule;
 };
+// make sure provided ids exist in model db, return true if all ids exist in db, false otherwise
+const confirmIdsExistInCollection = async (model, data) =>
+  data.length === (await model.countDocuments({ _id: { $in: [...data] } }));
 
 export const updateSchedule = async (id, updates) => {
+
+  if (!updates.schedule) {
+    throw new Error("Schedule list is not provided");
+  }
   await dbConnect();
-  if (Object.keys(updates).length === 0) {
+  const filteredUpdates = await Promise.all(
+    updates.schedule.map(async (item) => {
+      //NOTE - checking if type and section provided is not even necessary here because mongoose will throw validation error anyway, but I like the error message better than the one sent from mongoose.
+      if (!item.type) {
+        throw new Error("Type is required for each schedule item");
+      }
+      if (!item.section) {
+        throw new Error("Section id is required for each schedule item");
+      }
+
+      const ifSectionExist = await confirmIdsExistInCollection(Section, [
+        item.section,
+      ]);
+
+      if (!ifSectionExist) {
+        throw new Error(`Section id provided must exist in the data base`);
+      }
+
+      if (item.lesson) {
+        const ifLessonExist = await confirmIdsExistInCollection(Lesson, [
+          item.lesson,
+        ]);
+
+        if (!ifLessonExist) {
+          throw new Error(`Lesson id provided must exist in the data base`);
+        }
+      }
+
+      return item;
+    })
+  );
+
+  if (Object.keys(filteredUpdates).length === 0) {
     throw new Error(
       "No valid information was supplied to update the schedule of the cohort"
     );
   }
-  // find all lesson's IDs in db
-  const lessons = await Lesson.find(
-    {
-      lesson: {},
-    },
-    "_id"
-  );
-  const allLessonsIds = lessons.map((obj) => obj._id.toString());
-  //check lesson's id in updates
-  const filterLessonsInUpdates = updates.schedule.filter((obj) =>
-    obj.hasOwnProperty("lesson")
-  );
-  const lessonsInUpdates = filterLessonsInUpdates.map((obj) => obj.lesson);
-  //verify that lessons in updates exist in DB
-  const lessonsExist = lessonsInUpdates.every((id) =>
-    allLessonsIds.includes(id)
-  );
-  // throw an error if not each lesson id provided is found in db
-  if (!lessonsExist) {
-    throw new Error("Lesson's ID not found");
-  }
-
-  // find all section's IDs  in db
-  const sections = await Section.find(
-    {
-      section: {},
-    },
-    "_id"
-  );
-  const allSectionsIds = sections.map((obj) => obj._id.toString());
-  //check section's id in updates
-  const sectionsInUpdates = updates.schedule.map((obj) => obj.section);
-
-  //verify that sections in updates exist in DB
-  const sectionsExist = sectionsInUpdates.every((id) =>
-    allSectionsIds.includes(id)
-  );
-  // throw an error if not each section id provided is found in db
-  if (!sectionsExist) {
-    throw new Error("Section's ID not found");
-  }
   //update
-  const updatedSchedule = await Cohort.findByIdAndUpdate(id, updates, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedSchedule = await Cohort.findByIdAndUpdate(
+    id,
+    { schedule: filteredUpdates },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
   if (!updatedSchedule) {
     const error = new Error();
     error.status = 404;
     error.message = `Could not find and update cohort with id - ${id}`;
     throw error;
   }
+  await updatedSchedule.save();
+
   return updatedSchedule;
 };
