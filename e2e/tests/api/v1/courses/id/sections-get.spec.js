@@ -28,7 +28,7 @@ test.describe("GET /api/v1/courses/[id]/sections", () => {
         expect(section._id).toBeDefined();
         expect(section).toHaveProperty("title");
         expect(section).toHaveProperty("course");
-        expect(section.course._id).toBe(randomCourse._id.toString());
+        expect(section.course).toBe(randomCourse._id.toString());
         expect(section.deleted_at).toBeNull();
       });
     }
