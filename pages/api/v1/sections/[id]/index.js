@@ -131,7 +131,7 @@ export default async function handler(req, res) {
 
 export const updateSection = async (id, updates) => {
   await dbConnect();
-  const updatedsection = await Section.findByIdAndUpdate(id, updates, {
+  const updatedsection = await Section.findOneAndUpdate(id, updates, {
     runValidators: true,
     new: true,
   });
@@ -147,7 +147,7 @@ export const updateSection = async (id, updates) => {
 export const deleteSection = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
-  const deletedsection = await Section.findByIdAndUpdate(id, update);
+  const deletedsection = await Section.findOneAndUpdate(id, update);
   if (!deletedsection) {
     const error = new Error();
     error.status = 404;

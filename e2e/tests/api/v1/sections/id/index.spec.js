@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/sections/{id}", () => {
   //PATCH TESTS
-  test.only("can update fields of a section in the database", async ({
+  test("can update fields of a section in the database", async ({
     request,
     db,
   }) => {
@@ -67,7 +67,7 @@ test.describe("/api/v1/sections/{id}", () => {
   });
 
   //UNDELETE TESTS
-  test("tests a section that will be undeleted in the database", async ({
+  test.only("tests a section that will be undeleted in the database", async ({
     request,
     db,
   }) => {
@@ -75,8 +75,9 @@ test.describe("/api/v1/sections/{id}", () => {
     const sectionToUndelete = await db
       .collection("sections")
       .findOne({ deleted_at: { $ne: null } });
+    console.log("undelete", sectionToUndelete);
     const id = sectionToUndelete._id.toString();
-
+    console.log("id", id);
     //PATCH obj
     const undeletePatchObj = {
       deleted_at: null,
@@ -87,11 +88,10 @@ test.describe("/api/v1/sections/{id}", () => {
       `/api/v1/sections/${id}`,
       undeletePatchObj
     );
-    //get same section from db
-    const undeletedsection = await db
-      .collection("sections")
-      .findOne({ _id: sectionToUndelete._id });
 
-    expect(undeletedsection.deleted_at).not.toBeNull();
+    //assertions for data
+    expect(response.ok()).toBeTruthy();
+    const updatedsection = (await response.json()).data;
+    expect(updatedsection.deleted_at).toBeNull();
   });
 });
