@@ -42,7 +42,9 @@
  *                       type: number
  *                       example: 2
  *       400:
- *         description: Error messages
+ *         description: Error status
+ *       404:
+ *         description: Resource not found
  *   delete:
  *     description: Soft delete a Section in database using the id
  *     tags: [Sections]
@@ -85,7 +87,9 @@
  *                       type: string
  *                       example: Git Basics
  *       400:
- *         description: Error messages
+ *         description: Error status
+ *       404:
+ *         description: Resource not found
  *
  */
 
@@ -104,7 +108,8 @@ export default async function handler(req, res) {
         res.status(200).json({ data: patchSection });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     case "DELETE":
@@ -114,7 +119,8 @@ export default async function handler(req, res) {
         res.status(200).json({ message: `Section has been deleted` });
         return;
       } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(error.status || 400).json({ message: error.message });
         return;
       }
     default:
@@ -124,32 +130,29 @@ export default async function handler(req, res) {
 }
 
 export const updateSection = async (id, updates) => {
-  try {
-    await dbConnect();
-    const updatedsection = await Section.findByIdAndUpdate(id, updates, {
-      runValidators: true,
-      new: true,
-    });
-    if (!updatedsection) {
-      throw new Error(`${id} is not a valid id.`);
-    }
-    return updatedsection;
-  } catch (error) {
-    throw new Error(`${error.message}`);
+  await dbConnect();
+  const updatedsection = await Section.findByIdAndUpdate(id, updates, {
+    runValidators: true,
+    new: true,
+  });
+  if (!updatedsection) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Error finding section - ${id} is invalid`;
+    throw error;
   }
+  return updatedsection;
 };
 
 export const deleteSection = async (id) => {
   const update = { deleted_at: new Date() };
-  try {
-    await dbConnect();
-    const deletedsection = await Section.findByIdAndUpdate(id, update);
-    if (!deletedsection) {
-      throw new Error(`Could not find ${id}`);
-    }
-    return deletedsection;
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Could not delete by id: ${error.message}`);
+  await dbConnect();
+  const deletedsection = await Section.findByIdAndUpdate(id, update);
+  if (!deletedsection) {
+    const error = new Error();
+    error.status = 404;
+    error.message = `Error deleting section - ${id} is invalid`;
+    throw error;
   }
+  return deletedsection;
 };
