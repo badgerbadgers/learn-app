@@ -170,7 +170,6 @@ test.describe("PUT /api/v1/courses/[id]/lessons", () => {
     const randomDeletedCourse = await db
       .collection("courses")
       .findOne({ deleted_at: { $ne: null } });
-
     // find lessons from lessons db to add to lesson
     const lessonsToAdd = await db
       .collection("lessons")
