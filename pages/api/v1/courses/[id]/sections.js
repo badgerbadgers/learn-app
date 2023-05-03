@@ -96,9 +96,7 @@ export const getSections = async (id) => {
     error.message = `Could not find course with id - ${id}`;
     throw error;
   }
-  const data = await Section.find({ course: id }).populate("course").exec();
-
-  return data;
+  return await Section.find({ course: id });
 };
 
 export const createSection = async (id, data) => {
