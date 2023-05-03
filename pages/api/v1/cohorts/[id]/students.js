@@ -42,8 +42,6 @@
  *             - students
  *           properties:
  *             students:
- *             type: array
- *             schema:
  *               type: array
  *               items:
  *                 type: string
@@ -76,8 +74,6 @@
  *             - students
  *           properties:
  *             students:
- *             type: array
- *             schema:
  *               type: array
  *               items:
  *                 type: string
