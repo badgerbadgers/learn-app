@@ -133,6 +133,8 @@
  *                       example: 2023-04-09T00:56:05.829+00:00
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: error messages
  *
  */
 
@@ -156,7 +158,7 @@ export default async function handler(req, res) {
       }
     case "PATCH":
       try {
-        const id = req.query.id_or_slug;
+        const id = req.query.id;
         const updates = req.body;
 
         const updatedPage = await updateStaticPage(id, updates);

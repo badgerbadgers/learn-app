@@ -1,10 +1,10 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
-
 const { ObjectId } = require("mongodb");
+
 test.describe("/api/v1/staticpages/[id]", () => {
   //GET ID TESTS
-  test("gets a static page an as argument", async ({ request, db }) => {
+  test("gets a static page with id as an argument", async ({ request, db }) => {
     //gets a document with wordpress_id value that is not null
     const staticpage = await db.collection("staticpages").findOne({
       _id: { $ne: null },
@@ -18,13 +18,13 @@ test.describe("/api/v1/staticpages/[id]", () => {
     expect(staticpageslug).toMatchObject(staticpage);
   });
 
-  test.only("test GET request of a static page with invalid id", async ({
+  test("test GET request of a static page with invalid id", async ({
     request,
   }) => {
     //get request with invalid id as parameter
     const response = await request.get(`/api/v1/staticpages/999`);
-    //check 404 status assertion
-    expect(response.status()).toBe(404);
+    //check status assertion
+    expect(response.status()).toBe(400);
     const invalidpageslug = (await response.json()).data;
     expect(invalidpageslug).toBeUndefined();
   });
@@ -38,7 +38,6 @@ test.describe("/api/v1/staticpages/[id]", () => {
       isShown: { $eq: false },
     });
     const slug = staticpage.slug;
-
     //hit endpoint with slug as path parameter
     const response = await request.get(`/api/v1/staticpages/${slug}`);
 

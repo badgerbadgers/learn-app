@@ -43,6 +43,10 @@
  *                       title:
  *                         type: string
  *                         example: Grasshopper Rails
+ *       400:
+ *         description: error messages
+ *       404:
+ *         description: error messages
  *
  */
 
