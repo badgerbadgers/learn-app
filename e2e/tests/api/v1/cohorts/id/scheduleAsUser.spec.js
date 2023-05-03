@@ -17,8 +17,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       `/api/v1/cohorts/${nonEmptyScheduleCohort._id}/schedule`
     );
 
-    const data = (await response.json()).data.schedule;
-
+    const data = (await response.json()).data;
     // check if response is OK
     expect(response.ok()).toBeTruthy();
     // check if returned data is an array
@@ -27,9 +26,16 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(data).toHaveLength(nonEmptyScheduleCohort.schedule.length);
 
     // check if each element of the array has a required property "type" and "section"
-    data.forEach((schedule) => {
-      expect(schedule).toHaveProperty("type");
-      expect(schedule).toHaveProperty("section");
+    data.forEach((obj) => {
+      expect(obj).toHaveProperty("type");
+      expect(obj).toHaveProperty("section");
+      if (obj.type === "lesson") {
+        expect(obj).toHaveProperty("lesson");
+        expect(obj).not.toHaveProperty("content");
+      } else {
+        expect(obj).toHaveProperty("content");
+        expect(obj).not.toHaveProperty("lesson");
+      }
     });
     // Check if the schedule array has an object with property 'lesson' or 'content'
     const lessonOrAnything = data.find((obj) => obj.hasOwnProperty("type"));
@@ -49,9 +55,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     const responseEmptySchedule = await request.get(
       `/api/v1/cohorts/${emptyScheduleCohort._id}/schedule`
     );
-    const emptyScheduleData = (await responseEmptySchedule.json()).data
-      .schedule;
-
+    const emptyScheduleData = (await responseEmptySchedule.json()).data;
     // check if response is OK
     expect(responseEmptySchedule.ok()).toBeTruthy();
     // check an empty array is returned
@@ -78,7 +82,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     //Verify that response returning error message
     expect(responseMessage).toEqual(expect.any(String));
     expect(responseMessage).toMatch(
-      `Could not find cohort's schedule with id - ${randomDeletedCohort._id}`
+      `Could not find cohort with id - ${randomDeletedCohort._id}`
     );
   });
 });
