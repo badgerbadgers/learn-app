@@ -17,8 +17,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
       `/api/v1/cohorts/${nonEmptyScheduleCohort._id}/schedule`
     );
 
-    const data = (await response.json()).data.schedule;
-
+    const data = (await response.json()).data;
     // check if response is OK
     expect(response.ok()).toBeTruthy();
     // check if returned data is an array
@@ -27,9 +26,16 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     expect(data).toHaveLength(nonEmptyScheduleCohort.schedule.length);
 
     // check if each element of the array has a required property "type" and "section"
-    data.forEach((schedule) => {
-      expect(schedule).toHaveProperty("type");
-      expect(schedule).toHaveProperty("section");
+    data.forEach((obj) => {
+      expect(obj).toHaveProperty("type");
+      expect(obj).toHaveProperty("section");
+      if (obj.type === "lesson") {
+        expect(obj).toHaveProperty("lesson");
+        expect(obj).not.toHaveProperty("content");
+      } else {
+        expect(obj).toHaveProperty("content");
+        expect(obj).not.toHaveProperty("lesson");
+      }
     });
     // Check if the schedule array has an object with property 'lesson' or 'content'
     const lessonOrAnything = data.find((obj) => obj.hasOwnProperty("type"));
@@ -49,13 +55,35 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     const responseEmptySchedule = await request.get(
       `/api/v1/cohorts/${emptyScheduleCohort._id}/schedule`
     );
-    const emptyScheduleData = (await responseEmptySchedule.json()).data
-      .schedule;
-
+    const emptyScheduleData = (await responseEmptySchedule.json()).data;
     // check if response is OK
     expect(responseEmptySchedule.ok()).toBeTruthy();
     // check an empty array is returned
     expect(emptyScheduleData).toHaveLength(0);
+  });
+
+  test("does not return schedule of a deleted cohort", async ({
+    request,
+    db,
+  }) => {
+    const randomDeletedCohort = await db.collection("cohorts").findOne({
+      deleted_at: { $ne: null },
+    });
+
+    const responseDeletedCohort = await request.get(
+      `/api/v1/cohorts/${randomDeletedCohort._id}/schedule`
+    );
+    // test if api does not return ok response if cohort is deleted
+    expect(responseDeletedCohort.ok()).not.toBeTruthy();
+    expect(responseDeletedCohort.status()).toBe(404);
+
+    const responseMessage = (await responseDeletedCohort.json()).message;
+
+    //Verify that response returning error message
+    expect(responseMessage).toEqual(expect.any(String));
+    expect(responseMessage).toMatch(
+      `Could not find cohort with id - ${randomDeletedCohort._id}`
+    );
   });
   //PUT TESTS
   test("test should update a cohort's schedule with properly given data, type and section are required", async ({
@@ -133,7 +161,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     );
     // check if response is OK
     expect(updatedResponse.ok()).toBeTruthy();
-    const updatedData = (await updatedResponse.json()).data.schedule;
+    const updatedData = (await updatedResponse.json()).data;
 
     //lesson's Ids after PUT
     const updatedLessonsID = updatedData
@@ -148,15 +176,14 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     expect(updatedData.length).toBe(data.length);
     //check if lesson' ids and section's ids are matching
-    expect(updatedLessonsID).toEqual(lessonsId);
-    expect(updatedSectionsID).toEqual(sectionsId);
+    expect(updatedLessonsID.sort()).toEqual(lessonsId.sort());
+    expect(updatedSectionsID.sort()).toEqual(sectionsId.sort());
 
     expect(updatedLessonsID).toEqual(expect.arrayContaining(lessonsId));
     expect(updatedSectionsID).toEqual(expect.arrayContaining(sectionsId));
 
     // check if each object in the schedule array has a "type" property
-    const hasTypeProp = data.every((obj) => obj.hasOwnProperty("type"));
-    expect(hasTypeProp).toBe(true);
+    data.forEach((obj) => expect(obj.hasOwnProperty("type")).toBe(true));
   });
 
   test("api doesn't update cohort schedule if cohort is deleted", async ({
@@ -237,9 +264,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     //Verify that response returning error message
     expect(responseMessage).toEqual(expect.any(String));
-    expect(responseMessage).toMatch(
-      `No valid information was supplied to update the schedule of the cohort`
-    );
+    expect(responseMessage).toMatch("Schedule list is not provided");
   });
   test("does not update a schedule when type is missing", async ({
     request,
@@ -415,7 +440,9 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     //Verify that response returning error message
     expect(responseMessage).toEqual(expect.any(String));
-    expect(responseMessage).toMatch(`Section's ID not found`);
+    expect(responseMessage).toMatch(
+      `Section id provided must exist in the data base`
+    );
   });
   test("does not update a schedule when lesson's ids do not exist in DB", async ({
     request,
@@ -477,6 +504,8 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     //Verify that response returning error message
     expect(responseMessage).toEqual(expect.any(String));
-    expect(responseMessage).toMatch(`Lesson's ID not found`);
+    expect(responseMessage).toMatch(
+      `Lesson id provided must exist in the data base`
+    );
   });
 });
