@@ -13,9 +13,9 @@ import IconButton from "@mui/material/IconButton";
 import { formatDistance } from "date-fns";
 import { getCourses } from "pages/api/v1/courses";
 import { getCohorts } from "pages/api/v1/cohorts";
+import { getUsers } from "pages/api/v1/users";
 
-const UserManagemant = ({allCourses, allCohorts}) => {
-  const url = "/api/v1/users";
+const UserManagemant = ({allCourses, allCohorts, users}) => {
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -101,8 +101,16 @@ const UserManagemant = ({allCourses, allCohorts}) => {
   useEffect(() => {
     setLoading(true);
     const params = { params: filters };
+    let localRows = [];
+    if (users) {
+      users.map(async(student) => {
+        const item = makeRowfromStudent(student);
+        localRows.push(item);
+      });
+    }
     try {
       (async () => {
+        const url = "/api/v1/users";
         let response = await getData(params, url);
         const students = response.data;
         let localRows = [];
@@ -175,23 +183,24 @@ UserManagemant.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-
-      if (!session) {
-        return {
-          redirect: {
-            destination: "/",
-            permanent: false,
-          },
-        };
-      }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
   const { user } = session;
   const courses = await getCourses();
   const cohorts = await getCohorts();
+  const users = await getUsers();
   return {
-    props: { 
-      user, 
+    props: {
+      user,
       allCourses: JSON.parse(JSON.stringify(courses)),
-      allCohorts: JSON.parse(JSON.stringify(cohorts))
-     },
+      allCohorts: JSON.parse(JSON.stringify(cohorts)),
+      users: JSON.parse(JSON.stringify(users)),
+    },
   };
 }
