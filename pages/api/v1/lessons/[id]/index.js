@@ -161,14 +161,9 @@ export const getLesson = async (id) => {
   return data;
 };
 
-// make sure provided ids exist in model db
-const confirmIdsExistInCollection = async (model, data) => {
-  // find which of the provided ids exist in model database
-  const idList = await model.find({ _id: { $in: [...data] } }, "_id");
-
-  // return true if all ids exist in db, false otherwise
-  return !(!idList.length || data.length !== idList.length);
-};
+// make sure provided ids exist in model db, return true if all ids exist in db, false otherwise
+const confirmIdsExistInCollection = async (model, data) =>
+  data.length === (await model.countDocuments({ _id: { $in: [...data] } }));
 
 export const updateLesson = async (id, updates) => {
   // filter updates to extract allowed fields to perform update
