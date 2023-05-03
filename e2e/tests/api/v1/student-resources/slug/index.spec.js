@@ -1,6 +1,5 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 
-const { ObjectId } = require("mongodb");
 test.describe("/api/v1/student-resources/[slug]", () => {
   //GET SLUG TESTS
   test("gets a student resource page using slug as argument", async ({
