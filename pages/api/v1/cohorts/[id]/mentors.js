@@ -118,8 +118,7 @@ export default async function handler(req, res) {
         } else {
           const updatedCohort = await addUsersToCohort(
             id,
-            "mentors",
-            req.body.mentors
+           req.body
           );
           const updatedCohortPopulate = await updatedCohort.populate(
             "mentors.user"
@@ -166,7 +165,7 @@ export const getCohortMentors = async (id) => {
   return data;
 };
 
-export const addUsersToCohort = async (id, field, value) => {
+export const addUsersToCohort = async (id, updates) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
@@ -175,31 +174,7 @@ export const addUsersToCohort = async (id, field, value) => {
     error.message = `Could not find cohort with id ${id} `;
     throw error;
   }
-
-  // find which of the provided users exist in users database
-  const users = await User.find({ _id: { $in: value } });
-
-  // if mentors/students property equals to null adding users will give an error
-  // add field if cohort has set it to null
-  if (!cohort[field]) {
-    cohort[field] = [];
-  }
-
-  users.forEach((user) => {
-    // if the user not in the field already, add them
-    const isExistingUser = cohort[field].find(
-      (u) => u.user?.toString() === user._id.toString()
-    );
-
-    if (!isExistingUser) {
-      // check if the field is 'student' to add 'added_at' property
-      if (field === "students") {
-        cohort[field].push({ user: user._id, added_at: new Date() });
-      } else {
-        cohort[field].push({ user: user._id });
-      }
-    }
-  });
+  await cohort.updateUsers(updates);
   return await cohort.save();
 };
 
