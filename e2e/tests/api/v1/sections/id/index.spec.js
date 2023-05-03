@@ -3,7 +3,10 @@ import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/sections/{id}", () => {
   //PATCH TESTS
-  test("tests a patched document in the database", async ({ request, db }) => {
+  test("can update fields of a section in the database", async ({
+    request,
+    db,
+  }) => {
     //get section
     const sectionToPatch = await db
       .collection("sections")
@@ -40,10 +43,7 @@ test.describe("/api/v1/sections/{id}", () => {
   });
 
   //SOFT DELETE TESTS
-  test("tests a soft deleted document in the database", async ({
-    request,
-    db,
-  }) => {
+  test("can soft delete section in the database", async ({ request, db }) => {
     //get section id
     const sectionToDelete = await db
       .collection("sections")
@@ -67,7 +67,7 @@ test.describe("/api/v1/sections/{id}", () => {
   });
 
   //UNDELETE TESTS
-  test("tests a document that will be undeleted in the database", async ({
+  test("tests a section that will be undeleted in the database", async ({
     request,
     db,
   }) => {
