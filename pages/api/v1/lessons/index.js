@@ -28,6 +28,7 @@
  *               type: string
  *             submission_link:
  *               type: object
+ *               required: [label, url]
  *               properties:
  *                 label:
  *                   type: string

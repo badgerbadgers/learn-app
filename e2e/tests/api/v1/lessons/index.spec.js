@@ -21,6 +21,16 @@ test.describe("/api/v1/lessons", () => {
     });
   });
   /////////////////////////////////////////////////////////////////
+  // helper function to get existing fields for creating a lesson
+  const getRandomDocument = async (db, collection) => {
+    const field = await db
+      .collection(collection)
+      .findOne(
+        { deleted_at: { $eq: null } },
+        { projection: { _id: 1, name: 1 } }
+      );
+    return field._id;
+  };
   //POST TESTS
   test("creates a lesson when all fields are properly given", async ({
     request,
@@ -28,19 +38,18 @@ test.describe("/api/v1/lessons", () => {
   }) => {
     //learning_objectives: in Figma schema is a string in setup/data/lessons.js is an arr of strings
     //order:Lessons parameter in the Course is an array of lesson's ids. Order by default.
-    const randomLesson = await db.collection("lessons").findOne({});
 
     const newLesson = {
       title: faker.lorem.words(),
-      section: randomLesson.section,
+      section: await getRandomDocument(db, "sections"),
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: randomLesson.materials,
-      assignments: randomLesson.assignments,
+      materials: [await getRandomDocument(db, "materials")],
+      assignments: [await getRandomDocument(db, "assignments")],
     };
 
     const response = await request.post(`/api/v1/lessons`, {
@@ -60,18 +69,16 @@ test.describe("/api/v1/lessons", () => {
     request,
     db,
   }) => {
-    const randomLesson = await db.collection("lessons").findOne({});
-
     const newLesson = {
-      section: randomLesson.section,
+      section: await getRandomDocument(db, "sections"),
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: randomLesson.materials,
-      assignments: randomLesson.assignments,
+      materials: [await getRandomDocument(db, "materials")],
+      assignments: [await getRandomDocument(db, "assignments")],
     };
     //send lesson without title
     const response = await request.post(`/api/v1/lessons`, {
@@ -130,23 +137,21 @@ test.describe("/api/v1/lessons", () => {
       .collection("lessons")
       .deleteOne({ _id: ObjectId(responseData._id) });
   });
-  test("does not create a lesson when not all section ids exist in DB", async ({
+  test("does not create a lesson when section id does not exist in DB", async ({
     request,
     db,
   }) => {
-    const randomLesson = await db.collection("lessons").findOne({});
-
     const newLesson = {
       title: faker.lorem.words(),
-      section: "333d9916ec0d4b5e83a6b05f",
+      section: faker.database.mongodbObjectId(),
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: randomLesson.materials,
-      assignments: randomLesson.assignments,
+      materials: [await getRandomDocument(db, "materials")],
+      assignments: [await getRandomDocument(db, "assignments")],
     };
     //send lesson without title
     const response = await request.post(`/api/v1/lessons`, {
@@ -173,23 +178,21 @@ test.describe("/api/v1/lessons", () => {
       })
     );
   });
-  test("does not create a lesson when not all material ids exist in DB", async ({
+  test("does not create a lesson when material id does not exist in DB", async ({
     request,
     db,
   }) => {
-    const randomLesson = await db.collection("lessons").findOne({});
-
     const newLesson = {
       title: faker.lorem.words(),
-      section: randomLesson.section,
+      section: await getRandomDocument(db, "sections"),
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: ["22e26dbb69dd077fc82fbfec"],
-      assignments: randomLesson.assignments,
+      materials: [faker.database.mongodbObjectId()],
+      assignments: [await getRandomDocument(db, "assignments")],
     };
     //send lesson without title
     const response = await request.post(`/api/v1/lessons`, {
@@ -216,23 +219,21 @@ test.describe("/api/v1/lessons", () => {
       })
     );
   });
-  test("does not create a lesson when not all assignment ids exist in DB", async ({
+  test("does not create a lesson when assignment id does not exist in DB", async ({
     request,
     db,
   }) => {
-    const randomLesson = await db.collection("lessons").findOne({});
-
     const newLesson = {
       title: faker.lorem.words(),
-      section: randomLesson.section,
+      section: await getRandomDocument(db, "sections"),
       submission_link: {
         label: faker.lorem.words(),
         url: faker.internet.url(),
       },
       learning_objectives: [faker.lorem.words(), faker.lorem.words()],
       mindset_content: faker.lorem.words(),
-      materials: randomLesson.materials,
-      assignments: ["22e26dc569dd077fc82fbff6"],
+      materials: [await getRandomDocument(db, "materials")],
+      assignments: [faker.database.mongodbObjectId()],
     };
     //send lesson without title
     const response = await request.post(`/api/v1/lessons`, {
