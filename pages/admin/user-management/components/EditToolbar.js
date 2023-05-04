@@ -50,7 +50,6 @@ const EditToolbar = (props) => {
   const handleAddUsersToCohort = async (payload) => {
     const cohortId = cohortSelected;
     const url = `/api/v1/cohorts/${cohortId}/${Object.keys(payload)[0]}`;
-    console.log('payload', payload)
     try {
       await axios
       .patch(url, payload, {
