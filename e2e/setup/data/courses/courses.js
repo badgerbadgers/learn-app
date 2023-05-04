@@ -41,10 +41,11 @@ module.exports = [
     ],
   },
   {
-    _id: ObjectId("32e056cee6daad619e5cc2c3"),
-    course_name: "Rails fake deleted",
-    slug: "rails-fake-deleted",
+    _id: ObjectId("42e056cee6daad619e5cc2c4"),
+    course_name: "React-deleted",
+    airtable_id: "wecJEEWEWWfTsNVmx",
+    slug: "react-deleted",
     lessons: [],
-    deleted_at: faker.date.recent(),
+    deleted_at: faker.date.past().toISOString(),
   },
 ];
