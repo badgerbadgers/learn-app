@@ -85,18 +85,16 @@ const NavBar = () => {
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
-          //we want to iterate over static pages data
           const pages = res.data.data.map((item) => {
-            //change format to match menu item(s)
             return {
               href: "/resources/" + item.slug,
               target: "_self",
               title: item.title,
               wordpress_id: item.wordpress_id,
               slug: item.slug,
-            }
+              _id: item._id,
+            };
           });
-          //set resource menu pages as new data
           setResourceMenuPages(pages);
         });
     } catch (error) {
@@ -173,7 +171,7 @@ const NavBar = () => {
                 {resourceMenuPages &&
                   resourceMenuPages.map((page) => (
                     <MenuItem
-                      key={page.wordpress_id}
+                      key={page._id}
                       onClick={() => {
                         handleMenuClose;
                       }}
