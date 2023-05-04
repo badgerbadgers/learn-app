@@ -8,7 +8,7 @@
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
- *         name: Cohort's id
+ *         name: id
  *         schema:
  *           type: string
  *         required: true

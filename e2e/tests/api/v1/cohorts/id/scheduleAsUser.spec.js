@@ -37,16 +37,7 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
         expect(obj).not.toHaveProperty("lesson");
       }
     });
-    // Check if the schedule array has an object with property 'lesson' or 'content'
-    const lessonOrAnything = data.find((obj) => obj.hasOwnProperty("type"));
 
-    if (lessonOrAnything.type === "lesson") {
-      expect(lessonOrAnything).toHaveProperty("lesson");
-      expect(lessonOrAnything).not.toHaveProperty("content");
-    } else {
-      expect(lessonOrAnything).toHaveProperty("content");
-      expect(lessonOrAnything).not.toHaveProperty("lesson");
-    }
     //find non deleted cohort that has  EMPTY schedule array
     const emptyScheduleCohort = await db
       .collection("cohorts")
