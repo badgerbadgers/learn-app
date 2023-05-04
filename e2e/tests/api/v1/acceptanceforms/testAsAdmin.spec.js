@@ -8,16 +8,16 @@ test.describe("/api/v1/acceptanceforms", () => {
   //GET TESTS
 
   test("returns all acceptance forms", async ({ request }) => {
-    //populate the database with some acceptance forms
     //call GET and get all the acceptance forms
     const response = await request.get(`/api/v1/acceptanceforms`);
     expect(response.ok()).toBeTruthy();
   });
 
-  test("returns all acceptance forms in CSV file", async ({ request }) => {
-    //populate the database with some acceptance forms
+  test("returns all acceptance forms in CSV file", async ({ request, db }) => {
+    //check the database for a number of acceptance forms
     //call GET and get all the acceptance forms report in CSV file
 
+    const count = await db.collection("acceptanceforms").countDocuments();
     const response = await request.get(`/api/v1/acceptanceforms`, {
       headers: { Accept: "text/csv" },
     });
@@ -34,7 +34,7 @@ test.describe("/api/v1/acceptanceforms", () => {
       })
       .on("end", (rowCount) => {
         //expect the row counts to be: number of test users + 1 header row
-        expect(rowCount).toBe(userIds.length + 1);
+        expect(rowCount).toBe(count + 1);
       });
   });
 });
