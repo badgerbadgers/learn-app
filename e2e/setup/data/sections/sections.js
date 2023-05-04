@@ -38,15 +38,6 @@ module.exports = [
     course: ObjectId("62e056cee6daad619e5cc2c5"),
     deleted_at: null
   },
-
-
-
-
-
-
-  ///////
-
-
   {
     _id: ObjectId("333d9916ec0d4b5e83a6b062"),
     title: "Rails Basics",
