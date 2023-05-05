@@ -5,6 +5,7 @@ import dbConnect from "../../../lib/dbConnect"
 import axios from "axios"
 import { getSession } from "next-auth/react"
 import { privateLayout } from "../../../components/layout/PrivateLayout"
+import { getStaticPages } from "pages/api/v1/staticpages";
 
 const AllStaticPages = ({ combinedData }) => {
   const [staticPages, setStaticPages] = useState(combinedData);
@@ -31,7 +32,7 @@ const AllStaticPages = ({ combinedData }) => {
       title: title,
       slug: slug,
     };
-    await axios.post("http://localhost:3000/api/v1/staticpages", staticpage, {
+    await axios.post("/api/v1/staticpages", staticpage, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -114,8 +115,8 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
 
-  const dbData = await axios.get("http://localhost:3000/api/v1/staticpages");
-  const mongoData = await dbData.data.data;
+  const dbData = await getStaticPages();
+  const mongoData = await dbData;
 
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
