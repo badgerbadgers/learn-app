@@ -77,7 +77,7 @@ export default function CohortsTable({
 
   const deleteCohort = async (cohortId) => {
     axios
-      .delete(`/api/cohorts/${cohortId}`, {
+      .delete(`/api/v1/cohorts/${cohortId}`, {
         headers: { "Content-Type": "application/json" },
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ export default function CohortsTable({
 
   const processRowUpdate = async (newRow, oldRow) => {
     if (!newRow.courseName) newRow.courseName = null;
-    const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
+    const url = "/api/v1/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
       await axios

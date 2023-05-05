@@ -91,12 +91,12 @@ const CohortManagement = () => {
   };
 
   useEffect(() => {
-    const url = "/api/courses";
+    const url = "/api/v1/courses";
     const params = {};
     try {
       (async () => {
         const response = await getData(params, url);
-        let courses = JSON.parse(response.data);
+        let courses = response.data;
         let localCourses = [];
         if (courses) {
           courses.map((course) => {
@@ -114,13 +114,13 @@ const CohortManagement = () => {
   }, []);
 
   useEffect(() => {
-    const url = "/api/cohorts";
+    const url = "/api/v1/cohorts";
     setLoading(true);
     const params = {};
     try {
       (async () => {
         let response = await getData(params, url);
-        const cohorts = JSON.parse(response.data);
+        const cohorts = response.data;
         let localRows = [];
         if (cohorts) {
           cohorts.map(async (cohort) => {
@@ -133,7 +133,7 @@ const CohortManagement = () => {
         setLoading(false);
       })();
     } catch (error) {
-      console.log("An error from getData in /api/cohorts:", error);
+      console.log("An error from getData in /api/v1/cohorts:", error);
     }
   }, []);
 
