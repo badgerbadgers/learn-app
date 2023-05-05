@@ -11,7 +11,7 @@ const nextConfig = {
     swSrc: "service-worker.js",
   },
   env: {
-    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
+    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages?parent=378`,
   },
 };
 
