@@ -54,10 +54,7 @@ test.describe("/api/v1/sections/{id}", () => {
   });
 
   //UNDELETE TESTS
-  test("tests a section that will be undeleted in the database", async ({
-    request,
-    db,
-  }) => {
+  test("undelete a section in the database", async ({ request, db }) => {
     //get section that has been deleted
     const sectionToUndelete = await db
       .collection("sections")
