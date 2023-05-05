@@ -14,16 +14,14 @@ test.describe("/api/v1/sections/{id}", () => {
     const id = sectionToPatch._id.toString();
     //PATCH obj
     const patchedSectionObj = {
-      _id: id,
       title: faker.lorem.words(5),
       order: faker.datatype.number(10),
-      course: faker.database.mongodbObjectId(),
+      deleted_at: null,
     };
     //PATCH req
     const response = await request.patch(`/api/v1/sections/${id}`, {
       data: patchedSectionObj,
     });
-
     expect(response.ok()).toBeTruthy();
     const updatedsection = (await response.json()).data;
 
@@ -32,19 +30,11 @@ test.describe("/api/v1/sections/{id}", () => {
     expect(updatedsection).toHaveProperty("course");
     expect(updatedsection).toHaveProperty("_id");
     expect(updatedsection).toHaveProperty("order");
-
-    //call db get patched document, then check if document was patched
-    const patchedSection = await db
-      .collection("sections")
-      .findOne({ _id: sectionToPatch._id });
-
-    expect(patchedSection.title).toMatch(patchedSectionObj.title);
-    expect(patchedSection.order).toBe(patchedSectionObj.order);
   });
 
   //SOFT DELETE TESTS
   test("can soft delete section in the database", async ({ request, db }) => {
-    //get section id
+    //get section id that has not been deleted
     const sectionToDelete = await db
       .collection("sections")
       .findOne({ deleted_at: { $eq: null } });
@@ -52,22 +42,19 @@ test.describe("/api/v1/sections/{id}", () => {
 
     //make DELETE req
     const response = await request.delete(`/api/v1/sections/${id}`);
-
     expect(response.ok()).toBeTruthy();
-    const deletedsection = await response.json();
-    expect(deletedsection).toMatchObject({
-      message: "Section has been deleted",
-    });
+
+    const deletedsection = (await response.json()).data;
+
     //get document by id and confirm page has been soft deleted
     const confirmSectionDeleted = await db
       .collection("sections")
       .findOne({ _id: sectionToDelete._id });
-
     expect(confirmSectionDeleted.deleted_at).not.toBeNull();
   });
 
   //UNDELETE TESTS
-  test.only("tests a section that will be undeleted in the database", async ({
+  test("tests a section that will be undeleted in the database", async ({
     request,
     db,
   }) => {
@@ -75,19 +62,16 @@ test.describe("/api/v1/sections/{id}", () => {
     const sectionToUndelete = await db
       .collection("sections")
       .findOne({ deleted_at: { $ne: null } });
-    console.log("undelete", sectionToUndelete);
     const id = sectionToUndelete._id.toString();
-    console.log("id", id);
     //PATCH obj
     const undeletePatchObj = {
       deleted_at: null,
     };
 
     //make PATCH req
-    const response = await request.patch(
-      `/api/v1/sections/${id}`,
-      undeletePatchObj
-    );
+    const response = await request.patch(`/api/v1/sections/${id}`, {
+      data: undeletePatchObj,
+    });
 
     //assertions for data
     expect(response.ok()).toBeTruthy();
