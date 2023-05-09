@@ -228,10 +228,18 @@ const createAcceptanceForm = async (req, res) => {
     completed_at: body.completed_at,
   };
   try {
-    const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
-      upsert: true,
-    });
-    res.status(200).json({ success: true, data: newuser });
+    let document = await AcceptanceForm.findOne(filter);
+    if (!document) {
+      document = await AcceptanceForm.create({
+        ...filter,
+        ...update,
+      });
+    } else {
+      // Update case
+      document = Object.assign(document, update);
+      await document.save();
+    }
+    res.status(200).json({ success: true, data: document });
   } catch (error) {
     res.status(400).json({ success: false });
     console.error(error);
