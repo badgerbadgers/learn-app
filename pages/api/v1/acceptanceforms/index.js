@@ -228,7 +228,7 @@ const createAcceptanceForm = async (req, res) => {
     completed_at: body.completed_at,
   };
   try {
-    const newuser = await AcceptanceForm.altFindOneAndUpdate(filter, update, {
+    const newuser = await AcceptanceForm.findOneAndUpdate(filter, update, {
       upsert: true,
     });
     res.status(200).json({ success: true, data: newuser });
