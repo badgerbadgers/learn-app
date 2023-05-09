@@ -44,6 +44,10 @@ test.describe("/api/v1/users", () => {
       expect(u.deleted_at).not.toBeNull();
     }
 
+    //Verify that the deleted user returned in results as deleted
+    const responseDeletedUser = await request.get(`/api/v1/users/${userId}`);
+    expect(responseDeletedUser.status()).toEqual(404);
+
     //undelete User by ID
     const updateUser = {
       deleted_at: null,
