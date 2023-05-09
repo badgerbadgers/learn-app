@@ -9,19 +9,11 @@ module.exports = [
     zoom_link: "https://us02web.zoom.us/j/87054407958",
     students: [
       {
-        user: ObjectId("62d969ade411b721457b4000"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
-      {
         user: ObjectId("62abc6581f78e685fe3c8066"),
         added_at: "2023-01-12T18:41:15.964Z",
       },
       {
         user: ObjectId("62d1cdeb70f32c8f947ee2ba"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
-      {
-        user: ObjectId("62abc6581f78e685fe3c8066"),
         added_at: "2023-01-12T18:41:15.964Z",
       },
       {
@@ -209,7 +201,7 @@ module.exports = [
       },
       {
         type: "break",
-        content: "",
+        content: "x",
         section: ObjectId("633d9915ec0d4b5e83a6b05e"),
       },
       {
@@ -643,10 +635,6 @@ module.exports = [
         added_at: "2023-01-12T18:41:15.964Z",
       },
       {
-        user: ObjectId("62abc6581f78e685fe3c8066"),
-        added_at: "2023-01-12T18:41:15.964Z",
-      },
-      {
         user: ObjectId("62ac7ea1e0fbc232e6e4271c"),
         added_at: "2023-01-12T18:41:15.964Z",
       },
@@ -903,5 +891,31 @@ module.exports = [
     deleted_at: null,
     __v: 0,
     status: "future",
+  },
+
+  {
+    _id: ObjectId("335841bd9be844015c74719a"),
+    cohort_name: "Mobile View no schedule",
+    created_at: "2022-10-25T20:06:20.673Z",
+    course: ObjectId("62e056cee6daad619e5cc2c5"),
+    start_date: faker.date.future(2).toISOString(),
+    zoom_link: "",
+    students: [
+      {
+        user: ObjectId("6282b0d6d20d837b1c87afa9"),
+        added_at: "2023-03-01T14:48:30.884Z",
+      },
+    ],
+    mentors: [
+      {
+        user: ObjectId("6282b0d6d20d837b1c87afa9"),
+      },
+    ],
+    seats: 0,
+    schedule: [],
+    slug: "mobile-view-no-schedule",
+    deleted_at: null,
+    __v: 6,
+    status: "past",
   },
 ];

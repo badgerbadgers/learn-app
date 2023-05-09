@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const { faker } = require("@faker-js/faker");
 
 module.exports = [
   {
@@ -7,7 +8,8 @@ module.exports = [
     order: 8,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=HTML Basics",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=HTML Basics",
     },
     learning_objectives: [
       "Semantic markup",
@@ -54,7 +56,8 @@ module.exports = [
     order: 4,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Arrays",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Arrays",
     },
     learning_objectives: [
       "Store Multiple Values in an Array",
@@ -77,7 +80,8 @@ module.exports = [
     order: 14,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=AJAX Basics",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=AJAX Basics",
     },
     learning_objectives: [
       "AJAX Concepts",
@@ -101,7 +105,8 @@ module.exports = [
     order: 3,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Loops",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Loops",
     },
     learning_objectives: [
       "Simplify Repetitive Tasks with Loops",
@@ -123,7 +128,8 @@ module.exports = [
     order: 1,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Basics and Numbers",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Basics and Numbers",
     },
     learning_objectives: [
       "What JavaScript is and where it is used",
@@ -155,7 +161,8 @@ module.exports = [
     order: 9,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript and the DOM",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript and the DOM",
     },
     learning_objectives: [
       "What is the DOM?",
@@ -187,7 +194,8 @@ module.exports = [
     order: 10,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=HTML Forms and DOM Practice",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=HTML Forms and DOM Practice",
     },
     learning_objectives: [
       "HTML Forms",
@@ -212,7 +220,8 @@ module.exports = [
     order: 12,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=CSS Layout",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=CSS Layout",
     },
     learning_objectives: [
       "The CSS Box Model",
@@ -251,7 +260,8 @@ module.exports = [
     order: 7,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=How the Web Works",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=How the Web Works",
     },
     learning_objectives: [
       "How the Web Works",
@@ -277,7 +287,8 @@ module.exports = [
     order: 16,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrvDsCdQ24i80Lv2?prefill_Class%20you%20are%20in=Borr",
+      url:
+        "https://airtable.com/shrvDsCdQ24i80Lv2?prefill_Class%20you%20are%20in=Borr",
     },
     learning_objectives: [
       "Compare your final project to the rubric to ensure you're meeting all requirements",
@@ -300,7 +311,8 @@ module.exports = [
     order: 13,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=How the Internet Works and Debugging",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=How the Internet Works and Debugging",
     },
     learning_objectives: [
       "Clients and Servers",
@@ -333,7 +345,8 @@ module.exports = [
     order: 5,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Objects",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Objects",
     },
     learning_objectives: ["Object Basics", "Loop Through Objects"],
     mindset_content:
@@ -352,7 +365,8 @@ module.exports = [
     order: 2,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Functions",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=JavaScript Functions",
     },
     learning_objectives: [
       "Create Reusable Code with Functions",
@@ -375,7 +389,8 @@ module.exports = [
     order: 6,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=Introduction to Git",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=Introduction to Git",
     },
     learning_objectives: ["Repositories", "Commits", "History", "GitHub"],
     mindset_content:
@@ -406,7 +421,8 @@ module.exports = [
     order: 15,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=Working with the Fetch API",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=Working with the Fetch API",
     },
     learning_objectives: [
       "What is the Fetch API?",
@@ -433,7 +449,8 @@ module.exports = [
     order: 11,
     submission_link: {
       label: "Submit Assignment",
-      url: "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=CSS Basics",
+      url:
+        "https://airtable.com/shrF8xGZowU5HEuIJ?prefill_Assignment%20Title=CSS Basics",
     },
     learning_objectives: [
       "Getting Started With CSS",
@@ -460,5 +477,27 @@ module.exports = [
     assignments: [ObjectId("62e26dc669dd077fc82fc002")],
     title: "CSS Basics",
     section: ObjectId("633d9916ec0d4b5e83a6b061"),
+  },
+
+  {
+    _id: ObjectId("44e26dc669dd077fc82fbffe"),
+    lesson_label: "Lesson 5.11: SCSS Basics",
+    order: 11,
+    learning_objectives: [
+      "Basic Selectors",
+      "Understanding Values and Units",
+      "Fundamental Concepts",
+    ],
+    mindset_content:
+      "This week we’ll be getting in touch with our creative side! Designing a website can be an intimidating task; so many colors and fonts and icons and graphics! When it comes to designing the structure (home page, about page, etc.) and how you link JS, HTML, CSS, and other files there are clear rules or at least guidelines in order for the site to be functional. But when it comes to picking a color and font for the site anything goes, right? While you do have a lot more creative freedom (which is fun for some and terrifying for others) when it comes to the look of your site, there are still useful guidelines to keep in mind. After all, we hope that more than just you and your team and the client you’re building for will be viewing and using your site!\n\n**[This article from WebSpecDesign](https://www.webspec.com/2017/03/the-importance-of-color-in-web-design/)** gives a good introduction to beginners about color theory and usage on the web. In almost any resource about color theory on the web you’ll notice references to accessibility. We’ll dig more deeply into accessibility the last week of class, but since you’ll be choosing colors and fonts this week, please be sure to use the tool in the second question below by entering your font color as the “foreground color” and your page/background color as the “background color” when making some of your creative decisions this week while working with CSS.\n\n1. What was something new you learned about colors/color theory and how do you think that knowledge will effect your design choices?\n2. Try out some different background/foreground color combinations **[using this tool from A11y](https://color.a11y.com/)**. Are there any combinations that surprise you in terms of not meeting accessibility guidelines?\n",
+
+    materials: [
+      ObjectId("62e26db569dd077fc82fbfde"),
+      ObjectId("62e26db569dd077fc82fbfd2"),
+    ],
+    assignments: [ObjectId("62e26dc669dd077fc82fc002")],
+    title: "SCSS Basics",
+    section: ObjectId("633d9916ec0d4b5e83a6b061"),
+    deleted_at: faker.date.recent(),
   },
 ];
