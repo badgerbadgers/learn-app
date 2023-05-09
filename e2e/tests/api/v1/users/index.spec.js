@@ -59,6 +59,10 @@ test.describe("/api/v1/users", () => {
 
     expect(patchResponse.ok()).toBeTruthy();
 
+    //Verify that the undeleted user returned in results 
+    const responseUndeletedUser = await request.get(`/api/v1/users/${userId}`);
+    expect(responseUndeletedUser.ok()).toBeTruthy();
+
     //GET User by ID and compare updated values
     const getResponseUndeletedUser = await request.get(
       `/api/v1/users/${userId}`
