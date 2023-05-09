@@ -42,8 +42,6 @@
  *             - students
  *           properties:
  *             students:
- *             type: array
- *             schema:
  *               type: array
  *               items:
  *                 type: string
@@ -76,8 +74,6 @@
  *             - students
  *           properties:
  *             students:
- *             type: array
- *             schema:
  *               type: array
  *               items:
  *                 type: string
@@ -117,15 +113,11 @@ export default async function handler(req, res) {
             .status(400)
             .json({ message: "Student ids to add are not provided" });
         } else {
-          // TODO - make sure calculating/updating 'seats' property is taken care  of in Cohort data model to prevent students from exceeding allowed number
-          const updatedCohort = await addUsersToCohort(
-            id,
-            "students",
-            req.body.students
-          );
+          const updatedCohort = await addUsersToCohort(id, req.body);
           const updatedCohortPopulate = await updatedCohort.populate(
             "students.user"
           );
+
           res.status(200).json({ data: updatedCohortPopulate.students });
         }
       } catch (error) {
@@ -171,7 +163,7 @@ export const getCohortStudents = async (id) => {
   return data;
 };
 
-export const addUsersToCohort = async (id, field, value) => {
+export const addUsersToCohort = async (id, updates) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
@@ -180,30 +172,7 @@ export const addUsersToCohort = async (id, field, value) => {
     error.message = `Could not find cohort with id ${id} `;
     throw error;
   }
-
-  // find which of the provided users exist in users database
-  const users = await User.find({ _id: { $in: value } });
-
-  // add field if cohort has set it to null
-  if (!cohort[field]) {
-    cohort[field] = [];
-  }
-
-  users.forEach((user) => {
-    // if the user not in the field already, add them
-    const isExistingUser = cohort[field].find(
-      (u) => u.user?.toString() === user._id.toString()
-    );
-
-    if (!isExistingUser) {
-      // check if the field is 'student' to add 'added_at' property
-      if (field === "students") {
-        cohort[field].push({ user: user._id, added_at: new Date() });
-      } else {
-        cohort[field].push({ user: user._id });
-      }
-    }
-  });
+  await cohort.updateStudents(updates.students);
   return await cohort.save();
 };
 
