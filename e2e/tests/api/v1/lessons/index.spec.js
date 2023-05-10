@@ -18,10 +18,7 @@ test.describe("/api/v1/lessons", () => {
     lessons.forEach((lesson) => {
       expect(lesson).toHaveProperty("_id");
       expect(lesson).toHaveProperty("title");
-      //check that all lessons don't have a deleted_at set to a date
-      lessons.forEach((lesson) =>
-        expect(lesson).toMatchObject({ deleted_at: null })
-      );
+      expect(lesson).toMatchObject({ deleted_at: null });
     });
   });
   /////////////////////////////////////////////////////////////////
