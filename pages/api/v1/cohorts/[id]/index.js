@@ -76,7 +76,24 @@
  */
 
 // TODO - swagger - change description if anything returns from DELETED request
+// TODO  - add populate for students and mentors:
+/*
+ .populate({
+      path: "students",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    })
+    .populate({
+      path: "mentors",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    })
 
+*/
 import Cohort from "lib/models/Cohort";
 import dbConnect from "lib/dbConnect";
 
@@ -140,6 +157,7 @@ export default async function handler(req, res) {
 export const getCohortById = async (id) => {
   await dbConnect();
   const cohort = await Cohort.findById(id).exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort)
+
   return cohort;
 };
 

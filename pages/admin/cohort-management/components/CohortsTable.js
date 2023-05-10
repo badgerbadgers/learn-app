@@ -179,9 +179,10 @@ export default function CohortsTable({
       editable: true,
       headerAlign: "center",
       renderCell: (params) => (
+        // the link is replaced with cohorts/:id (was - onClick={(e) => handleClick(e, “cohorts/” + params.row.slug)})
         <a
           href=""
-          onClick={(e) => handleClick(e, "cohorts/" + params.row.slug)}
+          onClick={(e) => handleClick(e, "cohorts/" + params.row.id)}
         >
           {params.row.cohortName}
         </a>
