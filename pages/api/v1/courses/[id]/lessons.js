@@ -135,8 +135,8 @@ export const updateLessons = async (id, updates) => {
   updates.lessons = lessons;
 
   // update course
-  const updatedCourse = await Course.findByIdAndUpdate(
-    id,
+  const updatedCourse = await Course.findOneAndUpdate(
+    { _id: id, deleted_at: null },
     { $set: { lessons: updates.lessons } },
     {
       new: true,
