@@ -49,7 +49,7 @@ const CohortManagement = () => {
     }
     if (searchInput !== "") {
       filteredData = filteredData.filter((row) =>
-        row.cohortName.toLowerCase().includes(searchInput.toLowerCase())
+        row.cohort_name.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
     setFilteredRows(filteredData);
@@ -70,11 +70,11 @@ const CohortManagement = () => {
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
-      cohortName: cohort.cohort_name,
+      cohort_name: cohort.cohort_name,
       courseName:
         cohort.course.course_name.length > 0 ? cohort.course.course_name : "",
       courseId: cohort.course._id.length > 0 ? cohort.course._id : "",
-      startDate: cohort.start_date
+      start_date: cohort.start_date
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
       endDate: cohort.end_date
@@ -109,7 +109,7 @@ const CohortManagement = () => {
         setCourses(localCourses);
       })();
     } catch (error) {
-      console.log("An error from getData in /api/courses:", error);
+      console.log("An error from getData in /api/v1/courses:", error);
     }
   }, []);
 

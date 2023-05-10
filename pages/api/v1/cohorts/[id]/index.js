@@ -39,7 +39,7 @@
  *       404:
  *         description: Error messages if cohort to be deleted not found
  *   patch:
- *     description: Update cohort fields
+ *     description: Update allowed cohort fields ["cohort_name", "start_date", "seats", "zoom_link"]
  *     tags: [Cohorts]
  *     parameters:
  *       - in: path
