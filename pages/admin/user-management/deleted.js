@@ -15,7 +15,6 @@ import Box from "@mui/material/Box";
 import { getUsers } from "pages/api/v1/users";
 
 const DeletedUserManagemant = ({ users }) => {
-  // const url = "/api/v1/users";
   const allUsers = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -131,7 +130,8 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  const users = await getUsers();
+  
+  const users = await getUsers({deleted: true});
   return {
     props: { user, users: JSON.parse(JSON.stringify(users)) },
   };
