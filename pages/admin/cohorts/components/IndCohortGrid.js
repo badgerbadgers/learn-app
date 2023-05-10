@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { format, formatDistance } from "date-fns";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -9,7 +9,16 @@ export default function IndCohortGrid({ students }) {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    setRows(students);
+    const parsedStudents = students.map((st) => ({
+      ...st,
+      studentAdded: format(new Date(st.added_at), "MMM dd, yyyy"),
+      lastLogin: st.last_seen
+        ? formatDistance(new Date(st.last_seen), new Date(), {
+            addSuffix: true,
+          })
+        : "",
+    }));
+    setRows(parsedStudents);
   }, [students]);
 
   const columns = [

@@ -8,7 +8,8 @@ import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
-import getData from "../../../lib/getData";
+import { format, formatDistance } from "date-fns";
+
 import ScheduleModal from "./components/ScheduleModal";
 import { getCohortById } from "pages/api/v1/cohorts/[id]";
 import { getCohortStudents } from "pages/api/v1/cohorts/[id]/students";
@@ -18,7 +19,8 @@ const IndividualCohortPage = ({ cohort, students, prevCohort, nextCohort }) => {
   // console.log(students);
 
   const [open, setOpen] = useState(false);
-  const [schedule, setSchedule] = useState(cohort.schedule);
+  //const [schedule, setSchedule] = useState(cohort.schedule);
+  const [startDate, setStartDate] = useState(cohort.start_date);
 
   // const router = useRouter();
   // const query = router.query;
@@ -79,8 +81,10 @@ const IndividualCohortPage = ({ cohort, students, prevCohort, nextCohort }) => {
             title={cohort.cohort_name}
             course={cohort.course}
             setOpen={setOpen}
-            startDate={cohort.start_date}
-            scheduleLen={schedule.length}
+            //   startDate={cohort.start_date}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            scheduleLen={cohort.schedule && cohort.schedule.length} // TODO - check if schedule is not null?
             prevCohort={prevCohort}
             nextCohort={nextCohort}
           />
@@ -92,8 +96,9 @@ const IndividualCohortPage = ({ cohort, students, prevCohort, nextCohort }) => {
             id={cohort._id}
             cohortName={cohort.cohort_name}
             startDate={cohort.start_date}
-            schedule={schedule}
-            setSchedule={setSchedule}
+            setStartDate={setStartDate}
+            // schedule={schedule}
+            // setSchedule={setSchedule}
           />
         </Box>
       )}
@@ -133,7 +138,7 @@ export async function getServerSideProps(context) {
           const filteredStudent = {
             id: st.user._id,
             ...st.user,
-            studentAdded: st.added_at,
+            added_at: st.added_at,
           };
           delete filteredStudent._id;
           return filteredStudent;
@@ -151,11 +156,5 @@ export async function getServerSideProps(context) {
   } catch (err) {
     console.error(err);
     // TODO - what return here: redirect to a custom error page or send an error in props and let components handle it???
-    return {
-      redirect: {
-        destination: "/error-page", // TODO - redirect where?
-        permanent: false,
-      },
-    };
   }
 }
