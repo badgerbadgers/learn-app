@@ -8,8 +8,6 @@ import { useSnackbar } from "material-ui-snackbar-provider";
 import { Stack } from "@mui/material";
 import axios from "axios";
 
-
-
 export default function UsersTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
   const snackbar = useSnackbar();
@@ -21,7 +19,7 @@ export default function UsersTable({ loading, tableRows }) {
     const undeletedRow = rows.find((obj) => obj.id === userId);
     const name = undeletedRow ? undeletedRow.name : null; 
     try {
-    const response = await axios.put(`/api/v1/users/${userId}`, {deleted_at: null},  {headers: { "Content-Type": "application/json" }}, 
+    const response = await axios.patch(`/api/v1/users/${userId}`, {deleted_at: null},  {headers: { "Content-Type": "application/json" }}, 
        )
       snackbar.showMessage(
         <Alert severity="success">User {name} successfully undeleted.</Alert>
