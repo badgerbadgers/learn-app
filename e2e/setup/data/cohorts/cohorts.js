@@ -201,7 +201,7 @@ module.exports = [
       },
       {
         type: "break",
-        content: "",
+        content: "x",
         section: ObjectId("633d9915ec0d4b5e83a6b05e"),
       },
       {

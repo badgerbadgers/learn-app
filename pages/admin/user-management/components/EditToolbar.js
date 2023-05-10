@@ -49,10 +49,10 @@ const EditToolbar = (props) => {
   // For Add To Cohort Button
   const handleAddUsersToCohort = async (payload) => {
     const cohortId = cohortSelected;
-    const url = `/api/cohorts/${cohortId}`;
+    const url = `/api/v1/cohorts/${cohortId}/${Object.keys(payload)[0]}`;
     try {
       await axios
-      .put(url, payload, {
+      .patch(url, payload, {
         headers: {
           "Content-Type": "application/json",
         },      
@@ -151,7 +151,7 @@ const EditToolbar = (props) => {
                 <Button
                   variant="contained"
                   onClick={() =>
-                    handleAddUsersToCohort([radioGroupSelected, selectionModel])
+                    handleAddUsersToCohort({[radioGroupSelected]: selectionModel})
                   }
                 >
                   Add To Cohort

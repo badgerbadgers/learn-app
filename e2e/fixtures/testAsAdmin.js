@@ -17,4 +17,10 @@ export const test = base.extend({
     await use(request);
     await request.dispose();
   },
+  user: async ({ db }, use) => {
+    const user = await db
+      .collection("users")
+      .findOne({ email: "admin@codethedream.org" });
+    await use(user);
+  },
 });
