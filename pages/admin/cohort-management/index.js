@@ -41,7 +41,7 @@ const CohortManagement = () => {
     let filteredData = allCohorts.current;
     if (courseOption !== "all courses") {
       filteredData = filteredData.filter(
-        (row) => row.courseName.toLowerCase() === courseOption
+        (row) => row.course.toLowerCase() === courseOption
       );
     }
     if (statusOption !== "any status") {
@@ -71,13 +71,13 @@ const CohortManagement = () => {
     return {
       id: cohort._id,
       cohort_name: cohort.cohort_name,
-      courseName:
+      course:
         cohort.course.course_name.length > 0 ? cohort.course.course_name : "",
       courseId: cohort.course._id.length > 0 ? cohort.course._id : "",
       start_date: cohort.start_date
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
-      endDate: cohort.end_date
+      end_date: cohort.end_date
         ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
       status: cohort.status,
