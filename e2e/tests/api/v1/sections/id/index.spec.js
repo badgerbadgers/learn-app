@@ -1,5 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
+import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/sections/{id}", () => {
   //PATCH TESTS
@@ -69,10 +70,16 @@ test.describe("/api/v1/sections/{id}", () => {
     const response = await request.patch(`/api/v1/sections/${id}`, {
       data: undeletePatchObj,
     });
-
     //assertions for data
     expect(response.ok()).toBeTruthy();
     const updatedsection = (await response.json()).data;
     expect(updatedsection.deleted_at).toBeNull();
+
+    //get patched obj from db using id
+    const checkDbIfUndeleted = await db
+      .collection("sections")
+      .findOne({ _id: new ObjectId(id) });
+    //patched obj property should be null after PATCH req
+    expect(checkDbIfUndeleted.deleted_at).toBeNull();
   });
 });
