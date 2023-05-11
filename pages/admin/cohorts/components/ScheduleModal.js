@@ -1,3 +1,5 @@
+// TODO - add code to use loading statue to show a spinner or progress bar; add code to use error messages and provide feedback when errors are received.
+
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { addDays, format } from "date-fns";
@@ -11,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ScheduleItemBreak from "./ScheduleItemBreak";
 import ScheduleItemLesson from "./ScheduleItemLesson";
 import getData from "../../../../lib/getData";
+
 export default function ScheduleModal({
   open,
   setOpen,
@@ -18,8 +21,6 @@ export default function ScheduleModal({
   cohortName,
   startDate,
   setStartDate,
-  /*schedule
-  setSchedule,*/
 }) {
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState([]);
@@ -29,7 +30,7 @@ export default function ScheduleModal({
   const [showFormType, setShowFormType] = useState();
   const [date, setDate] = useState(null);
   const [errorDate, setErrorDate] = useState(null);
-  const matches_sx = useMediaQuery("(max-width: 600px)"); // TODO  - check this out
+  const matches_sx = useMediaQuery("(max-width: 600px)"); // TODO  - check this out when work with styling
 
   useEffect(() => {
     setDate(startDate);
@@ -42,7 +43,7 @@ export default function ScheduleModal({
         const fetchSchedule = async () => {
           const url = `/api/v1/cohorts/${id}/schedule`;
           const response = await getData({}, url);
-          setSchedule(response.data.schedule);
+          setSchedule(response.data);
         };
         fetchSchedule();
         setLoading(false);
@@ -53,10 +54,6 @@ export default function ScheduleModal({
       }
     }
   }, [id, open]);
-
-  // const updateDate = (date) => {
-  //   updateCohortField(["start_date", date]);
-  // };
 
   const updateStartDate = async (date) => {
     try {
@@ -83,7 +80,6 @@ export default function ScheduleModal({
   const removeItem = (idx) => {
     let newItems = [...schedule];
     newItems.splice(idx, 1);
-    //setSchedule(newItems);
     updateSchedule(newItems);
   };
 
@@ -91,14 +87,12 @@ export default function ScheduleModal({
     let newItems = [...schedule];
     newItems.splice(idx + 1, 0, newItem);
     setShowFormIdx(null);
-    // setSchedule(newItems);
     updateSchedule(newItems);
   };
 
   const updateItem = (idx, item) => {
     let newItems = [...schedule];
     newItems[idx] = item;
-    // setSchedule(newItems);
     updateSchedule(newItems);
   };
 
@@ -149,7 +143,6 @@ export default function ScheduleModal({
             />
           </Box>
         </DialogTitle>
-        {/* TODO - Check if schedule is null ?? */}
         <DialogContent>
           {schedule &&
             schedule.map((week, idx) => {
@@ -159,7 +152,6 @@ export default function ScheduleModal({
                 : `week ${idx + 1}`;
 
               if (week.type === "lesson") {
-                // console.log(week);
                 return (
                   <Fragment key={idx}>
                     <ScheduleItemLesson
