@@ -25,6 +25,7 @@ const statusOptions = [
   { label: "Completed", value: "past" },
   { label: "In progress", value: "active" },
   { label: "Upcoming", value: "future" },
+  { label: "Unknown", value: "unknown" },
 ];
 const CohortManagement = () => {
   const allCohorts = useRef([]);

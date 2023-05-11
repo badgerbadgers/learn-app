@@ -146,7 +146,6 @@ export default function CohortsTable({
           ...newRow,
           id: response.data.data._id,
           isNew: false,
-          isDirty: true,
           course: course.label,
           start_date: newRow.start_date
             ? format(new Date(newRow.start_date), "MMM dd, yyyy")
@@ -269,20 +268,9 @@ export default function CohortsTable({
                   : null
               }
             >
-              {""}
+              {params.row.scheduleLen}
             </div>
           );
-        return (
-          <div
-            className={
-              rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                ? classes.disabled
-                : null
-            }
-          >
-            {params.row.scheduleLen}
-          </div>
-        );
       },
     },
     {
@@ -330,6 +318,18 @@ export default function CohortsTable({
                 }
               >
                 Upcoming
+              </div>
+            );
+          } else if (params.row.status === "unknown") {
+            return (
+              <div
+                className={
+                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                    ? classes.disabled
+                    : null
+                }
+              >
+                Unknown
               </div>
             );
           }
