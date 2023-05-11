@@ -39,7 +39,7 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
 
   const deleteStudent = async (userId) => {
     axios
-      .delete(`/api/users/${userId}`, {
+      .delete(`/api/v1/users/${userId}`, {
         headers: { "Content-Type": "application/json" },
       })   
       .catch((error) => {
@@ -87,7 +87,7 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
 
   const processRowUpdate = async (newRow, oldRow) => {
     // If the row is new, add it to the server. If the row is not new, update it on the server
-    const url = "/api/users" + (newRow.isNew ? "" : `/${newRow.id}`);
+    const url = "/api/v1/users" + (newRow.isNew ? "" : `/${newRow.id}`);
     const updatedRow = {};
     try {
       await axios[newRow.isNew ? "post" : "put"](url, newRow, {

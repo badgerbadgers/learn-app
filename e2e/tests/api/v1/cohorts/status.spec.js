@@ -31,9 +31,9 @@ test.describe("/api/v1/cohorts/status", () => {
           //if no start date, check if status set to "unknown"
           expect(cohort.status).toBe("unknown");
         } else if (
-          !cohort.schedule.length ||
           !cohort.schedule ||
-          !Array.isArray(cohort.schedule)
+          !Array.isArray(cohort.schedule) ||
+          !cohort.schedule.length
         ) {
           // if no schedule, check if status set to 'unknown'
           expect(cohort.status).toBe("unknown");
