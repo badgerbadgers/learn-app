@@ -19,12 +19,16 @@ const AllStaticPages = ({ combinedData }) => {
       let wp_id = JSON.parse(page.wordpress_id);
       return wp_id === id;
     });
+    console.log("filtered page", filteredByIdPage.mongo_id);
 
     //toggled page will always be array index 0 from filter
     const mongo_id = filteredByIdPage[0].mongo_id;
     const title = filteredByIdPage[0].title;
     const slug = filteredByIdPage[0].slug;
 
+    //check whether this static page already has a mongo id or not.
+    //if it doesn't have a mongo id, we should use POST, as we do now, to create a new record in the db.
+    // If it does have a mongo id (which means it has a db record), we should use patch to update the record, and we need to pick which fields we will want to update. isShown definitely should be updated. perhaps title and slug as well, in case they changed in wordpress?
     const staticpage = {
       wordpress_id: id,
       isShown: deleted,
@@ -32,11 +36,28 @@ const AllStaticPages = ({ combinedData }) => {
       title: title,
       slug: slug,
     };
-    await axios.post("/api/v1/staticpages", staticpage, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+
+    const test = filteredByIdPage;
+    console.log("test", test);
+    //conditional
+    if (filteredByIdPage.mongo_id === undefined) {
+      await axios.post("/api/v1/staticpages", staticpage, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      await axios.patch(`/api/v1/staticpages/${id}`, staticpage, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+    // await axios.post("/api/v1/staticpages", staticpage, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   };
 
   const columns = [
