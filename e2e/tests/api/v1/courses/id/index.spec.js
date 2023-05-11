@@ -140,6 +140,38 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(responseData.slug).toBe(slugify(updates.course_name));
   });
 
+  test("sets a courses's slug to correct value when course_name is updated and special characters presents in the name", async ({
+    request,
+    db,
+  }) => {
+    const randomCourse = await db
+      .collection("courses")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const updates = {
+      course_name: "Å Worst (course ) ever+ = Ñoooo    ?",
+      lessons: [randomLesson._id],
+    };
+
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
+
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("a-worst-(course-)-ever+-noooo");
+  });
+
   test("creates a course with a course_name that exists in a deleted course", async ({
     request,
     db,

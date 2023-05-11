@@ -193,6 +193,28 @@ test.describe("/api/v1/cohorts", () => {
     expect(responseData.slug).toBe(slugify(newCohort.cohort_name));
   });
 
+
+
+  test("sets a cohort's slug to correct value when special characters are used", async ({ request }) => {
+    const newCohort = {
+      cohort_name: '    Strange ) Brain ++ name -- Slug  # Cool   ',
+      course: "62e056cee6daad619e5cc2c5",
+      seats: faker.datatype.number({ min: 5, max: 100 }),
+      start_date: faker.date.future(1).toISOString(),
+      zoom_link: faker.internet.url(),
+    };
+
+    const response = await request.post(`/api/v1/cohorts`, {
+      data: newCohort,
+    });
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("strange-)-brain-++-name-slug-cool");
+  });
+
   test("does not save into the database extra fields that are sent", async ({
     request,
     db,

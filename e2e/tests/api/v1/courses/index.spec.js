@@ -144,6 +144,29 @@ test.describe("/api/v1/courses", () => {
     expect(responseData.slug).toBe(slugify(newCourse.course_name));
   });
 
+
+  test("sets a courses's slug to correct value when special characters present in the name", async ({ request, db }) => {
+    const randomLesson = await db
+      .collection("lessons")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const newCourse = {
+      course_name: "  # Course ; { Nobody } wants [   ",
+      lessons: [randomLesson._id],
+    };
+
+    const response = await request.post(`/api/v1/courses`, {
+      data: newCourse,
+    });
+
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("course-nobody-wants");
+  });
+
   test("does not create a course if at least one lesson id does not exist in db", async ({
     request,
     db,
