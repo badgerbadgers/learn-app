@@ -276,6 +276,29 @@ test.describe("/api/v1/users", () => {
     );
   });
 
+  test("does not create a user if email is not correct", async ({ request }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: '123abc@'
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+
   test("does not create a user when github is missing", async ({
     request,
   }) => {

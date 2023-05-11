@@ -130,6 +130,29 @@ test.describe("/api/v1/users/id", () => {
     expect(patchResponse.ok()).toBeFalsy();
   });
 
+  test("update with incorrect email", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "@2A",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
   test("update with empty Github", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
