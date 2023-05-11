@@ -1,6 +1,7 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 import { ObjectId } from "bson";
+import slugify from "slugify";
 
 test.describe("/api/v1/courses", () => {
   //GET TESTS
@@ -86,6 +87,7 @@ test.describe("/api/v1/courses", () => {
     expect(responseData.lessons.length).toBe(newCourse.lessons.length);
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe(slugify(newCourse.course_name));
 
     // delete created course from test db to prevent collisions with next tests
     await db
@@ -126,7 +128,7 @@ test.describe("/api/v1/courses", () => {
       .findOne({ deleted_at: { $eq: null } });
 
     const newCourse = {
-      course_name: "Very Important Course",
+      course_name: faker.lorem.words(),
       lessons: [randomLesson._id],
     };
 
@@ -139,7 +141,7 @@ test.describe("/api/v1/courses", () => {
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
-    expect(responseData.slug).toBe("very-important-course");
+    expect(responseData.slug).toBe(slugify(newCourse.course_name));
   });
 
   test("does not create a course if at least one lesson id does not exist in db", async ({

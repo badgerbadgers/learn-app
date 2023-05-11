@@ -1,6 +1,7 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 import { ObjectId } from "bson";
+import slugify from "slugify";
 
 test.describe("/api/v1/cohorts", () => {
   //GET TESTS
@@ -116,6 +117,7 @@ test.describe("/api/v1/cohorts", () => {
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe(slugify(newCohort.cohort_name));
     await db
       .collection("cohorts")
       .deleteOne({ _id: ObjectId(responseData._id) });
@@ -173,7 +175,7 @@ test.describe("/api/v1/cohorts", () => {
 
   test("sets a cohort's slug to correct value", async ({ request }) => {
     const newCohort = {
-      cohort_name: "Very Smart Cohort",
+      cohort_name: faker.lorem.words(),
       course: "62e056cee6daad619e5cc2c5",
       seats: faker.datatype.number({ min: 5, max: 100 }),
       start_date: faker.date.future(1).toISOString(),
@@ -188,7 +190,7 @@ test.describe("/api/v1/cohorts", () => {
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
-    expect(responseData.slug).toBe("very-smart-cohort");
+    expect(responseData.slug).toBe(slugify(newCohort.cohort_name));
   });
 
   test("does not save into the database extra fields that are sent", async ({
@@ -328,6 +330,7 @@ test.describe("/api/v1/cohorts", () => {
     expect(responseData.schedule).toBeDefined();
 
     expect(responseData.slug).toBeDefined();
+    expect(responseData.slug).toBe(slugify(newCohort.cohort_name));
     expect(typeof responseData.slug).toBe("string");
 
     await db

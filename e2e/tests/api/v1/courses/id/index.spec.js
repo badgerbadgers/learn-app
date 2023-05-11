@@ -1,5 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
+import slugify from "slugify";
 
 test.describe("/api/v1/courses/[id]", () => {
   //GET TESTS
@@ -68,12 +69,8 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(responseData._id).toBe(randomCourse._id.toString());
     expect(responseData.lessons.length).toBe(updates.lessons.length);
     expect(responseData.slug).toBeDefined();
-    const slug = responseData.course_name
-      .trim()
-      .replaceAll(" ", "-")
-      .toLowerCase();
     expect(typeof responseData.slug).toBe("string");
-    expect(responseData.slug).toBe(slug);
+    expect(responseData.slug).toBe(slugify(responseData.course_name));
   });
 
   test("does not update a course when course_name is duplicate", async ({
@@ -111,8 +108,10 @@ test.describe("/api/v1/courses/[id]", () => {
     expect(ifCourseUpdated.course_name).not.toBe(randomCourse.course_name);
   });
 
-
-  test("sets a courses's slug to correct value when course_name is updated", async ({ request, db }) => {
+  test("sets a courses's slug to correct value when course_name is updated", async ({
+    request,
+    db,
+  }) => {
     const randomCourse = await db
       .collection("courses")
       .findOne({ deleted_at: { $eq: null } });
@@ -122,20 +121,23 @@ test.describe("/api/v1/courses/[id]", () => {
       .findOne({ deleted_at: { $eq: null } });
 
     const updates = {
-      course_name: "Best course ever",
+      course_name: faker.lorem.words(),
       lessons: [randomLesson._id],
     };
 
-    const response = await request.patch(`/api/v1/courses/${randomCourse._id}`, {
-      data: updates,
-    });
+    const response = await request.patch(
+      `/api/v1/courses/${randomCourse._id}`,
+      {
+        data: updates,
+      }
+    );
 
     expect(response.ok()).toBeTruthy();
     const responseData = (await response.json()).data;
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
-    expect(responseData.slug).toBe("best-course-ever");
+    expect(responseData.slug).toBe(slugify(updates.course_name));
   });
 
   test("creates a course with a course_name that exists in a deleted course", async ({
