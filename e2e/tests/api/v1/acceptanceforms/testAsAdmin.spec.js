@@ -1,5 +1,4 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
-import { faker } from "@faker-js/faker";
 const { Readable } = require("stream");
 import { parseStream } from "fast-csv";
 const userIds = require("e2e/setup/data/user_ids.json");
@@ -7,10 +6,19 @@ const userIds = require("e2e/setup/data/user_ids.json");
 test.describe("/api/v1/acceptanceforms", () => {
   //GET TESTS
 
-  test("returns all acceptance forms", async ({ request }) => {
+  test("returns all acceptance forms", async ({ request, db }) => {
     //call GET and get all the acceptance forms
     const response = await request.get(`/api/v1/acceptanceforms`);
     expect(response.ok()).toBeTruthy();
+
+    //check if the response body contains an array of data
+    const body = await response.json();
+    expect(Array.isArray(body.data)).toBeTruthy();
+
+    //check if the length of the response body.data array is equal to the count of documents in the collection
+    const collection = await db.collection("acceptanceforms");
+    const count = await collection.countDocuments();
+    expect(body.data.length).toEqual(count);
   });
 
   test("returns all acceptance forms in CSV file", async ({ request, db }) => {
@@ -21,7 +29,10 @@ test.describe("/api/v1/acceptanceforms", () => {
     const response = await request.get(`/api/v1/acceptanceforms`, {
       headers: { Accept: "text/csv" },
     });
+    const contentTypeHeader = response.headers()["content-type"];
+    const isCsv = contentTypeHeader.includes("text/csv");
     expect(response.ok()).toBeTruthy();
+    expect(isCsv).toBeTruthy();
 
     const acceptanceforms = await response.body();
     const stream = Readable.from(acceptanceforms);

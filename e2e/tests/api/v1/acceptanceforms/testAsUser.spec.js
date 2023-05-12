@@ -54,12 +54,8 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("returns an array with newly created object", async ({
     request,
-    db,
+    user,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test
     const response = await request.post(`/api/v1/acceptanceforms`, {
       data: newAcceptanceForm,
@@ -73,12 +69,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when personal_first_name property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted personal_first_name property
     const formWithoutFirstName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutFirstName.personal_first_name;
@@ -105,12 +96,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when personal_last_name property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted personal_last_name property
     const formWithoutLastName = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLastName.personal_last_name;
@@ -136,12 +122,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when personal_email property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted personal_email property
     const formWithoutEmail = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutEmail.personal_email;
@@ -167,12 +148,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when personal_github property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted personal_github property
     const formWithoutGithub = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutGithub.personal_github;
@@ -198,12 +174,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when personal_phone property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted personal_phone property
     const formWithoutPhone = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutPhone.personal_phone;
@@ -229,12 +200,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when address_physical_zipcode property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted address_physical_zipcode property
     const formWithoutPhysicalZip = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -262,12 +228,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when demographics_gender_identity property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted demographics_gender_identity property
     const formWithoutGenderIdentity = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -297,12 +258,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when demographics_race_ethnicity property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted demographics_race_ethnicity property
     const formWithoutRaceEthnicity = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -331,12 +287,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when demographics_low_income property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted demographics_low_income property
     const formWithoutLowIncome = JSON.parse(JSON.stringify(newAcceptanceForm));
     delete formWithoutLowIncome.demographics_low_income;
@@ -362,12 +313,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact1_name property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact1_name property
     const formWithoutConact1Name = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -395,12 +341,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact1_relationship property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact1_relationship property
     const formWithoutConact1Relationship = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -430,12 +371,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact1_phone property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact1_phone property
     const formWithoutConact1Phone = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -463,12 +399,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact2_name property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact2_name property
     const formWithoutConact2Name = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -496,12 +427,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact2_relationship property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact2_relationship property
     const formWithoutConact2Relationship = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -531,12 +457,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when emergency_contact2_phone property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted emergency_contact2_phone property
     const formWithoutConact2Phone = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -564,12 +485,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when consent_leave_notice property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted consent_leave_notice property
     const formWithoutLeaveNotice = JSON.parse(
       JSON.stringify(newAcceptanceForm)
@@ -597,12 +513,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
   test("does not create an acceptance form when consent_work_commitment property is missing", async ({
     request,
-    db,
   }) => {
-    const user = await db
-      .collection("users")
-      .findOne({ email: "user@codethedream.org" });
-
     //new object to test with deleted consent_work_commitment property
     const formWithoutWorkCommitment = JSON.parse(
       JSON.stringify(newAcceptanceForm)
