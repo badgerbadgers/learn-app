@@ -1,7 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 const { Readable } = require("stream");
 import { parseStream } from "fast-csv";
-const userIds = require("e2e/setup/data/user_ids.json");
 
 test.describe("/api/v1/acceptanceforms", () => {
   //GET TESTS

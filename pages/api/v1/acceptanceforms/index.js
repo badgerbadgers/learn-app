@@ -132,7 +132,6 @@
 import AcceptanceForm from "lib/models/AcceptanceForm.js";
 import dbConnect from "lib/dbConnect.js";
 import { getSession } from "next-auth/react";
-import mongoose from "mongoose";
 import * as fastCsv from "fast-csv";
 
 export default async function handler(req, res) {
@@ -154,8 +153,7 @@ export default async function handler(req, res) {
             return;
           }
         } else {
-          const body = req.body;
-          const result = await getAcceptanceForms(body, session);
+          const result = await getAcceptanceForms;
           if (!result) {
             res.status(404).json({ message: "No acceptance forms found" });
             return;
@@ -168,8 +166,14 @@ export default async function handler(req, res) {
         return;
       }
     case "POST":
-      await createAcceptanceForm(req, res);
-      return;
+      try {
+        const acceptanceForm = await createAcceptanceForm(req.body, user.id);
+        res.status(200).json({ success: true, data: acceptanceForm });
+        return;
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
@@ -227,28 +231,22 @@ const createAcceptanceForm = async (req, res) => {
     is_completed: body.is_completed,
     completed_at: body.completed_at,
   };
-  try {
-    let document = await AcceptanceForm.findOne(filter);
-    if (!document) {
-      document = await AcceptanceForm.create({
-        ...filter,
-        ...update,
-      });
-    } else {
-      // Update case
-      document = Object.assign(document, update);
-      await document.save();
-    }
-    res.status(200).json({ success: true, data: document });
-  } catch (error) {
-    res.status(400).json({ success: false });
-    console.error(error);
+
+  let document = await AcceptanceForm.findOne(filter);
+  if (!document) {
+    document = await AcceptanceForm.create({
+      ...filter,
+      ...update,
+    });
+  } else {
+    // Update case
+    document = Object.assign(document, update);
+    await document.save();
   }
 };
 
 const downloadReport = async (res) => {
-  const collection = mongoose.connection.collection("acceptanceforms");
-  const data = await collection.find().toArray();
+  const data = await AcceptanceForm.find();
   if (!data) {
     const error = new Error();
     error.status = 404;
