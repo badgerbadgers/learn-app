@@ -28,9 +28,9 @@ test.describe("/api/v1/cohorts/:id/status", () => {
         expect(data.status).toBe("unknown");
       } else if (
         !randomCohort.schedule ||
-        !Array.isArray(randomCohort.schedule)
+        !Array.isArray(randomCohort.schedule) ||
+        !randomCohort.schedule.length
       ) {
-        // TODO  add !cohort.schedule.length check if added to Cohorts model
         // if no schedule, check if status set to 'unknown'
         expect(data.status).toBe("unknown");
       } else if (now < new Date(randomCohort.start_date).getTime()) {

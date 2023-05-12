@@ -58,18 +58,18 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
 
     // check if response is OK
     expect(response.status()).toBeTruthy();
-    const data = (await response.json()).data.schedule;
+    const data = (await response.json()).data;
     expect(data && Array.isArray(data)).toBe(true);
 
     //lesson's Ids after PUT
     const lessonsId = data
       .filter((lesson) => lesson.lesson)
-      .map((obj) => obj.lesson);
+      .map((obj) => obj.lesson._id);
 
     //section's Ids after PUT
     const sectionsId = data
       .filter((section) => section.section)
-      .map((obj) => obj.section);
+      .map((obj) => obj.section._id);
 
     // Send a GET request to retrieve the updated schedule array of cohort
     const updatedResponse = await request.get(
@@ -82,13 +82,10 @@ test.describe("/api/v1/cohorts/[id]/schedule", () => {
     //lesson's Ids after PUT
     const updatedLessonsID = updatedData
       .filter((lesson) => lesson.lesson)
-      .map((obj) => obj.lesson)
-      .map((obj) => obj._id);
+      .map((obj) => obj.lesson._id);
 
     //section's Ids after PUT
-    const updatedSectionsID = updatedData
-      .map((obj) => obj.section)
-      .map((obj) => obj._id);
+    const updatedSectionsID = updatedData.map((obj) => obj.section._id);
 
     expect(updatedData.length).toBe(data.length);
     //check if lesson' ids and section's ids are matching
