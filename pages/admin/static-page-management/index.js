@@ -25,7 +25,7 @@ const AllStaticPages = ({ combinedData }) => {
     const title = filteredByIdPage[0].title;
     const slug = filteredByIdPage[0].slug;
 
-    const staticpage = {
+    const newstaticpage = {
       wordpress_id: id,
       isShown: deleted,
       _id: mongo_id,
@@ -33,15 +33,21 @@ const AllStaticPages = ({ combinedData }) => {
       slug: slug,
     };
 
+    const updatestaticpage = {
+      title: title,
+      slug: slug,
+      _id: mongo_id,
+    };
+
     //conditional for CRUD operation
-    if (staticpage._id === null) {
-      await axios.post(`/api/v1/staticpages`, staticpage, {
+    if (newstaticpage._id === null) {
+      await axios.post(`/api/v1/staticpages`, newstaticpage, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-    } else if (staticpage._id !== null) {
-      await axios.patch(`/api/v1/staticpages/${mongo_id}`, staticpage, {
+    } else if (newstaticpage._id !== null) {
+      await axios.patch(`/api/v1/staticpages/${mongo_id}`, updatestaticpage, {
         headers: {
           "Content-Type": "application/json",
         },
