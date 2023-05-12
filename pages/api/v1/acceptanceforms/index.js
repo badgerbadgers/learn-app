@@ -150,37 +150,36 @@ export default async function handler(req, res) {
           const result = await downloadReport(res, body, session);
           if (!result) {
             res.status(404).json({ message: "No acceptance forms found" });
-            return;
           }
         } else {
           const result = await getAcceptanceForms;
           if (!result) {
             res.status(404).json({ message: "No acceptance forms found" });
-            return;
           }
-          res.status(200).json({ data: result });
         }
-        return;
+        res.status(200).json({ data: result });
       } catch (error) {
+        console.error(error);
         res.status(error.status || 400).json({ message: error.message });
-        return;
       }
+      return;
+
     case "POST":
       try {
         const acceptanceForm = await createAcceptanceForm(req.body, user.id);
         res.status(200).json({ success: true, data: acceptanceForm });
-        return;
       } catch (error) {
         res.status(400).json({ message: error.message });
-        return;
       }
+      return;
+
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
 
-const createAcceptanceForm = async (req, res) => {
+const createAcceptanceForm = async (req) => {
   const body = req.body;
   const session = await getSession({ req });
   const filter = { user: session.user.id };
