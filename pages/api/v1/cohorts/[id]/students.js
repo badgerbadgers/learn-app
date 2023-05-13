@@ -106,7 +106,6 @@ export default async function handler(req, res) {
           error.message = `Could not find cohort with id ${id} `;
           throw error;
         }
-        // console.log(data)
         res.status(200).json({ data: students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
         break;
       case "PATCH":
@@ -137,11 +136,8 @@ export default async function handler(req, res) {
             "students",
             req.body.students
           );
-          console.log(response);
-          // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
-
+          // if delete was successful undefined is returned, check it it is null (not successful)
           if (response === null) {
-            // if delete was successful undefined is returned
             const error = new Error();
             error.status = 404;
             error.message = `Could not find cohort with id ${id} `;
@@ -155,36 +151,31 @@ export default async function handler(req, res) {
         res.status(405).end(`Method ${method} Not Allowed`);
     }
   } catch (error) {
+    console.log(error);
     res.status(error.status || 400).json({ message: error.message });
   }
 }
 
-const parseStudents = (students) => {
-  return (
-    students
-      ?.map((student) => {
-        // console.log(student.user)
-        if (student.user) {
-          const filteredStudent = {
-            id: student.user._id,
-            ...student.user._doc,
-            added_at: student.added_at || null,
-          };
-          delete filteredStudent._id;
-          console.log(filteredStudent);
-          return filteredStudent;
-        }
-      })
-      .filter((student) => student) || []
-  ); // filter to get students which are not null and return empty array if no active students found
-};
+const parseStudents = (students) =>
+  students
+    ?.map((student) => {
+      if (student.user) {
+        const filteredStudent = {
+          id: student.user._id,
+          ...student.user._doc,
+          added_at: student.added_at || null,
+        };
+        delete filteredStudent._id;
+        return filteredStudent;
+      }
+    })
+    .filter((student) => student) || []; // filter to get students which are not deleted (not null) and return empty array if no active students found
 
 export const getCohortStudents = async (id) => {
   await dbConnect();
   const cohort = await Cohort.findById(id, "students").populate(
     "students.user"
-  ); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
-  // console.log(cohort);
+  ); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model and added_at property
   if (!cohort) {
     return null;
   }
@@ -209,7 +200,6 @@ export const deleteStudentsFromCohort = async (id, field, value) => {
   const cohort = await Cohort.findByIdAndUpdate(
     { _id: id },
     { $pull: { [field]: { user: { $in: parsedValues } } } }
-    //  { new: true }
   );
   if (!cohort) {
     return null;
