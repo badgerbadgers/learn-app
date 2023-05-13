@@ -79,30 +79,25 @@ export async function getServerSideProps(context) {
 
     // get cohort data
     const cohort = JSON.parse(JSON.stringify(await getCohortById(cohortId)));
+    if (!cohort) {
+      // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
+
+      return { notFound: true };
+    }
     // get cohort students
-    const data = JSON.parse(JSON.stringify(await getCohortStudents(cohortId)));
-    console.log("----------");
-    console.log(data, "DATA");
-    // TODO  - the filtering should be done in API handler
-    const students =
-      data.students
-        ?.map((st) => {
-          if (st.user) {
-            const filteredStudent = {
-              id: st.user._id,
-              ...st.user,
-              added_at: st.added_at, // add '|| null' here
-            };
-            delete filteredStudent._id;
-            return filteredStudent;
-          }
-        })
-        .filter((student) => student) || []; // filter to get students which are not null and return empty array if students returned as empty array
-    console.log(students, "++++++++");
+    const students = JSON.parse(
+      JSON.stringify(await getCohortStudents(cohortId))
+    );
+
+    if (!students) {
+      // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
+      return { notFound: true };
+    }
+
     const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(
       cohortId
-    )) || [null, null]; // || null; // ** null is not iterable
-    // https://avatars.githubusercontent.com/u/2739321?v=4
+    )) || [null, null];
+
     return {
       props: {
         cohort,
@@ -113,12 +108,8 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error(error);
-    // TODO - what return here: redirect to a custom error page (404, 403, 500) or send an error in props and let components handle it???
+    // TODO - what return here: redirect to a custom error page (403, 500) or send an error in props and let components handle it???
 
-    // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
-    if (error.status === 404) {
-      return { notFound: true };
-    }
     // possible solution ideas - https://github.com/vercel/next.js/discussions/12652#discussioncomment-90145
     throw new Error(error);
   }
