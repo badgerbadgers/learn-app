@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import { Switch, Typography, Box } from "@mui/material"
+import React, { useState } from "react";
+import { Switch, Typography, Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import dbConnect from "../../../lib/dbConnect"
-import axios from "axios"
-import { getSession } from "next-auth/react"
-import { privateLayout } from "../../../components/layout/PrivateLayout"
+import dbConnect from "../../../lib/dbConnect";
+import axios from "axios";
+import { getSession } from "next-auth/react";
+import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { getStaticPages } from "pages/api/v1/staticpages";
 
 const AllStaticPages = ({ combinedData }) => {
@@ -28,7 +28,6 @@ const AllStaticPages = ({ combinedData }) => {
     const newstaticpage = {
       wordpress_id: id,
       isShown: deleted,
-      _id: mongo_id,
       title: title,
       slug: slug,
     };
@@ -37,16 +36,18 @@ const AllStaticPages = ({ combinedData }) => {
       title: title,
       slug: slug,
       _id: mongo_id,
+      isShown: deleted,
     };
 
     //conditional for CRUD operation
-    if (newstaticpage._id === null) {
+    if (mongo_id === null) {
       await axios.post(`/api/v1/staticpages`, newstaticpage, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-    } else if (newstaticpage._id !== null) {
+    }
+    if (mongo_id !== null) {
       await axios.patch(`/api/v1/staticpages/${mongo_id}`, updatestaticpage, {
         headers: {
           "Content-Type": "application/json",
@@ -131,8 +132,7 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
 
-  const dbData = await getStaticPages();
-  const mongoData = await dbData;
+  const mongoData = await getStaticPages();
 
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
@@ -148,8 +148,8 @@ export async function getServerSideProps(context) {
 
 //helper function combines wordPress data with mongoDB data, called in getServerSideProps
 function combineData(wordpressData, mongoData) {
-  const combinedData = []
-  const mongoObj = {}
+  const combinedData = [];
+  const mongoObj = {};
   wordpressData.forEach((wpitem) => {
     const mongoObj = {
       isShown: false,
@@ -157,15 +157,15 @@ function combineData(wordpressData, mongoData) {
       title: wpitem.title.rendered,
       slug: wpitem.slug,
       mongo_id: null,
-    }
+    };
     mongoData.forEach((item) => {
       if (wpitem.id === item.wordpress_id) {
-        mongoObj.isShown = item.isShown
-        mongoObj.mongo_id = item._id + ""
-        return
+        mongoObj.isShown = item.isShown;
+        mongoObj.mongo_id = item._id + "";
+        return;
       }
-    })
-    combinedData.push(mongoObj)
-  })
-  return combinedData
+    });
+    combinedData.push(mongoObj);
+  });
+  return combinedData;
 }
