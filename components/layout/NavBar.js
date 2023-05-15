@@ -78,10 +78,25 @@ const NavBar = () => {
     setAnchorElPages(null);
   };
 
+  //v1 student resources
+  // useEffect(() => {
+  //   // async () => {
+  //   //   await getStudentResourcesByIsShown();
+  //   // };
+  //   // try {
+  //   //   async () => {
+  //   //     const test = await getStudentResourcesByIsShown();
+  //   //     console.log("test", test);
+  //   //   };
+  //   // } catch (error) {
+  //   //   console.log("error", error);
+  //   // }
+  // }, []);
+
   useEffect(() => {
     try {
       axios
-        .get(`/api/staticpages`, {
+        .get(`/api/v1/student-resources`, {
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
