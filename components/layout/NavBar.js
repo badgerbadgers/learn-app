@@ -79,20 +79,6 @@ const NavBar = () => {
   };
 
   //v1 student resources
-  // useEffect(() => {
-  //   // async () => {
-  //   //   await getStudentResourcesByIsShown();
-  //   // };
-  //   // try {
-  //   //   async () => {
-  //   //     const test = await getStudentResourcesByIsShown();
-  //   //     console.log("test", test);
-  //   //   };
-  //   // } catch (error) {
-  //   //   console.log("error", error);
-  //   // }
-  // }, []);
-
   useEffect(() => {
     try {
       axios
@@ -116,6 +102,7 @@ const NavBar = () => {
       console.log(error);
     }
   }, []);
+
   return (
     <AppBar
       enableColorOnDark
