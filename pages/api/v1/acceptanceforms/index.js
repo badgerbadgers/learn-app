@@ -145,14 +145,14 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
+        let result;
         if (req.headers.accept === "text/csv") {
-          const body = req.body;
-          const result = await downloadReport(res, body, session);
+          result = await downloadReport(res, req.body, session);
           if (!result) {
             res.status(404).json({ message: "No acceptance forms found" });
           }
         } else {
-          const result = await getAcceptanceForms;
+          result = await getAcceptanceForms();
           if (!result) {
             res.status(404).json({ message: "No acceptance forms found" });
           }
@@ -166,7 +166,10 @@ export default async function handler(req, res) {
 
     case "POST":
       try {
-        const acceptanceForm = await createAcceptanceForm(req.body, user.id);
+        const acceptanceForm = await createAcceptanceForm(
+          req.body,
+          session.user.id
+        );
         res.status(200).json({ success: true, data: acceptanceForm });
       } catch (error) {
         res.status(400).json({ message: error.message });
@@ -179,12 +182,10 @@ export default async function handler(req, res) {
   }
 }
 
-const createAcceptanceForm = async (req) => {
-  const body = req.body;
-  const session = await getSession({ req });
-  const filter = { user: session.user.id };
+const createAcceptanceForm = async (body, userId) => {
+  const filter = { user: userId };
   const update = {
-    user: session.user.id,
+    user: userId,
     personal_first_name: body.personal_first_name,
     personal_last_name: body.personal_last_name,
     personal_email: body.personal_email,
@@ -242,6 +243,7 @@ const createAcceptanceForm = async (req) => {
     document = Object.assign(document, update);
     await document.save();
   }
+  return document;
 };
 
 const downloadReport = async (res) => {
