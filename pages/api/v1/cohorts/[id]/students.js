@@ -131,13 +131,13 @@ export default async function handler(req, res) {
             .status(400)
             .json({ message: "Student ids to delete are not provided" });
         } else {
-          const response = await deleteStudentsFromCohort(
+          const cohort = await deleteStudentsFromCohort(
             id,
             "students",
             req.body.students
           );
           // if delete was successful undefined is returned, check it it is null (not successful)
-          if (response === null) {
+          if (!cohort) {
             const error = new Error();
             error.status = 404;
             error.message = `Could not find cohort with id ${id} `;
@@ -156,7 +156,7 @@ export default async function handler(req, res) {
   }
 }
 
-const parseStudents = (students) =>
+const normalizeStudentsData = (students) =>
   students
     ?.map((student) => {
       if (student.user) {
@@ -179,7 +179,7 @@ export const getCohortStudents = async (id) => {
   if (!cohort) {
     return null;
   }
-  return parseStudents(cohort.students);
+  return normalizeStudentsData(cohort.students);
 };
 
 export const addUsersToCohort = async (id, updates) => {
@@ -191,7 +191,7 @@ export const addUsersToCohort = async (id, updates) => {
   await cohort.updateStudents(updates.students);
   await cohort.save();
   const updatedCohortPopulate = await cohort.populate("students.user");
-  return parseStudents(updatedCohortPopulate.students);
+  return normalizeStudentsData(updatedCohortPopulate.students);
 };
 
 export const deleteStudentsFromCohort = async (id, field, value) => {
@@ -204,4 +204,5 @@ export const deleteStudentsFromCohort = async (id, field, value) => {
   if (!cohort) {
     return null;
   }
+  return cohort;
 };
