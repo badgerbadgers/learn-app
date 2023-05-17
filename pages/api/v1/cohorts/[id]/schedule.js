@@ -57,7 +57,7 @@
  *           example: {"schedule": [{ "type":"lesson", "lesson": "62e26dbb69dd077fc82fbfe5", "section": "633d9915ec0d4b5e83a6b05e"},{"type":"break","content": "Some content","section": "633d9915ec0d4b5e83a6b05e"},{"type":"review",      "content": "Some review text","section": "633d9915ec0d4b5e83a6b05e" }]}
  *     responses:
  *       200:
- *         description: Update entire schedule for a specific cohort
+ *         description: Returns entire schedule for a specific cohort
  *       400:
  *         description: Error messages
  *       404:
@@ -87,8 +87,8 @@ export default async function handler(req, res) {
     case "PUT":
       const updates = req.body;
       try {
-        const schedule = await updateSchedule(id, updates);
-        res.status(200).json({ data: schedule });
+        const data = await updateSchedule(id, updates);
+        res.status(200).json({ data });
       } catch (error) {
         console.error("Update cohort's schedule error", error);
         res.status(error.status || 400).json({ message: error.message });
@@ -197,7 +197,34 @@ export const updateSchedule = async (id, updates) => {
       new: true,
       runValidators: true,
     }
-  );
+  ).populate([
+    {
+      path: "schedule",
+      model: "Cohort",
+      select: "lesson",
+      populate: {
+        path: "lesson",
+        populate: [
+          {
+            path: "materials",
+            model: "Material",
+          },
+          {
+            path: "assignments",
+            model: "Assignment",
+          },
+        ],
+      },
+    },
+    {
+      path: "schedule",
+      model: "Cohort",
+      populate: {
+        path: "section",
+        model: "Section",
+      },
+    },
+  ]);
 
   if (!updatedSchedule) {
     const error = new Error();
@@ -207,5 +234,5 @@ export const updateSchedule = async (id, updates) => {
   }
   await updatedSchedule.save();
 
-  return updatedSchedule;
+  return updatedSchedule.schedule;
 };
