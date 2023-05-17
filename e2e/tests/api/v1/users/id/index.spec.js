@@ -63,7 +63,7 @@ test.describe("/api/v1/users/id", () => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
       name: faker.name.fullName(),
-      email: faker.internet.email(),
+      email: "example@example.com",
       gh: faker.random.alphaNumeric(10),
     };
 
@@ -86,7 +86,7 @@ test.describe("/api/v1/users/id", () => {
   test("update only email", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
-      email: faker.internet.email(),
+      email: "example@example.com",
     };
 
     //Change User email
@@ -133,7 +133,7 @@ test.describe("/api/v1/users/id", () => {
   test("update with incorrect email", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
-      email: "@2A",
+      email: "A@b@c@example.com",
     };
 
     //change user name and email
@@ -224,7 +224,7 @@ test.describe("/api/v1/users/id", () => {
     //Create not existing userID
     const userId = faker.database.mongodbObjectId();
     const updateUser = {
-      email: faker.internet.email(),
+      email: "example@example.com",
     };
 
     const patchResponse = await request.patch(`/api/v1/users/${userId}`, {

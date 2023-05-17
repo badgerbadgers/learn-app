@@ -211,7 +211,7 @@ test.describe("/api/v1/users", () => {
   test("creates a user when the fields name, email, gh are properly given", async ({ request, db }) => {
     const newUser = {
       name: faker.name.fullName(),
-      email: faker.internet.email(),
+      email: "example@example.com",
       gh: faker.random.alphaNumeric(10),
     };
 
@@ -353,7 +353,7 @@ test.describe("/api/v1/users", () => {
     }) => {
       const newUser = {
         name: faker.name.fullName(),
-        email: faker.internet.email(),
+        email: "example@example.com",
         gh: faker.random.alphaNumeric(10),
         extraField: faker.random.alphaNumeric(10),
       };
