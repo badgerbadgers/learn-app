@@ -107,45 +107,45 @@ import Section from "lib/models/Section";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const data = await getLesson(id);
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find lesson with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data });
-      } catch (error) {
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PATCH":
-      try {
+        break;
+      case "PATCH":
         const updatedLesson = await updateLesson(id, req.body);
+        if (!updatedLesson) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and update lesson with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: updatedLesson });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "DELETE":
-      try {
+        break;
+      case "DELETE":
         await dbConnect();
-        const deletedLesson = await Lesson.findByIdAndUpdate(id, {
-          deleted_at: new Date(),
-        });
+        const deletedLesson = await deleteLesson(id);
         if (!deletedLesson) {
           return res
             .status(404)
             .json({ message: `Lesson with id ${id} not found` });
         }
         res.status(200).json();
-      } catch (error) {
-        console.log(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -153,10 +153,7 @@ export const getLesson = async (id) => {
   await dbConnect();
   const data = await Lesson.findById(id); // returns lesson with deleted_at: null only
   if (!data) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find lesson with id - ${id}`;
-    throw error;
+    return null;
   }
   return data;
 };
@@ -258,10 +255,7 @@ export const updateLesson = async (id, updates) => {
   });
 
   if (!updatedLesson) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update lesson with id - ${id}`;
-    throw error;
+    return null;
   }
   await updatedLesson.save();
   const updatedLessonPopulate = await updatedLesson.populate(
@@ -269,4 +263,14 @@ export const updateLesson = async (id, updates) => {
   );
 
   return updatedLessonPopulate;
+};
+
+export const deleteLesson = async (id) => {
+  const deletedLesson = await Lesson.findByIdAndUpdate(id, {
+    deleted_at: new Date(),
+  });
+  if (!deleteLesson) {
+    return null;
+  }
+  return deletedLesson;
 };
