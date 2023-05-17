@@ -136,7 +136,7 @@ test.describe("/api/v1/users/id", () => {
   test("update with incorrect email", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
-      email: "A@b@c@example.com",
+      email: "abc.def@mail..com",
     };
 
     //change user name and email
