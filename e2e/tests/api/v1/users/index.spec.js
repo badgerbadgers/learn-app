@@ -3,6 +3,9 @@ import { faker } from "@faker-js/faker";
 import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/users", () => {
+  const first = faker.name.firstName();
+  const last = faker.name.lastName();
+
   //GET TESTS
 
   test("returns the list of users", async ({ request }) => {
@@ -59,7 +62,7 @@ test.describe("/api/v1/users", () => {
 
     expect(patchResponse.ok()).toBeTruthy();
 
-    //Verify that the undeleted user returned in results 
+    //Verify that the undeleted user returned in results
     const responseUndeletedUser = await request.get(`/api/v1/users/${userId}`);
     expect(responseUndeletedUser.ok()).toBeTruthy();
 
@@ -72,10 +75,7 @@ test.describe("/api/v1/users", () => {
     expect(getUndeletedUser.deleted_at).toBe(null);
   });
 
-  test("supports cohort filter", async ({
-    request,
-    db,
-  }) => {
+  test("supports cohort filter", async ({ request, db }) => {
     const response = await request.get("/api/v1/users", {
       params: {
         cohort: "635841bd9be844015c74719a",
@@ -126,8 +126,8 @@ test.describe("/api/v1/users", () => {
     const mentors = cohort.mentors;
 
     //check if user contains in the list of mentors
-    for(const u of users) {
-       expect(mentors).toContainEqual({ user: new ObjectId(u._id) });
+    for (const u of users) {
+      expect(mentors).toContainEqual({ user: new ObjectId(u._id) });
     }
   });
 
@@ -155,14 +155,13 @@ test.describe("/api/v1/users", () => {
 
     //check if user contains in the list of mentors
     for (const u of users) {
-      expect(students).toContainEqual(expect.objectContaining({ user: new ObjectId(u._id) })) ;
+      expect(students).toContainEqual(
+        expect.objectContaining({ user: new ObjectId(u._id) })
+      );
     }
   });
 
-  test("supports cohort filter and course filter", async ({
-    request,
-    db,
-  }) => {
+  test("supports cohort filter and course filter", async ({ request, db }) => {
     const response = await request.get("/api/v1/users", {
       params: {
         cohort: "635841bd9be844015c74719a",
@@ -185,10 +184,10 @@ test.describe("/api/v1/users", () => {
     //check if user contains in the list of mentors
     for (const u of users) {
       expect(students).toContainEqual(
-        expect.objectContaining({ user: new ObjectId(u._id) }) || expect(mentors).toContainEqual({ user: new ObjectId(u._id) })
+        expect.objectContaining({ user: new ObjectId(u._id) }) ||
+          expect(mentors).toContainEqual({ user: new ObjectId(u._id) })
       );
     }
-
   });
 
   test("returns an empty array when there are no results", async ({
@@ -203,20 +202,22 @@ test.describe("/api/v1/users", () => {
     });
     expect(response.ok()).toBeTruthy();
 
-    expect((await response.json()).data).toHaveLength(0);   
+    expect((await response.json()).data).toHaveLength(0);
   });
-});
 
-//POST TESTS
-  test("creates a user when the fields name, email, gh are properly given", async ({ request, db }) => {
+  //POST TESTS
+  test("creates a user when the fields name, email, gh are properly given", async ({
+    request,
+    db,
+  }) => {
     const newUser = {
       name: faker.name.fullName(),
-      email: "example@example.com",
+      email: faker.internet.email(first, last),
       gh: faker.random.alphaNumeric(10),
     };
 
     const response = await request.post(`/api/v1/users`, {
-      data: newUser
+      data: newUser,
     });
     expect(response.ok()).toBeTruthy();
 
@@ -225,16 +226,12 @@ test.describe("/api/v1/users", () => {
     expect(responseData._id).toBeDefined();
 
     //delete newUser
-    await db
-      .collection("users")
-      .deleteOne({ _id: ObjectId(responseData._id) });
+    await db.collection("users").deleteOne({ _id: ObjectId(responseData._id) });
   });
 
-  test("does not create a user when name is missing", async ({
-    request,
-  }) => {
+  test("does not create a user when name is missing", async ({ request }) => {
     const newUser = {
-      email: faker.internet.email(),
+      email: faker.internet.email(first, last),
       gh: faker.random.alphaNumeric(10),
     };
 
@@ -253,9 +250,7 @@ test.describe("/api/v1/users", () => {
     );
   });
 
-  test("does not create a user email is missing", async ({
-    request,
-  }) => {
+  test("does not create a user email is missing", async ({ request }) => {
     const newUser = {
       name: faker.name.fullName(),
       gh: faker.random.alphaNumeric(10),
@@ -276,11 +271,13 @@ test.describe("/api/v1/users", () => {
     );
   });
 
-  test("does not create a user if email is not correct", async ({ request }) => {
+  test("does not create a user if email is not correct", async ({
+    request,
+  }) => {
     const newUser = {
       name: faker.name.fullName(),
       gh: faker.random.alphaNumeric(10),
-      email: '123abc@'
+      email: "A@b@c@example.com",
     };
 
     const response = await request.post("/api/v1/users", {
@@ -298,13 +295,10 @@ test.describe("/api/v1/users", () => {
     );
   });
 
-
-  test("does not create a user when github is missing", async ({
-    request,
-  }) => {
+  test("does not create a user when github is missing", async ({ request }) => {
     const newUser = {
       name: faker.name.fullName(),
-      email: faker.internet.email(),
+      email: faker.internet.email(first, last),
     };
 
     const response = await request.post("/api/v1/users", {
@@ -322,55 +316,56 @@ test.describe("/api/v1/users", () => {
     );
   });
 
-  test(
-    "does not allow creating a user with a non-unique github",
-    async ({ request, db }) => {
-      const user = await db.collection("users").findOne();
+  test("does not allow creating a user with a non-unique github", async ({
+    request,
+    db,
+  }) => {
+    const user = await db.collection("users").findOne();
 
-      const newUser = {
-        name: faker.name.fullName(),
-        email: faker.internet.email(),
-        gh: user.gh,
-      };
+    const newUser = {
+      name: faker.name.fullName(),
+      email: faker.internet.email(first, last),
+      gh: user.gh,
+    };
 
-      const response = await request.post("/api/v1/users", {
-        data: newUser,
-      });
-      expect(response.ok()).toBeFalsy();
-
-      //confirm our user has not been created
-      const getResponse = await request.get("/api/v1/users");
-      expect(getResponse.ok()).toBeTruthy();
-
-      const users = (await getResponse.json()).data;
-      expect(users).not.toContainEqual(
-        expect.objectContaining({ name: newUser.name })
-      );
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
     });
+    expect(response.ok()).toBeFalsy();
 
-    test("does not save into the database extra fields that are sent", async ({
-      request, db
-    }) => {
-      const newUser = {
-        name: faker.name.fullName(),
-        email: "example@example.com",
-        gh: faker.random.alphaNumeric(10),
-        extraField: faker.random.alphaNumeric(10),
-      };
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
 
-      const response = await request.post(`/api/v1/users`, {
-        data: newUser,
-      });
-      expect(response.ok()).toBeTruthy();
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ name: newUser.name })
+    );
+  });
 
-      const responseData = (await response.json()).data;
-      expect(responseData).not.toMatchObject(newUser);
-      expect(responseData._id).toBeDefined();
-      expect(responseData.extraField).toBeUndefined();
-      expect(responseData.email).toBe(newUser.email)
+  test("does not save into the database extra fields that are sent", async ({
+    request,
+    db,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      email: "example@example.com",
+      gh: faker.random.alphaNumeric(10),
+      extraField: faker.random.alphaNumeric(10),
+    };
 
-      //delete newUser
-      await db
-        .collection("users")
-        .deleteOne({ _id: ObjectId(responseData._id) });
+    const response = await request.post(`/api/v1/users`, {
+      data: newUser,
     });
+    expect(response.ok()).toBeTruthy();
+
+    const responseData = (await response.json()).data;
+    expect(responseData).not.toMatchObject(newUser);
+    expect(responseData._id).toBeDefined();
+    expect(responseData.extraField).toBeUndefined();
+    expect(responseData.email).toBe(newUser.email);
+
+    //delete newUser
+    await db.collection("users").deleteOne({ _id: ObjectId(responseData._id) });
+  });
+});
