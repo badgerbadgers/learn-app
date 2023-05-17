@@ -65,7 +65,6 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(deletedCohort.deleted_at instanceof Date).toBeTruthy();
   });
 
-  // TODO  - do we need a test like that?
   test("returns 404 if cohort to delete is not found", async ({ request }) => {
     // check if response is falsy if cohort not found
     const nonExistedId = faker.database.mongodbObjectId();
@@ -75,8 +74,6 @@ test.describe("/api/v1/cohorts/id", () => {
     expect(response.ok()).toBeFalsy();
     expect(response.status()).toBe(404);
   });
-
-
 
   //PATCH TESTS
   //Update name
@@ -108,6 +105,32 @@ test.describe("/api/v1/cohorts/id", () => {
     );
 
     expect(updatedCohort.cohort_name).toBe(responseData.cohort_name);
+  });
+
+  test("sets a cohort's slug to correct value when updating a cohort_name", async ({
+    request,
+    db
+  }) => {
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const updates = {
+      cohort_name: "Very Smart Cohort",
+    };
+
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("very-smart-cohort");
   });
 
   ////////////////////////////////////////////////////////////////////////

@@ -1,53 +1,41 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 
-const { ObjectId } = require("mongodb");
-test.describe("/api/v1/staticpages/[id_or_slug]", () => {
-  //GET SLUG TESTS
-  test("gets a static page using slug as argument", async ({ request, db }) => {
-    //gets a document with slug value that is not null
-    const staticpage = await db.collection("staticpages").findOne({
-      slug: { $ne: null },
-    });
-    const slug = staticpage.slug;
+test.describe("/api/v1/staticpages/[id]", () => {
+  //GET ID TESTS
+  test("gets a static page with id as an argument", async ({ request, db }) => {
+    //gets a document with wordpress_id value that is not null
+    const staticpage = await db.collection("staticpages").findOne({});
+    const id = staticpage._id.toString();
 
-    //hit endpoint with slug as path parameter
-    const response = await request.get(`/api/v1/staticpages/${slug}`);
+    //hit endpoint with id as path parameter
+    const response = await request.get(`/api/v1/staticpages/${id}`);
     const staticpageslug = (await response.json()).data;
     expect(response.ok()).toBeTruthy();
     expect(staticpageslug).toMatchObject(staticpage);
   });
 
-  test("test GET request of a static page with invalid slug", async ({
+  test("test GET request of a static page with id that does not exist", async ({
     request,
   }) => {
-    //invalid slug
-    const slug = "does-not-exist";
-    //get request with invalid slug as parameter
-    const response = await request.get(`/api/v1/staticpages/${slug}`);
-    //check 404 status assertion
+    //get request with invalid id as parameter
+    const response = await request.get(
+      `/api/v1/staticpages/63e14ad6b8f9d3b00a64dc29`
+    );
+    //check status assertion
     expect(response.status()).toBe(404);
     const invalidpageslug = (await response.json()).data;
     expect(invalidpageslug).toBeUndefined();
   });
 
-  test("test GET request of a static page with isShown boolean set false", async ({
-    request,
-    db,
-  }) => {
-    //make get request with isShown false
-    const staticpage = await db.collection("staticpages").findOne({
-      isShown: { $eq: false },
-    });
-    const slug = staticpage.slug;
+  test("test GET request with invalid id", async ({ request }) => {
+    // //hit endpoint with invalid id as path parameter
+    const response = await request.get(`/api/v1/staticpages/99099`);
 
-    //hit endpoint with slug as path parameter
-    const response = await request.get(`/api/v1/staticpages/${slug}`);
-
-    //check 404 status assertion
-    expect(response.status()).toBe(404);
+    // //check 404 status assertion
+    expect(response.status()).toBe(400);
     const staticpageresponse = (await response.json()).data;
-    //assertion for undefined or null
+    // //assertion for undefined or null
     expect(staticpageresponse).toBeUndefined();
   });
 
