@@ -1,13 +1,11 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CohortHeader from "./components/CohortHeader";
 import Grid from "@mui/material/Unstable_Grid2";
 import IndCohortGrid from "./components/IndCohortGrid";
 import { getPrevAndNextCohortSlugs } from "../../../lib/cohortData";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
-import { format, formatDistance } from "date-fns";
 import ScheduleModal from "./components/ScheduleModal";
 import { getCohortById } from "pages/api/v1/cohorts/[id]";
 import { getCohortStudents } from "pages/api/v1/cohorts/[id]/students";
@@ -81,7 +79,6 @@ export async function getServerSideProps(context) {
     const cohort = JSON.parse(JSON.stringify(await getCohortById(cohortId)));
     if (!cohort) {
       // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
-
       return { notFound: true };
     }
     // get cohort students
@@ -93,7 +90,6 @@ export async function getServerSideProps(context) {
       // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
       return { notFound: true };
     }
-
     const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(
       cohortId
     )) || [null, null];
