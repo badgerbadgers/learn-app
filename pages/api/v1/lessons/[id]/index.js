@@ -133,9 +133,10 @@ export default async function handler(req, res) {
         await dbConnect();
         const deletedLesson = await deleteLesson(id);
         if (!deletedLesson) {
-          return res
-            .status(404)
-            .json({ message: `Lesson with id ${id} not found` });
+          const error = new Error();
+          error.status = 404;
+          error.message = `Lesson with id ${id} not found`;
+          throw error;
         }
         res.status(200).json();
         break;
