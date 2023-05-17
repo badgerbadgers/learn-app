@@ -24,46 +24,43 @@ const { ObjectId } = require("mongodb");
 
 export default async function handler(req, res) {
   const { method } = req;
-  switch (method) {
-    case "GET":
-      try {
-        //Get acceptanceforms for user by Id
-        const acceptanceforms = await getAcceptanceforms(req, res);
-        if (!acceptanceforms) {
-           res
-            .status(404)
-            .json({
-              message: "No acceptanceforms found",
-            });
-            return;
-        }
-        res.status(200).json({ data: acceptanceforms });
-        return;
-      } catch (error) {
-        res.status(error.status || 400).json({
-          message: error.message,
-        });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["GET"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
-  }
-}
-
-export const getAcceptanceforms = async (req, res) => {
-
+  
   await dbConnect();
   const session = await unstable_getServerSession(req, res, authOptions);
   if (!session || !session.user) {
-    const error = new Error();
-    error.status = 401;
-    error.message = "User unauthorized";
-    throw error;
+    res.status(401).json({ message: "Unauthorized user" });
+    return;
   }
-  
-  const filter = {user: ObjectId(session.user.id)}
+
+  try {
+    switch (method) {
+      case "GET":
+        //Get acceptanceforms for user by Id
+        const acceptanceforms = await getAcceptanceforms(session.user.id);
+        if (!acceptanceforms) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "User ";
+          throw error;
+        }
+        res.status(200).json({ data: acceptanceforms });
+        return;
+
+      default:
+        res.setHeader("Allow", ["GET"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({
+      message: error.message,
+    });
+    return;
+  }
+}
+
+export const getAcceptanceforms = async (userId) => {
+  const filter = { user: ObjectId(userId) };
   const acceptanceforms = await AcceptanceForm.findOne(filter);
   return acceptanceforms;
-
 };
