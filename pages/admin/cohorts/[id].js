@@ -9,8 +9,9 @@ import { privateLayout } from "../../../components/layout/PrivateLayout";
 import ScheduleModal from "./components/ScheduleModal";
 import { getCohortById } from "pages/api/v1/cohorts/[id]";
 import { getCohortStudents } from "pages/api/v1/cohorts/[id]/students";
+import { getCourse } from "pages/api/v1/courses/[id]";
 
-const IndividualCohortPage = ({ cohort, students, prevCohort, nextCohort }) => {
+const IndividualCohortPage = ({ cohort, students, course, prevCohort, nextCohort }) => {
   const [open, setOpen] = useState(false);
   const [startDate, setStartDate] = useState(cohort.start_date);
 
@@ -30,7 +31,7 @@ const IndividualCohortPage = ({ cohort, students, prevCohort, nextCohort }) => {
         <Box>
           <CohortHeader
             title={cohort.cohort_name}
-            course={cohort.course}
+            course={course}
             setOpen={setOpen}
             startDate={startDate}
             setStartDate={setStartDate}
@@ -90,6 +91,11 @@ export async function getServerSideProps(context) {
       // nextjs docs - https://nextjs.org/blog/next-10#notfound-support
       return { notFound: true };
     }
+
+    const course = JSON.parse(JSON.stringify(await getCourse(cohort.course)));
+    if (!course) {
+      return { notFound: true };
+    }
     const [prevCohort, nextCohort] = (await getPrevAndNextCohortSlugs(
       cohortId
     )) || [null, null];
@@ -98,6 +104,7 @@ export async function getServerSideProps(context) {
       props: {
         cohort,
         students,
+        course,
         prevCohort,
         nextCohort,
       },
