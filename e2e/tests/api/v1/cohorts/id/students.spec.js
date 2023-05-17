@@ -28,7 +28,10 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     expect(data).toHaveLength(randomCohort.students.length);
     // check if each element of the array has a property 'user' and 'added_at'
     data.forEach((student) => {
-      expect(student).toHaveProperty("user");
+      expect(student).toHaveProperty("id");
+      expect(student).toHaveProperty("name");
+      expect(student).toHaveProperty("email");
+      expect(student).toHaveProperty("gh");
       expect(student).toHaveProperty("added_at");
     });
   });
@@ -118,15 +121,17 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     expect(data.length).toBe(expectedStudentsCount);
     // check if each element of the data has a property 'user' and 'added_at'
     data.forEach((student) => {
-      expect(student).toHaveProperty("user");
+      expect(student).toHaveProperty("id");
+      expect(student).toHaveProperty("name");
+      expect(student).toHaveProperty("email");
+      expect(student).toHaveProperty("gh");
       expect(student).toHaveProperty("added_at");
     });
+
     // check if each user was added
     parsedUsersToAdd.forEach((user) => {
       expect(user).toBe(
-        data
-          .filter((userInCohort) => userInCohort.user !== null) // discard users in db which are null
-          .find((userInCohort) => userInCohort.user._id === user).user._id
+        data.find((userInCohort) => userInCohort.id === user).id
       );
     });
   });
@@ -167,7 +172,7 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     expect(response.ok()).toBeTruthy();
     // check if students in updated cohort are not duplicated
     [...parsedUsersToAdd, ...duplicateStudents].forEach((user) => {
-      const count = data.filter((student) => student.user?._id === user).length;
+      const count = data.filter((student) => student.id === user).length;
       expect(count).toBe(1);
     });
   });
@@ -246,12 +251,10 @@ test.describe("/api/v1/cohorts/[id]/students", () => {
     request,
     db,
   }) => {
-    const randomCohort = await db
-      .collection("cohorts")
-      .findOne({
-        deleted_at: { $eq: null },
-        $where: "this.students.length > 1",
-      });
+    const randomCohort = await db.collection("cohorts").findOne({
+      deleted_at: { $eq: null },
+      $where: "this.students.length > 1",
+    });
 
     // filter the array to get students with ids
     const parsedUsersToDelete = randomCohort.students.reduce(
