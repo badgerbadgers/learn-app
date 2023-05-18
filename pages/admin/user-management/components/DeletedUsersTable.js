@@ -41,7 +41,6 @@ export default function UsersTable({ loading, tableRows }) {
       headerName: "Name",
       flex: 1,
       minWidth: 100,
-      editable: true,
       headerAlign: "center",
     },
     {
@@ -49,7 +48,6 @@ export default function UsersTable({ loading, tableRows }) {
       headerName: "Email",
       flex: 1,
       minWidth: 200,
-      editable: true,
       headerAlign: "center",
     },
     {
@@ -57,7 +55,6 @@ export default function UsersTable({ loading, tableRows }) {
       headerName: "Github",
       flex: 1,
       minWidth: 100,
-      editable: true,
       headerAlign: "center",
     },
     {
