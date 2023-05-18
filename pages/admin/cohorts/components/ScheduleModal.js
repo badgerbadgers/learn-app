@@ -86,8 +86,8 @@ export default function ScheduleModal({
   const insertItem = (idx, newItem) => {
     let newItems = [...schedule];
     newItems.splice(idx + 1, 0, newItem);
-    setShowFormIdx(null);
     updateSchedule(newItems);
+    setShowFormIdx(null);
   };
 
   const updateItem = (idx, item) => {
@@ -174,6 +174,7 @@ export default function ScheduleModal({
                         removeItem={removeItem}
                         sectionId={week.section._id}
                         type={showFormType}
+                        cancel={setShowFormIdx}
                       />
                     )}
                   </Fragment>
@@ -203,6 +204,7 @@ export default function ScheduleModal({
                         removeItem={removeItem}
                         sectionId={week.section}
                         type={showFormType}
+                        cancel={setShowFormIdx}
                       />
                     )}
                   </Fragment>

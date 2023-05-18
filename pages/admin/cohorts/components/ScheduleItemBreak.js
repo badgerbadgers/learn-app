@@ -34,14 +34,14 @@ export default function ScheduleItemBreak({
     return (
       <AddItemForm
         saveItem={(idx, item) => {
-          setFormView(false);
           updateItem(idx, item);
+          setFormView(false);
         }}
         idx={idx}
         sectionId={sectionId}
         note={content}
         type={weekType}
-        cancelEdit={setFormView}
+        cancel={setFormView}
       />
     );
   }
@@ -112,7 +112,7 @@ export default function ScheduleItemBreak({
               whiteSpace: "pre-wrap",
             }}
           >
-            {content || ""}{" "}
+            {content || ""}
             {/* Add text like "There is no note for students" */}
           </Typography>
 

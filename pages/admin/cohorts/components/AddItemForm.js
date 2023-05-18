@@ -13,7 +13,7 @@ import SaveIcon from "@mui/icons-material/Save";
 
 export default function AddItemForm({
   saveItem,
-  cancelEdit,
+  cancel,
   idx,
   sectionId,
   note,
@@ -73,7 +73,11 @@ export default function AddItemForm({
               },
             }}
             onClick={() => {
-              saveItem(idx, { type, content: content, section: sectionId });
+              if (!content.trim()) {
+                cancel(!note ? null : false);
+              } else {
+                saveItem(idx, { type, content, section: sectionId });
+              }
             }}
           >
             <SaveIcon fontSize="small" />
@@ -86,7 +90,10 @@ export default function AddItemForm({
                 color: "red",
               },
             }}
-            onClick={cancelEdit(false)}
+            onClick={() => {
+              cancel(!note ? null : false);
+              setContent("");
+            }} // close edit form
           >
             <ClearIcon fontSize="small" />
           </IconButton>
@@ -151,11 +158,15 @@ export default function AddItemForm({
             },
           }}
           onClick={() => {
-            saveItem(idx, {
-              type,
-              content: content.trim(),
-              section: sectionId,
-            });
+            if (!content.trim()) {
+              cancel(!note ? null : false);
+            } else {
+              saveItem(idx, {
+                type,
+                content: content.trim(),
+                section: sectionId,
+              });
+            }
           }}
         >
           <SaveIcon fontSize="small" />
@@ -168,7 +179,10 @@ export default function AddItemForm({
               color: "red",
             },
           }}
-          onClick={() => cancelEdit(false)} // close edit form
+          onClick={() => {
+            cancel(!note ? null : false);
+            setContent("");
+          }} // close edit form
         >
           <ClearIcon fontSize="small" />
         </IconButton>
