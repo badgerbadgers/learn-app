@@ -55,31 +55,25 @@ import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         //call method for getting cohorts with any parameters we received
         const cohorts = await getCohorts(req.query);
         res.status(200).json({ data: cohorts });
-      } catch (error) {
-        // console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      return;
-    case "POST":
-      try {
+        return;
+      case "POST":
         //call method for creating a cohort with any data we received
         const cohort = await createCohort(req.body);
         res.status(200).json({ data: cohort });
-      } catch (error) {
-        // console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      return;
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        return;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -107,7 +101,7 @@ export const getCohorts = async (filters = {}) => {
       .exec();
     return cohorts;
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(400).json({ success: false });
   }
 };
