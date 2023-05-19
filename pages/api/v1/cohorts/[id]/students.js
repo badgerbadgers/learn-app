@@ -96,104 +96,113 @@ import { ObjectId } from "bson";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
-        const data = await getCohortStudents(id);
-        res.status(200).json({ data: data.students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
-      } catch (error) {
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PATCH":
-      try {
+  try {
+    switch (method) {
+      case "GET":
+        const students = await getCohortStudents(id);
+        if (!students) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find cohort with id ${id} `;
+          throw error;
+        }
+        res.status(200).json({ data: students }); // returns an array of students (or empty array if there are no students in 'students' property) or null if cohort not found or has timestamp in property deleted_at
+        break;
+      case "PATCH":
         if (!req.body.students) {
           res
             .status(400)
             .json({ message: "Student ids to add are not provided" });
         } else {
-          const updatedCohort = await addUsersToCohort(id, req.body);
-          const updatedCohortPopulate = await updatedCohort.populate(
-            "students.user"
-          );
+          const students = await addUsersToCohort(id, req.body);
+          if (!students) {
+            const error = new Error();
+            error.status = 404;
+            error.message = `Could not find cohort with id ${id} `;
+            throw error;
+          }
 
-          res.status(200).json({ data: updatedCohortPopulate.students });
+          res.status(200).json({ data: students });
         }
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-
-      break;
-    case "DELETE":
-      try {
+        break;
+      case "DELETE":
         if (!req.body.students) {
           res
             .status(400)
             .json({ message: "Student ids to delete are not provided" });
         } else {
-          await deleteStudentsFromCohort(id, "students", req.body.students);
-          // NOTE - if need to return deleted cohort use - json({ data: deletedCohort })
+          const cohort = await deleteStudentsFromCohort(
+            id,
+            "students",
+            req.body.students
+          );
+          // if delete was successful undefined is returned, check it it is null (not successful)
+          if (!cohort) {
+            const error = new Error();
+            error.status = 404;
+            error.message = `Could not find cohort with id ${id} `;
+            throw error;
+          }
           res.status(200).json();
         }
-      } catch (error) {
-        console.log(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
+const normalizeStudentsData = (students) =>
+  students
+    ?.map((student) => {
+      if (student.user) {
+        const filteredStudent = {
+          id: student.user._id,
+          ...student.user._doc,
+          added_at: student.added_at || null,
+        };
+        delete filteredStudent._id;
+        return filteredStudent;
+      }
+    })
+    .filter((student) => student) || []; // filter to get students which are not deleted (not null) and return empty array if no active students found
+
 export const getCohortStudents = async (id) => {
   await dbConnect();
-  const data = await Cohort.findById(id, "students")
-    .populate("students.user")
-    .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model
-  if (!data) {
-    //throw new Error(`Cohort with id of ${id} not found`);
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find cohort with id ${id} `;
-    throw error;
+  const cohort = await Cohort.findById(id, "students").populate(
+    "students.user"
+  ); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns students with all fields from User data model and added_at property
+  if (!cohort) {
+    return null;
   }
-  return data;
+  return normalizeStudentsData(cohort.students);
 };
 
 export const addUsersToCohort = async (id, updates) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find cohort with id ${id} `;
-    throw error;
+    return null;
   }
   await cohort.updateStudents(updates.students);
-  return await cohort.save();
+  await cohort.save();
+  const updatedCohortPopulate = await cohort.populate("students.user");
+  return normalizeStudentsData(updatedCohortPopulate.students);
 };
 
 export const deleteStudentsFromCohort = async (id, field, value) => {
   await dbConnect();
-  try {
-    const parsedValues = value.map((studentId) => ObjectId(studentId));
-
-    const cohort = await Cohort.findByIdAndUpdate(
-      { _id: id },
-      { $pull: { [field]: { user: { $in: parsedValues } } } }
-      //  { new: true }
-    );
-    if (!cohort) {
-      const error = new Error();
-      error.status = 404;
-      error.message = `Could not find cohort with id ${id} `;
-      throw error;
-    }
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
+  const parsedValues = value.map((studentId) => ObjectId(studentId));
+  const cohort = await Cohort.findByIdAndUpdate(
+    { _id: id },
+    { $pull: { [field]: { user: { $in: parsedValues } } } }
+  );
+  if (!cohort) {
+    return null;
   }
+  return cohort;
 };
