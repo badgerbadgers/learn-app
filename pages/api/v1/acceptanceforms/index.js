@@ -136,53 +136,55 @@ import * as fastCsv from "fast-csv";
 
 export default async function handler(req, res) {
   const { method } = req;
-  await dbConnect();
   const session = await getSession({ req });
   if (!session || !session.user) {
     res.status(401).json({ message: "Unauthorized user" });
     return;
   }
-  switch (method) {
-    case "GET":
-      try {
+  await dbConnect();
+  try {
+    switch (method) {
+      case "GET":
         let result;
         if (req.headers.accept === "text/csv") {
           result = await downloadReport(res, req.body, session);
           if (!result) {
-            res.status(404).json({ message: "No acceptance forms found" });
+            const error = new Error();
+            error.status = 404;
+            error.message = "No acceptance forms found";
+            throw error;
           }
         } else {
           result = await getAcceptanceForms();
           if (!result) {
-            res.status(404).json({ message: "No acceptance forms found" });
+            const error = new Error();
+            error.status = 404;
+            error.message = "No acceptance forms found";
+            throw error;
           }
         }
         res.status(200).json({ data: result });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      return;
+        return;
 
-    case "POST":
-      try {
+      case "POST":
         const acceptanceForm = await createAcceptanceForm(
           req.body,
           session.user.id
         );
         res.status(200).json({ success: true, data: acceptanceForm });
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-      }
-      return;
+        return;
 
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
-const createAcceptanceForm = async (body, userId) => {
+export const createAcceptanceForm = async (body, userId) => {
   const filter = { user: userId };
   const update = {
     user: userId,
@@ -232,10 +234,9 @@ const createAcceptanceForm = async (body, userId) => {
     completed_at: body.completed_at,
   };
 
-  let document = await AcceptanceForm.findOne(filter);
+  let document = await AcceptanceForm.findOne();
   if (!document) {
     document = await AcceptanceForm.create({
-      ...filter,
       ...update,
     });
   } else {
@@ -246,14 +247,8 @@ const createAcceptanceForm = async (body, userId) => {
   return document;
 };
 
-const downloadReport = async (res) => {
+export const downloadReport = async (res) => {
   const data = await AcceptanceForm.find();
-  if (!data) {
-    const error = new Error();
-    error.status = 404;
-    error.message = "No acceptanceforms found";
-    throw error;
-  }
   const stream = fastCsv.format({
     headers: [
       "_id",
@@ -302,32 +297,21 @@ const downloadReport = async (res) => {
       "consent_work_commitment",
     ],
   });
-  try {
-    res.setHeader(
-      "Content-disposition",
-      "attachment; filename=acceptanceform.csv"
-    );
-    res.setHeader("Content-Type", "text/csv");
-    stream.pipe(res);
+  res.setHeader(
+    "Content-disposition",
+    "attachment; filename=acceptanceform.csv"
+  );
+  res.setHeader("Content-Type", "text/csv");
+  stream.pipe(res);
 
-    data.forEach((doc) => {
-      stream.write(doc);
-    });
+  data.forEach((doc) => {
+    stream.write(doc);
+  });
 
-    stream.end();
-  } catch (error) {
-    res.status(400).json({ success: false });
-    console.error(error);
-  }
+  stream.end();
 };
 
-const getAcceptanceForms = async () => {
+export const getAcceptanceForms = async () => {
   const acceptanceForms = await AcceptanceForm.find();
-  if (!acceptanceForms) {
-    const error = new Error();
-    error.status = 404;
-    error.message = "No acceptanceforms found";
-    throw error;
-  }
   return acceptanceForms;
 };
