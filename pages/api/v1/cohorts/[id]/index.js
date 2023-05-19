@@ -83,58 +83,49 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const cohort = await getCohortById(id);
         if (!cohort) {
           res
             .status(404)
             .json({ message: `Failed to find cohort with id ${id}` });
-        } else {
-          res.status(200).json({ data: cohort });
         }
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
+        res.status(200).json({ data: cohort });
+        return;
 
-    case "DELETE":
-      try {
+      case "DELETE":
         const deletedCohort = await deleteCohortById(id);
         if (!deletedCohort) {
           res.status(404).json({
             message: `Failed to delete cohort with id ${id}. Cohort not found`,
           });
-          return;
-        } else {
-          // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
-          res.status(200).json();
         }
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
+        res.status(200).json();
+        // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
+        return;
 
-    case "PATCH":
-      try {
+      case "PATCH":
         const updates = req.body;
         const updatedCohort = await updateCohort(id, updates);
+        if (!updatedCohort) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and update cohort with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: updatedCohort });
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      break;
+        return;
 
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-  return;
 }
 
 export const getCohortById = async (id) => {
@@ -178,10 +169,7 @@ export const updateCohort = async (id, updates) => {
     runValidators: true,
   });
   if (!updatedCohort) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update cohort with id - ${id}`;
-    throw error;
+    return null;
   }
   return updatedCohort;
 };
