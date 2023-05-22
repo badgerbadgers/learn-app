@@ -37,6 +37,13 @@ export default async function handler(req, res) {
 
   try {
     const data = await updateCohortStatus(id);
+    if (!data) {
+      //throw new Error(`Cohort with id of ${id} not found`);
+      const error = new Error();
+      error.status = 404;
+      error.message = `Could not find cohort with id ${id} `;
+      throw error;
+    }
     res.status(200).json({ data });
   } catch (error) {
     console.log(error);
@@ -45,19 +52,11 @@ export default async function handler(req, res) {
 }
 
 export const updateCohortStatus = async (id) => {
-  try {
-    await dbConnect();
-    const cohort = await Cohort.findById(id);
-    if (!cohort) {
-      //throw new Error(`Cohort with id of ${id} not found`);
-      const error = new Error();
-      error.status = 404;
-      error.message = `Could not find cohort with id ${id} `;
-      throw error;
-    }
-    await cohort.save();
-    return { status: cohort.status };
-  } catch (error) {
-    throw new Error(error.message);
+  await dbConnect();
+  const cohort = await Cohort.findById(id);
+  if (!cohort) {
+    return null;
   }
+  await cohort.save();
+  return { status: cohort.status };
 };
