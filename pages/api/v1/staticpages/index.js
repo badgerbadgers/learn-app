@@ -84,6 +84,7 @@
  *  
  */
 
+import StaticPage from "lib/models/StaticPage";
 import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
@@ -131,6 +132,20 @@ export const getStaticPages = async () => {
 export const createStaticPage = async (staticpage) => {
   try {
     await dbConnect();
+
+    const existingWordPressId = await StaticPage.findOne({
+      wordpress_id: staticpage.wordpress_id,
+    });
+
+    if (existingWordPressId) {
+      throw new Error(
+        `Static page with wordpress_id ${staticpage.wordpress_id} already exists.`
+      );
+    }
+    const checkwordPressId = StaticPage.find({
+      wordpress_id: staticpage.wordpress_id,
+    });
+
     const newstaticpage = new Staticpage(staticpage);
     await newstaticpage.save();
     return newstaticpage;
