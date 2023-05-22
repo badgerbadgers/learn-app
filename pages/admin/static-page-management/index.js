@@ -5,12 +5,25 @@ import dbConnect from "../../../lib/dbConnect";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
-import { getStaticPages } from "pages/api/v1/staticpages";
+import { createStaticPage } from "pages/api/v1/staticpages";
+import StaticPage from "lib/models/StaticPage";
 
 const AllStaticPages = ({ combinedData }) => {
-  const [staticPages, setStaticPages] = useState(combinedData);
+  const parsedData = JSON.parse(combinedData);
+  //refactor sp mgmt
+  //front end issue
+  //duplicate docs in mongo
+  //check the problem
+  //disable switch until response from server
+  //prevent duplicate not solve issue
+  //mongo unique index, mongoose validation does not check for uniqueness(this can be done in mongoose unique: true)
+  //create custom validator onSave check db for duplicate element
+
+  // no need to patch/post conditional(patch req everytime)
+
+  const [staticPages, setStaticPages] = useState(parsedData);
   const [updatedPages, setUpdatedPages] = useState([]);
-  const [checked, setIsChecked] = useState(combinedData.checked);
+  const [checked, setIsChecked] = useState(parsedData.checked);
 
   const handleChange = async (event) => {
     const deleted = event.target.checked;
@@ -21,16 +34,9 @@ const AllStaticPages = ({ combinedData }) => {
     });
 
     //toggled page will always be array index 0 from filter
-    const mongo_id = filteredByIdPage[0].mongo_id;
+    const mongo_id = filteredByIdPage[0]._id;
     const title = filteredByIdPage[0].title;
     const slug = filteredByIdPage[0].slug;
-
-    const newstaticpage = {
-      wordpress_id: id,
-      isShown: deleted,
-      title: title,
-      slug: slug,
-    };
 
     const updatestaticpage = {
       title: title,
@@ -39,21 +45,15 @@ const AllStaticPages = ({ combinedData }) => {
       isShown: deleted,
     };
 
-    //conditional for CRUD operation
-    if (mongo_id === null) {
-      await axios.post(`/api/v1/staticpages`, newstaticpage, {
+    const updated = await axios.patch(
+      `/api/v1/staticpages/${mongo_id}`,
+      updatestaticpage,
+      {
         headers: {
           "Content-Type": "application/json",
         },
-      });
-    }
-    if (mongo_id !== null) {
-      await axios.patch(`/api/v1/staticpages/${mongo_id}`, updatestaticpage, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
+      }
+    );
   };
 
   const columns = [
@@ -113,7 +113,6 @@ const AllStaticPages = ({ combinedData }) => {
     </Box>
   );
 };
-
 export default AllStaticPages;
 
 AllStaticPages.getLayout = privateLayout;
@@ -132,40 +131,39 @@ export async function getServerSideProps(context) {
   }
   const { user } = session;
 
-  const mongoData = await getStaticPages();
-
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
-  const combinedData = combineData(wordpressData, mongoData);
 
+  //combinedData can look for mongo data
+  //res can be sent as prop
+  //front end data will be different
+  const data = await combineData(wordpressData);
+  const combinedData = JSON.stringify(data);
   return {
-    props: {
-      combinedData,
-      user,
-    },
+    props: { combinedData },
   };
 }
 
-//helper function combines wordPress data with mongoDB data, called in getServerSideProps
-function combineData(wordpressData, mongoData) {
+const combineData = async (wordpressData) => {
   const combinedData = [];
-  const mongoObj = {};
-  wordpressData.forEach((wpitem) => {
-    const mongoObj = {
-      isShown: false,
-      wordpress_id: wpitem.id,
-      title: wpitem.title.rendered,
-      slug: wpitem.slug,
-      mongo_id: null,
-    };
-    mongoData.forEach((item) => {
-      if (wpitem.id === item.wordpress_id) {
-        mongoObj.isShown = item.isShown;
-        mongoObj.mongo_id = item._id + "";
-        return;
-      }
+  let mongoObj = {};
+  for (let i = 0; i < wordpressData.length; i++) {
+    mongoObj = await StaticPage.findOne({
+      wordpress_id: wordpressData[i].id,
     });
-    combinedData.push(mongoObj);
-  });
+
+    if (mongoObj) {
+      combinedData.push(mongoObj);
+    } else if (mongoObj === null) {
+      await createStaticPage(
+        (mongoObj = {
+          wordpress_id: wordpressData[i].id,
+          isShown: wordpressData[i].deleted,
+          title: wordpressData[i].title.rendered,
+          slug: wordpressData[i].slug,
+        })
+      );
+    }
+  }
   return combinedData;
-}
+};
