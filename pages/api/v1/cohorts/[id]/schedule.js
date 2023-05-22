@@ -72,33 +72,38 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         //Get a schedule for a specific cohort
         const schedule = await getCohortSchedule(id);
+        if (!schedule) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find cohort with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: schedule.schedule });
-      } catch (error) {
-        console.error("Get cohort error", error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PUT":
-      const updates = req.body;
-      try {
+        return;
+      case "PUT":
+        const updates = req.body;
         const data = await updateSchedule(id, updates);
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and update cohort with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data });
-      } catch (error) {
-        console.error("Update cohort's schedule error", error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PUT"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        return;
+      default:
+        res.setHeader("Allow", ["GET", "PUT"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-  return;
 }
 
 export const getCohortSchedule = async (id) => {
@@ -135,10 +140,7 @@ export const getCohortSchedule = async (id) => {
     .exec();
   //if wrong id then throw error
   if (!schedule) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find cohort with id - ${id}`;
-    throw error;
+    return null;
   }
   return schedule;
 };
@@ -147,7 +149,6 @@ const confirmIdsExistInCollection = async (model, data) =>
   data.length === (await model.countDocuments({ _id: { $in: [...data] } }));
 
 export const updateSchedule = async (id, updates) => {
-
   if (!updates.schedule) {
     throw new Error("Schedule list is not provided");
   }
@@ -227,10 +228,7 @@ export const updateSchedule = async (id, updates) => {
   ]);
 
   if (!updatedSchedule) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update cohort with id - ${id}`;
-    throw error;
+    return null;
   }
   await updatedSchedule.save();
 
