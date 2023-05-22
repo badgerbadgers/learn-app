@@ -10,19 +10,7 @@ import StaticPage from "lib/models/StaticPage";
 
 const AllStaticPages = ({ combinedData }) => {
   const parsedData = JSON.parse(combinedData);
-  //refactor sp mgmt
-  //front end issue
-  //duplicate docs in mongo
-  //check the problem
-  //disable switch until response from server
-  //prevent duplicate not solve issue
-  //mongo unique index, mongoose validation does not check for uniqueness(this can be done in mongoose unique: true)
-  //create custom validator onSave check db for duplicate element
-
-  // no need to patch/post conditional(patch req everytime)
-
   const [staticPages, setStaticPages] = useState(parsedData);
-  const [updatedPages, setUpdatedPages] = useState([]);
   const [checked, setIsChecked] = useState(parsedData.checked);
 
   const handleChange = async (event) => {
@@ -45,15 +33,11 @@ const AllStaticPages = ({ combinedData }) => {
       isShown: deleted,
     };
 
-    const updated = await axios.patch(
-      `/api/v1/staticpages/${mongo_id}`,
-      updatestaticpage,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    await axios.patch(`/api/v1/staticpages/${mongo_id}`, updatestaticpage, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const columns = [
@@ -133,20 +117,18 @@ export async function getServerSideProps(context) {
 
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
-
-  //combinedData can look for mongo data
-  //res can be sent as prop
-  //front end data will be different
   const data = await combineData(wordpressData);
-  const combinedData = JSON.stringify(data);
   return {
-    props: { combinedData },
+    props: {
+      combinedData: JSON.stringify(data),
+    },
   };
 }
 
 const combineData = async (wordpressData) => {
   const combinedData = [];
   let mongoObj = {};
+
   for (let i = 0; i < wordpressData.length; i++) {
     mongoObj = await StaticPage.findOne({
       wordpress_id: wordpressData[i].id,
