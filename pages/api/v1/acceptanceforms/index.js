@@ -131,12 +131,13 @@
 
 import AcceptanceForm from "lib/models/AcceptanceForm.js";
 import dbConnect from "lib/dbConnect.js";
-import { getSession } from "next-auth/react";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 import * as fastCsv from "fast-csv";
 
 export default async function handler(req, res) {
   const { method } = req;
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user) {
     res.status(401).json({ message: "Unauthorized user" });
     return;
@@ -148,22 +149,10 @@ export default async function handler(req, res) {
         let result;
         if (req.headers.accept === "text/csv") {
           result = await downloadReport(res, req.body, session);
-          if (!result) {
-            const error = new Error();
-            error.status = 404;
-            error.message = "No acceptance forms found";
-            throw error;
-          }
         } else {
           result = await getAcceptanceForms();
-          if (!result) {
-            const error = new Error();
-            error.status = 404;
-            error.message = "No acceptance forms found";
-            throw error;
-          }
+          res.status(200).json({ data: result });
         }
-        res.status(200).json({ data: result });
         return;
 
       case "POST":
@@ -234,11 +223,9 @@ export const createAcceptanceForm = async (body, userId) => {
     completed_at: body.completed_at,
   };
 
-  let document = await AcceptanceForm.findOne();
+  let document = await AcceptanceForm.findOne(filter);
   if (!document) {
-    document = await AcceptanceForm.create({
-      ...update,
-    });
+    document = await AcceptanceForm.create({ ...update });
   } else {
     // Update case
     document = Object.assign(document, update);
