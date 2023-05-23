@@ -87,7 +87,7 @@ const CohortManagement = () => {
       seats: cohort.seats,
       mentors: Array.isArray(cohort.mentors) ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug: cohort.slug,
-      scheduleLen: cohort.schedule.length,
+      scheduleLen: cohort.schedule?.length,
     };
   };
 
