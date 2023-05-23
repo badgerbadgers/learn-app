@@ -33,7 +33,10 @@
  *                       title:
  *                         type: string
  *                         example: Giraffe Intro
- *                       
+ *       400:
+ *         description: Error messages
+ *       404:
+ *         description: Error message if static pages are not found                
  *   post:
  *     description: Creates a new static page in database
  *     tags: [Static pages]
@@ -81,60 +84,62 @@
  *                       example: Bright Dolphin
  *       400:
  *         description: Error messages
- *  
+ *       404:
+ *         description: Error messages if static page id is invalid
  */
 
 import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
-  const { method } = req;
-
-  switch (method) {
-    case "GET":
-      try {
+  const postData = req.body;
+  try {
+    const { method } = req;
+    switch (method) {
+      case "GET":
         const staticpages = await getStaticPages();
-        res.status(200).json({ data: staticpages });
+        if (!staticpages) {
+          const error = newError();
+          error.status = 404;
+          error.message = `Could not find static page`;
+        }
+        res.status(200).json({ staticpages });
         return;
-      } catch (error) {
-        res.status(400).json({ message: error.message });
+      case "POST":
+        const newstaticpage = await createStaticPage(postData);
+        if (!newstaticpage) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Cannot create new static page`;
+          throw error;
+        }
+        res.status(200).json({ data: newstaticpage });
         return;
-      }
-    case "POST":
-      try {
-        const postData = req.body;
-        const staticpage = await createStaticPage(postData);
-        res.status(200).json({ data: staticpage });
-        return;
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
 export const getStaticPages = async () => {
-  try {
-    await dbConnect();
-
-    const staticpages = await Staticpage.find({});
-    return staticpages;
-  } catch (error) {
-    throw new Error("Error getting static pages", error.message);
+  await dbConnect();
+  const staticpages = await Staticpage.find({});
+  if (!staticpages) {
+    return null;
   }
+  return staticpages;
 };
 
 export const createStaticPage = async (staticpage) => {
-  try {
-    await dbConnect();
-    const newstaticpage = new Staticpage(staticpage);
-    await newstaticpage.save();
-    return newstaticpage;
-  } catch (error) {
-    //gives specific error message
-    throw new Error(error.message);
+  await dbConnect();
+  const newstaticpage = new Staticpage(staticpage);
+  if (!newstaticpage) {
+    return null;
   }
+  await newstaticpage.save();
+  return newstaticpage;
 };
