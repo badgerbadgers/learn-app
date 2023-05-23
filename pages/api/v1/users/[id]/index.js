@@ -25,7 +25,6 @@
  */
 import User from "lib/models/User";
 import dbConnect from "lib/dbConnect";
-import { u } from "msw/lib/glossary-de6278a9";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -33,36 +32,36 @@ export default async function handler(req, res) {
   try {
     switch (method) {
       case "GET":
-        const getUser = await getUser(id);
-        if (!getUser) {
+        const getUserByID = await getUser(id);
+        if (!getUserByID) {
           const error = new Error();
           error.status = 404;
           error.message = "No user found with this ID ";
           throw error;
         }
-        res.status(200).json({ data: getUser });
+        res.status(200).json({ data: getUserByID });
         return;
 
       case "PATCH":
         //call method for updating user by id filds: name, email, gh
-        const updateUser = await updateUser(id, req.body);
-        if (!updateUser) {
+        const updateUserByID = await updateUser(id, req.body);
+        if (!updateUserByID) {
           const error = new Error();
           error.status = 404;
           error.message = "No user found with this ID ";
           throw error;
         }
-        res.status(200).json({ data: updateUser });
+        res.status(200).json({ data: updateUserByID });
         return;
       case "DELETE":
-        const deleteUser = await deleteUser(id);
-        if (!deleteUser) {
+        const deleteUserByID = await deleteUser(id);
+        if (!deleteUserByID) {
           const error = new Error();
           error.status = 404;
           error.message = "No user found with this ID ";
           throw error;
         }
-        res.status(200).json({ data: deleteUser });
+        res.status(200).json({ data: deleteUserByID });
         return;
       default:
         res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
