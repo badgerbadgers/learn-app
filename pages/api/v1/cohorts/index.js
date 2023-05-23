@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 }
 
 export const getCohorts = async (filters = {}) => {
-  try {
+
     await dbConnect();
 
     //build mongo query using filters
@@ -100,10 +100,7 @@ export const getCohorts = async (filters = {}) => {
       .populate("course", "_id course_name")
       .exec();
     return cohorts;
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ success: false });
-  }
+
 };
 
 export const createCohort = async (data) => {
