@@ -25,6 +25,7 @@ const statusOptions = [
   { label: "Completed", value: "past" },
   { label: "In progress", value: "active" },
   { label: "Upcoming", value: "future" },
+  { label: "Unknown", value: "unknown" },
 ];
 const CohortManagement = () => {
   const allCohorts = useRef([]);
@@ -41,7 +42,7 @@ const CohortManagement = () => {
     let filteredData = allCohorts.current;
     if (courseOption !== "all courses") {
       filteredData = filteredData.filter(
-        (row) => row.courseName.toLowerCase() === courseOption
+        (row) => row.course.toLowerCase() === courseOption
       );
     }
     if (statusOption !== "any status") {
@@ -49,7 +50,7 @@ const CohortManagement = () => {
     }
     if (searchInput !== "") {
       filteredData = filteredData.filter((row) =>
-        row.cohortName.toLowerCase().includes(searchInput.toLowerCase())
+        row.cohort_name.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
     setFilteredRows(filteredData);
@@ -70,14 +71,14 @@ const CohortManagement = () => {
   const makeRowfromCohort = (cohort) => {
     return {
       id: cohort._id,
-      cohortName: cohort.cohort_name,
-      courseName:
+      cohort_name: cohort.cohort_name,
+      course:
         cohort.course.course_name.length > 0 ? cohort.course.course_name : "",
       courseId: cohort.course._id.length > 0 ? cohort.course._id : "",
-      startDate: cohort.start_date
+      start_date: cohort.start_date
         ? format(new Date(cohort.start_date), "MMM dd, yyyy")
         : "",
-      endDate: cohort.end_date
+      end_date: cohort.end_date
         ? format(new Date(cohort.end_date), "MMM dd, yyyy")
         : "",
       status: cohort.status,
@@ -86,17 +87,17 @@ const CohortManagement = () => {
       seats: cohort.seats,
       mentors: Array.isArray(cohort.mentors) ? `${cohort.mentors.length}` : "", // TMP, FIX LOGIC!!!! Assignment reviewers / traditional mentors
       slug: cohort.slug,
-      scheduleLen: cohort.schedule.length,
+      scheduleLen: cohort.schedule?.length,
     };
   };
 
   useEffect(() => {
-    const url = "/api/courses";
+    const url = "/api/v1/courses";
     const params = {};
     try {
       (async () => {
         const response = await getData(params, url);
-        let courses = JSON.parse(response.data);
+        let courses = response.data;
         let localCourses = [];
         if (courses) {
           courses.map((course) => {
@@ -109,18 +110,18 @@ const CohortManagement = () => {
         setCourses(localCourses);
       })();
     } catch (error) {
-      console.log("An error from getData in /api/courses:", error);
+      console.log("An error from getData in /api/v1/courses:", error);
     }
   }, []);
 
   useEffect(() => {
-    const url = "/api/cohorts";
+    const url = "/api/v1/cohorts";
     setLoading(true);
     const params = {};
     try {
       (async () => {
         let response = await getData(params, url);
-        const cohorts = JSON.parse(response.data);
+        const cohorts = response.data;
         let localRows = [];
         if (cohorts) {
           cohorts.map(async (cohort) => {
@@ -133,7 +134,7 @@ const CohortManagement = () => {
         setLoading(false);
       })();
     } catch (error) {
-      console.log("An error from getData in /api/cohorts:", error);
+      console.log("An error from getData in /api/v1/cohorts:", error);
     }
   }, []);
 
