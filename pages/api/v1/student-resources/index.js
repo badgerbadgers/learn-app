@@ -33,7 +33,10 @@
  *                       title:
  *                         type: string
  *                         example: Grasshopper Rails
- *
+ *       400:
+ *         description: Error messages
+ *       404:
+ *         description: Error messages
  */
 
 import StaticPage from "lib/models/StaticPage";
@@ -42,37 +45,36 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
 
-  switch (method) {
-    case "GET":
-      try {
-        const staticpage = await getStaticPageByIsShown();
-        if (!staticpage) {
-          res.status(404).json({
-            message: `Error getting static pages`,
-          });
-          return; 
+  try {
+    switch (method) {
+      case "GET":
+        const studentresources = await getStudentResourcesByIsShown();
+        if (!studentresources) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find student resources`;
+          throw error;
         }
-        res.status(200).json({ data: staticpage });
-        return; 
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-        return; 
-      }
-    default:
-      res.setHeader("Allow", ["GET"]);
-      res.status(405).end(`Method ${method} Not Allow`);
+        res.status(200).json({ data: studentresources });
+        return;
+      default:
+        res.setHeader("Allow", ["GET"]);
+        res.status(405).end(`Method ${method} Not Allow`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
-export const getStaticPageByIsShown = async () => {
-  try {
-    await dbConnect();
-    const staticPagesShown = await StaticPage.find({
-      isShown: true,
-    });
+export const getStudentResourcesByIsShown = async () => {
+  await dbConnect();
+  const studentresourcesshown = await StaticPage.find({
+    isShown: true,
+  });
 
-    return staticPagesShown;
-  } catch (error) {
-    throw new Error(error.message);
+  if (!studentresourcesshown) {
+    return null;
   }
+  return studentresourcesshown;
 };
