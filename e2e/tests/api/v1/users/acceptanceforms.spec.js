@@ -143,8 +143,4 @@ test.describe("/api/v1/users/acceptanceforms", () => {
     // delete created before acceptance form
     await db.collection("acceptanceforms").deleteOne({ user: user });
   });
-
-
-  
-
 });
