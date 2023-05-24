@@ -42,9 +42,9 @@
  *                       type: number
  *                       example: 2
  *       400:
- *         description: Error status
+ *         description: Error messages
  *       404:
- *         description: Resource not found
+ *         description: Error message if section id to patch is not found
  *   delete:
  *     description: Soft delete a Section in database using the id
  *     tags: [Sections]
@@ -54,7 +54,7 @@
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
- *         description: id of the section to soft delete
+ *         description: id of the Section to soft delete
  *       - in: body
  *         name: data
  *         schema:
@@ -66,7 +66,11 @@
  *               type: string
  *             title:
  *               type: string
- *         description: the updated static page object when PATCH request is called
+ *             deleted_at:
+ *               type: string
+ *               format: date #
+ *               example: 2023-04-09T00:56:05.829+00:00
+ *         description: the deleted Section object when a DELETE request is executed
  *     responses:
  *       200:
  *         description: OK
@@ -77,19 +81,13 @@
  *                 data:
  *                   type: object
  *                   properties:
- *                     order:
- *                       type: number
- *                       example: 2
- *                     course:
- *                       type: string
- *                       example: 633d9916ec0d4b5e83a6b062
- *                     title:
- *                       type: string
- *                       example: Git Basics
+ *                     deleted_at:
+ *                       type: date
+ *                       example: 2023-05-05T01:31:37.035+00:00
  *       400:
- *         description: Error status
+ *         description: Error messages
  *       404:
- *         description: Resource not found
+ *         description: Error messages if Section id to soft delete not found
  *
  */
 
@@ -99,47 +97,51 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
+  const updates = req.body;
 
-  switch (method) {
-    case "PATCH":
-      try {
-        const updates = req.body;
-        const patchSection = await updateSection(id, updates);
-        res.status(200).json({ data: patchSection });
+  try {
+    switch (method) {
+      case "PATCH":
+        const patchsection = await updateSection(id, updates);
+        if (!patchsection) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find Section with id, id: ${id} is invalid`;
+          throw error;
+        }
+        res.status(200).json({ data: patchsection });
         return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
+      case "DELETE":
+        const deletesection = await deleteSection(id);
+        if (!deletesection) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not delete Section with id, id: ${id} is invalid`;
+          throw error;
+        }
+        res
+          .status(200)
+          .json({ message: `Section with id: ${id} has been deleted` });
         return;
-      }
-    case "DELETE":
-      try {
-        const id = req.query.id;
-        await deleteSection(id);
-        res.status(200).json({ message: `Section has been deleted` });
-        return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["PATCH", "DELETE"]);
-      res.status(405).rendered(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
 export const updateSection = async (id, updates) => {
   await dbConnect();
-  const updatedsection = await Section.findOneAndUpdate(id, updates, {
+  const updatedsection = await Section.findByIdAndUpdate(id, updates, {
     runValidators: true,
     new: true,
   });
+
   if (!updatedsection) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Error finding section - ${id} is invalid`;
-    throw error;
+    return null;
   }
   return updatedsection;
 };
@@ -147,12 +149,9 @@ export const updateSection = async (id, updates) => {
 export const deleteSection = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
-  const deletedsection = await Section.findOneAndUpdate(id, update);
+  const deletedsection = await Section.findByIdAndUpdate(id, update);
   if (!deletedsection) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Error deleting section - ${id} is invalid`;
-    throw error;
+    return null;
   }
   return deletedsection;
 };
