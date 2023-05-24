@@ -16,17 +16,17 @@
  */
 
 import dbConnect from "lib/dbConnect";
-import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import AcceptanceForm from "lib/models/AcceptanceForm";
+import { getServerSession } from "next-auth/next";
 
 const { ObjectId } = require("mongodb");
 
 export default async function handler(req, res) {
   const { method } = req;
-  
+
   await dbConnect();
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user) {
     res.status(401).json({ message: "Unauthorized user" });
     return;
