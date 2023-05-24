@@ -1,11 +1,11 @@
 /**
  * @swagger
  * tags:
- *   name: Student resources
- * /api/v1/studentresource/{slug}:
+ *   name: Student Resources
+ * /api/v1/student-resources/{slug}:
  *   get:
  *     description: Get a specific student resource by slug
- *     tags: [Student resources]
+ *     tags: [Student Resources]
  *     parameters:
  *       - in: path
  *         name: slug
@@ -46,7 +46,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if slug is not found
+ *         description: Error message if slug of student resource is not found
  *
  */
 
@@ -59,11 +59,11 @@ export default async function handler(req, res) {
   try {
     switch (method) {
       case "GET":
-        const studentresource = await getStudentResourcesSlug(slug);
+        const studentresource = await getStudentResourceSlug(slug);
         if (!studentresource) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not find student resource with slug, slug:${slug} is invalid`;
+          error.message = `Could not find student resource, ${slug} is invalid`;
           throw error;
         }
         res.status(200).json({ data: studentresource });
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStudentResourcesSlug = async (slug) => {
+export const getStudentResourceSlug = async (slug) => {
   await dbConnect();
   const studentResourceSlug = await StaticPage.findOne({
     slug: slug,

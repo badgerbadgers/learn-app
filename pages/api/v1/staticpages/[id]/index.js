@@ -1,17 +1,17 @@
 /**
  * @swagger
  * tags:
- *   name: Static pages
+ *   name: Static Pages
  * /api/v1/staticpages/{id}:
  *   get:
- *     description: Get a specific static page by id
- *     tags: [Static pages]
+ *     description: Gets a specific static page by id
+ *     tags: [Static Pages]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: number
- *         example: 
+ *         example: 646bd784f39116bc1142c70f
  *     responses:
  *       200:
  *         description: OK
@@ -46,17 +46,17 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error messages if id cannot be found
+ *         description: Error messages if id of a static page cannot be found
  *   patch:
  *     description: Updates a static page in database using the id
- *     tags: [Static pages]
+ *     tags: [Static Pages]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
- *         description: id of the static page to update
+ *         description: id of the static page to PATCH
  *       - in: body
  *         name: data
  *         schema:
@@ -97,17 +97,17 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error messages if id cannot be found
+ *         description: Error messages if id of the static page to PATCH cannot be found
  *   delete:
- *     description: Soft deletes a static page in database using the id
- *     tags: [Static pages]
+ *     description: soft deletes a static page in database using the id
+ *     tags: [Static Pages]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
- *         description: id of the static page to soft delete
+ *         description: id of the Static Page to soft delete
  *       - in: body
  *         schema:
  *           type: object
@@ -123,7 +123,7 @@
  *               type: string
  *             title:
  *               type: string
- *         description: the result object when DELETE is called
+ *         description: the static page object when DELETE is called
  *     responses:
  *       200:
  *         description: OK
@@ -140,7 +140,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if the id cannot be found
+ *         description: Error message if the id of the static page to DELETE cannot be found
  *
  */
 
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
         if (!staticpage) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not find static page, id:${id} is invalid`;
+          error.message = `Could not find Static Page id, ${id} is invalid`;
           throw error;
         }
         res.status(200).json({ data: staticpage });
@@ -169,7 +169,7 @@ export default async function handler(req, res) {
         if (!updatedPage) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not update static page, id:${id} is invalid`;
+          error.message = `Could not update Static Page id, ${id} is invalid`;
         }
         res.status(200).json({ data: updatedPage });
         return;
@@ -178,11 +178,11 @@ export default async function handler(req, res) {
         if (!deletedPage) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not delete static page, id:${id} is invalid`;
+          error.message = `Could not delete Static Page, ${id} is invalid`;
         }
         res
           .status(200)
-          .json({ message: `Page with id:${id} has been deleted.` });
+          .json({ message: `Static Page with id:${id} has been deleted.` });
         return;
       default:
         res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
@@ -196,6 +196,7 @@ export default async function handler(req, res) {
 
 export const getStaticPageById = async (id) => {
   await dbConnect();
+
   const staticPageId = await StaticPage.findOne({
     _id: id,
   }).exec();
@@ -207,6 +208,7 @@ export const getStaticPageById = async (id) => {
 
 export const updateStaticPage = async (id, updates) => {
   await dbConnect();
+
   const updatedstaticpage = await StaticPage.findByIdAndUpdate(id, updates, {
     runValidators: true,
     new: true,
@@ -220,6 +222,7 @@ export const updateStaticPage = async (id, updates) => {
 export const deletedStaticPage = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
+
   const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
   if (!deletedPage) {
     return null;

@@ -1,11 +1,11 @@
 /**
  * @swagger
  * tags:
- *   name: Static pages
- * /api/v1/staticpages:
+ *   name: Static Pages
+ * /api/v1/staticpages/:
  *   get:
  *     description: Gets all static pages from database
- *     tags: [Static pages]
+ *     tags: [Static Pages]
  *     responses:
  *       200:
  *         description: OK
@@ -39,7 +39,7 @@
  *         description: Error message if static pages are not found                
  *   post:
  *     description: Creates a new static page in database
- *     tags: [Static pages]
+ *     tags: [Static Pages]
  *     parameters:
  *       - in: query
  *         name: wordpress_id

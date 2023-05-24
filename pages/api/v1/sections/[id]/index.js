@@ -4,7 +4,7 @@
  *   name: Sections
  * /api/v1/sections/{id}:
  *   patch:
- *     description: Updates a Section in database using the id
+ *     description: Updates a section in database using the id
  *     tags: [Sections]
  *     parameters:
  *       - in: path
@@ -24,7 +24,7 @@
  *               type: string
  *             title:
  *               type: string
- *         description: the updated static page object when PATCH request is called
+ *         description: the updated section object when PATCH request is called
  *     responses:
  *       200:
  *         description: OK
@@ -44,9 +44,9 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error message if section id to patch is not found
+ *         description: Error message if section id to PATCH is not found
  *   delete:
- *     description: Soft delete a Section in database using the id
+ *     description: Soft delete a section in database using the id
  *     tags: [Sections]
  *     parameters:
  *       - in: path
@@ -54,7 +54,7 @@
  *         schema:
  *           type: number
  *           example: 63fd39c51e0a85c4749274ff
- *         description: id of the Section to soft delete
+ *         description: id of the section to soft delete
  *       - in: body
  *         name: data
  *         schema:
@@ -70,7 +70,7 @@
  *               type: string
  *               format: date #
  *               example: 2023-04-09T00:56:05.829+00:00
- *         description: the deleted Section object when a DELETE request is executed
+ *         description: the soft deleted section object when a DELETE request is called
  *     responses:
  *       200:
  *         description: OK
@@ -87,7 +87,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: Error messages if Section id to soft delete not found
+ *         description: Error messages if section id to soft delete not found
  *
  */
 
@@ -106,7 +106,7 @@ export default async function handler(req, res) {
         if (!patchsection) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not find Section with id, id: ${id} is invalid`;
+          error.message = `Could not PATCH Section with id, id: ${id} is invalid`;
           throw error;
         }
         res.status(200).json({ data: patchsection });
@@ -116,7 +116,7 @@ export default async function handler(req, res) {
         if (!deletesection) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not delete Section with id, id: ${id} is invalid`;
+          error.message = `Could not DELETE Section with id, id: ${id} is invalid`;
           throw error;
         }
         res
@@ -135,11 +135,11 @@ export default async function handler(req, res) {
 
 export const updateSection = async (id, updates) => {
   await dbConnect();
+
   const updatedsection = await Section.findByIdAndUpdate(id, updates, {
     runValidators: true,
     new: true,
   });
-
   if (!updatedsection) {
     return null;
   }
@@ -149,6 +149,7 @@ export const updateSection = async (id, updates) => {
 export const deleteSection = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
+
   const deletedsection = await Section.findByIdAndUpdate(id, update);
   if (!deletedsection) {
     return null;

@@ -52,7 +52,7 @@ export default async function handler(req, res) {
         if (!sections) {
           const error = new Error();
           error.status = 404;
-          error.message = `Could not find any sections`;
+          error.message = `Could not find any Sections`;
           throw error;
         }
         res.status(200).json({ data: sections });
