@@ -43,6 +43,10 @@
  *                       title:
  *                         type: string
  *                         example: Grasshopper Rails
+ *       400:
+ *         description: Error messages
+ *       404:
+ *         description: Error messages if id cannot be found
  *   patch:
  *     description: Updates a static page in database using the id
  *     tags: [Static pages]
@@ -92,6 +96,8 @@
  *                       example: Resilient Canary
  *       400:
  *         description: Error messages
+ *       404:
+ *         description: Error messages if id cannot be found
  *   delete:
  *     description: Soft deletes a static page in database using the id
  *     tags: [Static pages]
@@ -132,9 +138,9 @@
  *                       type: string #
  *                       example: 2023-04-09T00:56:05.829+00:00
  *       400:
- *         description: Error status
+ *         description: Error messages
  *       404:
- *         description: Resource not found
+ *         description: Error message if the id cannot be found
  *
  */
 
@@ -143,46 +149,48 @@ import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
+  const id = req.query.id;
+  const updates = req.body;
 
-  switch (method) {
-    case "GET":
-      try {
-        const id = req.query.id;
+  try {
+    switch (method) {
+      case "GET":
         const staticpage = await getStaticPageById(id);
+        if (!staticpage) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find static page, id:${id} is invalid`;
+          throw error;
+        }
         res.status(200).json({ data: staticpage });
         return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-        return;
-      }
-    case "PATCH":
-      try {
-        const id = req.query.id;
-        const updates = req.body;
-
+      case "PATCH":
         const updatedPage = await updateStaticPage(id, updates);
+        if (!updatedPage) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not update static page, id:${id} is invalid`;
+        }
         res.status(200).json({ data: updatedPage });
         return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
+      case "DELETE":
+        const deletedPage = await deletedStaticPage(id);
+        if (!deletedPage) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not delete static page, id:${id} is invalid`;
+        }
+        res
+          .status(200)
+          .json({ message: `Page with id:${id} has been deleted.` });
         return;
-      }
-    case "DELETE":
-      try {
-        const id = req.query.id;
-        await deletedStaticPage(id);
-        res.status(200).json({ message: `Page has been deleted.` });
-        return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -192,10 +200,7 @@ export const getStaticPageById = async (id) => {
     _id: id,
   }).exec();
   if (!staticPageId) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Error finding id - ${id} is invalid`;
-    throw error;
+    return null;
   }
   return staticPageId;
 };
@@ -206,13 +211,8 @@ export const updateStaticPage = async (id, updates) => {
     runValidators: true,
     new: true,
   });
-  //run validators on new obj
   if (!updatedstaticpage) {
-    // throw new Error(`${id} is not a valid id.`);
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find static page, ${id} is invalid`;
-    throw error;
+    return null;
   }
   return updatedstaticpage;
 };
@@ -222,11 +222,7 @@ export const deletedStaticPage = async (id) => {
   await dbConnect();
   const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
   if (!deletedPage) {
-    // throw new Error(`Could not find ${id}`);
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find static page, ${id} is invalid`;
-    throw error;
+    return null;
   }
-  return;
+  return deletedPage;
 };

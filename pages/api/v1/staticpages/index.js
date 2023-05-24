@@ -92,9 +92,10 @@ import Staticpage from "/lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
+  const { method } = req;
   const postData = req.body;
+
   try {
-    const { method } = req;
     switch (method) {
       case "GET":
         const staticpages = await getStaticPages();
