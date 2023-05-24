@@ -7,6 +7,7 @@ import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 import axios from "axios";
+import { getStaticPageByIsShown } from "pages/api/v1/student-resources";
 
 const Slug = ({ dbPage, content }) => {
   const router = useRouter();
@@ -35,8 +36,7 @@ Slug.getLayout = function getLayout(pages) {
 //If a page has Dynamic Routes and uses getStaticProps,
 //it needs to define a list of paths to be statically generated.
 export async function getStaticPaths() {
-  await dbConnect();
-  const mongoPages = await StaticPage.find({ isShown: true }).lean();
+  const mongoPages = await getStaticPageByIsShown();
   const paths = mongoPages.map((page) => {
     return {
       params: { slug: page.slug },
