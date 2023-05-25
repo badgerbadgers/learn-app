@@ -72,7 +72,6 @@ export default async function handler(req, res) {
     res.status(error.status || 400).json({
       message: error.message,
     });
-    return;
   }
 }
 
