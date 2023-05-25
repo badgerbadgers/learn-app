@@ -32,12 +32,12 @@ const EditToolbar = (props) => {
     const id = uuidv4();
     setRows((oldRows) => [
       ...oldRows,
-      { id, cohortName: "", courseName: "", students: "", isNew: true },
+      { id, cohort_name: "", course: "", students: "", isNew: true },
     ]);
 
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohortName" },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "cohort_name" },
     }));
   };
 
@@ -77,7 +77,7 @@ export default function CohortsTable({
 
   const deleteCohort = async (cohortId) => {
     axios
-      .delete(`/api/cohorts/${cohortId}`, {
+      .delete(`/api/v1/cohorts/${cohortId}`, {
         headers: { "Content-Type": "application/json" },
       })
       .catch((error) => {
@@ -120,39 +120,48 @@ export default function CohortsTable({
   };
 
   const processRowUpdate = async (newRow, oldRow) => {
-    if (!newRow.courseName) newRow.courseName = null;
-    const url = "/api/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
+    if (!newRow.course) newRow.course = null;
+    // If the row is new, add it to the server. If the row is not new, update it on the server
+    const url = "/api/v1/cohorts" + (newRow.isNew ? "" : `/${newRow.id}`);
+
+    //Take only allowed to update fields from newRow, cohort_name and start_date
+    const fieldsToCompare = ["cohort_name", "start_date"];
+    let fieldsToUpdate = {};
+    for (const field of fieldsToCompare) {
+      if (newRow[field] !== oldRow[field]) {
+        fieldsToUpdate[field] = newRow[field];
+      }
+    }
     const updatedRow = {};
     try {
-      await axios
-        .post(url, {
+      await axios[newRow.isNew ? "post" : "patch"](
+        url,
+        newRow.isNew ? newRow : fieldsToUpdate,
+        {
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        })
-        .then((response) => {
-          const course = courses.find(
-            (item) => item.value === newRow.courseName
-          );
-          updatedRow = {
-            ...newRow,
-            id: response.data.data._id,
-            isNew: false,
-            courseName: course.label,
-            startDate: newRow.startDate
-              ? format(new Date(newRow.startDate), "MMM dd, yyyy")
-              : "",
-            endDate: newRow.endDate
-              ? format(new Date(newRow.endDate), "MMM dd, yyyy")
-              : "",
-            courseId: course.value,
-            slug: response.data.data.slug,
-            scheduleLen: response.data.data.schedule.length,
-          };
-          snackbar.showMessage(
-            <Alert severity="success">Cohort sucessfully saved.</Alert>
-          );
-          setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        });
+        }
+      ).then((response) => {
+        const course = courses.find((item) => item.value === newRow.course);
+        updatedRow = {
+          ...newRow,
+          id: response.data.data._id,
+          isNew: false,
+          course: course.label,
+          start_date: newRow.start_date
+            ? format(new Date(newRow.start_date), "MMM dd, yyyy")
+            : "",
+          end_date: newRow.end_date
+            ? format(new Date(newRow.end_date), "MMM dd, yyyy")
+            : "",
+          courseId: course.value,
+          slug: response.data.data.slug,
+          scheduleLen: response.data.data.schedule.length,
+        };
+        snackbar.showMessage(
+          <Alert severity="success">Cohort successfully saved.</Alert>
+        );
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+      });
     } catch (error) {
       const errorMessage = Object.values(error.response.data.message)[0];
       console.error("Error:", error.response.data);
@@ -172,7 +181,7 @@ export default function CohortsTable({
 
   const columns = [
     {
-      field: "cohortName",
+      field: "cohort_name",
       headerName: "Cohort",
       flex: 1,
       minWidth: 100,
@@ -183,12 +192,12 @@ export default function CohortsTable({
           href=""
           onClick={(e) => handleClick(e, "cohorts/" + params.row.slug)}
         >
-          {params.row.cohortName}
+          {params.row.cohort_name}
         </a>
       ),
     },
     {
-      field: "courseName",
+      field: "course",
       headerName: "Course",
       flex: 1,
       minWidth: 250,
@@ -197,17 +206,17 @@ export default function CohortsTable({
       headerAlign: "center",
       valueOptions: courses,
       valueGetter: (params) => {
-        if (params.row.courseName === "") {
+        if (params.row.course === "") {
           return "";
         }
         const id = params.id;
         return rowModesModel[id] && rowModesModel[id].mode === GridRowModes.Edit
           ? params.row.courseId
-          : params.row.courseName;
+          : params.row.course;
       },
     },
     {
-      field: "startDate",
+      field: "start_date",
       headerName: "Start Date",
       type: "date",
       flex: 1,
@@ -216,7 +225,7 @@ export default function CohortsTable({
       editable: true,
     },
     {
-      field: "endDate",
+      field: "end_date",
       headerName: "End Date",
       flex: 1,
       type: "date",
@@ -246,11 +255,11 @@ export default function CohortsTable({
       editable: false,
       renderCell: (params) => {
         if (!params.row.scheduleLen) return "";
-        const startDate = new Date(params.row.startDate);
-        const endDate = add(new Date(params.row.startDate), {
+        const start_date = new Date(params.row.start_date);
+        const end_date = add(new Date(params.row.start_date), {
           weeks: params.row.scheduleLen,
         });
-        if (!startDate || new Date() < startDate || new Date() > endDate)
+        if (!start_date || new Date() < start_date || new Date() > end_date)
           return (
             <div
               className={
@@ -259,20 +268,9 @@ export default function CohortsTable({
                   : null
               }
             >
-              {""}
+              {params.row.scheduleLen}
             </div>
           );
-        return (
-          <div
-            className={
-              rowModesModel[params.row.id]?.mode === GridRowModes.Edit
-                ? classes.disabled
-                : null
-            }
-          >
-            {params.row.scheduleLen}
-          </div>
-        );
       },
     },
     {
@@ -284,7 +282,7 @@ export default function CohortsTable({
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
-        if (!params.row.startDate) return "TBD";
+        if (!params.row.start_date) return "TBD";
         else {
           if (params.row.status === "past") {
             return (
@@ -322,8 +320,19 @@ export default function CohortsTable({
                 Upcoming
               </div>
             );
+          } else if (params.row.status === "unknown") {
+            return (
+              <div
+                className={
+                  rowModesModel[params.row.id]?.mode === GridRowModes.Edit
+                    ? classes.disabled
+                    : null
+                }
+              >
+                Unknown
+              </div>
+            );
           }
-          
         }
       },
     },

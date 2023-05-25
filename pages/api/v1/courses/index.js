@@ -18,8 +18,6 @@
  *         description: Provides list of courses
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error messages if courses not found
  *   post:
  *     description: Creates a new Course
  *     tags: [Courses]
@@ -54,33 +52,25 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const deleted = req.query.deleted || false;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const courses = await getCourses(deleted);
-
         res.status(200).json({ data: courses });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "POST":
-      try {
+        break;
+      case "POST":
         //call method for creating a course with any data we received
         const course = await createCourse(req.body);
         res.status(200).json({ data: course });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-  return res;
 }
 
 export const getCourses = async (deleted) => {
@@ -131,7 +121,9 @@ export const createCourse = async (data) => {
 
     // throw an error if not each lesson id provided is found in db
     if (!lessons.length || data.lessons.length !== lessons.length) {
-      throw new Error("All lessons ids provided must be unique and exist in the data base");
+      throw new Error(
+        "All lessons ids provided must be unique and exist in the data base"
+      );
     }
     data.lessons = lessons;
   }

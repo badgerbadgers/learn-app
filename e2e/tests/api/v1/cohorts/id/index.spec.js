@@ -1,5 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
+import slugify from "slugify";
 
 test.describe("/api/v1/cohorts/id", () => {
   //GET TESTS
@@ -109,14 +110,14 @@ test.describe("/api/v1/cohorts/id", () => {
 
   test("sets a cohort's slug to correct value when updating a cohort_name", async ({
     request,
-    db
+    db,
   }) => {
     const randomCohort = await db
       .collection("cohorts")
       .findOne({ deleted_at: { $eq: null } });
 
     const updates = {
-      cohort_name: "Very Smart Cohort",
+      cohort_name: faker.lorem.words(),
     };
 
     const response = await request.patch(
@@ -130,8 +131,35 @@ test.describe("/api/v1/cohorts/id", () => {
 
     expect(responseData.slug).toBeDefined();
     expect(typeof responseData.slug).toBe("string");
-    expect(responseData.slug).toBe("very-smart-cohort");
+    expect(responseData.slug).toBe(slugify(updates.cohort_name))
   });
+
+  test("sets a cohort's slug to correct value when updating a cohort_name when the name includes special characters", async ({
+    request,
+    db,
+  }) => {
+    const randomCohort = await db
+      .collection("cohorts")
+      .findOne({ deleted_at: { $eq: null } });
+
+    const updates = {
+      cohort_name: "  Cool @ cohort _ ) name",
+    };
+
+    const response = await request.patch(
+      `/api/v1/cohorts/${randomCohort._id}`,
+      {
+        data: updates,
+      }
+    );
+    expect(response.ok()).toBeTruthy();
+    const responseData = (await response.json()).data;
+
+    expect(responseData.slug).toBeDefined();
+    expect(typeof responseData.slug).toBe("string");
+    expect(responseData.slug).toBe("cool-@-cohort-_-)-name");
+  });
+
 
   ////////////////////////////////////////////////////////////////////////
   //update start date
