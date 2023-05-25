@@ -84,57 +84,54 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const data = await getCourse(id);
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find course with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data });
-      } catch (error) {
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PATCH":
-      try {
+        break;
+      case "PATCH":
         const updatedCourse = await updateCourse(id, req.body);
+        if (!updatedCourse) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and update course with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: updatedCourse });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "DELETE":
-      try {
+        break;
+      case "DELETE":
         await dbConnect();
-        const deletedCourse = await Course.findByIdAndUpdate(id, {
-          deleted_at: new Date(),
-        });
+        const deletedCourse = await deleteCourse(id);
         if (!deletedCourse) {
-          return res
-            .status(404)
-            .json({ message: `Course with id ${id} not found` });
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and delete course with id - ${id}`;
+          throw error;
         }
         res.status(200).json();
-      } catch (error) {
-        console.log(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-  return res;
 }
 
 export const getCourse = async (id) => {
   await dbConnect();
   const data = await Course.findById(id); // returns course with deleted_at: null only
   if (!data) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find course with id - ${id}`;
-    throw error;
+    return null;
   }
   return data;
 };
@@ -148,7 +145,7 @@ export const updateCourse = async (id, updates) => {
   }
 
   await dbConnect();
-  
+
   if (updates.course_name) {
     //make sure course_name is unique
     const duplicateCourseName = await Course.findOne({
@@ -160,16 +157,15 @@ export const updateCourse = async (id, updates) => {
     }
     filteredUpdates.course_name = updates.course_name;
   }
-  
+
   if (updates.deleted_at === null) {
- 
     if (!updates.course_name) {
       //make sure course_name is unique
       const [course] = await Course.find({
         _id: id,
         deleted_at: { $ne: null },
       });
-  
+
       if (course) {
         const duplicateCourseName = await Course.findOne({
           course_name: course.course_name,
@@ -215,12 +211,19 @@ export const updateCourse = async (id, updates) => {
   });
 
   if (!updatedCourse) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update course with id - ${id}`;
-    throw error;
+    return null;
   }
   const updatedCoursePopulate = await updatedCourse.populate("lessons");
 
   return updatedCoursePopulate;
+};
+
+export const deleteCourse = async (id) => {
+  const deletedCourse = await Course.findByIdAndUpdate(id, {
+    deleted_at: new Date(),
+  });
+  if (!deletedCourse) {
+    return null;
+  }
+  return deletedCourse;
 };

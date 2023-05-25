@@ -61,29 +61,35 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const data = await getSections(id);
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find course with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "POST":
-      try {
-        const createdSection = await createSection(id, req.body);
-        res.status(200).json({ data: createdSection });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      case "POST":
+        const sectionData = await createSection(id, req.body);
+        if (!sectionData) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find course with id - ${id}`;
+          throw error;
+        }
+        res.status(200).json({ data: sectionData });
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -91,10 +97,7 @@ export const getSections = async (id) => {
   await dbConnect();
   const course = await Course.findById(id);
   if (!course) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find course with id - ${id}`;
-    throw error;
+    return null;
   }
   return await Section.find({ course: id });
 };
@@ -103,10 +106,7 @@ export const createSection = async (id, data) => {
   await dbConnect();
   const course = await Course.findById(id);
   if (!course) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find course with id - ${id}`;
-    throw error;
+    return null;
   }
   // delete course if provided in data because we use course id from url path
   if (data.course) {
