@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
   }
   // fetches specific wp page using wordpress_id
   const wordpressPage = await axios.get(
-    process.env.wordpressUrl + mongoPage.wordpress_id
+    process.env.wordpressUrl + `/` + mongoPage.wordpress_id
   );
 
   // Pass data to the page via props

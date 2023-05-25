@@ -10,7 +10,7 @@ const withPWA = require("next-pwa")({
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages?parent=378`,
+    wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages`,
   },
 };
 
