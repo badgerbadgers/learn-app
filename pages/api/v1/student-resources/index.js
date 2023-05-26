@@ -45,18 +45,18 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const staticpage = await getStaticPageByIsShown();
+        const staticpage = await getStudentResourcesByIsShown();
         if (!staticpage) {
           res.status(404).json({
             message: `Error getting static pages`,
           });
-          return; 
+          return;
         }
         res.status(200).json({ data: staticpage });
-        return; 
+        return;
       } catch (error) {
         res.status(400).json({ message: error.message });
-        return; 
+        return;
       }
     default:
       res.setHeader("Allow", ["GET"]);
@@ -64,15 +64,10 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStaticPageByIsShown = async () => {
-  try {
-    await dbConnect();
-    const staticPagesShown = await StaticPage.find({
-      isShown: true,
-    });
-
-    return staticPagesShown;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+export const getStudentResourcesByIsShown = async () => {
+  await dbConnect();
+  const staticPagesShown = await StaticPage.find({
+    isShown: true,
+  });
+  return staticPagesShown;
 };
