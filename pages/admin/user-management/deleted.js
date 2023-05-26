@@ -72,7 +72,7 @@ const DeletedUserManagement = ({ users }) => {
     allUsers.current = localRows;
     requestSearch(searchInput);
     setLoading(false);
-  }, []);
+  }, [searchInput, users]);
 
   return (
     <Container sx={{ textAlign: "center " }}>
