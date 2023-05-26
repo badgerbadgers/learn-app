@@ -1,12 +1,37 @@
 import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
-import { ObjectId } from "bson";
+import { ObjectId } from "mongodb";
+
 
 test.describe("/api/v1/users/[id]/acceptanceforms", () => {
   //GET TESTS
 
-  test("returns all acceptanceforms", async ({ request }) => {
-    const userId = "62b22b42f4da59dbea98071b";
+  test("returns all acceptanceforms", async ({ request, db }) => {
+  // group acceptanceforms by user , count and find more then 0
+  const usersArray = await db
+    .collection("acceptanceforms")
+    .aggregate([
+      {
+        $group: {
+          _id: "$user",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $match: {
+          count: { $gt: 0 },
+        },
+      },
+      {
+        $project: {
+          user: "$_id",
+        },
+      },
+    ])
+    .toArray();
+    
+    //take userID from first object
+    const userId = await usersArray[0].user.toString();
     const response = await request.get(
       `/api/v1/users/${userId}/acceptanceforms`
     );
@@ -15,8 +40,31 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
     expect(acceptanceforms.length).toBeGreaterThan(0);
   });
 
-  test.fixme("returns more than one acceptanceforms", async ({ request }) => {
-    const userId = "62b22b42f4da59dbea98071b";
+  test("returns more than one acceptanceforms", async ({ request, db }) => {
+    // group acceptanceforms by user , count and find more then 1
+    const usersArray = await db
+      .collection("acceptanceforms")
+      .aggregate([
+        {
+          $group: {
+            _id: "$user",
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $match: {
+            count: { $gt: 1 },
+          },
+        },
+        {
+          $project: {
+            user: "$_id",
+          },
+        },
+      ])
+      .toArray();
+    //take userID from first object
+    const userId = await usersArray[0].user.toString();
     const response = await request.get(
       `/api/v1/users/${userId}/acceptanceforms`
     );
@@ -25,16 +73,45 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
     expect(acceptanceforms.length).toBeGreaterThan(1);
   });
 
-  test.fixme(
+  test(
     "get returns 400 if acceptanceforms not found",
-    async ({ request }) => {
-      const userId = "62b22b42f4da59dbea98071b";
+    async ({ request, db }) => {
+      // group acceptanceforms by user , count and find  1 acceptanceform
+      const usersArray = await db
+        .collection("acceptanceforms")
+        .aggregate([
+          {
+            $group: {
+              _id: "$user",
+              count: { $sum: 1 },
+            },
+          },
+          {
+            $match: {
+              count: { $eq: 1 },
+            },
+          },
+          {
+            $project: {
+              user: "$_id",
+            },
+          },
+        ])
+        .toArray();
+      //take userID from first object
+      const userId = await usersArray[0].user.toString();
+
+      //delete acceptanceform
+      await db
+        .collection("acceptanceforms")
+        .deleteOne({ user: ObjectId(userId) });
 
       const response = await request.get(
         `/api/v1/users/${userId}/acceptanceforms`
       );
-      expect(response.ok()).toBeFalsy();
-      expect(response.status()).toBe(400);
+      expect(response.ok()).toBeTruthy();
+      const acceptanceforms = (await response.json()).data;
+      expect(acceptanceforms.length).toBe(0);
     }
   );
 
