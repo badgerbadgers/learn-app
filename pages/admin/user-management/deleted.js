@@ -14,7 +14,7 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import { getUsers } from "pages/api/v1/users";
 
-const DeletedUserManagemant = ({ users }) => {
+const DeletedUserManagement = ({ users }) => {
   const allUsers = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -114,9 +114,9 @@ const DeletedUserManagemant = ({ users }) => {
   );
 };
 
-export default DeletedUserManagemant;
+export default DeletedUserManagement;
 
-DeletedUserManagemant.getLayout = privateLayout;
+DeletedUserManagement.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
