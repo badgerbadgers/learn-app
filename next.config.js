@@ -11,7 +11,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
-    wordpressParentId: `https://learn.codethedream.org/wp-json/wp/v2/pages?parent=378`,
+    wordpressParentId: `378`,
   },
 };
 
