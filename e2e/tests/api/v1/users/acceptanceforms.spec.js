@@ -1,7 +1,7 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { faker } from "@faker-js/faker";
 
-//new oblect to test
+//new object to test
 const newAcceptanceform = {
   __v: 0,
   active_step: 0,
