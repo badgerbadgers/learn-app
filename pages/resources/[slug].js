@@ -50,7 +50,7 @@ export async function getStaticProps(context) {
 
   // fetches specific wp page using wordpress_id
   const wordpressPage = await axios.get(
-    process.env.wordpressUrl + `/` + mongoPage.wordpress_id
+    process.env.wordpressUrl + mongoPage.wordpress_id
   );
 
   return {

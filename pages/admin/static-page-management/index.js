@@ -119,7 +119,9 @@ export async function getServerSideProps(context) {
   const { user } = session;
 
   const mongoData = await StaticPage.find({}).lean();
-  const res = await axios.get(process.env.wordpressUrl + `/?parent=378`);
+  // const res = await axios.get(process.env.wordpressUrl + `/?parent=378`);
+  const res = await axios.get(process.env.wordpressParentId);
+
   const wordpressData = await res.data;
   const combinedData = combineData(wordpressData, mongoData);
 
