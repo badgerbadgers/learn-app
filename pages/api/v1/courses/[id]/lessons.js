@@ -59,29 +59,36 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  
+  try {
+    switch (method) {
+      case "GET":
         const data = await getLessons(id);
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find course with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: data.lessons });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PUT":
-      try {
+        break;
+      case "PUT":
         const updatedCourse = await updateLessons(id, req.body);
+        if (!updatedCourse) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find and update course with id - ${id}`;
+          throw error;
+        }
         res.status(200).json({ data: updatedCourse.lessons });
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PUT"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PUT"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -89,10 +96,7 @@ export const getLessons = async (id) => {
   await dbConnect();
   const data = await Course.findById(id, "lessons").populate("lessons").exec();
   if (!data) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find course with id - ${id}`;
-    throw error;
+    return null;
   }
   return data;
 };
@@ -145,10 +149,7 @@ export const updateLessons = async (id, updates) => {
   );
 
   if (!updatedCourse) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find and update course with id - ${id}`;
-    throw error;
+    return null;
   }
 
   const updatedCoursePopulate = await updatedCourse.populate("lessons");
