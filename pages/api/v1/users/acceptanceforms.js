@@ -60,6 +60,6 @@ export default async function handler(req, res) {
 
 export const getAcceptanceforms = async (userId) => {
   const filter = { user: ObjectId(userId) };
-  const acceptanceforms = await AcceptanceForm.findOne(filter);
+  const acceptanceforms = await AcceptanceForm.findOne(filter).sort({$natural: -1});
   return acceptanceforms;
 };
