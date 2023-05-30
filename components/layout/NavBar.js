@@ -78,10 +78,11 @@ const NavBar = () => {
     setAnchorElPages(null);
   };
 
+  //v1 student resources
   useEffect(() => {
     try {
       axios
-        .get(`/api/staticpages`, {
+        .get(`/api/v1/student-resources`, {
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
@@ -101,6 +102,7 @@ const NavBar = () => {
       console.log(error);
     }
   }, []);
+
   return (
     <AppBar
       enableColorOnDark

@@ -72,7 +72,7 @@
  *           required:
  *             - mentors
  *           properties:
-  *             mentors:
+ *             mentors:
  *               type: array
  *               items:
  *                 type: string
@@ -95,55 +95,64 @@ import { ObjectId } from "bson";
 export default async function handler(req, res) {
   const { method } = req;
   const id = req.query.id;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const data = await getCohortMentors(id);
-        res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
-      } catch (error) {
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "PATCH":
-      try {
-        if (!req.body.mentors) {
-          res
-            .status(400)
-            .json({ message: "Mentor ids to add are not provided" });
-        } else {
-          const updatedCohort = await addUsersToCohort(
-            id,
-           req.body
-          );
-          const updatedCohortPopulate = await updatedCohort.populate(
-            "mentors.user"
-          );
-          res.status(200).json({ data: updatedCohortPopulate.mentors });
+        if (!data) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find cohort with id ${id} `;
+          throw error;
         }
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    case "DELETE":
-      try {
+        res.status(200).json({ data: data.mentors }); // returns an array of mentors (or empty array if there are no mentors in 'mentors' property) or null if cohort not found or has a timestamp in property deleted_at
+        break;
+      case "PATCH":
         if (!req.body.mentors) {
-          res
-            .status(400)
-            .json({ message: "Mentors ids to delete are not provided" });
+          const error = new Error();
+          error.status = 400;
+          error.message = `Mentor ids to add are not provided`;
+          throw error;
         } else {
-          await deleteMentorsFromCohort(id, "mentors", req.body.mentors);
+          const updatedCohort = await addUsersToCohort(id, req.body);
+          if (!updatedCohort) {
+            const error = new Error();
+            error.status = 404;
+            error.message = `Could not find cohort with id ${id} `;
+            throw error;
+          }
+          res.status(200).json({ data: updatedCohort.mentors });
+        }
+        break;
+      case "DELETE":
+        if (!req.body.mentors) {
+          const error = new Error();
+          error.status = 400;
+          error.message = `Mentors ids to delete are not provided`;
+          throw error;
+        } else {
+          const cohort = await deleteMentorsFromCohort(
+            id,
+            "mentors",
+            req.body.mentors
+          );
+
+          if (!cohort) {
+            const error = new Error();
+            error.status = 404;
+            error.message = `Could not find cohort with id ${id} `;
+            throw error;
+          }
           res.status(200).json();
         }
-      } catch (error) {
-        console.log(error);
-        res.status(error.status || 400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
@@ -153,10 +162,7 @@ export const getCohortMentors = async (id) => {
     .populate("mentors.user")
     .exec(); // API does not return deleted cohort, the ones with timestamp in property deleted_at (returns { data: null } for deleted cohort) and only returns mentors with all fields from User data model
   if (!data) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find cohort with id ${id} `;
-    throw error;
+    return null;
   }
   return data;
 };
@@ -165,35 +171,27 @@ export const addUsersToCohort = async (id, updates) => {
   await dbConnect();
   const cohort = await Cohort.findById(id);
   if (!cohort) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Could not find cohort with id ${id} `;
-    throw error;
+    return null;
   }
   await cohort.updateMentors(updates.mentors);
-  return await cohort.save();
+  await cohort.save();
+  const updatedCohortPopulate = await cohort.populate("mentors.user");
+  return updatedCohortPopulate;
 };
 
 export const deleteMentorsFromCohort = async (id, field, value) => {
   await dbConnect();
 
-  try {
-    const parsedValues = value.map((mentorId) => ObjectId(mentorId));
+  const parsedValues = value.map((mentorId) => ObjectId(mentorId));
 
-    const cohort = await Cohort.findByIdAndUpdate(
-      { _id: id },
-      { $pull: { [field]: { user: { $in: parsedValues } } } }
-      //  { new: true }
-    );
+  const cohort = await Cohort.findByIdAndUpdate(
+    { _id: id },
+    { $pull: { [field]: { user: { $in: parsedValues } } } }
+    //  { new: true }
+  );
 
-    if (!cohort) {
-      const error = new Error();
-      error.status = 404;
-      error.message = `Could not find cohort with id ${id} `;
-      throw error;
-    }
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
+  if (!cohort) {
+    return null;
   }
+  return cohort;
 };
