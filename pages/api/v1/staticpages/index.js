@@ -104,7 +104,7 @@ export default async function handler(req, res) {
           error.status = 404;
           error.message = `Could not find static page`;
         }
-        res.status(200).json({ staticpages });
+        res.status(200).json({ data: staticpages });
         return;
       case "POST":
         const newstaticpage = await createStaticPage(postData);

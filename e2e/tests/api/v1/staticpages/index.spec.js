@@ -2,16 +2,12 @@ import { test, expect } from "e2e/fixtures/testAsAdmin";
 import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/staticpages", () => {
-  //tests for GET req
-  // [x] There is data to return
-  //dont implement error tests for now JEST will run these tests and Playwright cannot
-  //tests for POST req
-  // [x] creates new static page with isShown, wordpress_id, slug and title
-
   //GET TESTS
   test("returns an array when there are staticpages", async ({ request }) => {
     //GET request all static pages
     const res = await request.get(`/api/v1/staticpages`);
+    expect(res.status()).toBe(200);
+
     expect(res.ok()).toBeTruthy();
 
     //GET all static pages
@@ -21,17 +17,14 @@ test.describe("/api/v1/staticpages", () => {
     expect(staticpages).toContainEqual(
       expect.objectContaining({ isShown: true })
     );
-    //check for object containing isShown = false exists
+    // check for object containing isShown = false exists
     expect(staticpages).toContainEqual(
       expect.objectContaining({ isShown: false })
     );
   });
 
   //POST TESTS
-  test("returns an array with newly created object", async ({
-    request,
-    db,
-  }) => {
+  test("returns an array with new static page", async ({ request, db }) => {
     //new obj to test with using fakerjs
     const fakerJsStaticPage = {
       wordpress_id: faker.datatype.number(1000),
@@ -66,8 +59,24 @@ test.describe("/api/v1/staticpages", () => {
       data: fakerJsStaticPageNoWPid,
     });
 
+    //status should be 400
+    expect(responsewithfaker.status()).toBe(400);
+
     const staticpages = (await responsewithfaker.json()).data;
 
     expect(staticpages).toBeUndefined();
+  });
+
+  test("returns error when creating empty static page object", async ({
+    request,
+  }) => {
+    const emptyStaticPage = {};
+
+    const reswithemptystaticpage = await request.post(`/api/v1/staticpages`, {
+      data: emptyStaticPage,
+    });
+
+    //missing wordpress_id field status should be 400
+    expect(reswithemptystaticpage.status()).toBe(400);
   });
 });

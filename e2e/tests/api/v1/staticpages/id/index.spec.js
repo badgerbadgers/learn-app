@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 test.describe("/api/v1/staticpages/[id]", () => {
   //GET ID TESTS
-  test("gets a static page with id as an argument", async ({ request, db }) => {
+  test("gets a specific static page using an id", async ({ request, db }) => {
     //gets a document with wordpress_id value that is not null
     const staticpage = await db.collection("staticpages").findOne({});
     const id = staticpage._id.toString();
@@ -11,6 +11,8 @@ test.describe("/api/v1/staticpages/[id]", () => {
     //hit endpoint with id as path parameter
     const response = await request.get(`/api/v1/staticpages/${id}`);
     const staticpageslug = (await response.json()).data;
+
+    expect(response.status()).toBe(200);
     expect(response.ok()).toBeTruthy();
     expect(staticpageslug).toMatchObject(staticpage);
   });
@@ -29,13 +31,13 @@ test.describe("/api/v1/staticpages/[id]", () => {
   });
 
   test("test GET request with invalid id", async ({ request }) => {
-    // //hit endpoint with invalid id as path parameter
+    //hit endpoint with invalid id as path parameter
     const response = await request.get(`/api/v1/staticpages/99099`);
 
-    // //check 404 status assertion
+    //check 404 status assertion
     expect(response.status()).toBe(400);
     const staticpageresponse = (await response.json()).data;
-    // //assertion for undefined or null
+    //assertion for undefined or null
     expect(staticpageresponse).toBeUndefined();
   });
 
