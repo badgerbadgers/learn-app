@@ -102,12 +102,12 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
       const userId = await usersArray[0].user.toString();
 
       //update acceptanceform
-      const updatedUserId = faker.random.numeric(8);
+      const updatedUserId = faker.database.mongodbObjectId();
       await db
         .collection("acceptanceforms")
         .findOneAndUpdate(
           { user: ObjectId(userId) },
-          { $set: { user: updatedUserId } },
+          { $set: { user: ObjectId(updatedUserId) } },
           { new: true }
         );
 
@@ -122,7 +122,7 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
       await db
         .collection("acceptanceforms")
         .findOneAndUpdate(
-          { user: updatedUserId },
+          { user: ObjectId(updatedUserId) },
           { $set: { user: ObjectId(userId) } },
           { new: true }
         );
