@@ -137,16 +137,16 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
   );
 
   test(
-    "get returns 400 if userId not found",
-    async ({ request, db }) => {
+    "get returns 404 if userId not found",
+    async ({ request }) => {
       //call GET and get all acceptanceforms by user Id
-      const userId = faker.random.numeric(8);
+      const userId = faker.database.mongodbObjectId();
 
       const response = await request.get(
         `/api/v1/users/${userId}/acceptanceforms`
       );
       expect(response.ok()).toBeFalsy();
-      expect(response.status()).toBe(400);
+      expect(response.status()).toBe(404);
     }
   );
 });

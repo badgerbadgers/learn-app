@@ -7,11 +7,14 @@
  *     responses:
  *       200:
  *         description: Get all acceptanceforms by user id
+ *       404:
+ *         description: User not found
  *       400:
  *         description: Error messages
  */
 
 import AcceptanceForm from "lib/models/AcceptanceForm";
+import User from "lib/models/User";
 import dbConnect from "lib/dbConnect";
 
 const { ObjectId } = require("mongodb");
@@ -24,6 +27,12 @@ export default async function handler(req, res) {
       case "GET":
         //Get acceptanceforms for user by Id
         const acceptanceforms = await getAcceptanceforms(id);
+        if (!acceptanceforms) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "User not found";
+          throw error;
+        }
         res.status(200).json({ data: acceptanceforms });
         return;
 
@@ -41,9 +50,10 @@ export default async function handler(req, res) {
 
 export const getAcceptanceforms = async (id) => {
   await dbConnect();
-  const acceptanceforms = await AcceptanceForm.find({user: ObjectId(id)});
-    if (!acceptanceforms) {
-      return null;
-    }
+  const user = await User.findById(id);
+  if (!user) {
+    return null;
+  }
+  const acceptanceforms = await AcceptanceForm.find({ user: ObjectId(id) });
   return acceptanceforms;
 };
