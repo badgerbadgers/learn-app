@@ -1,5 +1,4 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
-//import { faker } from "@faker-js/faker";
 import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/users/acceptanceforms", () => {
