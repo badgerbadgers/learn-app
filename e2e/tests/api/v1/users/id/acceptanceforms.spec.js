@@ -73,8 +73,8 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
     expect(acceptanceforms.length).toBeGreaterThan(1);
   });
 
-  test(
-    "get returns 400 if acceptanceforms not found",
+  test.only(
+    "get returns empty array if acceptanceforms not found",
     async ({ request, db }) => {
       // group acceptanceforms by user , count and find  1 acceptanceform
       const usersArray = await db
@@ -101,10 +101,15 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
       //take userID from first object
       const userId = await usersArray[0].user.toString();
 
-      //delete acceptanceform
+      //update acceptanceform
+      const updatedUserId = faker.random.numeric(8);
       await db
         .collection("acceptanceforms")
-        .deleteOne({ user: ObjectId(userId) });
+        .findOneAndUpdate(
+          { user: ObjectId(userId) },
+          { $set: { user: updatedUserId } },
+          { new: true }
+        );
 
       const response = await request.get(
         `/api/v1/users/${userId}/acceptanceforms`
@@ -112,6 +117,22 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
       expect(response.ok()).toBeTruthy();
       const acceptanceforms = (await response.json()).data;
       expect(acceptanceforms.length).toBe(0);
+
+      //update acceptanceform back
+      await db
+        .collection("acceptanceforms")
+        .findOneAndUpdate(
+          { user: updatedUserId },
+          { $set: { user: ObjectId(userId) } },
+          { new: true }
+        );
+
+      const responseBack = await request.get(
+        `/api/v1/users/${userId}/acceptanceforms`
+      );
+      expect(responseBack.ok()).toBeTruthy();
+      const acceptanceformsBack = (await responseBack.json()).data;
+      expect(acceptanceformsBack.length).toBe(1);
     }
   );
 
