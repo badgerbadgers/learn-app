@@ -1,4 +1,4 @@
-const { faker } = require("@faker-js/faker");
+const { faker, Faker } = require("@faker-js/faker");
 const userIds = require("../user_ids.json");
 const { ObjectId } = require("mongodb");
 
@@ -57,7 +57,10 @@ const makeOne = (userId) => {
 module.exports = (() => {
   const forms = [];
   for (const userId of userIds) {
-    forms.push(makeOne(userId));
+    const numForms = Math.floor(Math.random() * 3);
+    for (let i = 0; i < numForms; i++) {
+      forms.push(makeOne(userId));
+    }
   }
   return forms;
 })();
