@@ -73,7 +73,7 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
     expect(acceptanceforms.length).toBeGreaterThan(1);
   });
 
-  test.only(
+  test(
     "get returns empty array if acceptanceforms not found",
     async ({ request, db }) => {
       // group acceptanceforms by user , count and find  1 acceptanceform
