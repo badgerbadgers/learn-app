@@ -105,6 +105,141 @@ test.describe("/api/v1/users/id", () => {
     expect(updateUser.email).toBe(getUser.email);
   });
 
+  test("update user with valid email abc-d@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc-d@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc_def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc_def@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.cc", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.cc",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail-archive.com", async ({
+    request,
+  }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail-archive.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.org", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.org",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
   test("update with empty name", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
