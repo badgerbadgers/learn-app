@@ -7,6 +7,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "material-ui-snackbar-provider";
 import { Stack } from "@mui/material";
 import axios from "axios";
+import Tooltip from '@mui/material/Tooltip';
 
 export default function UsersTable({ loading, tableRows }) {
   const [rows, setRows] = useState([]);
@@ -94,7 +95,11 @@ export default function UsersTable({ loading, tableRows }) {
       getActions: ({ id, row }) => {
         return [
           <GridActionsCellItem
-            icon={<UnDeleteIcon />}
+            icon={
+              <Tooltip title="Undelete user">
+                <UnDeleteIcon />
+              </Tooltip>
+            }
             label="UnDelete"
             onClick={handleUnDeleteClick(id)}
             color="inherit"
