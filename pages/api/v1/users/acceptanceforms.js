@@ -2,17 +2,15 @@
  * @swagger
  * /api/v1/users/acceptanceforms:
  *   get:
- *     description: Returns all acceptanceforms for user by id
+ *     description: Returns latest acceptanceform for user
  *     tags: [Users]
  *     responses:
  *       200:
- *         description: Get all acceptanceforms for user
+ *         description: Get latest acceptanceform for user
  *       400:
  *         description: Error messages
  *       404:
- *         description: No acceptanceforms found
- *       401:
- *         description: User unauthorized
+ *         description: User not found
  */
 
 import dbConnect from "lib/dbConnect";
