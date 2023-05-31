@@ -38,42 +38,6 @@ a {
   border-bottom: 2px solid whitesmoke;
 }
 
-/* As per CTD https://codethedream.org/about/
-Also check this link slide 7 for details https://codethedream.org/wp-content/uploads/2021/12/CTD_BrandStandards_7-2019.pdf
-  h1 - Title
-  h2 - subHeaders
-  */
-
-h1 {
-  font-weight: 900 !important;
-  text-transform: uppercase;
-  text-align: center;
-  width: 100%;
-  font-family: "gothamRoundedBold";
-  font-size: 4.2rem;
-  line-height: 1;
-  letter-spacing: -0.5px;
-  padding: 50px;
-}
-
-h2 {
-  font-size: 3rem;
-  font-weight: 500;
-  line-height: 1.2;
-  font-family: "gothamRoundedMedium";
-}
-
-p, 
-.MuiDataGrid-cellContent, 
-.MuiDataGrid-columnHeaderTitle, 
-.MuiDataGrid-cell--withRenderer, 
-.MuiInputBase-input, 
-.MuiTablePagination-selectLabel, 
-.MuiTablePagination-displayedRows{
-  font-family: "Montserrat";
-  font-size: 0.9rem;
-}
-
 .MuiGrid-container {
   max-width: 1250px;
 }

@@ -4,45 +4,46 @@ const baseTheme = responsiveFontSizes(
   createTheme({
     typography: {
       root: {
-        fontFamily: [
-          "gothamRoundedBold",
-          "gothamRoundedMedium",
-          "Montserrat",
-        ].join(","),
-        fontFamilySecondary: "Montserrat",
+        fontFamily: ["Roboto", "helveticNeue"],
+        // .join(","),
+        // fontFamilySecondary: "helveticNeue",
+      },
+      h1: {
+        fontSize: "3.052rem",
+        fontWeight: 700,
+      },
+      h2: {
+        fontSize: "2.441rem",
+        fontWeight: 600,
       },
       h3: {
-        //title of any page. Header
-        fontSize: "3.2rem",
-        fontWeight: "700 !important",
-        fontFamily: "gothamRoundedBold",
+        fontSize: "1.953rem",
+        fontWeight: 600,
       },
       h4: {
-        //title of any page. Header
-        fontSize: "2.2rem",
-        fontFamily: "gothamRoundedBold",
+        fontSize: "1.563rem",
+        fontWeight: 400,
       },
-
       h5: {
-        //subheaders on the page
-        fontSize: "1.6rem",
-        fontFamily: "gothamRoundedMedium",
-        fontWeight: "500 !important",
+        fontSize: "1.25rem",
+        fontWeight: 400,
       },
       h6: {
-        // Header Elements
-        fontSize: "0.9rem",
-        textTransform: "uppercase",
-        fontFamily: "gothamRoundedMedium",
-        overflowWrap: "break-word",
-      },
-      body1: {
-        fontFamily: "Montserrat",
         fontSize: "1rem",
+        fontWeight: 400,
+      },
+      p: {
+        fontSize: "1rem",
+        fontWeight: 400,
       },
       button: {
-        fontFamily: "gothamRoundedMedium",
+        //make all caps? caps by default
+        fontFamily: "Roboto",
         fontSize: "1rem",
+      },
+      caption: {
+        fontSize: ".85rem",
+        fontWeight: 400,
       },
     },
     components: {
@@ -51,7 +52,7 @@ const baseTheme = responsiveFontSizes(
           root: {
             fontSize: "1rem",
             textTransform: "uppercase",
-            fontFamily: "gothamRoundedMedium",
+            fontFamily: "Roboto",
           },
         },
       },
