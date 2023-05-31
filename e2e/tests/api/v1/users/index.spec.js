@@ -271,13 +271,350 @@ test.describe("/api/v1/users", () => {
     );
   });
 
-  test("does not create a user if email is not correct", async ({
+  test("does not create a user if email is invalid Abc.example.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "Abc.example.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid A@b@c@example.com", async ({
     request,
   }) => {
     const newUser = {
       name: faker.name.fullName(),
       gh: faker.random.alphaNumeric(10),
       email: "A@b@c@example.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid a'b(c)d,e:f;gi[jk]l@example.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: 'a"b(c)d,e:f;gi[jk]l@example.com',
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid this is'notallowed@example.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: 'this is"notallowed@example.com',
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid this still'notallowed@example.com -1234567890123456789012345678901234567890123456789012345678901234+x@example.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email:
+        'this still"notallowed@example.com-1234567890123456789012345678901234567890123456789012345678901234+x@example.com',
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid i_like_underscore@but_its_not_allowed_in_this_part.example.com ", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "i_like_underscore@but_its_not_allowed_in_this_part.example.com ",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid QA[icon]CHOCOLATE[icon]@test.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "QA[icon]CHOCOLATE[icon]@test.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc-@mail.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc-@mail.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc..def@mail.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc..def@mail.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid .abc@mail.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: ".abc@mail.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc#def@mail.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc#def@mail.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc.def@mail.c", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc.def@mail.c",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc.def@mail#archive.com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc.def@mail#archive.com",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc.def@mail", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc.def@mail",
+    };
+
+    const response = await request.post("/api/v1/users", {
+      data: newUser,
+    });
+    expect(response.ok()).toBeFalsy();
+
+    //confirm our user has not been created
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: newUser.email })
+    );
+  });
+
+  test("does not create a user if email is invalid abc.def@mail..com", async ({
+    request,
+  }) => {
+    const newUser = {
+      name: faker.name.fullName(),
+      gh: faker.random.alphaNumeric(10),
+      email: "abc.def@mail..com",
     };
 
     const response = await request.post("/api/v1/users", {
