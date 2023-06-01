@@ -299,6 +299,6 @@ export const downloadReport = async (res) => {
 };
 
 export const getAcceptanceForms = async () => {
-  const acceptanceForms = await AcceptanceForm.find();
+  const acceptanceForms = await AcceptanceForm.find({ is_completed: true });
   return acceptanceForms;
 };
