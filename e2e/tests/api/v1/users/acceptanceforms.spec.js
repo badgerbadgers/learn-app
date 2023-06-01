@@ -36,7 +36,7 @@ test.describe("/api/v1/users/acceptanceforms", () => {
       );
   });
 
-  test("returns last acceptanceform for user by session and not returns first acceptanceform", async ({
+  test("returns latest acceptanceform for user by session and not returns first acceptanceform", async ({
     request,
     user,
     db,
@@ -102,6 +102,8 @@ test.describe("/api/v1/users/acceptanceforms", () => {
   }) => {
     const response = await request.get(`/api/v1/users/acceptanceforms`);
     expect(response.ok()).toBeFalsy();
+    const responseAcceptanceform = (await response.json()).data;
+    console.log(response, )
     expect(response.status()).toBe(404);
   });
 });

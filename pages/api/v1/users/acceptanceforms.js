@@ -10,7 +10,7 @@
  *       400:
  *         description: Error messages
  *       404:
- *         description: User not found
+ *         description: Acceptanceform not found
  */
 
 import dbConnect from "lib/dbConnect";
@@ -58,6 +58,8 @@ export default async function handler(req, res) {
 
 export const getAcceptanceforms = async (userId) => {
   const filter = { user: ObjectId(userId) };
-  const acceptanceforms = await AcceptanceForm.findOne(filter).sort({$natural: -1});
+  const acceptanceforms = await AcceptanceForm.findOne(filter).sort({
+    completed_at: -1,
+  });
   return acceptanceforms;
 };
