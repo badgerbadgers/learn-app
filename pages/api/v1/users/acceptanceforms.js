@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         if (!acceptanceforms) {
           const error = new Error();
           error.status = 404;
-          error.message = "User not found";
+          error.message = "Acceptanceform not found";
           throw error;
         }
         res.status(200).json({ data: acceptanceforms });
