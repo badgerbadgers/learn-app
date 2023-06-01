@@ -1,7 +1,7 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { ObjectId } from "mongodb";
 
-test.describe("/api/v1/users/acceptanceforms", () => {
+test.describe.serial("/api/v1/users/acceptanceforms", () => {
   //GET TESTS
 
   test("returns acceptanceforms for user by session", async ({
@@ -103,7 +103,6 @@ test.describe("/api/v1/users/acceptanceforms", () => {
     const response = await request.get(`/api/v1/users/acceptanceforms`);
     expect(response.ok()).toBeFalsy();
     const responseAcceptanceform = (await response.json()).data;
-    console.log(response, )
     expect(response.status()).toBe(404);
   });
 });
