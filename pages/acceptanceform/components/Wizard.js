@@ -81,7 +81,7 @@ function Wizard({ previousData }) {
     actions.setSubmitting(false);
     if (activeStep + 1 === steps.length) {
       axios
-        .post("/api/acceptanceform", {
+        .post("/api/v1/acceptanceforms", {
           ...values,
           active_step: activeStep,
           is_completed: true,
@@ -93,7 +93,7 @@ function Wizard({ previousData }) {
         .catch((error) => console.log(error));
     } else {
       axios
-        .post("/api/acceptanceform", { ...values, active_step: activeStep })
+        .post("/api/v1/acceptanceforms", { ...values, active_step: activeStep })
         .then((response) => {
           setActiveStep(activeStep + 1);
         })
