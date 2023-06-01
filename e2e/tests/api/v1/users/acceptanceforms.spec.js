@@ -96,13 +96,4 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
         { new: true }
       );
   });
-
-  test("get returns 404 if acceptanceforms not found", async ({
-    request
-  }) => {
-    const response = await request.get(`/api/v1/users/acceptanceforms`);
-    expect(response.ok()).toBeFalsy();
-    const responseAcceptanceform = (await response.json()).data;
-    expect(response.status()).toBe(404);
-  });
 });

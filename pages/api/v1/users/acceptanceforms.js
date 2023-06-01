@@ -9,8 +9,6 @@
  *         description: Get latest acceptanceform for user
  *       400:
  *         description: Error messages
- *       404:
- *         description: Acceptanceform not found
  */
 
 import dbConnect from "lib/dbConnect";
@@ -35,12 +33,6 @@ export default async function handler(req, res) {
       case "GET":
         //Get acceptanceforms for user by Id
         const acceptanceforms = await getAcceptanceforms(session.user.id);
-        if (!acceptanceforms) {
-          const error = new Error();
-          error.status = 404;
-          error.message = "Acceptanceform not found";
-          throw error;
-        }
         res.status(200).json({ data: acceptanceforms });
         return;
 
