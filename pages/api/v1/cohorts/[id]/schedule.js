@@ -138,10 +138,7 @@ export const getCohortSchedule = async (id) => {
       },
     ])
     .exec();
-  //if wrong id then throw error
-  if (!schedule) {
-    return null;
-  }
+
   return schedule;
 };
 // make sure provided ids exist in model db, return true if all ids exist in db, false otherwise

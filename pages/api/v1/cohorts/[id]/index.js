@@ -88,9 +88,10 @@ export default async function handler(req, res) {
       case "GET":
         const cohort = await getCohortById(id);
         if (!cohort) {
-          res
-            .status(404)
-            .json({ message: `Failed to find cohort with id ${id}` });
+          const error = new Error();
+          error.status = 404;
+          error.message = `Failed to find cohort with id ${id}`;
+          throw error;
         }
         res.status(200).json({ data: cohort });
         return;
@@ -98,9 +99,10 @@ export default async function handler(req, res) {
       case "DELETE":
         const deletedCohort = await deleteCohortById(id);
         if (!deletedCohort) {
-          res.status(404).json({
-            message: `Failed to delete cohort with id ${id}. Cohort not found`,
-          });
+          const error = new Error();
+          error.status = 404;
+          error.message = `Failed to delete cohort with id ${id}. Cohort not found`;
+          throw error;
         }
         res.status(200).json();
         // NOTE - if need to return deleted cohort, use - json({ data: deletedCohort })
@@ -168,8 +170,5 @@ export const updateCohort = async (id, updates) => {
     new: true,
     runValidators: true,
   });
-  if (!updatedCohort) {
-    return null;
-  }
   return updatedCohort;
 };
