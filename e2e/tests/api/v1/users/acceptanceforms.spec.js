@@ -1,5 +1,6 @@
 import { test, expect } from "e2e/fixtures/testAsUser";
 import { ObjectId } from "mongodb";
+import { faker } from "@faker-js/faker";
 
 test.describe.serial("/api/v1/users/acceptanceforms", () => {
   //GET TESTS
@@ -49,20 +50,20 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
       .toArray();
     const firstUser = acceptanceforms[0].user;
     const lastUser = acceptanceforms[1].user;
-    const currentTime = new Date();
-    const oneHourAgo = new Date(currentTime.getTime() - 60 * 60 * 1000);
+    const currentTime = faker.date.recent();
+    const pastTime = faker.date.past();
     const latestObject = {
       completed_at: currentTime.toISOString(),
     };
-    const oneHourAgoObject = {
-      completed_at: oneHourAgo.toISOString(),
-    };
+    const pastTimeObject = {
+      completed_at: pastTime.toISOString(),
+    }
     //update first acceptanceform user to session user
     await db
       .collection("acceptanceforms")
       .findOneAndUpdate(
         { user: ObjectId(firstUser) },
-        { $set: { user: ObjectId(user._id), completed_at: oneHourAgo } },
+        { $set: { user: ObjectId(user._id), completed_at: pastTime } },
         { new: true }
       );
 
@@ -82,8 +83,7 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     const responseAcceptanceform = (await response.json()).data;
     //check if response match lstest acceptanceform
     expect(responseAcceptanceform).toMatchObject(latestObject);
-    expect(responseAcceptanceform).not.toMatchObject(oneHourAgoObject);
-
+    expect(responseAcceptanceform).not.toMatchObject(pastTimeObject);
     //update first acceptanceform back
     await db
       .collection("acceptanceforms")
