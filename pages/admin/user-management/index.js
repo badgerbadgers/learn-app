@@ -80,7 +80,7 @@ const UserManagement = ({allCourses, allCohorts, users}) => {
       });
     }
     setCohorts(localCohorsts);
-  }, []);
+  }, [allCohorts]);
 
 
   useEffect(()=>{
@@ -94,7 +94,7 @@ const UserManagement = ({allCourses, allCohorts, users}) => {
           });
         }
         setCourses(localCourses);
-  }, [])
+  }, [allCourses])
 
   const filterChangeHandler = (newFilters) => {
     setFilters({ ...newFilters });
