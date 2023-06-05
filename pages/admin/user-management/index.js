@@ -129,7 +129,7 @@ const UserManagement = ({allCourses, allCohorts, users}) => {
     } catch (error) {
       console.log("An error from getData in /api/v1/users", error);
     }
-  }, [filters, searchInput]);
+  }, [filters, searchInput, users]);
 
   return (
     <Container sx={{ textAlign: "center " }}>
