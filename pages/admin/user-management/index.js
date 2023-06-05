@@ -17,7 +17,7 @@ import { getUsers } from "pages/api/v1/users";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 
-const UserManagemant = ({allCourses, allCohorts, users}) => {
+const UserManagement = ({allCourses, allCohorts, users}) => {
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -182,9 +182,9 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
   );
 };
 
-export default UserManagemant;
+export default UserManagement;
 
-UserManagemant.getLayout = privateLayout;
+UserManagement.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
