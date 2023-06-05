@@ -66,57 +66,48 @@ import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         const lessons = await getLessons();
         res.status(200).json({ data: lessons });
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      break;
-    case "POST":
-      try {
+        return;
+      case "POST":
         const lesson = await createLesson(req.body);
         res.status(200).json({ data: lesson });
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        return;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-  return;
 }
 
 export const getLessons = async () => {
-  try {
-    await dbConnect();
-    const lessons = await Lesson.find({})
-      .populate([
-        {
-          path: "materials",
-          model: "Material",
-        },
-        {
-          path: "assignments",
-          model: "Assignment",
-        },
-        {
-          path: "section",
-          model: "Section",
-        },
-      ])
-      .exec();
-
-    return lessons;
-  } catch (error) {
-    throw new Error("Could not get lessons");
+  await dbConnect();
+  const lessons = await Lesson.find({})
+    .populate([
+      {
+        path: "materials",
+        model: "Material",
+      },
+      {
+        path: "assignments",
+        model: "Assignment",
+      },
+      {
+        path: "section",
+        model: "Section",
+      },
+    ])
+    .exec();
+  if (!lessons) {
+    return null;
   }
+  return lessons;
 };
 
 // make sure provided ids exist in model db, return true if all ids exist in db, false otherwise
