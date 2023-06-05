@@ -70,16 +70,16 @@ const UserManagement = ({allCourses, allCohorts, users}) => {
   };
 
   useEffect(() => {
-    let localCohorsts = [];
+    let localCohorts = [];
     if (allCohorts) {
       allCohorts.map((cohort) => {
-        localCohorsts.push({
+        localCohorts.push({
           value: cohort._id,
           label: cohort.cohort_name,
         });
       });
     }
-    setCohorts(localCohorsts);
+    setCohorts(localCohorts);
   }, [allCohorts]);
 
 
