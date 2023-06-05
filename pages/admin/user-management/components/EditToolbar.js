@@ -63,7 +63,7 @@ const EditToolbar = (props) => {
       );
     } catch (error) {
       console.error("Error:", error.response.data);
-      snackbar.showMessage(<Alert severity="error">Error aditing user to cohort</Alert>);
+      snackbar.showMessage(<Alert severity="error">Error adding user to cohort</Alert>);
     }
   };
 
