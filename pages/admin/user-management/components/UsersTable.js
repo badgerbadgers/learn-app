@@ -114,7 +114,7 @@ export default function UsersTable({ loading, tableRows, cohorts }) {
   };
 
   const handleProcessRowUpdateError = () => {
-    snackbar.showMessage(<Alert severity="error">Error adding user</Alert>);
+    snackbar.showMessage(<Alert severity="error">Error aditing user</Alert>);
   };
 
   const columns = [
