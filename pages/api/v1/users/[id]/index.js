@@ -29,60 +29,49 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
   const { id } = req.query;
-  switch (method) {
-    case "GET":
-      try {
-        const user = await getUser(id);
-        if(!user) {
-          return res
-            .status(404)
-            .json({ message: `No user found with this ID: ${id}` });
-          
+  try {
+    switch (method) {
+      case "GET":
+        const getUserByID = await getUser(id);
+        if (!getUserByID) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "No user found with this ID ";
+          throw error;
         }
-        return res.status(200).json({ data: user });
-      } catch (error) {
-        res.status(400).json({
-          message: error.message,
-        });
+        res.status(200).json({ data: getUserByID });
         return;
-      }
-      
-    case "PATCH":
-      try {
+
+      case "PATCH":
         //call method for updating user by id filds: name, email, gh
-        const user = await updateUser(id, req.body);
-        if (!user) {
-          res
-            .status(404)
-            .json({ message: `No user found with this ID: ${id}` });
-          return;
+        const updateUserByID = await updateUser(id, req.body);
+        if (!updateUserByID) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "No user found with this ID ";
+          throw error;
         }
-        res.status(200).json({ data: user });
-      } catch (error) {
-        res.status(400).json({
-          message: error.message,
-        });
-      }
-      return;
-    case "DELETE":
-      try {
-        const user = await deleteUser(id);
-        if (!user) {
-          res
-            .status(404)
-            .json({ message: `No user found with this ID: ${id}` });
-          return;
+        res.status(200).json({ data: updateUserByID });
+        return;
+      case "DELETE":
+        const deleteUserByID = await deleteUser(id);
+        if (!deleteUserByID) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "No user found with this ID ";
+          throw error;
         }
-        res.status(200).json({ data: user });
-      } catch (error) {
-        res.status(400).json({
-          message: error.message,
-        });
-      }
-      return;
-    default:
-      res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        res.status(200).json({ data: deleteUserByID });
+        return;
+      default:
+        res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({
+      message: error.message,
+    });
   }
 }
 

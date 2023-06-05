@@ -58,33 +58,27 @@ import filterUsers from "lib/filterUsers";
 
 export default async function handler(req, res) {
   const { method } = req;
-
-  switch (method) {
-    case "GET":
-      try {
+  try {
+    switch (method) {
+      case "GET":
         //call method for getting users with any parameters we received
         const users = await getUsers(req.query);
         res.status(200).json({ data: users });
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error.message });
-      }
-      return;
-    case "POST":
-      try {
+        return;
+      case "POST":
         //call method for creating a user with any data we received
         const user = await createUser(req.body);
         res.status(200).json({ data: user });
-      } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: error.message });
-      }
-      return;
-    default:
-      res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        return;
+      default:
+        res.setHeader("Allow", ["GET", "POST"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
-}
+} 
 
 export const getUsers = async (filters = {}) => {
   await dbConnect();
