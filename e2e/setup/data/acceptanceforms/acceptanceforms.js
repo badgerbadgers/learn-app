@@ -44,7 +44,7 @@ const makeOne = (userId) => {
     emergency_contact2_name: faker.name.fullName(),
     emergency_contact2_phone: faker.phone.number(),
     emergency_contact2_relationship: "Friend",
-    is_completed: true,
+    is_completed: faker.datatype.boolean(0.5),
     personal_email: faker.internet.email(),
     personal_first_name: faker.name.firstName(),
     personal_github: faker.random.alphaNumeric(10),

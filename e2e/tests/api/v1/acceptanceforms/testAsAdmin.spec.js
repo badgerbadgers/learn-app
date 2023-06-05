@@ -16,7 +16,7 @@ test.describe("/api/v1/acceptanceforms", () => {
 
     //check if the length of the response body.data array is equal to the count of documents in the collection
     const collection = await db.collection("acceptanceforms");
-    const count = await collection.countDocuments();
+    const count = await collection.countDocuments({ is_completed: true });
     expect(body.data.length).toEqual(count);
   });
 
@@ -24,7 +24,9 @@ test.describe("/api/v1/acceptanceforms", () => {
     //check the database for a number of acceptance forms
     //call GET and get all the acceptance forms report in CSV file
 
-    const count = await db.collection("acceptanceforms").countDocuments();
+    const count = await db
+      .collection("acceptanceforms")
+      .countDocuments({ is_completed: true });
     const response = await request.get(`/api/v1/acceptanceforms`, {
       headers: { Accept: "text/csv" },
     });
