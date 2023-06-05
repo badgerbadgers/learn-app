@@ -1,81 +1,92 @@
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-// Auto adjust the typography fontSize to match the media breakpoints.
-const baseTheme = responsiveFontSizes(
-  createTheme({
-    typography: {
-      root: {
-        fontFamily: ["Roboto", "helveticNeue"],
-        // .join(","),
-        // fontFamilySecondary: "helveticNeue",
+import { createTheme } from "@mui/material/styles";
+
+const theme = createTheme();
+const baseTheme = createTheme({
+  typography: {
+    h1: {
+      fontSize: "3rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("md")]: {
+        fontSize: "2.5rem",
       },
-      h1: {
-        fontSize: "3.052rem",
-        fontWeight: 700,
-      },
-      h2: {
-        fontSize: "2.441rem",
-        fontWeight: 600,
-      },
-      h3: {
-        fontSize: "1.953rem",
-        fontWeight: 600,
-      },
-      h4: {
-        fontSize: "1.563rem",
-        fontWeight: 400,
-      },
-      h5: {
-        fontSize: "1.25rem",
-        fontWeight: 400,
-      },
-      h6: {
-        fontSize: "1rem",
-        fontWeight: 400,
-      },
-      p: {
-        fontSize: "1rem",
-        fontWeight: 400,
-      },
-      button: {
-        //make all caps? caps by default
-        fontFamily: "Roboto",
-        fontSize: "1rem",
-      },
-      caption: {
-        fontSize: ".85rem",
-        fontWeight: 400,
+      [theme.breakpoints.up("lg")]: {
+        fontSize: "3rem", //48px
       },
     },
-    components: {
-      MuiLink: {
-        styleOverrides: {
-          root: {
-            fontSize: "1rem",
-            textTransform: "uppercase",
-            fontFamily: "Roboto",
-          },
-        },
+    h2: {
+      fontSize: "2.25rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.625rem", //26px
       },
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            fontSize: "1em",
-            backgroundColor: "black",
-            color: "#FFF",
-          },
-        },
+      [theme.breakpoints.up("md")]: {
+        fontSize: "2rem", //32px
       },
-      MuiChip: {
-        styleOverrides: {
-          label: {
-            fontFamily: "Montserrat",
-            fontSize: "1rem",
-          },
+      [theme.breakpoints.up("lg")]: {
+        fontSize: "2.25rem", //36px
+      },
+    },
+    h3: {
+      fontSize: "2rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.5rem", //24px
+      },
+      [theme.breakpoints.up("md")]: {
+        fontSize: "1.75rem", //28px
+      },
+      [theme.breakpoints.up("lg")]: {
+        fontSize: "2rem", //32px
+      },
+    },
+    h4: {
+      fontSize: "1.125rem",
+      fontWeight: 500,
+    },
+    [theme.breakpoints.up("xs")]: {
+      fontSize: "1.125rem", //18px
+    },
+  },
+  p: {
+    fontSize: "1rem",
+    fontWeight: 400,
+  },
+  button: {
+    fontSize: "1rem",
+  },
+  caption: {
+    fontSize: ".85rem",
+    fontWeight: 400,
+  },
+  components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          fontSize: "1rem",
+          textTransform: "uppercase",
+          fontFamily: "Roboto",
         },
       },
     },
-  })
-);
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: "1em",
+          backgroundColor: "black",
+          color: "#FFF",
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        label: {
+          fontFamily: "Roboto",
+          fontSize: "1rem",
+        },
+      },
+    },
+  },
+});
 
 const darkTheme = createTheme({
   ...baseTheme,
@@ -135,11 +146,11 @@ const darkTheme = createTheme({
     syllabus: {
       card: "#353638",
       primary: "#FFF",
-    }, 
+    },
 
-    submission: { 
-      main:"#5da364"
-    }
+    submission: {
+      main: "#5da364",
+    },
   },
 });
 

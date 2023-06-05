@@ -1,22 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,700&display=swap');
 
 html,
 body {
   position: relative;
   min-height: 100vh;
-  margin: 0;
-  font-family: "Montserrat", "gothamRoundedMedium", "gothamRoundedBold";
-}
-
-@font-face {
-  font-family: "gothamRoundedBold";
-  src: url("/fonts/GothamRounded/GothamRounded-Bold[1].otf");
-}
-
-@font-face {
-  font-family: "gothamRoundedMedium";
-  src: url("/fonts/GothamRounded/GothamRounded-Medium[2].otf")
-    format("opentype");
+  font-family: "Roboto", "sans-serif";
 }
 
 a {
