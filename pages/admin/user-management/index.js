@@ -139,7 +139,7 @@ const UserManagement = ({allCourses, allCohorts, users}) => {
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
         User Management
       </Typography>
-      <Grid container spasing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={10}>
           <UsersFilter
             cohorts={cohorts.sort()}
