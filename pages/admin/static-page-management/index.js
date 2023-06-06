@@ -77,36 +77,6 @@ const AllStaticPages = ({ combinedData }) => {
         mb: "10rem",
       }}
     >
-      <Typography variant="h1" sx={{ paddingLeft: "50px" }}>
-        This is an h1 heading
-      </Typography>
-      <Typography variant="h2" sx={{ paddingLeft: "50px" }}>
-        This is an h2 heading
-      </Typography>
-      <Typography variant="h3" sx={{ paddingLeft: "50px" }}>
-        This is an h3 heading
-      </Typography>
-      <Typography variant="h4" sx={{ paddingLeft: "50px" }}>
-        This is an h4 heading
-      </Typography>
-      <Typography variant="h5" sx={{ paddingLeft: "50px" }}>
-        This is an h5 heading
-      </Typography>
-      <Typography variant="h6" sx={{ paddingLeft: "50px" }}>
-        This is an h6 heading
-      </Typography>
-      <Typography variant="p" sx={{ paddingLeft: "50px" }}>
-        This is p text
-      </Typography>
-      <br />
-      <Typography variant="caption" sx={{ paddingLeft: "50px" }}>
-        This is an example of caption text
-      </Typography>
-      <br />
-      <Typography variant="button" sx={{ paddingLeft: "50px" }}>
-        This is an example of button text
-      </Typography>
-
       <Typography
         // variant="h3"
         variant="h4"
