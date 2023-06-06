@@ -156,7 +156,6 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({
   ...baseTheme,
-  ...baseTheme,
   palette: {
     mode: "light",
     primary: {
