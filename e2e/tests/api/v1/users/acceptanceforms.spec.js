@@ -53,8 +53,7 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
       .find()
       .limit(2)
       .toArray();
-    const firstUser = acceptanceforms[0].user;
-    const lastUser = acceptanceforms[1].user;
+
     const currentTime = faker.date.recent();
     const pastTime = faker.date.past();
     const latestObject = {
@@ -67,7 +66,7 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     await db
       .collection("acceptanceforms")
       .findOneAndUpdate(
-        { user: ObjectId(firstUser) },
+        { _id: acceptanceforms[0]._id },
         { $set: { user: ObjectId(user._id), completed_at: pastTime } },
         { new: true }
       );
@@ -76,7 +75,7 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     await db
       .collection("acceptanceforms")
       .findOneAndUpdate(
-        { user: ObjectId(lastUser) },
+        { _id: acceptanceforms[1]._id },
         { $set: { user: ObjectId(user._id), completed_at: currentTime } },
         { new: true }
       );
@@ -93,8 +92,8 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     await db
       .collection("acceptanceforms")
       .findOneAndUpdate(
-        { user: ObjectId(user._id) },
-        { $set: { user: ObjectId(firstUser) } },
+        { _id: acceptanceforms[0]._id },
+        { $set: { user: ObjectId(acceptanceforms[0].user) } },
         { new: true }
       );
 
@@ -102,8 +101,8 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     await db
       .collection("acceptanceforms")
       .findOneAndUpdate(
-        { user: ObjectId(user._id) },
-        { $set: { user: ObjectId(lastUser) } },
+        { _id: acceptanceforms[1]._id },
+        { $set: { user: ObjectId(acceptanceforms[1].user) } },
         { new: true }
       );
   });
