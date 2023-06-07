@@ -26,6 +26,11 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     //call GET and get acceptance form
     const response = await request.get(`/api/v1/users/acceptanceforms`);
     expect(response.ok()).toBeTruthy();
+      
+    //check that we got back an acceptance form for the current user
+    const acceptanceformData = (await response.json()).data;
+    expect(acceptanceformData).toMatchObject(acceptanceform);
+    expect(acceptanceform).toMatchObject({ user: ObjectId(user._id)})
 
     //update acceptanceform back
     await db
