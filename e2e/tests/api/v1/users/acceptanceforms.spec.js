@@ -30,7 +30,7 @@ test.describe.serial("/api/v1/users/acceptanceforms", () => {
     //check that we got back an acceptance form for the current user
     const acceptanceformData = (await response.json()).data;
     expect(acceptanceformData).toMatchObject(acceptanceform);
-    expect(acceptanceform).toMatchObject({ user: ObjectId(user._id)})
+    expect(acceptanceformData).toMatchObject({ user: ObjectId(user._id)})
 
     //update acceptanceform back
     await db

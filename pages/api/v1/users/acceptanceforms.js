@@ -32,8 +32,8 @@ export default async function handler(req, res) {
     switch (method) {
       case "GET":
         //Get acceptanceforms for user by Id
-        const acceptanceforms = await getAcceptanceforms(session.user.id);
-        res.status(200).json({ data: acceptanceforms });
+        const acceptanceform = await getAcceptanceforms(session.user.id);
+        res.status(200).json({ data: acceptanceform });
         return;
 
       default:
@@ -50,8 +50,9 @@ export default async function handler(req, res) {
 
 export const getAcceptanceforms = async (userId) => {
   const filter = { user: ObjectId(userId) };
-  const acceptanceforms = await AcceptanceForm.findOne(filter).sort({
+  const acceptanceforms = await AcceptanceForm.find(filter).sort({
     completed_at: -1,
   });
-  return acceptanceforms;
+  const acceptanceform = acceptanceforms[0]
+  return acceptanceform;
 };
