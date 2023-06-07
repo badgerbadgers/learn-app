@@ -8,10 +8,10 @@ import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { createStaticPage } from "pages/api/v1/staticpages";
 import StaticPage from "lib/models/StaticPage";
 
-const AllStaticPages = ({ combinedData }) => {
-  const parsedData = JSON.parse(combinedData);
-  const [staticPages, setStaticPages] = useState(parsedData);
-  const [checked, setIsChecked] = useState(parsedData.checked);
+const AllStaticPages = ({ parsedData }) => {
+  const data = parsedData;
+  const [staticPages, setStaticPages] = useState(data);
+  const [checked, setIsChecked] = useState(data.checked);
 
   const handleChange = async (event) => {
     const deleted = event.target.checked;
@@ -118,9 +118,10 @@ export async function getServerSideProps(context) {
   const res = await axios.get(process.env.wordpressUrl);
   const wordpressData = await res.data;
   const data = await combineData(wordpressData);
+
   return {
     props: {
-      combinedData: JSON.stringify(data),
+      parsedData: JSON.parse(JSON.stringify(data)),
     },
   };
 }
