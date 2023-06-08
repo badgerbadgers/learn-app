@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Typography, Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import dbConnect from "../../../lib/dbConnect";
@@ -9,15 +9,14 @@ import { createStaticPage } from "pages/api/v1/staticpages";
 import StaticPage from "lib/models/StaticPage";
 
 const AllStaticPages = ({ parsedData }) => {
-  const data = parsedData;
-  const [staticPages, setStaticPages] = useState(data);
-  const [checked, setIsChecked] = useState(data.checked);
+  const [staticPages, setStaticPages] = useState(parsedData);
+  const [checked, setIsChecked] = useState(parsedData.checked);
 
   const handleChange = async (event) => {
     const deleted = event.target.checked;
     const id = JSON.parse(event.target.id);
     const filteredByIdPage = staticPages.filter((page) => {
-      let wp_id = JSON.parse(page.wordpress_id);
+      let wp_id = page.wordpress_id;
       return wp_id === id;
     });
 
