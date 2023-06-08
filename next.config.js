@@ -1,18 +1,18 @@
-const withPWA = require('next-pwa');
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV !== "production",
+  swSrc: "service-worker.js",
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    disable: process.env.NODE_ENV !== "production",
-    swSrc: "service-worker.js",
-  },
   env: {
     wordpressUrl: `https://learn.codethedream.org/wp-json/wp/v2/pages/`,
+    wordpressParentId: `378`,
   },
 };
 
-module.exports = withPWA(nextConfig)
+module.exports = withPWA(nextConfig);

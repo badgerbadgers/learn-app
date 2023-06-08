@@ -114,8 +114,10 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-
-  const res = await axios.get(process.env.wordpressUrl);
+  const mongoData = await StaticPage.find({}).lean();
+  const res = await axios.get(
+    process.env.wordpressUrl + "?parent=" + process.env.wordpressParentId
+  );
   const wordpressData = await res.data;
   const data = await combineData(wordpressData);
 

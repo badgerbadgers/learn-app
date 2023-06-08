@@ -1,17 +1,13 @@
 import React from "react";
-import dbConnect from "../../lib/dbConnect";
-import { useRouter } from "next/router";
-import StaticPage from "../../lib/models/StaticPage";
 import { Box } from "@mui/material";
 import { PublicLayout } from "../../components/layout/PublicLayout";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 import axios from "axios";
+import { getStudentResourcesByIsShown } from "pages/api/v1/student-resources";
+import { getStudentResourcesSlug } from "pages/api/v1/student-resources/[slug]";
 
 const Slug = ({ dbPage, content }) => {
-  const router = useRouter();
-  const slug = router.query.slug;
-
   return (
     <Box sx={{ width: "75%" }}>
       <h2>{dbPage.title}</h2>
@@ -35,8 +31,7 @@ Slug.getLayout = function getLayout(pages) {
 //If a page has Dynamic Routes and uses getStaticProps,
 //it needs to define a list of paths to be statically generated.
 export async function getStaticPaths() {
-  await dbConnect();
-  const mongoPages = await StaticPage.find({ isShown: true }).lean();
+  const mongoPages = await getStudentResourcesByIsShown();
   const paths = mongoPages.map((page) => {
     return {
       params: { slug: page.slug },
@@ -50,16 +45,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  await dbConnect();
   const contextSlug = context.params.slug;
-  const mongoPage = await StaticPage.findOne({
-    slug: contextSlug,
-    isShown: true,
-  }).lean();
+  const mongoPage = await getStudentResourcesSlug(contextSlug);
 
   // fetches specific wp page using wordpress_id
   const wordpressPage = await axios.get(
-    `https://learn.codethedream.org/wp-json/wp/v2/pages/${mongoPage.wordpress_id}`
+    process.env.wordpressUrl + mongoPage.wordpress_id
   );
 
   return {
