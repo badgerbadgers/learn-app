@@ -34,9 +34,7 @@
  *                         type: string
  *                         example: Giraffe Intro
  *       400:
- *         description: Error messages
- *       404:
- *         description: Error message if static pages are not found                
+ *         description: Error messages              
  *   post:
  *     description: Creates a new static page in database
  *     tags: [Static Pages]
@@ -84,8 +82,6 @@
  *                       example: Bright Dolphin
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error messages if static page id is invalid
  */
 
 import Staticpage from "/lib/models/StaticPage";
@@ -100,19 +96,16 @@ export default async function handler(req, res) {
       case "GET":
         const staticpages = await getStaticPages();
         if (!staticpages) {
-          const error = newError();
-          error.status = 404;
-          error.message = `Could not find static page`;
+          return [];
         }
         res.status(200).json({ data: staticpages });
         return;
       case "POST":
         const newstaticpage = await createStaticPage(postData);
         if (!newstaticpage) {
-          const error = new Error();
-          error.status = 404;
-          error.message = `Cannot create new static page`;
-          throw error;
+          throw new Error(
+            `Cannot create new static page, ${postData} is invalid`
+          );
         }
         res.status(200).json({ data: newstaticpage });
         return;

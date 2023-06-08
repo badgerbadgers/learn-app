@@ -35,8 +35,6 @@
  *                         example: Grasshopper Rails
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error messages
  */
 
 import StaticPage from "lib/models/StaticPage";
@@ -50,10 +48,7 @@ export default async function handler(req, res) {
       case "GET":
         const studentresources = await getStudentResourcesByIsShown();
         if (!studentresources) {
-          const error = new Error();
-          error.status = 404;
-          error.message = `Could not find student resources`;
-          throw error;
+          return [];
         }
         res.status(200).json({ data: studentresources });
         return;

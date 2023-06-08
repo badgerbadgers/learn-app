@@ -35,8 +35,6 @@
  *                         example: 2023-05-05T01:31:37.035+00:00
  *       400:
  *         description: Error messages
- *       404:
- *         description: Error message if no sections are found
  */
 
 import Section from "lib/models/Section";
@@ -50,10 +48,7 @@ export default async function handler(req, res) {
       case "GET":
         const sections = await getSections();
         if (!sections) {
-          const error = new Error();
-          error.status = 404;
-          error.message = `Could not find any Sections`;
-          throw error;
+          return [];
         }
         res.status(200).json({ data: sections });
         return;
