@@ -26,9 +26,6 @@ const AllStaticPages = ({ parsedData }) => {
     const slug = filteredByIdPage[0].slug;
 
     const updatestaticpage = {
-      title: title,
-      slug: slug,
-      _id: mongo_id,
       isShown: deleted,
     };
 
