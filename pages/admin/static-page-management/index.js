@@ -6,7 +6,9 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import { privateLayout } from "../../../components/layout/PrivateLayout";
 import { createStaticPage } from "pages/api/v1/staticpages";
+import { updateStaticPage } from "pages/api/v1/staticpages/[id]";
 import StaticPage from "lib/models/StaticPage";
+const { ObjectId } = require("mongodb");
 
 const AllStaticPages = ({ parsedData }) => {
   const [staticPages, setStaticPages] = useState(parsedData);
@@ -110,7 +112,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { user } = session;
-  const mongoData = await StaticPage.find({}).lean();
+  // const mongoData = await StaticPage.find({}).lean();
   const res = await axios.get(
     process.env.wordpressUrl + "?parent=" + process.env.wordpressParentId
   );
@@ -133,6 +135,15 @@ const combineData = async (wordpressData) => {
       wordpress_id: wordpressData[i].id,
     });
 
+    //if wp id does not match mongo doc boolean is false
+    if (wordpressData[i].id !== mongoObj.wordpress_id) {
+      await updateStaticPage(
+        ObjectId(mongoObj._id),
+        (mongoObj = {
+          isShown: false,
+        })
+      );
+    }
     if (mongoObj) {
       combinedData.push(mongoObj);
     } else if (mongoObj === null) {
