@@ -3,8 +3,11 @@ import { faker } from "@faker-js/faker";
 import { ObjectId } from "mongodb";
 
 test.describe("/api/v1/users/id", () => {
-  //GET TESTS
+  const first = faker.name.firstName();
+  const last = faker.name.lastName();
 
+  //GET TESTS
+  
   test("get user by ID", async ({ request, db }) => {
     const userId = "62b22b42f4da59dbea98071b";
 
@@ -61,12 +64,12 @@ test.describe("/api/v1/users/id", () => {
 
   test("change a User name, email and gh", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
+    
     const updateUser = {
       name: faker.name.fullName(),
-      email: faker.internet.email(),
+      email: faker.internet.email(first, last),
       gh: faker.random.alphaNumeric(10),
     };
-
     //Ghange User name, email, gh
     const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
       data: updateUser,
@@ -86,7 +89,142 @@ test.describe("/api/v1/users/id", () => {
   test("update only email", async ({ request }) => {
     const userId = "62b22b42f4da59dbea98071b";
     const updateUser = {
-      email: faker.internet.email(),
+      email: faker.internet.email(first, last),
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc-d@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc-d@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc_def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc_def@mail.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.cc", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.cc",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail-archive.com", async ({
+    request,
+  }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail-archive.com",
+    };
+
+    //Change User email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeTruthy();
+    //GET User by ID and compare updated values
+    const getResponse = await request.get(`/api/v1/users/${userId}`);
+    expect(getResponse.ok()).toBeTruthy();
+    const getUser = (await getResponse.json()).data;
+    expect(updateUser.email).toBe(getUser.email);
+  });
+
+  test("update user with valid email abc.def@mail.org", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.org",
     };
 
     //Change User email
@@ -128,6 +266,357 @@ test.describe("/api/v1/users/id", () => {
     });
 
     expect(patchResponse.ok()).toBeFalsy();
+  });
+
+  test("update with invalid email Abc.example.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "Abc.example.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email A@b@c@example.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "A@b@c@example.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email a'b(c)d,e:f;gi[j\k]l@example.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: 'a"b(c)d,e:f;gi[j\k]l@example.com',
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email this is'not\allowed@example.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: 'this is"not\allowed@example.com',
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email this\ still'not\allowed@example.com-1234567890123456789012345678901234567890123456789012345678901234+x@example.com ", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: 'this\ still"not\allowed@example.com-1234567890123456789012345678901234567890123456789012345678901234+x@example.com',
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email i_like_underscore@but_its_not_allowed_in_this_part.example.com", async ({
+    request,
+  }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "i_like_underscore@but_its_not_allowed_in_this_part.example.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email QA[icon]CHOCOLATE[icon]@test.com", async ({
+    request,
+  }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "QA[icon]CHOCOLATE[icon]@test.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc-@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc-@mail.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc..def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc..def@mail.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email .abc@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: ".abc@mail.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc#def@mail.com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc#def@mail.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc.def@mail.c", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail.c",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc.def@mail#archive.com", async ({
+    request,
+  }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail#archive.com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc.def@mail", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
+  });
+
+  test("update with invalid email abc.def@mail..com", async ({ request }) => {
+    const userId = "62b22b42f4da59dbea98071b";
+    const updateUser = {
+      email: "abc.def@mail..com",
+    };
+
+    //change user name and email
+    const patchResponse = await request.patch(`/api/v1/users/${userId}`, {
+      data: updateUser,
+    });
+
+    expect(patchResponse.ok()).toBeFalsy();
+
+    //confirm our user has not been updated
+    const getResponse = await request.get("/api/v1/users");
+    expect(getResponse.ok()).toBeTruthy();
+
+    const users = (await getResponse.json()).data;
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: updateUser.email })
+    );
   });
 
   test("update with empty Github", async ({ request }) => {
@@ -201,7 +690,7 @@ test.describe("/api/v1/users/id", () => {
     //Create not existing userID
     const userId = faker.database.mongodbObjectId();
     const updateUser = {
-      email: faker.internet.email(),
+      email: faker.internet.email(first, last),
     };
 
     const patchResponse = await request.patch(`/api/v1/users/${userId}`, {

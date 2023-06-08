@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import Head from "next/head";
 import { SnackbarProvider } from "material-ui-snackbar-provider";
+import 'normalize.css/normalize.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   // If the component has a getLayout() function, use it. Otherwise just render the page as is.
