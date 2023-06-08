@@ -128,7 +128,7 @@ export async function getServerSideProps(context) {
 
 const combineData = async (wordpressData) => {
   const combinedData = [];
-  let mongoObj = {};
+  let mongoObj;
 
   for (let i = 0; i < wordpressData.length; i++) {
     mongoObj = await StaticPage.findOne({
