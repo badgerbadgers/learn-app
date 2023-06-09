@@ -51,6 +51,9 @@ export default async function handler(req, res) {
 export const getAcceptanceforms = async (userId) => {
   const filter = { user: ObjectId(userId) };
   const acceptanceforms = await AcceptanceForm.find(filter).sort({ $natural: -1 });
+  if(!acceptanceforms[0]) {
+    return null
+  }
   const acceptanceform = acceptanceforms[0]
   return acceptanceform;
 };
