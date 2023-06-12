@@ -14,6 +14,8 @@ import { formatDistance } from "date-fns";
 import { getCourses } from "pages/api/v1/courses";
 import { getCohorts } from "pages/api/v1/cohorts";
 import { getUsers } from "pages/api/v1/users";
+import Link from "next/link";
+import Box from "@mui/material/Box";
 
 const UserManagemant = ({allCourses, allCohorts, users}) => {
   const allStudents = useRef([]);
@@ -131,10 +133,13 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
 
   return (
     <Container sx={{ textAlign: "center " }}>
+      <Box sx={{ textAlign: "right" }}>
+        <Link href="/admin/user-management/deleted">Deleted Users</Link>
+      </Box>
       <Typography pb={4} sx={{ fontWeight: 100, fontSize: "3rem" }}>
-       User Management
+        User Management
       </Typography>
-      <Grid container spasing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={10}>
           <UsersFilter
             cohorts={cohorts.sort()}
