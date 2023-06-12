@@ -1,42 +1,51 @@
 import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme();
+const theme = createTheme({
+  breakpoints: {
+    xs: "0em",
+    sm: "37.5em", //600px,
+    md: "56.25em", //900px,
+    lg: "75em", //1200px,
+    xl: "96em", //1536px
+  },
+});
+
 const baseTheme = createTheme({
   typography: {
     h1: {
       fontSize: "3rem",
       fontWeight: 700,
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "3rem",
+      },
       [theme.breakpoints.down("md")]: {
         fontSize: "2.5rem",
-      },
-      [theme.breakpoints.up("lg")]: {
-        fontSize: "3rem",
       },
     },
     h2: {
       fontSize: "2.25rem",
       fontWeight: 700,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "1.625rem",
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "2.25rem",
       },
-      [theme.breakpoints.up("md")]: {
+      [theme.breakpoints.down("md")]: {
         fontSize: "2rem",
       },
-      [theme.breakpoints.up("lg")]: {
-        fontSize: "2.25rem",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.625rem",
       },
     },
     h3: {
       fontSize: "2rem",
       fontWeight: 700,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "1.5rem",
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "2rem",
       },
-      [theme.breakpoints.up("md")]: {
+      [theme.breakpoints.down("md")]: {
         fontSize: "1.75rem",
       },
-      [theme.breakpoints.up("lg")]: {
-        fontSize: "2rem",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.5rem",
       },
     },
     h4: {
@@ -47,7 +56,7 @@ const baseTheme = createTheme({
       fontSize: "1.125rem",
     },
   },
-  p: {
+  body1: {
     fontSize: "1rem",
     fontWeight: 400,
   },
