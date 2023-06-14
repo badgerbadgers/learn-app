@@ -52,7 +52,7 @@ const baseTheme = createTheme({
       fontSize: "1.125rem",
       fontWeight: 500,
     },
-    [theme.breakpoints.up("xs")]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "1.125rem",
     },
   },
