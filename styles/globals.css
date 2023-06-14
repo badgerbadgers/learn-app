@@ -4,16 +4,16 @@
   margin: 0; padding: 0; box-sizing: inherit; 
 }
 
+html {
+  font-size: 100%;
+}
+
 html,
 body {
   position: relative;
   min-height: 100vh;
   font-family: "Roboto", "sans-serif";
   box-sizing: border-box;
-}
-
-html {
-  font-size: 100%;
 }
 
 a {
