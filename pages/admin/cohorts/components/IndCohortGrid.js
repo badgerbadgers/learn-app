@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
-
+import { format, formatDistance } from "date-fns";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Stack } from "@mui/material";
 
-export default function IndCohortGrid({ loading, students }) {
+export default function IndCohortGrid({ students }) {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    setRows(students)
+    const parsedStudents = students.map((st) => ({
+      ...st,
+      studentAdded: format(new Date(st.added_at), "MMM dd, yyyy"),
+      lastLogin: st.last_seen
+        ? formatDistance(new Date(st.last_seen), new Date(), {
+            addSuffix: true,
+          })
+        : "",
+    }));
+    setRows(parsedStudents);
   }, [students]);
 
   const columns = [
@@ -61,11 +70,13 @@ export default function IndCohortGrid({ loading, students }) {
   ];
 
   return (
-    <Box sx={{
-      height: "calc(100vh - 64px - 3rem - 3rem)", //100% - header - data grid title - footer
-      width: "100%",
-      mb: "4rem",
-    }}>
+    <Box
+      sx={{
+        height: "calc(100vh - 64px - 3rem - 3rem)", //100% - header - data grid title - footer
+        width: "100%",
+        mb: "4rem",
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
@@ -93,22 +104,21 @@ export default function IndCohortGrid({ loading, students }) {
               MenuProps: {
                 sx: {
                   "& .MuiMenuItem-root": {
-                    fontSize: "0.9rem"
-                  }
-                }
-              }
-            }
+                    fontSize: "0.9rem",
+                  },
+                },
+              },
+            },
           },
         }}
-
         experimentalFeatures={{ newEditingApi: true }}
-
         sx={{
           "*, .MuiSelect-outlined, .MuiInputBase-input": {
             fontFamily: "Montserrat",
             fontSize: "0.9rem",
           },
-          ".MuiTablePagination-selectLabel": {  // pagination label
+          ".MuiTablePagination-selectLabel": {
+            // pagination label
             fontFamily: "Montserrat",
           },
         }}
