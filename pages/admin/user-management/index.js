@@ -17,7 +17,7 @@ import { getUsers } from "pages/api/v1/users";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 
-const UserManagemant = ({allCourses, allCohorts, users}) => {
+const UserManagement = ({allCourses, allCohorts, users}) => {
   const allStudents = useRef([]);
   const [loading, setLoading] = useState(true);
   const [tableRows, setTableRows] = useState([]);
@@ -70,17 +70,17 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
   };
 
   useEffect(() => {
-    let localCohorsts = [];
+    let localCohorts = [];
     if (allCohorts) {
       allCohorts.map((cohort) => {
-        localCohorsts.push({
+        localCohorts.push({
           value: cohort._id,
           label: cohort.cohort_name,
         });
       });
     }
-    setCohorts(localCohorsts);
-  }, []);
+    setCohorts(localCohorts);
+  }, [allCohorts]);
 
 
   useEffect(()=>{
@@ -94,7 +94,7 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
           });
         }
         setCourses(localCourses);
-  }, [])
+  }, [allCourses])
 
   const filterChangeHandler = (newFilters) => {
     setFilters({ ...newFilters });
@@ -129,7 +129,7 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
     } catch (error) {
       console.log("An error from getData in /api/v1/users", error);
     }
-  }, [filters]);
+  }, [filters, searchInput, users]);
 
   return (
     <Container sx={{ textAlign: "center " }}>
@@ -182,9 +182,9 @@ const UserManagemant = ({allCourses, allCohorts, users}) => {
   );
 };
 
-export default UserManagemant;
+export default UserManagement;
 
-UserManagemant.getLayout = privateLayout;
+UserManagement.getLayout = privateLayout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
