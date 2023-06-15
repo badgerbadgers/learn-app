@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Switch, Typography, Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import dbConnect from "../../../lib/dbConnect";
+import dbConnect from "lib/dbConnect";
 import axios from "axios";
 import { getSession } from "next-auth/react";
-import { privateLayout } from "../../../components/layout/PrivateLayout";
+import { privateLayout } from "components/layout/PrivateLayout";
 import { createStaticPage } from "pages/api/v1/staticpages";
-import { updateStaticPage } from "pages/api/v1/staticpages/[id]";
+import { deleteStaticPage } from "pages/api/v1/staticpages/[id]";
 import StaticPage from "lib/models/StaticPage";
-const { ObjectId } = require("mongodb");
 
 const AllStaticPages = ({ parsedData }) => {
   const [staticPages, setStaticPages] = useState(parsedData);
@@ -24,8 +23,6 @@ const AllStaticPages = ({ parsedData }) => {
 
     //toggled page will always be array index 0 from filter
     const mongo_id = filteredByIdPage[0]._id;
-    const title = filteredByIdPage[0].title;
-    const slug = filteredByIdPage[0].slug;
 
     const updatestaticpage = {
       isShown: deleted,
@@ -111,12 +108,23 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const { user } = session;
 
   const res = await axios.get(
     process.env.wordpressUrl + "?parent=" + process.env.wordpressParentId
   );
   const wordpressData = await res.data;
+  const wordpressIds = wordpressData.map((page) => page.id);
+
+  //finds wp id that is not in wordpressIds array
+  const deletedWordPressIds = await StaticPage.find({
+    wordpress_id: { $nin: wordpressIds },
+    deleted_at: null,
+  });
+
+  //loops through the array and soft deletes the static page by id
+  for (const itemToDelete of deletedWordPressIds) {
+    deleteStaticPage(itemToDelete._id.toString());
+  }
   const data = await combineData(wordpressData);
 
   return {
@@ -127,6 +135,7 @@ export async function getServerSideProps(context) {
 }
 
 const combineData = async (wordpressData) => {
+  await dbConnect();
   const combinedData = [];
   let mongoObj;
 
@@ -135,26 +144,15 @@ const combineData = async (wordpressData) => {
       wordpress_id: wordpressData[i].id,
     });
 
-    //if wp id does not match mongo doc boolean is false
-    if (wordpressData[i].id !== mongoObj.wordpress_id) {
-      await updateStaticPage(
-        ObjectId(mongoObj._id),
-        (mongoObj = {
-          isShown: false,
-        })
-      );
-    }
     if (mongoObj) {
       combinedData.push(mongoObj);
     } else if (mongoObj === null) {
-      await createStaticPage(
-        (mongoObj = {
-          wordpress_id: wordpressData[i].id,
-          isShown: wordpressData[i].deleted,
-          title: wordpressData[i].title.rendered,
-          slug: wordpressData[i].slug,
-        })
-      );
+      mongoObj = await createStaticPage({
+        wordpress_id: wordpressData[i].id,
+        isShown: false,
+        title: wordpressData[i].title.rendered,
+        slug: wordpressData[i].slug,
+      });
       combinedData.push(mongoObj);
     }
   }

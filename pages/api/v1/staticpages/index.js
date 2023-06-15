@@ -121,7 +121,7 @@ export const getStaticPages = async () => {
   try {
     await dbConnect();
 
-    const staticpages = await Staticpage.find({});
+    const staticpages = await StaticPage.find({});
     return staticpages;
   } catch (error) {
     throw new Error("Error getting static pages", error.message);
@@ -142,7 +142,7 @@ export const createStaticPage = async (staticpage) => {
       );
     }
 
-    const newstaticpage = new Staticpage(staticpage);
+    const newstaticpage = new StaticPage(staticpage);
     await newstaticpage.save();
     return newstaticpage;
   } catch (error) {

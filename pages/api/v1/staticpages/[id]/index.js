@@ -172,7 +172,7 @@ export default async function handler(req, res) {
     case "DELETE":
       try {
         const id = req.query.id;
-        await deletedStaticPage(id);
+        await deleteStaticPage(id);
         res.status(200).json({ message: `Page has been deleted.` });
         return;
       } catch (error) {
@@ -217,7 +217,7 @@ export const updateStaticPage = async (id, updates) => {
   return updatedstaticpage;
 };
 
-export const deletedStaticPage = async (id) => {
+export const deleteStaticPage = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
   const deletedPage = await StaticPage.findByIdAndUpdate(id, update);
