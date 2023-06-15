@@ -33,7 +33,8 @@
  *                       title:
  *                         type: string
  *                         example: Grasshopper Rails
- *
+ *       400:
+ *         description: Error messages
  */
 
 import StaticPage from "lib/models/StaticPage";
@@ -42,32 +43,33 @@ import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
 
-  switch (method) {
-    case "GET":
-      try {
-        const staticpage = await getStudentResourcesByIsShown();
-        if (!staticpage) {
-          res.status(404).json({
-            message: `Error getting static pages`,
-          });
-          return;
+  try {
+    switch (method) {
+      case "GET":
+        const studentresources = await getStudentResourcesByIsShown();
+        if (!studentresources) {
+          return [];
         }
-        res.status(200).json({ data: staticpage });
+        res.status(200).json({ data: studentresources });
         return;
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["GET"]);
-      res.status(405).end(`Method ${method} Not Allow`);
+      default:
+        res.setHeader("Allow", ["GET"]);
+        res.status(405).end(`Method ${method} Not Allow`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
 export const getStudentResourcesByIsShown = async () => {
   await dbConnect();
-  const staticPagesShown = await StaticPage.find({
+  const studentresourcesshown = await StaticPage.find({
     isShown: true,
   });
-  return staticPagesShown;
+
+  if (!studentresourcesshown) {
+    return null;
+  }
+  return studentresourcesshown;
 };

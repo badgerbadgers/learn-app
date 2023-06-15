@@ -75,7 +75,7 @@ const AllStaticPages = ({ parsedData }) => {
         gutterBottom
         color="primary"
         style={{
-          fontSize: "35px",
+          // fontSize: "35px",
           position: "relative",
           top: "60px",
           left: "80px",

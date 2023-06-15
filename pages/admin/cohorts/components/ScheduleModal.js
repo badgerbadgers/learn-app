@@ -1,6 +1,8 @@
+// TODO - add code to use loading statue to show a spinner or progress bar; add code to use error messages and provide feedback when errors are received.
+
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import { addDays, format } from "date-fns"
+import { addDays, format } from "date-fns";
 import axios from "axios";
 import AddItemForm from "./AddItemForm";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,6 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ScheduleItemBreak from "./ScheduleItemBreak";
 import ScheduleItemLesson from "./ScheduleItemLesson";
+import getData from "../../../../lib/getData";
 
 export default function ScheduleModal({
   open,
@@ -17,57 +20,80 @@ export default function ScheduleModal({
   id,
   cohortName,
   startDate,
-  schedule,
-  setSchedule,
+  setStartDate,
 }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [schedule, setSchedule] = useState([]);
+  const [error, setError] = useState(null);
+  const [updateScheduleError, setUpdateScheduleError] = useState(null);
   const [showFormIdx, setShowFormIdx] = useState(null);
   const [showFormType, setShowFormType] = useState();
   const [date, setDate] = useState(null);
-  const matches_sx = useMediaQuery("(max-width: 600px)");
+  const [errorDate, setErrorDate] = useState(null);
+  const matches_sx = useMediaQuery("(max-width: 600px)"); // TODO  - check this out when work with styling
 
   useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    setLoading(false);
     setDate(startDate);
-  }, [schedule]);
+  }, [startDate]);
 
-  const updateDate = (date) => {
-    updateCohortField(["start_date", date]);
+  useEffect(() => {
+    if (open) {
+      try {
+        setLoading(true);
+        const fetchSchedule = async () => {
+          const url = `/api/v1/cohorts/${id}/schedule`;
+          const response = await getData({}, url);
+          setSchedule(response.data);
+        };
+        fetchSchedule();
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+        setError(error.message);
+      }
+    }
+  }, [id, open]);
+
+  const updateStartDate = async (date) => {
+    try {
+      const url = `/api/v1/cohorts/${id}`;
+      await axios.patch(url, { start_date: date });
+      setStartDate(date);
+    } catch (error) {
+      console.error(error);
+      setErrorDate(error.message);
+    }
   };
 
-  const updateCohortField = async (payload) => {
-    const url = "/api/cohorts/";
-    await axios.put(url + id, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const updateSchedule = async (payload) => {
+    try {
+      const url = `/api/v1/cohorts/${id}/schedule`;
+      const { data } = await axios.put(url, { schedule: payload });
+      setSchedule(data.data);
+    } catch (error) {
+      console.error(error);
+      setUpdateScheduleError(error.message);
+    }
   };
 
   const removeItem = (idx) => {
     let newItems = [...schedule];
     newItems.splice(idx, 1);
-    setSchedule(newItems);
-    updateCohortField(["schedule", newItems]);
+    updateSchedule(newItems);
   };
 
   const insertItem = (idx, newItem) => {
     let newItems = [...schedule];
     newItems.splice(idx + 1, 0, newItem);
+    updateSchedule(newItems);
     setShowFormIdx(null);
-    setSchedule(newItems);
-    updateCohortField(["schedule", newItems]);
   };
 
   const updateItem = (idx, item) => {
     let newItems = [...schedule];
     newItems[idx] = item;
-    setSchedule(newItems);
-    updateCohortField(["schedule", newItems]);
+    updateSchedule(newItems);
   };
 
   const handleShowForm = (idx, formType) => {
@@ -113,75 +139,78 @@ export default function ScheduleModal({
               id={id}
               date={date}
               setDate={setDate}
-              updateDate={updateDate}
+              updateDate={updateStartDate}
             />
           </Box>
         </DialogTitle>
-
         <DialogContent>
-          {schedule.map((week, idx) => {
-            const showBreakBtns = idx < schedule.length - 1 ? true : false;
-            const weekStartDate = date
-              ? format(addDays(new Date(date), 7 * idx), "MMM dd, yyyy")
-              : `week ${idx + 1}`;
-            if (week.type === "lesson") {
-              return (
-                <Fragment key={idx}>
-                  <ScheduleItemLesson
-                    key={idx}
-                    id={id}
-                    idx={idx}
-                    lesson={week.lesson.title}
-                    lessonStartDate={weekStartDate}
-                    itemType={week.type}
-                    sectionTitle={week.section.title}
-                    showBreakBtns={showBreakBtns}
-                    handleShowForm={handleShowForm}
-                    insertItem={insertItem}
-                  />
-                  {showFormIdx === idx && (
-                    <AddItemForm
-                      key={`form-${idx}`}
+          {schedule &&
+            schedule.map((week, idx) => {
+              const showBreakBtns = idx < schedule.length - 1 ? true : false;
+              const weekStartDate = date
+                ? format(addDays(new Date(date), 7 * idx), "MMM dd, yyyy")
+                : `week ${idx + 1}`;
+
+              if (week.type === "lesson") {
+                return (
+                  <Fragment key={idx}>
+                    <ScheduleItemLesson
+                      key={idx}
+                      id={id}
                       idx={idx}
-                      saveItem={insertItem}
-                      removeItem={removeItem}
-                      sectionId={week.section._id}
-                      type={showFormType}
+                      lesson={week.lesson.title}
+                      lessonStartDate={weekStartDate}
+                      itemType={week.type}
+                      sectionTitle={week.section.title}
+                      showBreakBtns={showBreakBtns}
+                      handleShowForm={handleShowForm}
+                      insertItem={insertItem}
                     />
-                  )}
-                </Fragment>
-              );
-            } else if (week.type == "break" || week.type == "review") {
-              return (
-                <Fragment key={idx}>
-                  <ScheduleItemBreak
-                    key={idx}
-                    id={id}
-                    idx={idx}
-                    startDate={weekStartDate}
-                    weekType={week.type}
-                    content={week.content}
-                    sectionId={week.section}
-                    showBreakBtns={showBreakBtns}
-                    handleShowForm={handleShowForm}
-                    insertItem={insertItem}
-                    removeItem={removeItem}
-                    updateItem={updateItem}
-                  />
-                  {showFormIdx === idx && (
-                    <AddItemForm
-                      key={`form-${idx}`}
+                    {showFormIdx === idx && (
+                      <AddItemForm
+                        key={`form-${idx}`}
+                        idx={idx}
+                        saveItem={insertItem}
+                        removeItem={removeItem}
+                        sectionId={week.section._id}
+                        type={showFormType}
+                        cancel={setShowFormIdx}
+                      />
+                    )}
+                  </Fragment>
+                );
+              } else if (week.type === "break" || week.type === "review") {
+                return (
+                  <Fragment key={idx}>
+                    <ScheduleItemBreak
+                      key={idx}
+                      id={id}
                       idx={idx}
-                      saveItem={insertItem}
-                      removeItem={removeItem}
+                      startDate={weekStartDate}
+                      weekType={week.type}
+                      content={week.content}
                       sectionId={week.section}
-                      type={showFormType}
+                      showBreakBtns={showBreakBtns}
+                      handleShowForm={handleShowForm}
+                      insertItem={insertItem}
+                      removeItem={removeItem}
+                      updateItem={updateItem}
                     />
-                  )}
-                </Fragment>
-              );
-            }
-          })}
+                    {showFormIdx === idx && (
+                      <AddItemForm
+                        key={`form-${idx}`}
+                        idx={idx}
+                        saveItem={insertItem}
+                        removeItem={removeItem}
+                        sectionId={week.section}
+                        type={showFormType}
+                        cancel={setShowFormIdx}
+                      />
+                    )}
+                  </Fragment>
+                );
+              }
+            })}
 
           <Button //TODO: add handle check for unsaved notes
             onClick={handleClose}

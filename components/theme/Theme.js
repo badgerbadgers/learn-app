@@ -1,80 +1,98 @@
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-// Auto adjust the typography fontSize to match the media breakpoints.
-const baseTheme = responsiveFontSizes(
-  createTheme({
-    typography: {
-      root: {
-        fontFamily: [
-          "gothamRoundedBold",
-          "gothamRoundedMedium",
-          "Montserrat",
-        ].join(","),
-        fontFamilySecondary: "Montserrat",
-      },
-      h3: {
-        //title of any page. Header
-        fontSize: "3.2rem",
-        fontWeight: "700 !important",
-        fontFamily: "gothamRoundedBold",
-      },
-      h4: {
-        //title of any page. Header
-        fontSize: "2.2rem",
-        fontFamily: "gothamRoundedBold",
-      },
+import { createTheme } from "@mui/material/styles";
 
-      h5: {
-        //subheaders on the page
-        fontSize: "1.6rem",
-        fontFamily: "gothamRoundedMedium",
-        fontWeight: "500 !important",
+const theme = createTheme({
+  breakpoints: {
+    xs: "0em",
+    sm: "37.5em", //600px,
+    md: "56.25em", //900px,
+    lg: "75em", //1200px,
+    xl: "96em", //1536px
+  },
+});
+
+const baseTheme = createTheme({
+  typography: {
+    h1: {
+      fontSize: "3rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "3rem",
       },
-      h6: {
-        // Header Elements
-        fontSize: "0.9rem",
-        textTransform: "uppercase",
-        fontFamily: "gothamRoundedMedium",
-        overflowWrap: "break-word",
-      },
-      body1: {
-        fontFamily: "Montserrat",
-        fontSize: "1rem",
-      },
-      button: {
-        fontFamily: "gothamRoundedMedium",
-        fontSize: "1rem",
-      },
-    },
-    components: {
-      MuiLink: {
-        styleOverrides: {
-          root: {
-            fontSize: "1rem",
-            textTransform: "uppercase",
-            fontFamily: "gothamRoundedMedium",
-          },
-        },
-      },
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            fontSize: "1em",
-            backgroundColor: "black",
-            color: "#FFF",
-          },
-        },
-      },
-      MuiChip: {
-        styleOverrides: {
-          label: {
-            fontFamily: "Montserrat",
-            fontSize: "1rem",
-          },
-        },
+      [theme.breakpoints.down("md")]: {
+        fontSize: "2.5rem",
       },
     },
-  })
-);
+    h2: {
+      fontSize: "2.25rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "2.25rem",
+      },
+      [theme.breakpoints.down("md")]: {
+        fontSize: "2rem",
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.625rem",
+      },
+    },
+    h3: {
+      fontSize: "2rem",
+      fontWeight: 700,
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "2rem",
+      },
+      [theme.breakpoints.down("md")]: {
+        fontSize: "1.75rem",
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.5rem",
+      },
+    },
+    h4: {
+      fontSize: "1.125rem",
+      fontWeight: 500,
+    },
+  },
+  body1: {
+    fontSize: "1rem",
+    fontWeight: 400,
+  },
+  button: {
+    fontSize: "1rem",
+  },
+  caption: {
+    fontSize: ".85rem",
+    fontWeight: 400,
+  },
+  components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          fontSize: "1rem",
+          textTransform: "uppercase",
+          fontFamily: "Roboto",
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: "1em",
+          backgroundColor: "black",
+          color: "#FFF",
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        label: {
+          fontFamily: "Roboto",
+          fontSize: "1rem",
+        },
+      },
+    },
+  },
+});
 
 const darkTheme = createTheme({
   ...baseTheme,
@@ -134,11 +152,11 @@ const darkTheme = createTheme({
     syllabus: {
       card: "#353638",
       primary: "#FFF",
-    }, 
+    },
 
-    submission: { 
-      main:"#5da364"
-    }
+    submission: {
+      main: "#5da364",
+    },
   },
 });
 
@@ -146,61 +164,29 @@ const lightTheme = createTheme({
   ...baseTheme,
   palette: {
     mode: "light",
-
     primary: {
-      main: "#FF5C35", //original orange from CTD
-      yellowCard: "#F3C300", //original yellow from ctd pallete
-      contrastText: "#FFF", //white
-      greenCard: "#8BC34A", // light green
+      main: "#FF5C35",
+      light: "rgba(255, 92, 53, 0.2)",
     },
-    secondary: {
-      main: "#12284C", //original blue from CTD
-      light: "#F3C300", //original yellow from ctd pallete
-      contrastText: "#FFF",
+    success: {
+      main: "#1BA818",
+    },
+    info: {
+      main: "#309FDE",
+      light: "#E1F1FF",
+      yellow: "rgba(243, 195, 0, 0.4)",
     },
     text: {
-      primary: "#31393C", //black
+      primary: "#141414",
+      secondary: "#000000",
+      grey: "#646464", //Filter, search
+      disabled: "#A8A8A8",
+      contrastText: "#FFFFFF",
+      contrastLanding: "#F7F7F7", // landing page
     },
     background: {
-      default: "#FFF",
-      dbpaper: "#F4F5F7",
-      card: "#DFE2E8",
-      ctdcard: "#FFF",
-      button: "#FF5C35",
-      chip: "#FF5C35",
-      contactIcon: "#12284C",
-      skillsChip: "#12284C",
-    },
-    zone1: {
-      personal: "#8D9DB9", // 2 shades lighter blue than zone2
-      tech: "#FF9D85", // 2 shades lighter orange than zone2
-      contrastText: "#000", //black
-    },
-    zone2: {
-      personal: "#7488AA", // 2 shades lighter blue than zone3
-      tech: "#FF8D70", // 2 shades lighter orange than zone3
-      contrastText: "#000",
-    },
-    zone3: {
-      personal: "#506891", //2 shades lighter blue than zone4
-      tech: "#FF7C5C", //2 shades lighter orange than zone4
-      contrastText: "#000",
-    },
-    zone4: {
-      personal: "#324A71", //2 shades lighter blue than original
-      tech: "#FA6F4C", //2 shades lighter orange than original
-      contrastText: "#000",
-    },
-    schedule: {
-      text: "#181919", //2 shades lighter blue than zone4
-      background: "#f5f5f5",
-    },
-    syllabus: {
-      primary: "#000000",
-      card: "#F4F5F7", //light gray
-    },
-    submission: {
-      main: "#6BDF77",
+      paper: "#FFFFFF",
+      default: "#F7F7F7",
     },
   },
 });

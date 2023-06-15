@@ -1,11 +1,11 @@
 /**
  * @swagger
  * tags:
- *   name: Student resources
- * /api/v1/studentresource/{slug}:
+ *   name: Student Resources
+ * /api/v1/student-resources/{slug}:
  *   get:
  *     description: Get a specific student resource by slug
- *     tags: [Student resources]
+ *     tags: [Student Resources]
  *     parameters:
  *       - in: path
  *         name: slug
@@ -44,9 +44,9 @@
  *                         type: string
  *                         example: Grasshopper Rails
  *       400:
- *         description: Error status
+ *         description: Error messages
  *       404:
- *         description: Resource not found
+ *         description: Error message if slug of student resource is not found
  *
  */
 
@@ -54,36 +54,39 @@ import StaticPage from "lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 export default async function handler(req, res) {
   const { method } = req;
+  const slug = req.query.slug;
 
-  switch (method) {
-    case "GET":
-      try {
-        const slug = req.query.slug;
-        const staticpage = await getStudentResourcesSlug(slug);
-        res.status(200).json({ data: staticpage });
+  try {
+    switch (method) {
+      case "GET":
+        const studentresource = await getStudentResourceSlug(slug);
+        if (!studentresource) {
+          const error = new Error();
+          error.status = 404;
+          error.message = `Could not find student resource, ${slug} is invalid`;
+          throw error;
+        }
+        res.status(200).json({ data: studentresource });
         return;
-      } catch (error) {
-        console.error(error);
-        res.status(error.status || 400).json({ message: error.message });
-        return;
-      }
-    default:
-      res.setHeader("Allow", ["GET"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader("Allow", ["GET"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(error.status || 400).json({ message: error.message });
   }
 }
 
-export const getStudentResourcesSlug = async (slug) => {
+export const getStudentResourceSlug = async (slug) => {
   await dbConnect();
   const studentResourceSlug = await StaticPage.findOne({
     slug: slug,
     isShown: true,
   }).exec();
+
   if (!studentResourceSlug) {
-    const error = new Error();
-    error.status = 404;
-    error.message = `Error finding slug - ${slug} is invalid`;
-    throw error;
+    return null;
   }
   return studentResourceSlug;
 };
