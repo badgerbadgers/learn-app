@@ -78,11 +78,12 @@ const AllStaticPages = ({ combinedData }) => {
       }}
     >
       <Typography
-        variant='h4'
+        // variant="h3"
+        variant="h4"
         gutterBottom
-        color='primary'
+        color="primary"
         style={{
-          fontSize: "35px",
+          // fontSize: "35px",
           position: "relative",
           top: "60px",
           left: "80px",
@@ -97,7 +98,7 @@ const AllStaticPages = ({ combinedData }) => {
         getRowId={(row) => row.wordpress_id}
       />
     </Box>
-  )
+  );
 }
 
 export default AllStaticPages
