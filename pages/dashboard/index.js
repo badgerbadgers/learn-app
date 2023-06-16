@@ -10,7 +10,6 @@ import Link from "next/link";
 const Dashboard = ({ data, isAdmin }) => {
   //use a query to adjust mobile view
   const matches = useMediaQuery("(min-width:600px)");
-
   return (
     <Container
       sx={{ textAlign: "center", p: !matches && 1 }}
