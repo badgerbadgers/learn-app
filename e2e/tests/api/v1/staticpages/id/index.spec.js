@@ -122,7 +122,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
     expect(updatedpartialstaticpage).toMatchObject(twoFieldsUpdated);
   });
 
-  test("returns an undefined variable after a PATCH request with non-existant fields is made", async ({
+  test("returns an undefined variable after a PATCH request with non-existent fields is made", async ({
     request,
     db,
   }) => {
@@ -131,8 +131,8 @@ test.describe("/api/v1/staticpages/[id]", () => {
       .collection("staticpages")
       .findOne({ wordpress_id: { $ne: null } });
     const id = staticPageToUpdate._id.toString();
-    //NON EXISTANT OBJ FIELDS
-    const nonExistantFields = {
+    //NON EXISTENT OBJ FIELDS
+    const nonExistentFields = {
       isShown: null,
       fakeField: "this wont work",
       fakeField2: "this also wont work",
@@ -142,7 +142,7 @@ test.describe("/api/v1/staticpages/[id]", () => {
     const fielddoesnotexistresponse = await request.patch(
       `/api/v1/staticpages/${id}`,
       {
-        data: nonExistantFields,
+        data: nonExistentFields,
       }
     );
     //then check updated obj will not include fake fields
