@@ -100,13 +100,7 @@ export default async function handler(req, res) {
         }
         res.status(200).json({ data: staticpages });
         return;
-      } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error.message });
-        return;
-      }
-    case "POST":
-      try {
+      case "POST":
         const postData = req.body;
         const staticpage = await createStaticPage(postData);
         res.status(200).json({ data: staticpage });
