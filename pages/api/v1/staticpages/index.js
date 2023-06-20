@@ -84,7 +84,7 @@
  *         description: Error messages
  */
 
-import Staticpage from "/lib/models/StaticPage";
+import StaticPage from "lib/models/StaticPage";
 import dbConnect from "lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -101,13 +101,9 @@ export default async function handler(req, res) {
         res.status(200).json({ data: staticpages });
         return;
       case "POST":
-        const newstaticpage = await createStaticPage(postData);
-        if (!newstaticpage) {
-          throw new Error(
-            `Cannot create new static page, ${postData} is invalid`
-          );
-        }
-        res.status(200).json({ data: newstaticpage });
+        const postData = req.body;
+        const staticpage = await createStaticPage(postData);
+        res.status(200).json({ data: staticpage });
         return;
       default:
         res.setHeader("Allow", ["GET", "POST"]);
@@ -120,20 +116,36 @@ export default async function handler(req, res) {
 }
 
 export const getStaticPages = async () => {
-  await dbConnect();
-  const staticpages = await Staticpage.find({});
-  if (!staticpages) {
-    return null;
+  try {
+    await dbConnect();
+
+    const staticpages = await StaticPage.find({});
+    return staticpages;
+  } catch (error) {
+    throw new Error("Error getting static pages", error.message);
   }
   return staticpages;
 };
 
 export const createStaticPage = async (staticpage) => {
-  await dbConnect();
-  const newstaticpage = new Staticpage(staticpage);
-  if (!newstaticpage) {
-    return null;
+  try {
+    await dbConnect();
+
+    const existingWordPressId = await StaticPage.findOne({
+      wordpress_id: staticpage.wordpress_id,
+    });
+
+    if (existingWordPressId) {
+      throw new Error(
+        `Static page with wordpress_id ${staticpage.wordpress_id} already exists.`
+      );
+    }
+
+    const newstaticpage = new StaticPage(staticpage);
+    await newstaticpage.save();
+    return newstaticpage;
+  } catch (error) {
+    //gives specific error message
+    throw new Error(error.message);
   }
-  await newstaticpage.save();
-  return newstaticpage;
 };

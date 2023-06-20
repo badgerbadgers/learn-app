@@ -170,19 +170,14 @@ export default async function handler(req, res) {
           const error = new Error();
           error.status = 404;
           error.message = `Could not update Static Page id, ${id} is invalid`;
+          throw error;
         }
         res.status(200).json({ data: updatedPage });
         return;
       case "DELETE":
-        const deletedPage = await deletedStaticPage(id);
-        if (!deletedPage) {
-          const error = new Error();
-          error.status = 404;
-          error.message = `Could not delete Static Page, ${id} is invalid`;
-        }
-        res
-          .status(200)
-          .json({ message: `Static Page with id:${id} has been deleted.` });
+        const id = req.query.id;
+        await deleteStaticPage(id);
+        res.status(200).json({ message: `Page has been deleted.` });
         return;
       default:
         res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
@@ -219,7 +214,7 @@ export const updateStaticPage = async (id, updates) => {
   return updatedstaticpage;
 };
 
-export const deletedStaticPage = async (id) => {
+export const deleteStaticPage = async (id) => {
   const update = { deleted_at: new Date() };
   await dbConnect();
 
