@@ -5,8 +5,9 @@ import axios from "axios";
 const ReportButton = () => {
   const handleExportButtonClick = async () => {
     try {
-      const response = await axios.get("/api/acceptanceform", {
+      const response = await axios.get("/api/v1/acceptanceforms", {
         responseType: "blob",
+        headers: { Accept: "text/csv" },
       });
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
