@@ -16,8 +16,8 @@ const adminLinks = [
   },
   {
     id: 4,
-    url: "/admin/student-management",
-    name: "Student management",
+    url: "/admin/user-management",
+    name: "User management",
   },
   {
     id: 5,
