@@ -7,41 +7,7 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
   //GET TESTS
 
   test("returns all acceptanceforms", async ({ request, db }) => {
-  // group acceptanceforms by user , count and find more then 0
-  const usersArray = await db
-    .collection("acceptanceforms")
-    .aggregate([
-      {
-        $group: {
-          _id: "$user",
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $match: {
-          count: { $gt: 0 },
-        },
-      },
-      {
-        $project: {
-          user: "$_id",
-        },
-      },
-    ])
-    .toArray();
-    
-    //take userID from first object
-    const userId = await usersArray[0].user.toString();
-    const response = await request.get(
-      `/api/v1/users/${userId}/acceptanceforms`
-    );
-    expect(response.ok()).toBeTruthy();
-    const acceptanceforms = (await response.json()).data;
-    expect(acceptanceforms.length).toBeGreaterThan(0);
-  });
-
-  test("returns more than one acceptanceforms", async ({ request, db }) => {
-    // group acceptanceforms by user , count and find more then 1
+    // group acceptanceforms by user , count and find 2 acceptanceforms
     const usersArray = await db
       .collection("acceptanceforms")
       .aggregate([
@@ -53,7 +19,7 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
         },
         {
           $match: {
-            count: { $gt: 1 },
+            count: { $eq: 2 },
           },
         },
         {
@@ -63,14 +29,53 @@ test.describe("/api/v1/users/[id]/acceptanceforms", () => {
         },
       ])
       .toArray();
-    //take userID from first object
-    const userId = await usersArray[0].user.toString();
-    const response = await request.get(
-      `/api/v1/users/${userId}/acceptanceforms`
-    );
-    expect(response.ok()).toBeTruthy();
-    const acceptanceforms = (await response.json()).data;
-    expect(acceptanceforms.length).toBeGreaterThan(1);
+
+    //check that all users have 2 acceptanceforms
+    for (const u of usersArray) {
+      const userId = await u.user.toString();
+      const response = await request.get(
+        `/api/v1/users/${userId}/acceptanceforms`
+      );
+      expect(response.ok()).toBeTruthy();
+      const acceptanceforms = (await response.json()).data;
+      expect(acceptanceforms.length).toBe(2);
+    }
+  });
+
+  test("returns more than one acceptanceforms", async ({ request, db }) => {
+    // group acceptanceforms by user , count and find 1 acceptanceform
+    const usersArray = await db
+      .collection("acceptanceforms")
+      .aggregate([
+        {
+          $group: {
+            _id: "$user",
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $match: {
+            count: { $eq: 1 },
+          },
+        },
+        {
+          $project: {
+            user: "$_id",
+          },
+        },
+      ])
+      .toArray();
+
+    //check that all users have 1 acceptanceform
+    for (const u of usersArray) {
+      const userId = await u.user.toString();
+      const response = await request.get(
+        `/api/v1/users/${userId}/acceptanceforms`
+      );
+      expect(response.ok()).toBeTruthy();
+      const acceptanceforms = (await response.json()).data;
+      expect(acceptanceforms.length).toBe(1);
+    }
   });
 
   test(

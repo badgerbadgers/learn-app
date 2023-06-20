@@ -48,12 +48,12 @@ export default async function handler(req, res) {
   }
 }
 
-export const getAcceptanceforms = async (id) => {
+export const getAcceptanceforms = async (userId) => {
   await dbConnect();
-  const user = await User.findById(id);
+  const user = await User.findById(userId);
   if (!user) {
     return null;
   }
-  const acceptanceforms = await AcceptanceForm.find({ user: ObjectId(id) });
+  const acceptanceforms = await AcceptanceForm.find({ user: ObjectId(userId) });
   return acceptanceforms;
 };
