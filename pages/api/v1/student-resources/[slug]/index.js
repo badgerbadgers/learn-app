@@ -78,7 +78,7 @@ export default async function handler(req, res) {
   }
 }
 
-export const getStudentResourceSlug = async (slug) => {
+export const getStudentResourcesSlug = async (slug) => {
   await dbConnect();
   const studentResourceSlug = await StaticPage.findOne({
     slug: slug,
