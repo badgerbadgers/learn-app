@@ -143,7 +143,7 @@ export default function CohortHeader({
           pr={2}
           mr={1}
           sx={{
-            font: theme.typography.root.fontFamilySecondary,
+            font: theme.typography.components,
             fontSize: "4rem",
             fontWeight: "100",
             display: "inline-flex",
