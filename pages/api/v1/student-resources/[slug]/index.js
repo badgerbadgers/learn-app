@@ -59,7 +59,7 @@ export default async function handler(req, res) {
   try {
     switch (method) {
       case "GET":
-        const studentresource = await getStudentResourceSlug(slug);
+        const studentresource = await getStudentResourcesSlug(slug);
         if (!studentresource) {
           const error = new Error();
           error.status = 404;
